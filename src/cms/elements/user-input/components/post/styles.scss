@@ -1,0 +1,23 @@
+.richContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  
+  :global {
+    .ql-editor {
+      font-size: 15px;
+    }
+    
+    .ql-container {
+      overflow: hidden;
+    }
+  }
+}
+
+.post {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  display: flex;
+}

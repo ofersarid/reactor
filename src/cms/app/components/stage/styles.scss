@@ -1,0 +1,14 @@
+@import '/src/cms/dimentions';
+
+.stage {
+  background: #e3e3e3;
+  height: 100%;
+  bottom: 0;
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: linear-gradient(to right, #e4e4e4, #ffffff);
+}

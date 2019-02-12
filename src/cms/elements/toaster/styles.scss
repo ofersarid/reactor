@@ -1,0 +1,48 @@
+@import '/src/cms/colors';
+
+.toaster {
+  height: 80px;
+  width: 100%;
+  position: absolute;
+  color: white;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: .2s ease-out;
+  transform: translateY(100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.error {
+  background: rgba($red, 0.9);
+}
+
+.warning {
+  text-shadow: -1px -1px 0 #d1a503;
+  background: rgba(243, 178, 32, 0.9);
+  
+  svg {
+    filter: drop-shadow(-1px -1px #d1a503);
+  }
+}
+
+.success {
+  text-shadow: -1px -1px 0 #43b253;
+  background: rgba(78, 205, 106, 0.9);
+  
+  svg {
+    filter: drop-shadow(-1px -1px #43b253);
+  }
+}
+
+.button {
+  cursor: pointer;
+}

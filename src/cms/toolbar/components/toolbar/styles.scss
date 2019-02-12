@@ -1,0 +1,33 @@
+@import '/src/cms/colors';
+
+$toolbarHeight: 47px;
+
+.toolbar {
+  width: 100%;
+  height: $toolbarHeight;
+  background: $black;
+  color: white;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $lightGray;
+  font-size: 15px;
+  flex-shrink: 0;
+  z-index: 3;
+  border-bottom: 1px inset white;
+  justify-content: space-between;
+  
+  svg {
+    height: 22px;
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  align-content: flex-end;
+}

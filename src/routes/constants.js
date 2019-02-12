@@ -1,0 +1,3 @@
+export const ACTIONS = {
+  LOCATION_CHANGE: 'ROUTER/LOCATION_CHANGE',
+};

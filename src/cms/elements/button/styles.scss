@@ -1,0 +1,113 @@
+@import '/src/cms/colors';
+@import '/src/cms/animations';
+
+.button {
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: .2s ease-out;
+  animation: $undimm;
+}
+
+.inner {
+  font-size: 15px;
+  padding: 11px;
+  box-sizing: border-box;
+  line-height: 15px;
+  transition: .2s ease-out;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  
+  svg {
+    height: 24px;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+}
+
+.justIcon {
+  svg {
+    margin-right: 0;
+  }
+}
+
+.text-red {
+  color: $red;
+}
+
+.text-yellow {
+  color: $yellow;
+}
+
+.text-green {
+  color: $green;
+}
+
+.text-white {
+  color: white;
+}
+
+.green {
+  background: $green;
+  color: white;
+}
+
+.black {
+  background: $black;
+  color: white;
+}
+
+.black-invert {
+  color: $black;
+  border: 1px solid $black;
+}
+
+.white {
+  background: white;
+  color: $black;
+}
+
+.red {
+  background: #FF234E;
+  color: white;
+}
+
+.yellow {
+  background: #FFA700;
+  color: white;
+}
+
+.hideChildren {
+  * {
+    opacity: 0;
+  }
+}
+
+.activityIndicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 30px;
+}
+
+.disable {
+  pointer-events: none;
+  animation: $dimm;
+}
+
+.stretch {
+  width: 100%;
+  
+  .inner {
+    justify-content: center;
+  }
+}
+
+.noAnimation {
+  animation: none !important;
+}

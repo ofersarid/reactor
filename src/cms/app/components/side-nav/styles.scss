@@ -1,0 +1,42 @@
+@import '/src/cms/colors';
+
+.sideNav {
+  height: 100%;
+  background: $black;
+  color: white;
+  transition: .3s;
+  will-change: width;
+  border-right: 1px inset white;
+  box-shadow: inset 0px 0 6px rgb(0, 0, 0);
+}
+
+.btn {
+  :global {
+    .inner {
+      justify-content: flex-end;
+      font-size: 15px;
+      font-weight: 500;
+      height: 46px;
+    }
+  }
+  
+  svg {
+    height: 17px;
+    margin-right: 4px;
+  }
+  
+  * {
+    transition: .4s;
+  }
+}
+
+.hide {
+  opacity: 0;
+  pointer-events: none;
+  width: 17px;
+}
+
+.flip {
+  transform: scaleX(-1);
+}
+

@@ -1,0 +1,101 @@
+@import '/src/cms/colors';
+
+.filters {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  height: 47px;
+  
+  svg {
+    height: 25px;
+  }
+  
+  
+  label {
+    width: auto;
+    color: $yellow;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+  }
+  
+  :global {
+    .single-line {
+      height: 100%;
+      width: 100px;
+      
+      input {
+        border-radius: 0;
+        background: transparent;
+        color: $yellow;
+        border: none;
+        padding: 0 8px;
+      }
+    }
+  
+    .select__control {
+      background: transparent;
+      border-radius: 0;
+      border: none;
+    }
+  
+    .select__menu {
+      background: $black;
+      color: white;
+      border-radius: 0;
+    }
+  
+    .select__single-value {
+      color: $yellow;
+    }
+    
+    .select__input {
+      color: white;
+    }
+  }
+}
+
+.input {
+  margin-bottom: 0;
+}
+
+.icon {
+  margin-left: 20px;
+  height: 26px !important;
+  color: $yellow;
+  transform: translateY(0) !important;
+}
+
+.icon-mobile {
+  margin-left: 0;
+}
+
+.select {
+  width: 138px;
+  
+  :global {
+    .select__option--is-focused {
+      //background: transparent;
+    }
+    
+    .select__option:hover {
+      background: rgba(white, 0.2);
+    }
+    
+    .select__option:active {
+      background: rgba($green, 0.5);
+    }
+    
+    .select__option--is-selected:hover {
+      background: $green;
+    }
+  }
+}
+
+.flexRow {
+  display: flex;
+  align-items: center;
+  
+}

@@ -1,0 +1,19 @@
+.formContainer {
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(black, 0.2);
+  border-radius: 3px;
+  padding: 20px;
+  margin: 0 10px;
+  background: rgba(white, 0.5);
+}
+
+.sendBtn {
+  margin-top: 10px;
+  
+  :global {
+    .inner {
+      height: 44px;
+    }
+  }
+}

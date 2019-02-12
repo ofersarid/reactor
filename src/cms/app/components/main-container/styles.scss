@@ -1,0 +1,7 @@
+@import '/src/cms/dimentions';
+
+.layout {
+  display: flex;
+  height: calc(100vh - #{$nav-bar-height});
+  width: 100%;
+}

@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+@import 'colors';
+
+:global(.waves-effect.waves-color .waves-ripple) {
+  background: rgba($waves-color, 0.4);
+  background: -webkit-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+  background: -o-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+  background: -moz-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+  background: radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%)
+}
+
+$placeholderColor: #9f9b9b;
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: $placeholderColor;
+  font-style: italic;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: $placeholderColor;
+  font-style: italic;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: $placeholderColor;
+  font-style: italic;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: $placeholderColor;
+  font-style: italic;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #bcbcbc;
+}

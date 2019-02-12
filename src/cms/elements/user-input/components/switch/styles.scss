@@ -1,0 +1,22 @@
+.icon {
+  width: 20px;
+}
+
+.switch {
+  width: 52px;
+  
+  &:after {
+    transition: 0.5s ease-out;
+  }
+}
+
+.isActive {
+  &:after {
+    left: 30px;
+  }
+}
+
+.off {
+  transform: translateX(2px);
+  display: inline-block;
+}

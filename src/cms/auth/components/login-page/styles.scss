@@ -1,0 +1,51 @@
+@import "/src/cms/animations";
+
+.logInPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.dialog {
+  :global {
+    .dark-bg {
+      background: linear-gradient(to right, #ffffff, #cacaca);
+    }
+    
+    .dialog-box {
+      max-width: 350px;
+    }
+  }
+}
+
+.dialog-mobile {
+  :global {
+    .dialog-box {
+      margin-bottom: -100px;
+    }
+  }
+}
+
+.input {
+  width: 300px;
+}
+
+.input-mobile {
+  width: 100%;
+}
+
+.logo {
+  height: 180px;
+  z-index: 4;
+  opacity: 0;
+  animation: $popIn;
+  animation-delay: .1s;
+  margin-top: -480px;
+}
+
+.logo-mobile {
+  height: 150px;
+  margin-top: -380px;
+}
