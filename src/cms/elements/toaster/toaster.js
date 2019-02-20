@@ -11,7 +11,13 @@ const $body = document.getElementsByTagName('body')[0];
 
 const Toaster = props => ReactDOM.createPortal(
   <div
-    className={cx(props.onClick && `ripple waves-effect ${styles.button}`, styles.toaster, props.show && styles.show, styles[props.type])}
+    className={cx(
+      props.onClick && `ripple waves-effect ${styles.button}`,
+      styles.toaster,
+      props.show && styles.show,
+      styles[props.type],
+      props.className && props.className,
+    )}
     onClick={props.onClick ? props.onClick : noop}
   >
     {props.children}

@@ -7,6 +7,7 @@ const types = {
   children: PropTypes.any,
   onClick: PropTypes.func,
   type: PropTypes.oneOf(['error', 'warning', 'success']).isRequired,
+  className: PropTypes.string,
 };
 
 export default types;

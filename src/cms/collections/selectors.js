@@ -40,3 +40,18 @@ export const entitySelector = (state, collection, route) => {
 };
 
 export const settings = state => state.get('fireStore').data.settings || {};
+
+/* NEW SELECTORS FOR SAAS */
+
+export const collection = (state, collectionId) => {
+  const collections = state.get('fireStore').ordered.collections;
+  if (collections) {
+    const collection = collections.find(collection => collection.id === collectionId);
+    if (collection) {
+      return collection.data;
+    }
+    console.error('collection not found - check the collection ID');
+    return null;
+  }
+  return [];
+};
