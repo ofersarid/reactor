@@ -32,7 +32,7 @@ class Grid extends PureComponent {
   render() {
     const {
       route, toggleDeleteMode, filters, sortOptions, isMobile, list, icon,
-      fields, markedForDelete, deleteEntities, children, collection, downloadCsv,
+      schema, markedForDelete, deleteEntities, children, collection, downloadCsv,
     } = this.props;
     return (
       <Fragment >
@@ -43,7 +43,7 @@ class Grid extends PureComponent {
           filters={filters}
           sortOptions={sortOptions}
           collection={collection}
-          fields={fields}
+          fields={schema}
         />
         <div className={styles.gridWrapper} >
           <StackGrid
@@ -55,7 +55,7 @@ class Grid extends PureComponent {
                   entity={item}
                   route={route}
                   icon={icon}
-                  fields={fields}
+                  fields={schema}
                 />
               </div >
             ))}

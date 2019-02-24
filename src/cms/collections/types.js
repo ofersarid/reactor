@@ -7,13 +7,11 @@ export const field = PropTypes.shape({
   key: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   type: PropTypes.oneOf(inputTypes).isRequired,
-  required: PropTypes.bool,
-  min: PropTypes.number,
-  max: PropTypes.number,
-  disabled: PropTypes.bool,
-  transformer: PropTypes.func,
+  required: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  minChars: PropTypes.number,
+  maxChars: PropTypes.number,
   initialValue: PropTypes.any,
-  validateWith: PropTypes.func,
 });
 
 export const collectionEditor = {
@@ -27,15 +25,17 @@ export const collectionEditor = {
 };
 
 export const collectionContainer = {
-  routeParams: PropTypes.shape({
-    collectionId: PropTypes.string.isRequired,
-  }).isRequired,
-  icon: PropTypes.node,
+  collectionId: PropTypes.string.isRequired,
+  collection: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
+    owner: PropTypes.string.isRequired,
+    public: PropTypes.bool.isRequired,
+    schema: PropTypes.arrayOf(field).isRequired,
+    filters: PropTypes.arrayOf(PropTypes.string),
+    sortOptions: PropTypes.arrayOf(PropTypes.string),
+  }),
   children: PropTypes.any,
-  filters: PropTypes.arrayOf(PropTypes.string),
-  sortOptions: PropTypes.arrayOf(PropTypes.string),
-  fields: PropTypes.arrayOf(field).isRequired,
-  downloadCsv: PropTypes.func,
 };
 
 export const cmsEntityGrid = {
@@ -52,7 +52,7 @@ export const cmsEntityGrid = {
   filters: PropTypes.arrayOf(PropTypes.string),
   sortOptions: PropTypes.arrayOf(PropTypes.string),
   list: PropTypes.arrayOf(PropTypes.object),
-  fields: PropTypes.arrayOf(field).isRequired,
+  schema: PropTypes.arrayOf(field).isRequired,
   sideNavOpen: PropTypes.bool.isRequired,
   downloadCsv: PropTypes.func,
 };

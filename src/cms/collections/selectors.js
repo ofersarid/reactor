@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { pathname } from '/src/routes/selectors';
+import { pathname, collectionId } from '/src/routes/selectors';
 import { query, ignoreCase, orderBy } from '/src/cms/filters/selectors';
 import sort from 'lodash/orderBy';
 
@@ -43,9 +43,15 @@ export const settings = state => state.get('fireStore').data.settings || {};
 
 /* NEW SELECTORS FOR SAAS */
 
+const userCollectionsMap = state => state.get('fireStore').data.collections || {};
+
 export const userCollections = state => state.get('fireStore').ordered.collections || [];
 
-export const collection = (state, collectionId) => {
+export const collection = createSelector(collectionId, userCollectionsMap, (_collectionId, _userCollectionsMap) => {
+  return _userCollectionsMap[_collectionId];
+});
+
+export const collectionData = (state, collectionId) => {
   const collections = state.get('fireStore').ordered.collections;
   if (collections) {
     const collection = collections.find(collection => collection.id === collectionId);
