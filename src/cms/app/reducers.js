@@ -3,7 +3,7 @@ import { ACTIONS } from './constants';
 import Routes from '../../routes';
 
 const initialState = fromJS({
-  sideNavOpen: false,
+  sideNavOpen: true,
   deleteMode: false,
   markedForDelete: [],
 });

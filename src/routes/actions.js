@@ -1,6 +1,6 @@
 import { ACTIONS } from './constants';
 
-export const updateLocation = location => ({
+export const updateLocation = route => ({
   type: ACTIONS.LOCATION_CHANGE,
-  location,
+  route,
 });

@@ -43,6 +43,8 @@ export const settings = state => state.get('fireStore').data.settings || {};
 
 /* NEW SELECTORS FOR SAAS */
 
+export const userCollections = state => state.get('fireStore').ordered.collections || [];
+
 export const collection = (state, collectionId) => {
   const collections = state.get('fireStore').ordered.collections;
   if (collections) {

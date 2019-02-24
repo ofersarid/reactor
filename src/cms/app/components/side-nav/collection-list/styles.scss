@@ -1,0 +1,39 @@
+@import '/src/cms/colors';
+
+@keyframes expand {
+  0% {
+    height: 0;
+  }
+  
+  100% {
+    height: calc(100% - 8px);
+  }
+}
+
+.collections {
+  li {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.indicator {
+  width: 4px;
+  height: 0;
+  background-color: $green;
+  animation: expand .3s forwards;
+  position: absolute;
+  left: 8px;
+  border-radius: 2px;
+}
+
+.navButton {
+  text-transform: capitalize;
+  
+  :global {
+    .inner {
+      justify-content: initial;
+      padding-left: 20px;
+    }
+  }
+}

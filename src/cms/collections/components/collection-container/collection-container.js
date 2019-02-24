@@ -6,19 +6,23 @@ import Routes from '../../../../routes/index';
 import { compose } from 'redux';
 import connect from 'react-redux/es/connect/connect';
 
-const CollectionContainer = props => (
-  <Grid
-    route={`cms/${props.id}`}
-    collection={props.id}
-    filters={props.filters}
-    sortOptions={props.sortOptions}
-    icon={props.icon}
-    fields={props.fields}
-    downloadCsv={props.downloadCsv}
-  >
-    {props.pathname.split(props.id)[1] && <CollectionEditor {...props} />}
-  </Grid >
-);
+const CollectionContainer = props => {
+  // todo - remove this before pull request
+  debugger; // eslint-disable-line
+  return (
+    <Grid
+      route={`cms/${props.id}`}
+      collection={props.routeParams.collectionId}
+      filters={props.filters}
+      sortOptions={props.sortOptions}
+      icon={props.icon}
+      fields={props.fields}
+      downloadCsv={props.downloadCsv}
+    >
+      {props.pathname.split(props.id)[1] && <CollectionEditor {...props} />}
+    </Grid >
+  );
+};
 
 CollectionContainer.propTypes = collectionContainer;
 

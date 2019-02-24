@@ -1,3 +1,3 @@
-export const sideNav = {
+export const sideNav = {};
 
-};
+export const collections = {};

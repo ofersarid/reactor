@@ -27,8 +27,9 @@ export const collectionEditor = {
 };
 
 export const collectionContainer = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  routeParams: PropTypes.shape({
+    collectionId: PropTypes.string.isRequired,
+  }).isRequired,
   icon: PropTypes.node,
   children: PropTypes.any,
   filters: PropTypes.arrayOf(PropTypes.string),
