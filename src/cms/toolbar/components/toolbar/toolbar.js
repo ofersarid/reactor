@@ -11,9 +11,9 @@ import { Filters } from '/src/cms/filters';
 const ToolbarContainer = props => (
   <div className={styles.toolbar} >
     <div className={styles.left} >
-      {props.addRoute && <AddButton addRoute={props.addRoute} />}
-      {props.onClickDelete && <DeleteButton onClickDelete={props.onClickDelete} />}
-      {props.onClickDownload && <DownloadCsv onClickDownload={props.onClickDownload} />}
+      <AddButton />
+      <DeleteButton onClickDelete={props.onClickDelete} />
+      <DownloadCsv onClickDownload={props.onClickDownload} />
     </div >
     <div className={styles.right} >
       {props.filters && props.filters.length > 0 && (

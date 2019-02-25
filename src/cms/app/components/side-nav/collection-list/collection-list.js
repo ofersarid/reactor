@@ -21,7 +21,7 @@ class CollectionList extends PureComponent {
 
   render() {
     const { userCollections, collectionId, sideNavOpen } = this.props;
-    return (
+    return userCollections ? (
       <ul className={styles.collections} >
         {userCollections.map(collection => {
           const isActive = collection.id === collectionId;
@@ -45,7 +45,7 @@ class CollectionList extends PureComponent {
           );
         })}
       </ul >
-    );
+    ) : null;
   }
 }
 

@@ -7,7 +7,6 @@ import { Check } from 'styled-icons/fa-solid/Check';
 import { Cancel } from 'styled-icons/material/Cancel';
 import Auth from '/src/cms/auth/index';
 import { Toolbar } from '/src/cms/toolbar/index';
-import { firestoreConnect } from 'react-redux-firebase';
 import { ActivityToaster } from '/src/cms/activity';
 import Toaster from '/src/cms/elements/toaster/index';
 import StackGrid from 'react-stack-grid';
@@ -37,7 +36,6 @@ class Grid extends PureComponent {
     return (
       <Fragment >
         <Toolbar
-          addRoute={`${route}/add`}
           onClickDelete={toggleDeleteMode}
           onClickDownload={() => downloadCsv(list)}
           filters={filters}
@@ -102,7 +100,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => ([{
-    collection: props.collection,
-  }])),
 )(Grid);

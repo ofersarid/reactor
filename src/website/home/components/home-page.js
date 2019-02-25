@@ -6,7 +6,7 @@ import Device from '/src/cms/device/index';
 import { Button } from '/src/cms/elements';
 import types from '../types';
 import { firestoreConnect } from 'react-redux-firebase';
-import { selectors } from '/src/cms/collections';
+import Collections from '/src/cms/collections';
 
 const HomePage = props => {
   console.log(props.contacts);
@@ -30,7 +30,7 @@ HomePage.propTypes = types;
 const mapStateToProps = state => ({
   deviceType: Device.selectors.deviceType(state),
   deviceOrientation: Device.selectors.deviceOrientation(state),
-  contacts: selectors.collection(state, '8gFxx830klmI0HDeOIEU'),
+  contacts: Collections.selectors.collection(state, '8gFxx830klmI0HDeOIEU'),
 });
 
 export default compose(

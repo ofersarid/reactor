@@ -4,7 +4,6 @@ import { field } from '/src/cms/collections/types';
 
 export const toolbar = {
   ...deviceTypes,
-  addRoute: PropTypes.string,
   onClickDelete: PropTypes.func,
   filters: PropTypes.arrayOf(PropTypes.string),
   sortOptions: PropTypes.arrayOf(PropTypes.string),
@@ -13,7 +12,8 @@ export const toolbar = {
 };
 
 export const addButton = {
-  addRoute: PropTypes.string.isRequired,
+  isMobile: PropTypes.bool.isRequired,
+  pathname: PropTypes.string.isRequired,
 };
 
 export const deleteButton = {
