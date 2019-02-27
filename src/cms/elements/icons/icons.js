@@ -3,12 +3,15 @@ import { connect } from 'react-redux';
 import Device from '/src/cms/device/index';
 import { Collection } from 'styled-icons/boxicons-solid/Collection';
 import { Contacts } from 'styled-icons/material/Contacts';
+import { CartAlt } from 'styled-icons/boxicons-solid/CartAlt';
 import { icons } from './types';
 
 const Icons = props => {
   switch (props.name) {
     case 'Contacts':
       return <Contacts />;
+    case 'Cart':
+      return <CartAlt />;
     default:
       return <Collection />;
   }
