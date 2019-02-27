@@ -14,7 +14,7 @@ const CollectionContainer = props => {
       filters={props.collection.filters}
       sortOptions={props.collection.sortOptions}
       icon={props.collection.icon}
-      schema={props.collection.schema}
+      entity={props.collection.entity}
     >
       {props.children}
     </Grid >

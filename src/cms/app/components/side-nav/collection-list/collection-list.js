@@ -12,6 +12,10 @@ import styles from './styles.scss';
 import { collections } from '../types';
 
 class CollectionList extends PureComponent {
+  // constructor(props) {
+  //   super(props);
+  // }
+
   componentDidUpdate() {
     const { collectionId, userCollectionIds } = this.props;
     if (!userCollectionIds.includes(collectionId) && userCollectionIds.length) {
@@ -19,24 +23,32 @@ class CollectionList extends PureComponent {
     }
   }
 
+  // getList() {
+  //   const { userCollections } = this.props;
+  //   for (const [ id, meta ] of Object.entries(userCollections)) {
+  //     // do something with `key` and `value`
+  //   }
+  // }
+
   render() {
     const { userCollections, collectionId, sideNavOpen } = this.props;
     return userCollections ? (
       <ul className={styles.collections} >
-        {userCollections.map(collection => {
-          const isActive = collection.id === collectionId;
+        {}
+        {Object.keys(userCollections).map(key => {
+          const isActive = key === collectionId;
           return (
-            <li key={collection.id} >
+            <li key={key} >
               <Button
-                linkTo={isActive ? null : `/cms/${collection.id}`}
+                linkTo={isActive ? null : `/cms/collections/${key}`}
                 className={`waves-color ${styles.navButton}`}
                 textColor={isActive ? 'green' : null}
                 stretch
               >
-                <Tooltip content={!sideNavOpen ? collection.name : null} position="right" >
-                  <Icons name={collection.icon} />
+                <Tooltip content={!sideNavOpen ? userCollections[key].name : null} position="right" >
+                  <Icons name={userCollections[key].icon} />
                 </Tooltip >
-                <div >{collection.name}</div >
+                <div >{userCollections[key].name}</div >
                 {isActive && (
                   <div className={styles.indicator} />
                 )}
@@ -55,7 +67,7 @@ const mapStateToProps = state => ({
   deviceType: Device.selectors.deviceType(state),
   deviceOrientation: Device.selectors.deviceOrientation(state),
   userCollectionIds: Auth.selectors.userCollectionIds(state),
-  userCollections: Collections.selectors.userCollections(state),
+  userCollections: Collections.selectors.userCollectionsMap(state),
   pathname: Routes.selectors.pathname(state),
   collectionId: Routes.selectors.collectionId(state),
 });

@@ -15,6 +15,7 @@ import { SortDown } from 'styled-icons/boxicons-regular/SortDown';
 import { Hide } from 'styled-icons/boxicons-solid/Hide';
 import { Show } from 'styled-icons/boxicons-solid/Show';
 import { toCapitalizedWords } from '/src/cms/utils';
+import Routes from '/src/routes';
 import Filters from '/src/cms/filters/index';
 import Tooltip from '/src/cms/elements/tooltip/tooltip';
 
@@ -48,11 +49,11 @@ class Item extends Component {
   }
 
   render() {
-    const { markedForDelete, entity, deleteMode, route, markForDelete, icon } = this.props;
+    const { markedForDelete, entity, deleteMode, pathname, markForDelete, icon } = this.props;
     const marked = markedForDelete.includes(entity.id);
     return (
       <Button
-        linkTo={!deleteMode ? `${route}/edit/${entity.id}` : null}
+        linkTo={!deleteMode ? `${pathname}/edit/${entity.id}` : null}
         onClick={() => {
           if (deleteMode) {
             markForDelete(entity.id);
@@ -199,6 +200,7 @@ const mapStateToProps = state => ({
   deleteMode: App.selectors.deleteMode(state),
   markedForDelete: App.selectors.markedForDelete(state),
   orderBy: Filters.selectors.orderBy(state),
+  pathname: Routes.selectors.pathname(state),
 });
 
 const mapDispatchToProps = dispatch => ({

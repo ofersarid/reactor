@@ -24,7 +24,7 @@ export default (
       <IndexRedirect to="collections/123" />
       <Route path="collections/:collectionId" component={CollectionContainer} >
         <Route path="add" component={CollectionEditor} />
-        <Route path="edit" component={CollectionEditor} />
+        <Route path="edit/:entityId" component={CollectionEditor} />
       </Route >
       {/* {COLLECTIONS.map(col => ( */}
       {/* <Route */}

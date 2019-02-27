@@ -12,6 +12,8 @@ import Toaster from '/src/cms/elements/toaster/index';
 import StackGrid from 'react-stack-grid';
 import { TrashAlt } from 'styled-icons/boxicons-solid/TrashAlt';
 import App from '/src/cms/app/index';
+import { firestoreConnect } from 'react-redux-firebase';
+import Routes from '/src/routes';
 import CMSEntityItem from './item';
 import styles from './styles.scss';
 import { cmsEntityGrid } from '../../types';
@@ -30,8 +32,8 @@ const calcColumnWidth = (isMobile, sideNavOpen) => {
 class Grid extends PureComponent {
   render() {
     const {
-      route, toggleDeleteMode, filters, sortOptions, isMobile, list, icon,
-      schema, markedForDelete, deleteEntities, children, collection, downloadCsv,
+      toggleDeleteMode, filters, sortOptions, isMobile, list, icon,
+      entity, markedForDelete, deleteEntities, children, collection, downloadCsv,
     } = this.props;
     return (
       <Fragment >
@@ -41,23 +43,24 @@ class Grid extends PureComponent {
           filters={filters}
           sortOptions={sortOptions}
           collection={collection}
-          fields={schema}
+          fields={entity.fields}
         />
         <div className={styles.gridWrapper} >
-          <StackGrid
-            columnWidth={calcColumnWidth(isMobile)}
-          >
-            {list.map(item => (
-              <div key={item.id} >
-                <CMSEntityItem
-                  entity={item}
-                  route={route}
-                  icon={icon}
-                  fields={schema}
-                />
-              </div >
-            ))}
-          </StackGrid >
+          {list && (
+            <StackGrid
+              columnWidth={calcColumnWidth(isMobile)}
+            >
+              {list.map(item => (
+                <div key={item.id} >
+                  <CMSEntityItem
+                    entity={item}
+                    icon={icon}
+                    uiKeyMap={entity.uiKeyMap}
+                  />
+                </div >
+              ))}
+            </StackGrid >
+          )}
         </div >
         <Toaster show={markedForDelete.size > 0} >
           <TrashAlt className={styles.trash} />
@@ -91,6 +94,7 @@ const mapStateToProps = (state, ownProps) => ({
   deleteMode: App.selectors.deleteMode(state),
   permissions: Auth.selectors.permissions(state),
   sideNavOpen: App.selectors.sideNavOpen(state),
+  collectionId: Routes.selectors.collectionId(state),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -100,4 +104,15 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect(props => {
+    return [{
+      collection: 'collections',
+      doc: props.collectionId,
+      subcollections: [{
+        collection: 'data',
+        // where: [['active', '==', true]],
+        orderBy: ['name', 'desc'],
+      }],
+    }];
+  }),
 )(Grid);

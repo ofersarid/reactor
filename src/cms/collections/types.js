@@ -31,7 +31,12 @@ export const collectionContainer = {
     icon: PropTypes.string.isRequired,
     owner: PropTypes.string.isRequired,
     public: PropTypes.bool.isRequired,
-    schema: PropTypes.arrayOf(field).isRequired,
+    entity: PropTypes.shape({
+      fields: PropTypes.arrayOf(field).isRequired,
+      uiKeyMap: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
     filters: PropTypes.arrayOf(PropTypes.string),
     sortOptions: PropTypes.arrayOf(PropTypes.string),
   }),
@@ -40,30 +45,38 @@ export const collectionContainer = {
 
 export const cmsEntityGrid = {
   ...deviceTypes,
-  route: PropTypes.string.isRequired,
   collection: PropTypes.string.isRequired,
   entities: PropTypes.arrayOf(PropTypes.object),
   deleteMode: PropTypes.bool.isRequired,
   markedForDelete: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
   children: PropTypes.any,
   toggleDeleteMode: PropTypes.func.isRequired,
-  icon: PropTypes.node,
+  icon: PropTypes.string,
   permissions: PropTypes.arrayOf(PropTypes.string),
   filters: PropTypes.arrayOf(PropTypes.string),
   sortOptions: PropTypes.arrayOf(PropTypes.string),
   list: PropTypes.arrayOf(PropTypes.object),
-  schema: PropTypes.arrayOf(field).isRequired,
+  entity: PropTypes.shape({
+    fields: PropTypes.arrayOf(field).isRequired,
+    uiKeyMap: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
   sideNavOpen: PropTypes.bool.isRequired,
   downloadCsv: PropTypes.func,
+  collectionId: PropTypes.string.isRequired,
 };
 
 export const entityItem = {
   ...deviceTypes,
-  entity: PropTypes.object,
+  entity: PropTypes.object.isRequired,
+  uiKeyMap: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+  }).isRequired,
   deleteMode: PropTypes.bool.isRequired,
   markedForDelete: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
   markForDelete: PropTypes.func.isRequired,
-  route: PropTypes.string.isRequired,
+  pathname: PropTypes.string.isRequired,
   icon: PropTypes.node,
   linkIcon: PropTypes.node,
   orderBy: PropTypes.string,
