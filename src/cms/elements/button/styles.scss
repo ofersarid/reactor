@@ -12,6 +12,32 @@
   animation: $undimm;
 }
 
+.wavesLight {
+  $waves-color: #81cd81;
+  :global {
+    .waves-ripple {
+      background: rgba($waves-color, 0.4);
+      background: -webkit-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+      background: -o-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+      background: -moz-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+      background: radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%)
+    }
+  }
+}
+
+.wavesDark {
+  $waves-dark: #143614;
+  :global {
+    .waves-ripple {
+      background: rgba($waves-dark, 0.4);
+      background: -webkit-radial-gradient(rgba($waves-dark, .2) 0, rgba($waves-dark, .3) 40%, rgba($waves-dark, .4) 50%, rgba($waves-dark, .5) 60%, rgba($waves-dark, 0) 70%);
+      background: -o-radial-gradient(rgba($waves-dark, .2) 0, rgba($waves-dark, .3) 40%, rgba($waves-dark, .4) 50%, rgba($waves-dark, .5) 60%, rgba($waves-dark, 0) 70%);
+      background: -moz-radial-gradient(rgba($waves-dark, .2) 0, rgba($waves-dark, .3) 40%, rgba($waves-dark, .4) 50%, rgba($waves-dark, .5) 60%, rgba($waves-dark, 0) 70%);
+      background: radial-gradient(rgba($waves-dark, .2) 0, rgba($waves-dark, .3) 40%, rgba($waves-dark, .4) 50%, rgba($waves-dark, .5) 60%, rgba($waves-dark, 0) 70%)
+    }
+  }
+}
+
 .inner {
   font-size: 15px;
   padding: 11px;

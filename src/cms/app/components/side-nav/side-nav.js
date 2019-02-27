@@ -31,7 +31,7 @@ class SideNav extends PureComponent {
       >
         <Button
           stretch
-          className={`waves-color ${styles.btn}`}
+          className={styles.btn}
           onClick={toggleSideNav}
         >
           <ChevronLeft className={cx(!sideNavOpen && styles.flip)} />

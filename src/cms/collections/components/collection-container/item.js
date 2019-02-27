@@ -75,7 +75,7 @@ class Item extends Component {
                 <Tooltip
                   key="active"
                   className={cx(styles.tag, item.published ? styles.redTag : styles.inactive)}
-                  content={item.published ? 'Active' : 'Inactive'}
+                  content={item.published ? 'Published' : 'Not Published'}
                 >
                   {item.published ? <Show /> : <Hide />}
                 </Tooltip >
@@ -99,7 +99,8 @@ class Item extends Component {
             {this.getKeysForBody().map(key => {
               if (!item[key]) return null;
               let comp = null;
-              let type = entity.fields.find(field => field.key === key).type;
+              const type = entity.fields.find(field => field.key === key).type;
+              const label = entity.fields.find(field => field.key === key).label;
               switch (type) {
                 case 'post':
                   comp = <div className={styles.post} dangerouslySetInnerHTML={{ __html: item[key] }} />;
@@ -120,12 +121,11 @@ class Item extends Component {
                 case 'pdf':
                   comp = (
                     <Button
-                      key={key}
                       color="green"
                       className={styles.btn}
                       onClick={() => window.open(item[key])}
                       disable={deleteMode}
-                      tip={item[key]}
+                      tip={label}
                     >
                       <FileDownload />
                       <div className={styles.link} >{item[key]}</div >
@@ -135,12 +135,11 @@ class Item extends Component {
                 case 'link':
                   comp = (
                     <Button
-                      key={key}
                       color="green"
                       className={styles.btn}
                       onClick={() => window.open(item[key])}
                       disable={deleteMode}
-                      tip={item[key]}
+                      tip={label}
                     >
                       <Link />
                       <div className={styles.link} >{item[key]}</div >
@@ -150,12 +149,11 @@ class Item extends Component {
                 case 'email':
                   comp = (
                     <Button
-                      key={key}
                       color="green"
                       className={styles.btn}
                       onClick={() => window.open(`mailto:${item.email}`)}
                       disable={deleteMode}
-                      tip={item[key]}
+                      tip={label}
                     >
                       <Link />
                       <div className={styles.link} >{item[key]}</div >
@@ -177,13 +175,13 @@ class Item extends Component {
               const isBtn = comp.props && Boolean(comp.props.onClick);
 
               return isBtn ? (
-                <li>
+                <li key={key} >
                   {comp}
                 </li>
               ) : (
-                <li>
+                <li key={key} >
                   <div key={key} className={cx(styles.sectionBox)} >
-                    <div className={styles.sectionHeader} >{key}</div >
+                    <div className={styles.sectionHeader} >{label}</div >
                     {comp}
                   </div >
                 </li>

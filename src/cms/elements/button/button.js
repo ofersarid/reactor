@@ -62,7 +62,7 @@ class Button extends PureComponent {
           className={cx(
             'ripple',
             'waves-effect',
-            'waves-color',
+            color ? styles.wavesDark : styles.wavesLight,
             styles.button,
             className,
             disable && styles.disable,

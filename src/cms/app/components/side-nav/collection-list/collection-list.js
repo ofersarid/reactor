@@ -12,23 +12,12 @@ import styles from './styles.scss';
 import { collections } from '../types';
 
 class CollectionList extends PureComponent {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   componentDidUpdate() {
     const { collectionId, userCollectionIds } = this.props;
     if (!userCollectionIds.includes(collectionId) && userCollectionIds.length) {
       hashHistory.push(`cms/collections/${userCollectionIds[0]}`);
     }
   }
-
-  // getList() {
-  //   const { userCollections } = this.props;
-  //   for (const [ id, meta ] of Object.entries(userCollections)) {
-  //     // do something with `key` and `value`
-  //   }
-  // }
 
   render() {
     const { userCollections, collectionId, sideNavOpen } = this.props;
@@ -41,7 +30,7 @@ class CollectionList extends PureComponent {
             <li key={key} >
               <Button
                 linkTo={isActive ? null : `/cms/collections/${key}`}
-                className={`waves-color ${styles.navButton}`}
+                className={styles.navButton}
                 textColor={isActive ? 'green' : null}
                 stretch
               >
