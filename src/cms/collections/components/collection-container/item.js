@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Device from '/src/cms/device/index';
-import Button from '/src/cms/elements/button/index';
+import { Button, Icons, Tooltip } from '/src/cms/elements';
 import App from '/src/cms/app/index';
 import cx from 'classnames';
 import { entityItem } from '../../types';
 import styles from './styles.scss';
 import ImageAsync from 'react-image-async';
-import Puff from '/src/cms/elements/svg-loaders/puff.svg';
+import Puff from '/src/cms/svg-loaders/puff.svg';
 import { FileDownload } from 'styled-icons/material/FileDownload';
 import { Link } from 'styled-icons/material/Link';
 import { SortDown } from 'styled-icons/boxicons-regular/SortDown';
@@ -17,17 +17,10 @@ import { Show } from 'styled-icons/boxicons-solid/Show';
 import { toCapitalizedWords } from '/src/cms/utils';
 import Routes from '/src/routes';
 import Filters from '/src/cms/filters/index';
-import Tooltip from '/src/cms/elements/tooltip/tooltip';
 
 class Item extends Component {
   componentWillUnmount() {
     this.willUnmount = true;
-  }
-
-  getLabel(key) {
-    const { fields } = this.props;
-    const found = fields.find(field => field.key === key);
-    return found ? found.label : null;
   }
 
   getFieldProp(key, propName) {
@@ -36,27 +29,21 @@ class Item extends Component {
     return found ? found[propName] : null;
   }
 
-  getKeysForCardPosition(position) {
-    const { fields } = this.props;
-    const found = fields.filter(field => field.cmsCardPosition === position);
-    return found.map(item => item.key);
-  }
-
   getKeysForBody() {
-    const { fields } = this.props;
-    const found = fields.filter(field => !['title', 'active', 'displayOrder'].includes(field.key));
+    const { entity } = this.props;
+    const found = entity.fields.filter(field => !(Object.values(entity.uiKeyMap).concat(['published', 'displayOrder'])).includes(field.key));
     return found.map(item => item.key);
   }
 
   render() {
-    const { markedForDelete, entity, deleteMode, pathname, markForDelete, icon } = this.props;
-    const marked = markedForDelete.includes(entity.id);
+    const { markedForDelete, item, deleteMode, pathname, markForDelete, icon, entity } = this.props;
+    const marked = markedForDelete.includes(item.id);
     return (
       <Button
-        linkTo={!deleteMode ? `${pathname}/edit/${entity.id}` : null}
+        linkTo={!deleteMode ? `${pathname}/edit/${item.id}` : null}
         onClick={() => {
           if (deleteMode) {
-            markForDelete(entity.id);
+            markForDelete(item.id);
           }
         }}
         className={cx(styles.entityBtn)}
@@ -73,34 +60,34 @@ class Item extends Component {
 
             {/* ----- TITLE ----- */}
             <div >
-              {icon}
+              <Icons name={icon} />
               <Tooltip
-                content={this.getLabel('title')}
+                content={entity.uiKeyMap.title}
                 className={styles.title}
               >
-                {entity.title}
+                {item[entity.uiKeyMap.title]}
               </Tooltip >
             </div >
 
             {/* ----- TAGS ----- */}
             <div >
-              {typeof entity.active === 'boolean' && (
+              {typeof item.published === 'boolean' && (
                 <Tooltip
                   key="active"
-                  className={cx(styles.tag, entity.active ? styles.redTag : styles.inactive)}
-                  content={entity.active ? 'Active' : 'Inactive'}
+                  className={cx(styles.tag, item.published ? styles.redTag : styles.inactive)}
+                  content={item.published ? 'Active' : 'Inactive'}
                 >
-                  {entity.active ? <Show /> : <Hide />}
+                  {item.published ? <Show /> : <Hide />}
                 </Tooltip >
               )}
-              {typeof entity.displayOrder === 'number' && (
+              {typeof item.displayOrder === 'number' && (
                 <Tooltip
                   key="displayOrder"
-                  className={cx(styles.tag, entity.displayOrder ? styles.blueTag : styles.inactive)}
+                  className={cx(styles.tag, item.displayOrder ? styles.blueTag : styles.inactive)}
                   content="Display Order"
                 >
                   <SortDown />
-                  <div className={styles.displayOrder} >{entity.displayOrder}</div >
+                  <div className={styles.displayOrder} >{item.displayOrder}</div >
                 </Tooltip >
               )}
             </div >
@@ -108,23 +95,23 @@ class Item extends Component {
           </div >
 
           {/* ----- BODY ----- */}
-          <div className={styles.body} >
+          <ul className={styles.body} >
             {this.getKeysForBody().map(key => {
-              if (!entity[key]) return null;
+              if (!item[key]) return null;
               let comp = null;
-              let type = this.getFieldProp(key, 'type');
+              let type = entity.fields.find(field => field.key === key).type;
               switch (type) {
                 case 'post':
-                  comp = <div className={styles.post} dangerouslySetInnerHTML={{ __html: entity[key] }} />;
+                  comp = <div className={styles.post} dangerouslySetInnerHTML={{ __html: item[key] }} />;
                   break;
                 case 'date-time':
-                  comp = moment(entity[key].toDate()).format('MMM Do YYYY');
+                  comp = moment(item[key].toDate()).format('MMM Do YYYY');
                   break;
                 case 'image':
-                  comp = <ImageAsync src={[entity[key]]} >
+                  comp = <ImageAsync src={[item[key]]} >
                     {({ loaded, error }) => (
                       <div
-                        style={{ backgroundImage: `url(${loaded ? entity[key] : Puff})` }}
+                        style={{ backgroundImage: `url(${loaded ? item[key] : Puff})` }}
                         className={styles.image}
                       />
                     )}
@@ -136,12 +123,12 @@ class Item extends Component {
                       key={key}
                       color="green"
                       className={styles.btn}
-                      onClick={() => window.open(entity[key])}
+                      onClick={() => window.open(item[key])}
                       disable={deleteMode}
-                      tip={this.getFieldProp(key, 'label')}
+                      tip={item[key]}
                     >
                       <FileDownload />
-                      <div className={styles.link} >{entity[key]}</div >
+                      <div className={styles.link} >{item[key]}</div >
                     </Button >
                   );
                   break;
@@ -151,37 +138,58 @@ class Item extends Component {
                       key={key}
                       color="green"
                       className={styles.btn}
-                      onClick={() => window.open(key === 'email' ? `mailto:${entity.email}` : entity[key])}
+                      onClick={() => window.open(item[key])}
                       disable={deleteMode}
-                      tip={this.getFieldProp(key, 'label')}
+                      tip={item[key]}
                     >
                       <Link />
-                      <div className={styles.link} >{entity[key]}</div >
+                      <div className={styles.link} >{item[key]}</div >
+                    </Button >
+                  );
+                  break;
+                case 'email':
+                  comp = (
+                    <Button
+                      key={key}
+                      color="green"
+                      className={styles.btn}
+                      onClick={() => window.open(`mailto:${item.email}`)}
+                      disable={deleteMode}
+                      tip={item[key]}
+                    >
+                      <Link />
+                      <div className={styles.link} >{item[key]}</div >
                     </Button >
                   );
                   break;
                 case 'embed':
-                  comp = <iframe src={entity[key]} className={styles.image} frameBorder="0" scrolling="no" />;
+                  comp = <iframe src={item[key]} className={styles.image} frameBorder="0" scrolling="no" />;
                   break;
                 case 'switch':
                   comp = <span
-                    className={entity[key] ? styles.blue : styles.red} >{toCapitalizedWords(entity[key].toString())}</span >;
+                    className={item[key] ? styles.blue : styles.red} >{toCapitalizedWords(item[key].toString())}</span >;
                   break;
                 default:
-                  comp = entity[key];
+                  comp = item[key];
                   break;
               }
 
               const isBtn = comp.props && Boolean(comp.props.onClick);
 
-              return isBtn ? comp : (
-                <div key={key} className={cx(styles.sectionBox)} >
-                  <div className={styles.sectionHeader} >{this.getLabel(key)}</div >
+              return isBtn ? (
+                <li>
                   {comp}
-                </div >
+                </li>
+              ) : (
+                <li>
+                  <div key={key} className={cx(styles.sectionBox)} >
+                    <div className={styles.sectionHeader} >{key}</div >
+                    {comp}
+                  </div >
+                </li>
               );
             })}
-          </div >
+          </ul >
         </div >
       </Button >
     );

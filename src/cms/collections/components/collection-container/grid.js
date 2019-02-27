@@ -53,9 +53,9 @@ class Grid extends PureComponent {
               {list.map(item => (
                 <div key={item.id} >
                   <CMSEntityItem
-                    entity={item}
+                    item={item}
                     icon={icon}
-                    uiKeyMap={entity.uiKeyMap}
+                    entity={entity}
                   />
                 </div >
               ))}

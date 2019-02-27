@@ -69,9 +69,12 @@ export const cmsEntityGrid = {
 
 export const entityItem = {
   ...deviceTypes,
-  entity: PropTypes.object.isRequired,
-  uiKeyMap: PropTypes.shape({
-    title: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
+  entity: PropTypes.shape({
+    fields: PropTypes.arrayOf(field).isRequired,
+    uiKeyMap: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   deleteMode: PropTypes.bool.isRequired,
   markedForDelete: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
@@ -80,12 +83,11 @@ export const entityItem = {
   icon: PropTypes.node,
   linkIcon: PropTypes.node,
   orderBy: PropTypes.string,
-  fields: PropTypes.arrayOf(field).isRequired,
 };
 
 export const entityEditor = {
   ...deviceTypes,
-  entity: PropTypes.object,
+  item: PropTypes.object,
   updateEntity: PropTypes.func.isRequired,
   isAdd: PropTypes.bool.isRequired,
   route: PropTypes.string.isRequired,

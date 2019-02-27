@@ -9,7 +9,7 @@ import { Image } from 'styled-icons/material/Image';
 import { Rotate90DegreesCcw } from 'styled-icons/material/Rotate90DegreesCcw';
 // import Toaster from '/src/cms/elements/toaster';
 // import prettyBytes from 'pretty-bytes';
-import Puff from '/src/cms/elements/svg-loaders/puff.svg';
+import Puff from '/src/cms/svg-loaders/puff.svg';
 import noop from 'lodash/noop';
 import { rotateImage90Deg } from '/src/cms/utils';
 import ValidationIndicator from '../validation-indicator/validation-indicator';

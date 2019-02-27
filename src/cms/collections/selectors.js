@@ -54,29 +54,14 @@ const collectionData = (state, collectionId) => {
   if (collections && collections[collectionId] && collections[collectionId].data) {
     const data = collections[collectionId].data;
     return Object.keys(data).reduce((accumulator, key) => {
-      accumulator.push(Object.assign({}, data, { id: key }));
+      accumulator.push(Object.assign({}, data[key], { id: key }));
       return accumulator;
     }, []);
   }
   return [];
-  // return (collections && collections[collectionId]) ? collections[collectionId].data : {};
 };
 
 const filteredData = createSelector(collectionData, query, ignoreCase, (_data, _query, _ignoreCase) => {
-  // return Object.keys(_data).reduce((accumulator, key) => {
-  //     let match = true;
-  //     _query.keySeq().toArray().forEach(queryKey => {
-  //       if (_ignoreCase && !_data[key][queryKey].toString().toLowerCase().match(_query.get(queryKey).toString().toLowerCase())) {
-  //         match = false;
-  //       } else if (!_ignoreCase && !_data[key][queryKey].match(_query.get(queryKey))) {
-  //         match = false;
-  //       }
-  //     });
-  //     if (match) {
-  //       accumulator[key] = accumulator[key];
-  //     }
-  //   return accumulator;
-  // }, {});
   return _data.filter(itm => {
     let match = true;
     _query.keySeq().toArray().forEach(key => {
