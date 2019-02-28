@@ -71,9 +71,9 @@ class Item extends Component {
 
             {/* ----- TAGS ----- */}
             <div >
-              {typeof item.published === 'boolean' && (
+              {item.published !== undefined && ( // todo - restrict keying a field as "published"
                 <Tooltip
-                  key="active"
+                  key="published"
                   className={cx(styles.tag, item.published ? styles.redTag : styles.inactive)}
                   content={item.published ? 'Published' : 'Not Published'}
                 >

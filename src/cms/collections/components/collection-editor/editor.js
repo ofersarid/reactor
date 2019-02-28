@@ -34,28 +34,35 @@ class Editor extends PureComponent {
 
   componentDidUpdate(prevProps, prevSatate) {
     const { entity, list, isAdd } = this.props;
-    const { displayOrder } = this.state.entity;
     if (!isEqual(entity, prevProps.entity)) {
       this.setState({ entity });
       this.validate();
     }
-    if (list.length !== prevProps.list.length && isAdd && displayOrder === list.length) {
+    if (list.length !== prevProps.list.length && isAdd) {
       this.onChange({ displayOrder: list.length + 1 });
     }
   }
 
   initEmptyEntity() {
     const { collection, list } = this.props;
-    return Object.assign({}, collection.entity.fields.reduce((fields, item) => {
-      fields[item.key] = item.initialValue !== undefined
-        ? item.initialValue
-        : item.type === 'date-time'
-          ? new Date()
-          : '';
-      return fields;
-    }, {}), {
-      displayOrder: list.length + 1
-    });
+    return collection.entity.fields.reduce((fields, item) => {
+      switch (true) {
+        case item.initialValue !== undefined:
+          fields[item.key] = item.initialValue;
+          return fields;
+        case item.type === 'date-time':
+          fields[item.key] = new Date();
+          return fields;
+        case item.key === 'published':
+          fields[item.key] = false;
+          return fields;
+        case item.key === 'displayOrder':
+          fields[item.key] = list.length + 1;
+          return fields;
+        default:
+          return fields;
+      }
+    }, {});
   }
 
   getOptionalFieldsAsList() {
@@ -109,7 +116,7 @@ class Editor extends PureComponent {
 
   render() {
     const { isValid } = this.state;
-    const { isAdd, collection, collectionId, list, id } = this.props;
+    const { isAdd, collection, collectionId, list, id, update } = this.props;
     // const id = pathname.split('/').pop();
     return (
       <Dialog
@@ -125,7 +132,7 @@ class Editor extends PureComponent {
           label: 'Save',
           onClick: () => {
             if (this.shouldUpdateStore()) {
-              updateEntity(this.state.entity, id);
+              update(this.state.entity, id, collectionId);
             }
           },
           closeDialog: true,
@@ -178,8 +185,8 @@ const mapStateToProps = (state, ownProps) => ({
   collectionId: Routes.selectors.collectionId(state),
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  updateEntity: (...props) => dispatch(updateEntity(...props, ownProps.collection)),
+const mapDispatchToProps = dispatch => ({
+  update: (...props) => dispatch(updateEntity(...props)),
 });
 
 export default compose(

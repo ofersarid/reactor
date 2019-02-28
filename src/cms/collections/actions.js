@@ -55,10 +55,14 @@ const update = (entity, id, collection, firestore, firebase, dispatch) => {
       /* Set activity - uploadingFiles to false */
       dispatch(Activity.actions.uploadComplete());
 
-      return id !== 'add' ? firestore.collection(collection).doc(id).set(entity) : firestore.collection(collection).add(entity);
+      return id
+        ? firestore.collection('collections').doc(collection).collection('data').doc(id).set(entity)
+        : firestore.collection('collections').doc(collection).collection('data').add(entity);
     });
   }
-  return id !== 'add' ? firestore.collection(collection).doc(id).set(entity) : firestore.collection(collection).add(entity);
+  return id
+    ? firestore.collection('collections').doc(collection).collection('data').doc(id).set(entity)
+    : firestore.collection('collections').doc(collection).collection('data').add(entity);
 };
 
 export const updateEntity = (entity, id, collection) => {
