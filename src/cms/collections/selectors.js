@@ -49,17 +49,16 @@ export const collection = createSelector(collectionId, userCollectionsMap, (_col
   return _userCollectionsMap[_collectionId];
 });
 
-const collectionData = (state, collectionId) => {
-  const collections = state.get('fireStore').data.collections;
-  if (collections && collections[collectionId] && collections[collectionId].data) {
-    const data = collections[collectionId].data;
+const collectionData = createSelector(userCollectionsMap, collectionId, (_userCollectionsMap, _collectionId) => {
+  if (_userCollectionsMap && _userCollectionsMap[_collectionId] && _userCollectionsMap[_collectionId].data) {
+    const data = _userCollectionsMap[_collectionId].data;
     return Object.keys(data).reduce((accumulator, key) => {
       accumulator.push(Object.assign({}, data[key], { id: key }));
       return accumulator;
     }, []);
   }
   return [];
-};
+});
 
 const filteredData = createSelector(collectionData, query, ignoreCase, (_data, _query, _ignoreCase) => {
   return _data.filter(itm => {
@@ -76,7 +75,9 @@ const filteredData = createSelector(collectionData, query, ignoreCase, (_data, _
 });
 
 export const filteredOrderedList = createSelector(filteredData, orderBy, (_data, _orderBy) => {
-  if (_orderBy === 'dateTime') {
+  if (!_orderBy) {
+    return _data;
+  } else if (_orderBy === 'dateTime') {
     return sort(_data, itm => itm[_orderBy].toDate(), 'desc');
   }
   return sort(_data, itm => itm[_orderBy], 'asc');

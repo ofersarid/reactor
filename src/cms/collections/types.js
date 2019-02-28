@@ -15,13 +15,13 @@ export const field = PropTypes.shape({
 });
 
 export const collectionEditor = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  icon: PropTypes.node,
-  children: PropTypes.any,
-  filters: PropTypes.arrayOf(PropTypes.string),
-  sortOptions: PropTypes.arrayOf(PropTypes.string),
-  fields: PropTypes.arrayOf(field).isRequired,
+  // id: PropTypes.string.isRequired,
+  // name: PropTypes.string.isRequired,
+  // icon: PropTypes.node,
+  // children: PropTypes.any,
+  // filters: PropTypes.arrayOf(PropTypes.string),
+  // sortOptions: PropTypes.arrayOf(PropTypes.string),
+  // fields: PropTypes.arrayOf(field).isRequired,
 };
 
 export const collectionContainer = {
@@ -87,14 +87,14 @@ export const entityItem = {
 
 export const entityEditor = {
   ...deviceTypes,
-  item: PropTypes.object,
-  updateEntity: PropTypes.func.isRequired,
-  isAdd: PropTypes.bool.isRequired,
-  route: PropTypes.string.isRequired,
-  collection: PropTypes.string.isRequired,
-  editorFields: PropTypes.arrayOf(field).isRequired,
-  pathname: PropTypes.string.isRequired,
-  list: PropTypes.arrayOf(PropTypes.object),
+  // item: PropTypes.object,
+  // updateEntity: PropTypes.func.isRequired,
+  // isAdd: PropTypes.bool.isRequired,
+  // route: PropTypes.string.isRequired,
+  // collection: PropTypes.string.isRequired,
+  // editorFields: PropTypes.arrayOf(field).isRequired,
+  // pathname: PropTypes.string.isRequired,
+  // list: PropTypes.arrayOf(PropTypes.object),
 };
 
 export const generalAssets = {

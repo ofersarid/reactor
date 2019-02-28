@@ -22,7 +22,7 @@ class Editor extends PureComponent {
     super(props);
     autoBind(this);
     this.state = {
-      entity: props.entity || this.getEmptyEntity(),
+      entity: props.entity || this.initEmptyEntity(),
       isValid: false,
     };
     this.validatedFields = this.getOptionalFieldsAsList();
@@ -33,25 +33,35 @@ class Editor extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevSatate) {
-    const { entity } = this.props;
+    const { entity, list, isAdd } = this.props;
+    const { displayOrder } = this.state.entity;
     if (!isEqual(entity, prevProps.entity)) {
       this.setState({ entity });
       this.validate();
     }
+    if (list.length !== prevProps.list.length && isAdd && displayOrder === list.length) {
+      this.onChange({ displayOrder: list.length + 1 });
+    }
   }
 
-  getEmptyEntity() {
-    const { editorFields } = this.props;
-    return editorFields.reduce((fields, item) => {
-      fields[item.key] = item.initialValue !== undefined ? item.initialValue : '';
+  initEmptyEntity() {
+    const { collection, list } = this.props;
+    return Object.assign({}, collection.entity.fields.reduce((fields, item) => {
+      fields[item.key] = item.initialValue !== undefined
+        ? item.initialValue
+        : item.type === 'date-time'
+          ? new Date()
+          : '';
       return fields;
-    }, {});
+    }, {}), {
+      displayOrder: list.length + 1
+    });
   }
 
   getOptionalFieldsAsList() {
-    const { editorFields } = this.props;
-    return editorFields.reduce((list, field) => {
-      if (!field.required) {
+    const { collection } = this.props;
+    return collection.entity.fields.reduce((list, field) => {
+      if (!field.required || field.disabled) {
         list.push(field.key);
       }
       return list;
@@ -59,8 +69,8 @@ class Editor extends PureComponent {
   }
 
   validate() {
-    const { editorFields } = this.props;
-    const eFs = editorFields.map(field => field.key);
+    const { collection } = this.props;
+    const eFs = collection.entity.fields.map(field => field.key);
     const diff = difference(eFs, this.validatedFields);
     const isValid = !diff.length;
     this.setState({ isValid });
@@ -87,12 +97,9 @@ class Editor extends PureComponent {
   }
 
   resolveValue(value, field) {
-    const { list } = this.props;
     switch (true) {
       case Boolean(value && value.toDate):
         return value.toDate();
-      case field.key === 'displayOrder':
-        return value === '' ? list.length + 1 : value;
       case field.type === 'switch':
         return Boolean(value);
       default:
@@ -102,14 +109,14 @@ class Editor extends PureComponent {
 
   render() {
     const { isValid } = this.state;
-    const { updateEntity, isAdd, editorFields, pathname, collection, route, list } = this.props;
-    const id = pathname.split('/').pop();
+    const { isAdd, collection, collectionId, list, id } = this.props;
+    // const id = pathname.split('/').pop();
     return (
       <Dialog
         header={(
           <Fragment >
             {isAdd ? <AddCircle /> : <ModeEdit />}
-            <div >{pluralize.singular(collection)} Editor</div >
+            <div >{pluralize.singular(collection.name)} Editor</div >
             &nbsp;&mdash;&nbsp;
             <span >{isAdd ? 'add' : 'edit'}</span >
           </Fragment >
@@ -127,10 +134,10 @@ class Editor extends PureComponent {
           disable: !isValid,
         }]}
         onClose={() => {
-          hashHistory.push(route);
+          hashHistory.push(`cms/collections/${collectionId}`);
         }}
       >
-        {editorFields.map(field => {
+        {collection.entity.fields.map(field => {
           const value = this.state.entity[field.key];
           return (
             <UserInput
@@ -141,8 +148,8 @@ class Editor extends PureComponent {
               })}
               value={this.resolveValue(value, field)}
               label={field.label}
-              min={field.key === 'displayOrder' ? 1 : field.min}
-              max={field.key === 'displayOrder' ? list.length + 1 : field.max}
+              min={field.key === 'displayOrder' ? 1 : field.minChars}
+              max={field.key === 'displayOrder' ? list.length + 1 : field.maxChars}
               onValidation={isValid => this.onValidation(field.required ? isValid : true, field.key)}
               disabled={field.disabled}
               optional={!field.required}
@@ -166,7 +173,9 @@ const mapStateToProps = (state, ownProps) => ({
   entity: selectors.entitySelector(state, ownProps.collection, ownProps.route, ownProps.editorFields),
   isAdd: Routes.selectors.isAdd(state),
   pathname: Routes.selectors.pathname(state),
-  list: selectors.filteredOrderedList(state, ownProps.collection),
+  list: selectors.filteredOrderedList(state),
+  collection: selectors.collection(state),
+  collectionId: Routes.selectors.collectionId(state),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

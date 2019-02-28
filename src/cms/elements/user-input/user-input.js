@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import noop from 'lodash/noop';
-import { toCapitalizedWords } from '/src/cms/utils';
+import { toCapitalizedWords, validateEmail } from '/src/cms/utils';
 import styles from './styles.scss';
 import { userInput } from './types';
 import DateTime from './components/date-time/date-time';
@@ -19,6 +19,15 @@ import Select from '../select/select';
 const onKeyPress = (e, onEnterKeyPress) => {
   if (e.key === 'Enter') {
     onEnterKeyPress(e);
+  }
+};
+
+const resolveValidateWith = (type, validateWidth) => {
+  switch (true) {
+    case type === 'email' && !validateWidth:
+      return validateEmail;
+    default:
+      return validateWidth;
   }
 };
 
@@ -131,7 +140,7 @@ const resolveComponentByType = (props) => {
           onValidation={props.onValidation}
           mask={props.type === 'password'}
           ref={props.getRef}
-          validateWith={props.validateWith}
+          validateWith={resolveValidateWith(props.type, props.validateWith)}
           optional={props.optional}
           onlyNumbers={props.type === 'number'}
           rtl={props.rtl}

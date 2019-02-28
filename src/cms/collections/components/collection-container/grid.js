@@ -87,9 +87,9 @@ class Grid extends PureComponent {
 
 Grid.propTypes = cmsEntityGrid;
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   isMobile: Device.selectors.isMobile(state),
-  list: selectors.filteredOrderedList(state, ownProps.collection),
+  list: selectors.filteredOrderedList(state),
   markedForDelete: App.selectors.markedForDelete(state),
   deleteMode: App.selectors.deleteMode(state),
   permissions: Auth.selectors.permissions(state),
