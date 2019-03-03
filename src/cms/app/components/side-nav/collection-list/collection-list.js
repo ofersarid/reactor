@@ -23,7 +23,6 @@ class CollectionList extends PureComponent {
     const { userCollections, collectionId, sideNavOpen } = this.props;
     return userCollections ? (
       <ul className={styles.collections} >
-        {}
         {Object.keys(userCollections).map(key => {
           const isActive = key === collectionId;
           return (

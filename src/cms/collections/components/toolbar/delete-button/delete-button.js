@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
-import Button from '/src/cms/elements/button';
-import { deleteButton } from '../../types';
-import App from '/src/cms/app';
+import Device from '/src/cms/device/index';
+import Button from '/src/cms/elements/button/index';
+import { deleteButton } from '../types';
+import App from '/src/cms/app/index';
 import { TrashAlt } from 'styled-icons/boxicons-solid/TrashAlt';
 
 const DeleteButton = props => (
   <Button
     noAnimation
-    onClick={props.onClickDelete}
+    onClick={props.toggleDeleteMode}
     textColor={props.deleteMode ? 'yellow' : null}
     tip="Toggle Delete Mode"
     justIcon={props.isMobile}
@@ -26,6 +26,8 @@ const mapStateToProps = state => ({
   deleteMode: App.selectors.deleteMode(state),
 });
 
-const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
+const mapDispatchToProps = dispatch => ({
+  toggleDeleteMode: () => dispatch(App.actions.toggleDeleteMode()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeleteButton);

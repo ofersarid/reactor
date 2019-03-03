@@ -4,7 +4,6 @@ import { Check } from 'styled-icons/fa-solid/Check';
 import { Dialog } from '/src/cms/elements/dialog/index';
 import { UserInput } from '/src/cms/elements/index';
 import { hashHistory } from 'react-router';
-import Device from '/src/cms/device/index';
 import { ModeEdit } from 'styled-icons/material/ModeEdit';
 import { AddCircle } from 'styled-icons/material/AddCircle';
 import Routes from '/src/routes/index';
@@ -116,8 +115,7 @@ class Editor extends PureComponent {
 
   render() {
     const { isValid } = this.state;
-    const { isAdd, collection, collectionId, list, id, update } = this.props;
-    // const id = pathname.split('/').pop();
+    const { isAdd, collection, collectionId, list, entityId, update } = this.props;
     return (
       <Dialog
         header={(
@@ -132,7 +130,7 @@ class Editor extends PureComponent {
           label: 'Save',
           onClick: () => {
             if (this.shouldUpdateStore()) {
-              update(this.state.entity, id, collectionId);
+              update(this.state.entity, entityId, collectionId);
             }
           },
           closeDialog: true,
@@ -174,15 +172,13 @@ class Editor extends PureComponent {
 
 Editor.propTypes = entityEditor;
 
-const mapStateToProps = (state, ownProps) => ({
-  deviceType: Device.selectors.deviceType(state),
-  deviceOrientation: Device.selectors.deviceOrientation(state),
-  entity: selectors.entitySelector(state, ownProps.collection, ownProps.route, ownProps.editorFields),
+const mapStateToProps = state => ({
+  entity: selectors.entity(state),
   isAdd: Routes.selectors.isAdd(state),
-  pathname: Routes.selectors.pathname(state),
   list: selectors.filteredOrderedList(state),
   collection: selectors.collection(state),
   collectionId: Routes.selectors.collectionId(state),
+  entityId: Routes.selectors.entityId(state),
 });
 
 const mapDispatchToProps = dispatch => ({

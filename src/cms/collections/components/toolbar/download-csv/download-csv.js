@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
-import Button from '/src/cms/elements/button';
-import { downloadCsv } from '../../types';
+import Device from '/src/cms/device/index';
+import Button from '/src/cms/elements/button/index';
+import { downloadCsv } from '../types';
 import { Download2 } from 'styled-icons/icomoon/Download2';
 
 const DeleteButton = props => (

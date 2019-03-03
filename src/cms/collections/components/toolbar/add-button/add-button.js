@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
+import Device from '/src/cms/device/index';
 import { AddCircle } from 'styled-icons/material/AddCircle';
-import Button from '/src/cms/elements/button';
-import Routes from '/src/routes';
-import { addButton } from '../../types';
+import Button from '/src/cms/elements/button/index';
+import Routes from '/src/routes/index';
+import { addButton } from '../types';
 
 const AddButton = props => (
   <Button

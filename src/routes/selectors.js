@@ -10,3 +10,5 @@ export const isCMS = createSelector(pathname, _pathName => {
 export const isAdd = createSelector(pathname, _pathName => Boolean(_pathName.match(/\/add$/)));
 
 export const collectionId = state => state.getIn(['router', 'params', 'collectionId']);
+
+export const entityId = state => state.getIn(['router', 'params', 'entityId']);

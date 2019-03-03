@@ -6,7 +6,6 @@ import Button from '/src/cms/elements/button/index';
 import { Check } from 'styled-icons/fa-solid/Check';
 import { Cancel } from 'styled-icons/material/Cancel';
 import Auth from '/src/cms/auth/index';
-import { Toolbar } from '/src/cms/toolbar/index';
 import { ActivityToaster } from '/src/cms/activity';
 import Toaster from '/src/cms/elements/toaster/index';
 import StackGrid from 'react-stack-grid';
@@ -14,6 +13,7 @@ import { TrashAlt } from 'styled-icons/boxicons-solid/TrashAlt';
 import App from '/src/cms/app/index';
 import { firestoreConnect } from 'react-redux-firebase';
 import Routes from '/src/routes';
+import Toolbar from '../toolbar/toolbar';
 import CMSEntityItem from './item';
 import styles from './styles.scss';
 import { cmsEntityGrid } from '../../types';
@@ -31,20 +31,10 @@ const calcColumnWidth = (isMobile, sideNavOpen) => {
 
 class Grid extends PureComponent {
   render() {
-    const {
-      toggleDeleteMode, filters, sortOptions, isMobile, list, icon,
-      entity, markedForDelete, deleteEntities, children, collection, downloadCsv,
-    } = this.props;
-    return (
+    const { isMobile, list, markedForDelete, deleteEntities, children, collection, toggleDeleteMode } = this.props;
+    return collection ? (
       <Fragment >
-        <Toolbar
-          onClickDelete={toggleDeleteMode}
-          onClickDownload={() => downloadCsv(list)}
-          filters={filters}
-          sortOptions={sortOptions}
-          collection={collection}
-          fields={entity.fields}
-        />
+        <Toolbar />
         <div className={styles.gridWrapper} >
           {list && (
             <StackGrid
@@ -52,11 +42,11 @@ class Grid extends PureComponent {
             >
               {list.map(item => (
                 <div key={item.id} >
-                  <CMSEntityItem
+                  {collection.entity && <CMSEntityItem
                     item={item}
-                    icon={icon}
-                    entity={entity}
-                  />
+                    icon={collection.icon}
+                    entity={collection.entity}
+                  />}
                 </div >
               ))}
             </StackGrid >
@@ -81,7 +71,7 @@ class Grid extends PureComponent {
         <ActivityToaster />
         {children}
       </Fragment >
-    );
+    ) : null;
   }
 }
 
@@ -95,6 +85,7 @@ const mapStateToProps = state => ({
   permissions: Auth.selectors.permissions(state),
   sideNavOpen: App.selectors.sideNavOpen(state),
   collectionId: Routes.selectors.collectionId(state),
+  collection: selectors.collection(state),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

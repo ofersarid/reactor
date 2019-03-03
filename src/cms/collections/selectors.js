@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { pathname, collectionId } from '/src/routes/selectors';
+import { collectionId, entityId } from '/src/routes/selectors';
 import { query, ignoreCase, orderBy } from '/src/cms/filters/selectors';
 import sort from 'lodash/orderBy';
 
@@ -32,12 +32,6 @@ import sort from 'lodash/orderBy';
 export const map = (state, collection) => state.get('fireStore').data[collection] || {};
 
 export const entityById = (id, collection, state) => map(state, collection)[id];
-
-export const entitySelector = (state, collection, route) => {
-  const coll = state.get('fireStore').data[collection] || {};
-  const getId = () => pathname(state).split(`${route}/edit/`)[1];
-  return coll[getId()];
-};
 
 export const settings = state => state.get('fireStore').data.settings || {};
 
@@ -81,4 +75,8 @@ export const filteredOrderedList = createSelector(filteredData, orderBy, (_data,
     return sort(_data, itm => itm[_orderBy].toDate(), 'desc');
   }
   return sort(_data, itm => itm[_orderBy], 'asc');
+});
+
+export const entity = createSelector(collection, entityId, (_collection, _entityId) => {
+  return _collection.data ? _collection.data[_entityId] : null;
 });
