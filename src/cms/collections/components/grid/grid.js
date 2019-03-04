@@ -30,7 +30,10 @@ const calcColumnWidth = (isMobile, sideNavOpen) => {
 
 class Grid extends PureComponent {
   render() {
-    const { isMobile, list, markedForDelete, deleteEntities, children, collection, toggleDeleteMode } = this.props;
+    const {
+      isMobile, list, markedForDelete,
+      deleteEntities, children, collection, toggleDeleteMode, collectionId,
+    } = this.props;
     return collection ? (
       <Fragment >
         <Toolbar />
@@ -56,7 +59,7 @@ class Grid extends PureComponent {
           <div className={styles.disclaimer} >You Are About to Delete {markedForDelete.size} Items</div >
           <Button
             onClick={() => {
-              deleteEntities().then(toggleDeleteMode);
+              deleteEntities(collectionId, markedForDelete.toJS()).then(toggleDeleteMode);
             }}
           >
             <Check />
@@ -86,9 +89,9 @@ const mapStateToProps = state => ({
   collection: selectors.collection(state),
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch) => ({
   toggleDeleteMode: () => dispatch(App.actions.toggleDeleteMode()),
-  deleteEntities: () => dispatch(actions.deleteEntities(ownProps.collection)),
+  deleteEntities: (...props) => dispatch(actions.deleteEntities(...props)),
 });
 
 export default compose(

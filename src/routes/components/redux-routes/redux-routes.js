@@ -14,10 +14,12 @@ class ReduxRoutes extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (!isEqual(nextProps.location, prevState.location)) {
+    if (!isEqual(nextProps.location.pathname, prevState.pathname)) {
       nextProps.update(Object.assign({}, { params: nextProps.params }, nextProps.location));
     }
-    return {};
+    return {
+      pathname: nextProps.location.pathname,
+    };
   }
 
   render() {

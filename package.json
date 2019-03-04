@@ -41,7 +41,7 @@
     "react-tippy": "^1.2.3",
     "react-toastify": "^4.5.1",
     "redux": "^3.6.0 || ^4.0.0",
-    "redux-firestore": "^0.6.0",
+    "redux-firestore": "^0.7.0",
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",

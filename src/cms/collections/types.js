@@ -26,7 +26,7 @@ export const collection = PropTypes.shape({
   icon: PropTypes.string,
   owner: PropTypes.string,
   public: PropTypes.bool,
-  data: PropTypes.object,
+  data: PropTypes.any,
 });
 
 export const grid = {

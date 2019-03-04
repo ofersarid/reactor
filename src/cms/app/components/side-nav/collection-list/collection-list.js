@@ -23,26 +23,26 @@ class CollectionList extends PureComponent {
     const { userCollections, collectionId, sideNavOpen } = this.props;
     return userCollections ? (
       <ul className={styles.collections} >
-        {Object.keys(userCollections).map(key => {
-          const isActive = key === collectionId;
-          return (
-            <li key={key} >
+        {userCollections.map(collection => {
+          const isActive = collection.id === collectionId;
+          return collection.name ? (
+            <li key={collection.id} >
               <Button
-                linkTo={isActive ? null : `/cms/collections/${key}`}
+                linkTo={isActive ? null : `/cms/collections/${collection.id}`}
                 className={styles.navButton}
                 textColor={isActive ? 'green' : null}
                 stretch
               >
-                <Tooltip content={!sideNavOpen ? userCollections[key].name : null} position="right" >
-                  <Icons name={userCollections[key].icon} />
+                <Tooltip content={!sideNavOpen ? collection.name : null} position="right" >
+                  <Icons name={collection.icon} />
                 </Tooltip >
-                <div >{userCollections[key].name}</div >
+                <div >{collection.name}</div >
                 {isActive && (
                   <div className={styles.indicator} />
                 )}
               </Button >
             </li >
-          );
+          ) : null;
         })}
       </ul >
     ) : null;
@@ -53,7 +53,7 @@ CollectionList.propTypes = collections;
 
 const mapStateToProps = state => ({
   userCollectionIds: Auth.selectors.userCollectionIds(state),
-  userCollections: Collections.selectors.userCollectionsMap(state),
+  userCollections: Collections.selectors.userCollections(state),
   collectionId: Routes.selectors.collectionId(state),
   sideNavOpen: App.selectors.sideNavOpen(state),
 });

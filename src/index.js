@@ -30,6 +30,7 @@ export const store = createStore(
     reactReduxFirebase(firebase, {
       userProfile: 'users',
       useFirestoreForProfile: true,
+      preserveOnDelete: true,
     }),
   )
 );

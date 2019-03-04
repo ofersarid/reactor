@@ -1,8 +1,12 @@
-import App from '/src/cms/app/index';
 import uuidv4 from 'uuid/v4';
 import isEmpty from 'lodash/isEmpty';
 import Activity from '/src/cms/activity/index';
-import { entityById } from './selectors';
+
+const getEntityById = (collectionId, entityId, firestore) =>
+  firestore.collection('collections').doc(collectionId).collection('data').doc(entityId);
+
+const getCollectionById = (collectionId, firestore) =>
+  firestore.collection('collections').doc(collectionId).collection('data');
 
 const deleteFile = (path, firebase) => {
   if (!path) return;
@@ -56,13 +60,13 @@ const update = (entity, id, collection, firestore, firebase, dispatch) => {
       dispatch(Activity.actions.uploadComplete());
 
       return id
-        ? firestore.collection('collections').doc(collection).collection('data').doc(id).set(entity)
-        : firestore.collection('collections').doc(collection).collection('data').add(entity);
+        ? getEntityById(collection, id, firestore).set(entity)
+        : getCollectionById(collection, firestore).add(entity);
     });
   }
   return id
-    ? firestore.collection('collections').doc(collection).collection('data').doc(id).set(entity)
-    : firestore.collection('collections').doc(collection).collection('data').add(entity);
+    ? getEntityById(collection, id, firestore).set(entity)
+    : getCollectionById(collection, firestore).add(entity);
 };
 
 export const updateEntity = (entity, id, collection) => {
@@ -73,22 +77,21 @@ export const updateEntity = (entity, id, collection) => {
   };
 };
 
-export const deleteEntities = collection => {
+export const deleteEntities = (collectionId, markedForDelete) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
-    const firebase = getFirebase();
-    const ids = App.selectors.markedForDelete(getState()).toJS();
+    // const firebase = getFirebase();
     const batch = firestore.batch();
-    ids.forEach(id => {
-      batch.delete(firestore.collection(collection).doc(id));
-      const entity = entityById(id, collection, getState());
-      // delete old image
-      if (entity.imageStorageLocation) {
-        deleteFile(entity.imageStorageLocation, firebase);
-      }
-      if (entity.pdfStorageLocation) {
-        deleteFile(entity.pdfStorageLocation, firebase);
-      }
+    markedForDelete.forEach(id => {
+      batch.delete(getEntityById(collectionId, id, firestore));
+      // const entity = entityById(id, collectionId, getState());
+      // // delete old image
+      // if (entity.imageStorageLocation) {
+      //   deleteFile(entity.imageStorageLocation, firebase);
+      // }
+      // if (entity.pdfStorageLocation) {
+      //   deleteFile(entity.pdfStorageLocation, firebase);
+      // }
     });
     return batch.commit();
   };

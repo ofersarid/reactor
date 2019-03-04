@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 import { collectionId, entityId } from '/src/routes/selectors';
 import { query, ignoreCase, orderBy } from '/src/cms/filters/selectors';
-import sort from 'lodash/orderBy';
+import _orderBy from 'lodash/orderBy';
+import _sortBy from 'lodash/sortBy';
 
 // const list = (state, collection) => state.get('fireStore').ordered[collection] || [];
 //
@@ -22,9 +23,9 @@ import sort from 'lodash/orderBy';
 // export const filteredOrderedList = createSelector(filteredList, orderBy, (_list, _orderBy) => {
 //   if (_list[0] && _list[0][_orderBy]) {
 //     if (_orderBy === 'dateTime') {
-//       return sort(_list, itm => itm[_orderBy].toDate(), 'desc');
+//       return sortBy(_list, itm => itm[_orderBy].toDate(), 'desc');
 //     }
-//     return sort(_list, itm => itm[_orderBy], 'asc');
+//     return sortBy(_list, itm => itm[_orderBy], 'asc');
 //   }
 //   return _list;
 // });
@@ -39,6 +40,13 @@ export const settings = state => state.get('fireStore').data.settings || {};
 
 export const userCollectionsMap = state => state.get('fireStore').data.collections || {};
 
+export const userCollections = createSelector(userCollectionsMap, (collections) => {
+  return _orderBy(Object.keys(collections).reduce((accumulator, collectionId) => {
+    accumulator.push(Object.assign({}, collections[collectionId], { id: collectionId }));
+    return accumulator;
+  }, []), ['name'], ['desc']);
+});
+
 export const collection = createSelector(collectionId, userCollectionsMap, (_collectionId, _userCollectionsMap) => {
   return _userCollectionsMap[_collectionId];
 });
@@ -47,6 +55,7 @@ const collectionData = createSelector(userCollectionsMap, collectionId, (_userCo
   if (_userCollectionsMap && _userCollectionsMap[_collectionId] && _userCollectionsMap[_collectionId].data) {
     const data = _userCollectionsMap[_collectionId].data;
     return Object.keys(data).reduce((accumulator, key) => {
+      if (!data[key]) return accumulator; // object is empty (null)
       accumulator.push(Object.assign({}, data[key], { id: key }));
       return accumulator;
     }, []);
@@ -72,9 +81,9 @@ export const filteredOrderedList = createSelector(filteredData, orderBy, (_data,
   if (!_orderBy) {
     return _data;
   } else if (_orderBy === 'dateTime') {
-    return sort(_data, itm => itm[_orderBy].toDate(), 'desc');
+    return _sortBy(_data, itm => itm[_orderBy].toDate(), 'desc');
   }
-  return sort(_data, itm => itm[_orderBy], 'asc');
+  return _sortBy(_data, itm => itm[_orderBy], 'asc');
 });
 
 export const entity = createSelector(collection, entityId, (_collection, _entityId) => {

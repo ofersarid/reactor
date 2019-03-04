@@ -6,7 +6,11 @@ export const sideNav = {
 };
 
 export const collections = {
-  userCollections: PropTypes.object,
+  userCollections: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.string.required,
+    icon: PropTypes.string,
+  })),
   collectionId: PropTypes.string.isRequired,
   sideNavOpen: PropTypes.bool.isRequired,
 };
