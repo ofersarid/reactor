@@ -3,7 +3,7 @@ import { Route, Redirect, IndexRedirect } from 'react-router';
 import { MainContainer } from '/src/cms/app';
 import LoginPage from '/src/cms/auth/components/login-page/login-page';
 import ReduxRoutes from '/src/routes/components/redux-routes/redux-routes';
-import { CollectionGrid, CollectionEditor } from '/src/cms/collections';
+import { Grid, Editor } from '/src/cms/collections';
 // import WebsiteRoutes from '/src/website/routes';
 // import { WebsiteMainContainer } from '../website/ws-main-container';
 // import About from '../website/about';
@@ -22,9 +22,9 @@ export default (
     <IndexRedirect to="website/home" />
     <Route path="cms" component={MainContainer} >
       <IndexRedirect to="collections/123" />
-      <Route path="collections/:collectionId" component={CollectionGrid} >
-        <Route path="add" component={CollectionEditor} />
-        <Route path="edit/:entityId" component={CollectionEditor} />
+      <Route path="collections/:collectionId" component={Grid} >
+        <Route path="add" component={Editor} />
+        <Route path="edit/:entityId" component={Editor} />
       </Route >
       {/* {COLLECTIONS.map(col => ( */}
       {/* <Route */}

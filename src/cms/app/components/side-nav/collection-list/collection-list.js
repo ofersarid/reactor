@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
 import Routes from '/src/routes';
 import Auth from '/src/cms/auth';
+import App from '/src/cms/app';
 import { hashHistory } from 'react-router';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -52,12 +52,10 @@ class CollectionList extends PureComponent {
 CollectionList.propTypes = collections;
 
 const mapStateToProps = state => ({
-  deviceType: Device.selectors.deviceType(state),
-  deviceOrientation: Device.selectors.deviceOrientation(state),
   userCollectionIds: Auth.selectors.userCollectionIds(state),
   userCollections: Collections.selectors.userCollectionsMap(state),
-  pathname: Routes.selectors.pathname(state),
   collectionId: Routes.selectors.collectionId(state),
+  sideNavOpen: App.selectors.sideNavOpen(state),
 });
 
 const mapDispatchToProps = dispatch => ({}); // eslint-disable-line

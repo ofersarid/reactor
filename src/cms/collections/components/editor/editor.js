@@ -12,7 +12,7 @@ import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
 import { compose } from 'redux';
 import pluralize from 'pluralize';
-import { entityEditor } from '../../types';
+import { editor } from '../../types';
 import { updateEntity } from '../../actions';
 import * as selectors from '../../selectors';
 
@@ -170,7 +170,7 @@ class Editor extends PureComponent {
   }
 }
 
-Editor.propTypes = entityEditor;
+Editor.propTypes = editor;
 
 const mapStateToProps = state => ({
   entity: selectors.entity(state),

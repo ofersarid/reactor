@@ -29,29 +29,15 @@ export const collection = PropTypes.shape({
   data: PropTypes.object,
 });
 
-export const collectionEditor = {
-  // id: PropTypes.string.isRequired,
-  // name: PropTypes.string.isRequired,
-  // icon: PropTypes.node,
-  // children: PropTypes.any,
-  // filters: PropTypes.arrayOf(PropTypes.string),
-  // sortOptions: PropTypes.arrayOf(PropTypes.string),
-  // fields: PropTypes.arrayOf(field).isRequired,
-};
-
-export const cmsEntityGrid = {
-  ...deviceTypes,
-  deleteMode: PropTypes.bool.isRequired,
-  markedForDelete: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
-  children: PropTypes.any,
+export const grid = {
+  isMobile: PropTypes.bool.isRequired,
   list: PropTypes.arrayOf(PropTypes.object),
+  markedForDelete: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
+  deleteMode: PropTypes.bool.isRequired,
   sideNavOpen: PropTypes.bool.isRequired,
   collection: collection,
   collectionId: PropTypes.string.isRequired,
-};
-
-export const collectionContainer = {
-
+  children: PropTypes.any,
 };
 
 export const entityItem = {
@@ -72,7 +58,7 @@ export const entityItem = {
   orderBy: PropTypes.string,
 };
 
-export const entityEditor = {
+export const editor = {
   entity: PropTypes.object,
   isAdd: PropTypes.bool.isRequired,
   list: PropTypes.arrayOf(PropTypes.object).isRequired,

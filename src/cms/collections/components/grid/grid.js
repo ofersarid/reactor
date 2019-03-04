@@ -5,7 +5,6 @@ import Device from '/src/cms/device/index';
 import Button from '/src/cms/elements/button/index';
 import { Check } from 'styled-icons/fa-solid/Check';
 import { Cancel } from 'styled-icons/material/Cancel';
-import Auth from '/src/cms/auth/index';
 import { ActivityToaster } from '/src/cms/activity';
 import Toaster from '/src/cms/elements/toaster/index';
 import StackGrid from 'react-stack-grid';
@@ -16,7 +15,7 @@ import Routes from '/src/routes';
 import Toolbar from '../toolbar/toolbar';
 import CMSEntityItem from './item';
 import styles from './styles.scss';
-import { cmsEntityGrid } from '../../types';
+import { grid } from '../../types';
 import * as selectors from '../../selectors';
 import * as actions from '../../actions';
 
@@ -75,14 +74,13 @@ class Grid extends PureComponent {
   }
 }
 
-Grid.propTypes = cmsEntityGrid;
+Grid.propTypes = grid;
 
 const mapStateToProps = state => ({
   isMobile: Device.selectors.isMobile(state),
   list: selectors.filteredOrderedList(state),
   markedForDelete: App.selectors.markedForDelete(state),
   deleteMode: App.selectors.deleteMode(state),
-  permissions: Auth.selectors.permissions(state),
   sideNavOpen: App.selectors.sideNavOpen(state),
   collectionId: Routes.selectors.collectionId(state),
   collection: selectors.collection(state),
