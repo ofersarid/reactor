@@ -9,12 +9,10 @@ import { addButton } from '../types';
 const AddButton = props => (
   <Button
     linkTo={`${props.pathname}/add`}
-    noAnimation
     tip="New Entity"
-    justIcon={props.isMobile}
+    justIcon
   >
     <AddCircle />
-    {!props.isMobile && <div >Add</div >}
   </Button >
 );
 

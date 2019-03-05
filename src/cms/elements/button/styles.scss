@@ -8,8 +8,11 @@
   text-decoration: none;
   color: inherit;
   position: relative;
-  transition: .2s ease-out;
   animation: $undimm;
+  
+  &:hover {
+    color: black;
+  }
 }
 
 .wavesLight {

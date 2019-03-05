@@ -8,14 +8,12 @@ import { TrashAlt } from 'styled-icons/boxicons-solid/TrashAlt';
 
 const DeleteButton = props => (
   <Button
-    noAnimation
+    justIcon
     onClick={props.toggleDeleteMode}
     textColor={props.deleteMode ? 'yellow' : null}
     tip="Toggle Delete Mode"
-    justIcon={props.isMobile}
   >
     <TrashAlt />
-    {!props.isMobile && <div >Delete</div >}
   </Button >
 );
 

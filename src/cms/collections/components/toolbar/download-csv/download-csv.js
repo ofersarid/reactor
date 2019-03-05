@@ -9,7 +9,7 @@ import { downloadCsv } from '../types';
 
 const DeleteButton = props => (
   <Button
-    noAnimation
+    justIcon
     onClick={() => {
       const fieldLabels = props.collection.entity.fields.reduce((fieldLabel, item) => {
         fieldLabel.push(item.label);
@@ -31,10 +31,8 @@ const DeleteButton = props => (
       exportToCsv(props.collection.name, data);
     }}
     tip="Download as CSV"
-    justIcon={props.isMobile}
   >
     <Download2 />
-    {!props.isMobile && <div >Download</div >}
   </Button >
 );
 

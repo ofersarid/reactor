@@ -15,20 +15,17 @@ const RightCol = props => (
     {!props.isMobile && <li className={styles.clientId} >Client-Id: {CLIENT_ID}</li >}
     <li >
       <Button
-        color="black-invert"
         linkTo="website/home"
         className={styles.btn}
-        justIcon={props.isMobile}
+        justIcon
       >
         <Globe />
-        {!props.isMobile && <div >Website</div >}
       </Button >
     </li >
     <li >
       <Button
-        color="black-invert"
         className={styles.btn}
-        justIcon={props.isMobile}
+        justIcon
         onClick={() => {
           props.logOut().then(() => {
             hashHistory.push('login');
@@ -36,7 +33,6 @@ const RightCol = props => (
         }}
       >
         <PowerOff />
-        {!props.isMobile && <div >Log Out</div >}
       </Button >
     </li >
   </ul >

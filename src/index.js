@@ -8,6 +8,7 @@ import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import { reduxFirestore, getFirestore } from 'redux-firestore';
 import { Router, hashHistory } from 'react-router';
 import rootReducer from './cms/root-reducers';
+import './fonts/fonts.scss';
 import styles from './styles.scss';
 import firebase from '../firebase.config';
 import Routes from '/src/routes';
