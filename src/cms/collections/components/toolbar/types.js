@@ -1,6 +1,6 @@
 import { deviceTypes } from '/src/cms/device/types';
 import PropTypes from 'prop-types';
-// import { field } from '/src/cms/collections/types';
+import { field } from '/src/cms/collections/types';
 
 export const toolbar = {
   ...deviceTypes,
@@ -22,5 +22,10 @@ export const deleteButton = {
 };
 
 export const downloadCsv = {
-  // onClickDownload: PropTypes.func.isRequired,
+  collection: PropTypes.shape({
+    entity: PropTypes.shape({
+      fields: PropTypes.arrayOf(field).isRequired,
+    }),
+  }).isRequired,
+  list: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
