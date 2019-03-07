@@ -94,7 +94,6 @@ const resolveComponentByType = (props) => {
           optional={props.optional}
         />);
     case 'link':
-    case 'embed':
       return (
         <Link
           placeholder={props.placeholder}

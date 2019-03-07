@@ -32,7 +32,7 @@ class Editor extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevSatate) {
-    const { entity, list, isAdd } = this.props;
+    const { entity, list, isAdd, collection } = this.props;
     if (!isEqual(entity, prevProps.entity)) {
       this.setState({ entity });
       this.validate();
@@ -40,10 +40,15 @@ class Editor extends PureComponent {
     if (list.length !== prevProps.list.length && isAdd) {
       this.onChange({ displayOrder: list.length + 1 });
     }
+    if (!this.state.entity && !entity && collection.entity) {
+      this.setState({ entity: this.initEmptyEntity() });
+      this.validatedFields = this.getOptionalFieldsAsList();
+    }
   }
 
   initEmptyEntity() {
     const { collection, list } = this.props;
+    if (!collection.entity) return null;
     return collection.entity.fields.reduce((fields, item) => {
       switch (true) {
         case item.initialValue !== undefined:
@@ -66,8 +71,9 @@ class Editor extends PureComponent {
 
   getOptionalFieldsAsList() {
     const { collection } = this.props;
+    if (!collection.entity) return [];
     return collection.entity.fields.reduce((list, field) => {
-      if (!field.required || field.disabled) {
+      if (!field.required || field.disabled || field.key === 'published') {
         list.push(field.key);
       }
       return list;
@@ -76,6 +82,7 @@ class Editor extends PureComponent {
 
   validate() {
     const { collection } = this.props;
+    if (!collection.entity) return;
     const eFs = collection.entity.fields.map(field => field.key);
     const diff = difference(eFs, this.validatedFields);
     const isValid = !diff.length;
@@ -114,9 +121,9 @@ class Editor extends PureComponent {
   }
 
   render() {
-    const { isValid } = this.state;
+    const { isValid, entity } = this.state;
     const { isAdd, collection, collectionId, list, entityId, update } = this.props;
-    return (
+    return entity ? (
       <Dialog
         header={(
           <Fragment >
@@ -166,7 +173,7 @@ class Editor extends PureComponent {
           );
         })}
       </Dialog >
-    );
+    ) : null;
   }
 }
 
