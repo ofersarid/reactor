@@ -103,7 +103,7 @@ export default compose(
       subcollections: [{
         collection: 'data',
         // where: [['active', '==', true]],
-        orderBy: ['name', 'desc'],
+        orderBy: ['displayOrder', 'desc'],
       }],
     }];
   }),
