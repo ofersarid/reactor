@@ -7,12 +7,11 @@ const getEntityById = (collectionId, entityId, firestore) =>
 const getCollectionById = (collectionId, firestore) =>
   firestore.collection('collections').doc(collectionId).collection('data');
 
-// const deleteFile = (path, firebase) => {
-//   if (!path) return;
-//   const storageRef = firebase.storage().ref();
-//   const oldImageRef = storageRef.child(path);
-//   return oldImageRef.delete();
-// };
+const deleteFile = (path, firebase) => {
+  const storageRef = firebase.storage().ref();
+  const ref = storageRef.child(path);
+  return ref.delete();
+};
 
 const uploadFile = (path, file, key, firebase, dispatch) => {
   const storageRef = firebase.storage().ref();
@@ -29,23 +28,12 @@ const uploadFile = (path, file, key, firebase, dispatch) => {
   });
 };
 
-// const generateFileName = (file, path) => {
-//   const extension = file.name.match(/\.[0-9a-z]+$/i)[0];
-//   return `${path}${extension}`;
-// };
-
 const uploadFiles = (path, entity, firebase, dispatch) => {
   const keys = [];
   const uploads = Object.keys(entity).reduce((accumulator, key) => {
     if (entity[key] instanceof File) {
       keys.push(key);
       const file = entity[key];
-      // const newName = key;
-      // accumulator.push({
-      //   key,
-      //   name: newName,
-      //   file,
-      // });
       accumulator.push(uploadFile(`${path}/${key}`, file, key, firebase, dispatch));
       return accumulator;
     }
@@ -55,36 +43,16 @@ const uploadFiles = (path, entity, firebase, dispatch) => {
     const update = {};
     urls.forEach((url, index) => {
       update[keys[index]] = url;
-      // entity[files[index].key] = url;
-      // // deleteFile(entity[`${files[index].key}-storageLocation`], firebase);
-      // entity[`${files[index].key}-storageLocation`] = files[index].name;
+      update[`ref--${keys[index]}`] = `${path}/${keys[index]}`;
     });
 
     /* Set activity - uploadingFiles to false */
     dispatch(Activity.actions.uploadComplete());
     return update;
-
-    // return id
-    //   ? getEntityById(collection, id, firestore).set(entity)
-    //   : getCollectionById(collection, firestore).add(entity);
   });
 };
 
 const update = (uid, entity, entityid, collectionId, firestore, firebase, dispatch) => {
-  // const uploads = [];
-  // const files = Object.keys(entity).reduce((_files, key) => {
-  //   if (entity[key] instanceof File) {
-  //     const extension = entity[key].name.match(/\.[0-9a-z]+$/i)[0];
-  //     const newName = `${uuidv4()}${extension}`;
-  //     _files.push({
-  //       key,
-  //       name: newName,
-  //       file: entity[key],
-  //       promise: uploads.push(uploadFile(entity[key], newName, firebase, dispatch)),
-  //     });
-  //   }
-  //   return _files;
-  // }, []);
   const entityWithoutFiles = Object.keys(entity).reduce((accumulator, key) => {
     if (entity[key] instanceof File) return accumulator;
     accumulator[key] = entity[key];
@@ -104,28 +72,6 @@ const update = (uid, entity, entityid, collectionId, firestore, firebase, dispat
       });
     });
   }
-  // if (!isEmpty(files)) {
-  //   /* Set activity - uploadingFiles to true */
-  //   dispatch(Activity.actions.uploadingFiles());
-  //
-  //   return Promise.all(uploads).then(urls => {
-  //     urls.forEach((url, index) => {
-  //       entity[files[index].key] = url;
-  //       deleteFile(entity[`${files[index].key}-storageLocation`], firebase);
-  //       entity[`${files[index].key}-storageLocation`] = files[index].name;
-  //     });
-  //
-  //     /* Set activity - uploadingFiles to false */
-  //     dispatch(Activity.actions.uploadComplete());
-  //
-  //     return id
-  //       ? getEntityById(collection, id, firestore).set(entity)
-  //       : getCollectionById(collection, firestore).add(entity);
-  //   });
-  // }
-  // return id
-  //   ? getEntityById(collection, id, firestore).set(entity)
-  //   : getCollectionById(collection, firestore).add(entity);
 };
 
 export const updateEntity = (entity, id, collection) => {
@@ -139,19 +85,22 @@ export const updateEntity = (entity, id, collection) => {
 export const deleteEntities = (collectionId, markedForDelete) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
-    // const firebase = getFirebase();
+    const firebase = getFirebase();
     const batch = firestore.batch();
-    markedForDelete.forEach(id => {
-      batch.delete(getEntityById(collectionId, id, firestore));
-      // const entity = entityById(id, collectionId, getState());
-      // // delete old image
-      // if (entity.imageStorageLocation) {
-      //   deleteFile(entity.imageStorageLocation, firebase);
-      // }
-      // if (entity.pdfStorageLocation) {
-      //   deleteFile(entity.pdfStorageLocation, firebase);
-      // }
+    const filePaths = [];
+    markedForDelete.forEach(item => {
+      const entityRef = getEntityById(collectionId, item.id, firestore);
+      Object.keys(item).forEach(key => {
+        if (key.match(/^ref--/)) {
+          filePaths.push(item[key]);
+        }
+      });
+      batch.delete(entityRef);
     });
-    return batch.commit();
+    return batch.commit().then(() => {
+      filePaths.forEach(path => {
+        deleteFile(path, firebase);
+      });
+    });
   };
 };

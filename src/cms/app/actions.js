@@ -8,9 +8,9 @@ export const toggleDeleteMode = () => ({
   type: ACTIONS.TOGGLE_DELETE_MODE
 });
 
-export const markForDelete = id => {
+export const markForDelete = item => {
   return {
     type: ACTIONS.MARK_FOR_DELETE,
-    id,
+    item,
   };
 };

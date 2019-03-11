@@ -32,7 +32,7 @@ export const collection = PropTypes.shape({
 export const grid = {
   isMobile: PropTypes.bool.isRequired,
   list: PropTypes.arrayOf(PropTypes.object),
-  markedForDelete: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
+  markedForDelete: ImmutablePropTypes.listOf(PropTypes.object).isRequired,
   deleteMode: PropTypes.bool.isRequired,
   sideNavOpen: PropTypes.bool.isRequired,
   collection: collection,
@@ -50,7 +50,7 @@ export const entityItem = {
     }).isRequired,
   }).isRequired,
   deleteMode: PropTypes.bool.isRequired,
-  markedForDelete: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
+  markedForDelete: ImmutablePropTypes.listOf(PropTypes.object).isRequired,
   markForDelete: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
   icon: PropTypes.node,

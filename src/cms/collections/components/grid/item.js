@@ -37,13 +37,13 @@ class Item extends Component {
 
   render() {
     const { markedForDelete, item, deleteMode, pathname, markForDelete, icon, entity } = this.props;
-    const marked = markedForDelete.includes(item.id);
+    const marked = markedForDelete.find(itm => itm.get('id') === item.id);
     return (
       <Button
         linkTo={!deleteMode ? `${pathname}/edit/${item.id}` : null}
         onClick={() => {
           if (deleteMode) {
-            markForDelete(item.id);
+            markForDelete(item);
           }
         }}
         className={cx(styles.entityBtn)}

@@ -13,11 +13,12 @@ const app = (state = initialState, action) => {
     case ACTIONS.TOGGLE_SIDE_NAV:
       return state.set('sideNavOpen', !state.get('sideNavOpen'));
     case ACTIONS.MARK_FOR_DELETE:
-      const shouldUnmark = state.get('markedForDelete').includes(action.id);
-      if (shouldUnmark) {
-        return state.set('markedForDelete', state.get('markedForDelete').filterNot(id => id === action.id));
+      let list = state.get('markedForDelete').filterNot(itm => itm.get('id') === action.item.id);
+      if (list.size === state.get('markedForDelete').size) {
+        return state.set('markedForDelete', state.get('markedForDelete').concat(fromJS([action.item])));
+      } else {
+        return state.set('markedForDelete', list);
       }
-      return state.set('markedForDelete', state.get('markedForDelete').concat(action.id));
     case ACTIONS.TOGGLE_DELETE_MODE:
       return state.withMutations(ctx =>
         ctx.set('deleteMode', !state.get('deleteMode'))
