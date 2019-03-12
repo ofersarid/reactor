@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import noop from 'lodash/noop';
-import { toCapitalizedWords, validateEmail } from '/src/cms/utils';
+import { toCapitalizedWords, validateEmail, youtubeEmbedTransformer } from '/src/cms/utils';
 import styles from './styles.scss';
 import { userInput } from './types';
 import DateTime from './components/date-time/date-time';
@@ -28,6 +28,15 @@ const resolveValidateWith = (type, validateWidth) => {
       return validateEmail;
     default:
       return validateWidth;
+  }
+};
+
+const transformValue = (type, value) => {
+  switch (true) {
+    case type === 'youtube':
+      return youtubeEmbedTransformer(value);
+    default:
+      return value;
   }
 };
 
@@ -94,14 +103,14 @@ const resolveComponentByType = (props) => {
           optional={props.optional}
         />);
     case 'link':
+    case 'youtube':
       return (
         <Link
           placeholder={props.placeholder}
           value={props.value}
-          onChange={props.onChange}
+          onChange={value => props.onChange(transformValue(props.type, value))}
           onValidation={props.onValidation}
           validateWith={props.validateWith}
-          transformer={props.transformer}
           min={props.min}
           ref={props.getRef}
           optional={props.optional}

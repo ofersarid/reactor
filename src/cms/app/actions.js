@@ -14,3 +14,10 @@ export const markForDelete = item => {
     item,
   };
 };
+
+export const storeBlackList = ids => {
+  return {
+    type: ACTIONS.STORE_DELETED_IDS_HACK,
+    ids,
+  };
+};

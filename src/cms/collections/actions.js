@@ -1,5 +1,6 @@
 import Activity from '/src/cms/activity/index';
 import { uid } from '/src/cms/auth/selectors';
+import App from '../app';
 
 const getEntityById = (collectionId, entityId, firestore) =>
   firestore.collection('collections').doc(collectionId).collection('data').doc(entityId);
@@ -18,6 +19,10 @@ const uploadFile = (path, file, key, firebase, dispatch) => {
   const imageRef = storageRef.child(path);
   // upload new image
   const task = imageRef.put(file);
+  dispatch(Activity.actions.uploadStatus({
+    bytesTransferred: 1,
+    totalBytes: 100,
+  }, key));
   task.on('state_changed', snapshot => {
     dispatch(Activity.actions.uploadStatus(snapshot, key));
   }, () => {
@@ -88,16 +93,19 @@ export const deleteEntities = (collectionId, markedForDelete) => {
     const firebase = getFirebase();
     const batch = firestore.batch();
     const filePaths = [];
+    const ids = [];
     markedForDelete.forEach(item => {
       const entityRef = getEntityById(collectionId, item.id, firestore);
       Object.keys(item).forEach(key => {
         if (key.match(/^ref--/)) {
           filePaths.push(item[key]);
+          ids.push(item.id);
         }
       });
       batch.delete(entityRef);
     });
     return batch.commit().then(() => {
+      dispatch(App.actions.storeBlackList(ids));
       filePaths.forEach(path => {
         deleteFile(path, firebase);
       });

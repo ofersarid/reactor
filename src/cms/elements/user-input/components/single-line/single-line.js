@@ -26,7 +26,7 @@ class SingleLine extends PureComponent {
     let normalized = value;
 
     // remove redundant spaces.
-    normalized = normalized.replace(/^\s+/, '').replace(/\s{2,}/g, ' ').replace(/\s$/, '');
+    normalized = normalized.replace(/^\s+/, '').replace(/\s{2,}/g, ' ');
 
     if (onlyNumbers) {
       normalized = normalized.replace(/\D/g, ''); // if onlyNumbers remove non numeric characters.

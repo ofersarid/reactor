@@ -49,6 +49,9 @@ class Post extends PureComponent {
 
               'clean' // remove formatting button
             ],
+            clipboard: {
+              matchVisual: false,
+            },
           }}
         />
         <ValidationIndicator

@@ -160,7 +160,7 @@ class Item extends Component {
                     </Button >
                   );
                   break;
-                case 'embed':
+                case 'youtube':
                   comp = <iframe src={item[key]} className={styles.image} frameBorder="0" scrolling="no" />;
                   break;
                 case 'switch':

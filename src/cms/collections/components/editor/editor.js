@@ -24,7 +24,7 @@ class Editor extends PureComponent {
       entity: props.entity || this.initEmptyEntity(),
       isValid: false,
     };
-    this.validatedFields = this.getOptionalFieldsAsList();
+    this.validatedFields = [];
   }
 
   componentDidMount() {
@@ -42,7 +42,6 @@ class Editor extends PureComponent {
     }
     if (!this.state.entity && !entity && collection.entity) {
       this.setState({ entity: this.initEmptyEntity() });
-      this.validatedFields = this.getOptionalFieldsAsList();
     }
   }
 
@@ -84,7 +83,7 @@ class Editor extends PureComponent {
     const { collection } = this.props;
     if (!collection.entity) return;
     const eFs = collection.entity.fields.map(field => field.key);
-    const diff = difference(eFs, this.validatedFields);
+    const diff = difference(eFs, this.validatedFields.concat(this.getOptionalFieldsAsList()));
     const isValid = !diff.length;
     this.setState({ isValid });
   }
@@ -123,7 +122,7 @@ class Editor extends PureComponent {
   render() {
     const { isValid, entity } = this.state;
     const { isAdd, collection, collectionId, list, entityId, update } = this.props;
-    return entity ? (
+    return entity && collection.name ? (
       <Dialog
         header={(
           <Fragment >
