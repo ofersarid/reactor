@@ -5,14 +5,13 @@ import ImageAsync from 'react-image-async';
 import { imageFile } from '../../types';
 import styles from './styles.scss';
 import Button from '/src/cms/elements/button';
-import { Image } from 'styled-icons/material/Image';
+import { Image as ImageIcon } from 'styled-icons/material/Image';
 import { Rotate90DegreesCcw } from 'styled-icons/material/Rotate90DegreesCcw';
-// import Toaster from '/src/cms/elements/toaster';
-// import prettyBytes from 'pretty-bytes';
 import Puff from '/src/cms/svg-loaders/puff.svg';
 import noop from 'lodash/noop';
-import { rotateImage90Deg } from '/src/cms/utils';
 import ValidationIndicator from '../validation-indicator/validation-indicator';
+
+const MAX_DIMENSION = 1200;
 
 class UploadImage extends PureComponent {
   constructor(props) {
@@ -22,8 +21,6 @@ class UploadImage extends PureComponent {
     this.state = {
       hover: false,
       preview: props.value,
-      // fileToBig: false,
-      // fileSize: null,
       showValidation: false,
     };
   }
@@ -39,6 +36,97 @@ class UploadImage extends PureComponent {
     this.willUnmount = true;
   }
 
+  dataURLToBlob(dataURL) {
+    const BASE64_MARKER = ';base64,';
+    if (dataURL.indexOf(BASE64_MARKER) === -1) {
+      const parts = dataURL.split(',');
+      const contentType = parts[0].split(':')[1];
+      const raw = parts[1];
+
+      return new Blob([raw], { type: contentType });
+    }
+
+    const parts = dataURL.split(BASE64_MARKER);
+    const contentType = parts[0].split(':')[1];
+    const raw = window.atob(parts[1]);
+    const rawLength = raw.length;
+
+    const uInt8Array = new Uint8Array(rawLength);
+
+    for (let i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: contentType });
+  };
+
+  imageOptimizer() {
+    return new Promise(resolve => {
+      // Load the image
+      const reader = new FileReader();
+      reader.onload = (readerEvent) => {
+        const image = new Image();
+        image.onload = (imageEvent) => {
+          // Resize the image
+          const canvas = document.createElement('canvas');
+          const maxSize = MAX_DIMENSION;
+          let width = image.width;
+          let height = image.height;
+          if (width > height) {
+            if (width > maxSize) {
+              height *= maxSize / width;
+              width = maxSize;
+            }
+          } else {
+            if (height > maxSize) {
+              width *= maxSize / height;
+              height = maxSize;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL(this.file.type);
+          const resizedImage = this.dataURLToBlob(dataUrl);
+          resolve(new File([resizedImage], this.file.name, {
+            type: this.file.type,
+          }));
+        };
+        image.src = readerEvent.target.result;
+      };
+      reader.readAsDataURL(this.file);
+    });
+  };
+
+  rotateImage90Deg() {
+    return new Promise(resolve => {
+      // Load the image
+      const reader = new FileReader();
+      reader.onload = (readerEvent) => {
+        const image = new Image();
+        image.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = image.height;
+          canvas.height = image.width;
+          const ctx = canvas.getContext('2d');
+          ctx.save();
+          const angle = 90 * Math.PI / 180;
+          ctx.translate(Math.abs(image.width / 2 * Math.cos(angle) + image.height / 2 * Math.sin(angle)), Math.abs(image.height / 2 * Math.cos(angle) + image.width / 2 * Math.sin(angle)));
+          ctx.rotate(angle);
+          ctx.translate(-image.width / 2, -image.height / 2);
+          ctx.drawImage(image, 0, 0);
+          ctx.restore();
+          const dataUrl = canvas.toDataURL(this.file.type);
+          resolve(new File([this.dataURLToBlob(dataUrl)], this.file.name, {
+            type: this.file.type,
+          }));
+        };
+        image.src = readerEvent.target.result;
+      };
+      reader.readAsDataURL(this.file);
+    });
+  };
+
   showValidation() {
     const { optional } = this.props;
     if (optional) return;
@@ -47,23 +135,9 @@ class UploadImage extends PureComponent {
 
   handleChange(file) {
     this.file = file;
-    const { onChange, transformer } = this.props;
+    const { onChange } = this.props;
     if (file) {
-      // const fileToBig = file.size > 2000000;
-      // if (fileToBig) {
-      //   this.setState({ fileToBig: true, fileSize: prettyBytes(file.size) });
-      //   return;
-      // }
-      if (transformer) {
-        const transformedValue = transformer(file);
-        if (transformedValue.then) {
-          transformedValue.then(resp => onChange(resp));
-        } else {
-          onChange(transformedValue);
-        }
-      } else {
-        onChange(file);
-      }
+      this.imageOptimizer().then(resp => onChange(resp));
       const preview = URL.createObjectURL(file);
       this.setState({ preview: preview });
     }
@@ -93,8 +167,7 @@ class UploadImage extends PureComponent {
                 justIcon
                 disable={!this.file}
                 onClick={() => {
-                  rotateImage90Deg(this.file)
-                    .then(resp => this.handleChange(resp));
+                  this.rotateImage90Deg().then(resp => this.handleChange(resp));
                 }}
                 tip="Rotate"
               >
@@ -116,7 +189,7 @@ class UploadImage extends PureComponent {
               </ImageAsync >
             ) : (
               <Fragment >
-                <Image className={styles.imageIcon}/>
+                <ImageIcon className={styles.imageIcon}/>
                 <div >Select an image file from your computer</div >
                 <div className={styles.placeholder} >{placeholder}</div >
               </Fragment >
@@ -131,11 +204,6 @@ class UploadImage extends PureComponent {
               accept="image/*"
               className={styles.fileInput}
             />
-            {/* <Toaster show={Boolean(fileToBig)} onClick={this.clearError} > */}
-            {/* <span className={styles.spaceRight} >FIle is to big.</span > */}
-            {/* <span className={styles.spaceRight} >must be smaller than <h3 >2Mb</h3 >.</span > */}
-            {/* <span >(size is {fileSize})</span > */}
-            {/* </Toaster > */}
           </Button >
         </div >
         <ValidationIndicator

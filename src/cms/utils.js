@@ -65,7 +65,7 @@ const dataURLToBlob = (dataURL) => {
   return new Blob([uInt8Array], { type: contentType });
 };
 
-export const imageTransformer = (imgFile, options) => {
+export const imageOptimizer = (imgFile, options) => {
   return new Promise(resolve => {
     // Load the image
     const reader = new FileReader();

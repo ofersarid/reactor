@@ -56,7 +56,6 @@ export const imageFile = {
   onValidation: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   validateWith: PropTypes.func,
-  transformer: PropTypes.func,
 };
 
 export const validationIndicator = {

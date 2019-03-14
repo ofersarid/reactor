@@ -3,7 +3,7 @@ import { Contact } from 'styled-icons/boxicons-solid/Contact';
 import { Event } from 'styled-icons/material/Event';
 import { Group } from 'styled-icons/boxicons-solid/Group';
 import { CartAlt } from 'styled-icons/boxicons-solid/CartAlt';
-import { validateEmail, youtubeEmbedTransformer, imageTransformer, exportToCsv } from '/src/cms/utils';
+import { validateEmail, youtubeEmbedTransformer, imageOptimizer, exportToCsv } from '/src/cms/utils';
 
 export const CLIENT_ID = 'demo';
 
@@ -76,7 +76,7 @@ export const COLLECTIONS = [
       label: 'Picture',
       type: 'image',
       required: true,
-      transformer: imgFile => imageTransformer(imgFile, {
+      transformer: imgFile => imageOptimizer(imgFile, {
         maxSize: 1200,
       }),
     }, {
