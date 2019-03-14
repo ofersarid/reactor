@@ -21,7 +21,7 @@ class AuthRedirect extends PureComponent {
   redirect() {
     const { uid } = this.props;
     if (!uid) {
-      hashHistory.push('login');
+      hashHistory.push('cms/login');
     }
   }
 

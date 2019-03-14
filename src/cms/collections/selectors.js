@@ -2,7 +2,6 @@ import { createSelector } from 'reselect';
 import { collectionId, entityId } from '/src/routes/selectors';
 import { query, ignoreCase, orderBy } from '/src/cms/filters/selectors';
 import { blackList } from '/src/cms/app/selectors';
-import _orderBy from 'lodash/orderBy';
 import _sortBy from 'lodash/sortBy';
 
 // export const map = (state, collection) => state.get('fireStore').data[collection] || {};
@@ -10,10 +9,10 @@ import _sortBy from 'lodash/sortBy';
 export const userCollectionsMap = state => state.get('fireStore').data.collections || {};
 
 export const userCollections = createSelector(userCollectionsMap, (collections) => {
-  return _orderBy(Object.keys(collections).reduce((accumulator, collectionId) => {
+  return _sortBy(Object.keys(collections).reduce((accumulator, collectionId) => {
     accumulator.push(Object.assign({}, collections[collectionId], { id: collectionId }));
     return accumulator;
-  }, []), ['name'], ['desc']);
+  }, []), item => item.name, ['asc']);
 });
 
 export const collection = createSelector(collectionId, userCollectionsMap, (_collectionId, _userCollectionsMap) => {

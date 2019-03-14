@@ -35,17 +35,3 @@
 .input-mobile {
   width: 100%;
 }
-
-.logo {
-  height: 180px;
-  z-index: 4;
-  opacity: 0;
-  animation: $popIn;
-  animation-delay: .1s;
-  margin-top: -480px;
-}
-
-.logo-mobile {
-  height: 150px;
-  margin-top: -380px;
-}

@@ -10,7 +10,6 @@ import Auth from '/src/cms/auth';
 import { Fingerprint } from 'styled-icons/boxicons-regular/Fingerprint';
 import { validateEmail } from '/src/cms/utils';
 import styles from './styles.scss';
-import gobFace from './gob-face.svg';
 
 class LoginPage extends PureComponent {
   constructor(props) {
@@ -43,12 +42,11 @@ class LoginPage extends PureComponent {
     const { logIn, authError, uid, deviceType } = this.props;
     return (
       <div className={styles.logInPage} >
-        <img src={gobFace} className={cx(styles.logo, styles[`logo-${deviceType}`])}/>
         <Dialog
           header={(
             <Fragment >
               <Fingerprint />
-              <div >Goblins CMS / Login</div >
+              <div >Goblins &mdash; Login</div >
             </Fragment >
           )}
           actions={[{

@@ -8,11 +8,10 @@ import Auth from '/src/cms/auth';
 import { PowerOff } from 'styled-icons/boxicons-regular/PowerOff';
 import { hashHistory } from 'react-router';
 import styles from './styles.scss';
-import { CLIENT_ID } from '/collections.config';
 
 const RightCol = props => (
   <ul className={styles.rightCol} >
-    {!props.isMobile && <li className={styles.clientId} >Client-Id: {CLIENT_ID}</li >}
+    {!props.isMobile && <li className={styles.clientId} >Client-Id: ?</li >}
     <li >
       <Button
         linkTo="website/home"

@@ -2,6 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
 import ImageAsync from 'react-image-async';
+// import Resizer from 'react-image-file-resizer';
 import { imageFile } from '../../types';
 import styles from './styles.scss';
 import Button from '/src/cms/elements/button';
