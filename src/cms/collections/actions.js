@@ -19,10 +19,7 @@ const uploadFile = (path, file, key, firebase, dispatch) => {
   const imageRef = storageRef.child(path);
   // upload new image
   const task = imageRef.put(file);
-  dispatch(Activity.actions.uploadStatus({
-    bytesTransferred: 1,
-    totalBytes: 100,
-  }, key));
+  dispatch(Activity.actions.uploadingFiles());
   task.on('state_changed', snapshot => {
     dispatch(Activity.actions.uploadStatus(snapshot, key));
   }, () => {

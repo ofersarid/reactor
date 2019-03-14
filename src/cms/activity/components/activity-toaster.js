@@ -1,16 +1,16 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { CloudUploadAlt } from 'styled-icons/fa-solid/CloudUploadAlt';
-import { activityToaster } from '../types';
+import { activity } from '../types';
 import Toaster from '/src/cms/elements/toaster';
-import { uploadStatus } from '../selectors';
+import { uploadStatus, uploadingFiles } from '../selectors';
 import styles from './styles.scss';
 
 class ActivityToaster extends PureComponent {
   render() {
-    const { uploadStatus } = this.props;
+    const { uploadStatus, uploadingFiles } = this.props;
     return (
-      <Toaster type="success" show={uploadStatus > 0 && uploadStatus < 100 && uploadStatus !== Infinity} >
+      <Toaster type="success" show={uploadingFiles} >
         <div
           className={styles.status}
           style={{ transform: `scaleX(${uploadStatus / 100})` }}
@@ -22,10 +22,11 @@ class ActivityToaster extends PureComponent {
   }
 }
 
-ActivityToaster.propTypes = activityToaster;
+ActivityToaster.propTypes = activity;
 
 const mapStateToProps = state => ({
   uploadStatus: uploadStatus(state),
+  uploadingFiles: uploadingFiles(state),
 });
 
 const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
