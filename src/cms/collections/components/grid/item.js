@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Device from '/src/cms/device/index';
-import { Button, Icons, Tooltip } from '/src/cms/elements';
+import { Button, Tooltip } from '/src/cms/elements';
 import App from '/src/cms/app/index';
 import cx from 'classnames';
 import { entityItem } from '../../types';
@@ -23,20 +23,14 @@ class Item extends Component {
     this.willUnmount = true;
   }
 
-  getFieldProp(key, propName) {
-    const { fields } = this.props;
-    const found = fields.find(field => field.key === key);
-    return found ? found[propName] : null;
-  }
-
   getKeysForBody() {
-    const { entity } = this.props;
-    const found = entity.fields.filter(field => !(Object.values(entity.uiKeyMap).concat(['published', 'displayOrder'])).includes(field.key));
+    const { fields } = this.props;
+    const found = fields.filter(field => !(['published', 'displayOrder']).includes(field.key));
     return found.map(item => item.key);
   }
 
   render() {
-    const { markedForDelete, item, deleteMode, pathname, markForDelete, icon, entity } = this.props;
+    const { markedForDelete, item, deleteMode, pathname, markForDelete, fields } = this.props;
     const marked = markedForDelete.find(itm => itm.get('id') === item.id);
     return (
       <Button
@@ -57,17 +51,6 @@ class Item extends Component {
         >
           {/* ----- HEADER ----- */}
           <div className={styles.header} >
-
-            {/* ----- TITLE ----- */}
-            <div >
-              <Icons name={icon} />
-              <Tooltip
-                content={entity.uiKeyMap.title}
-                className={styles.title}
-              >
-                {item[entity.uiKeyMap.title]}
-              </Tooltip >
-            </div >
 
             {/* ----- TAGS ----- */}
             <div >
@@ -99,8 +82,8 @@ class Item extends Component {
             {this.getKeysForBody().map(key => {
               if (!item[key]) return null;
               let comp = null;
-              const type = entity.fields.find(field => field.key === key).type;
-              const label = entity.fields.find(field => field.key === key).label;
+              const type = fields.find(field => field.key === key).type;
+              const label = fields.find(field => field.key === key).label;
               switch (type) {
                 case 'post':
                   comp = <div className={styles.post} dangerouslySetInnerHTML={{ __html: item[key] }} />;

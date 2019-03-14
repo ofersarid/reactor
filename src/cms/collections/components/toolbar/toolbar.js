@@ -6,6 +6,7 @@ import { toolbar } from './types';
 import AddButton from './add-button/add-button';
 import DownloadCsv from './download-csv/download-csv';
 import DeleteButton from './delete-button/delete-button';
+import * as selectors from '../../selectors';
 // import { Filters } from '/src/cms/filters/index';
 
 const ToolbarContainer = props => (
@@ -32,6 +33,7 @@ ToolbarContainer.propTypes = toolbar;
 
 const mapStateToProps = state => ({
   isMobile: Device.selectors.isMobile(state),
+  collection: selectors.collection(state),
 });
 
 const mapDispatchToProps = dispatch => ({}); // eslint-disable-line

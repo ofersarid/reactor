@@ -39,6 +39,7 @@ export const richContent = {
   min: PropTypes.number,
   onValidation: PropTypes.func.isRequired,
   validateWith: PropTypes.func,
+  optional: PropTypes.bool,
 };
 
 export const pdfFile = {

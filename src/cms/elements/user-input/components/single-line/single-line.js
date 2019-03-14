@@ -75,7 +75,7 @@ class SingleLine extends PureComponent {
         {!optional && (
           <ValidationIndicator
             show={showValidation}
-            min={min}
+            min={min || 1}
             max={max}
             onValidation={onValidation}
             value={value}

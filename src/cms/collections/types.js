@@ -43,18 +43,11 @@ export const grid = {
 export const entityItem = {
   ...deviceTypes,
   item: PropTypes.object.isRequired,
-  entity: PropTypes.shape({
-    fields: PropTypes.arrayOf(field).isRequired,
-    uiKeyMap: PropTypes.shape({
-      title: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+  fields: PropTypes.arrayOf(field).isRequired,
   deleteMode: PropTypes.bool.isRequired,
   markedForDelete: ImmutablePropTypes.listOf(PropTypes.object).isRequired,
   markForDelete: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
-  icon: PropTypes.node,
-  linkIcon: PropTypes.node,
   orderBy: PropTypes.string,
 };
 

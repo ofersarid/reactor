@@ -44,10 +44,10 @@ class Grid extends PureComponent {
             >
               {list.map(item => (
                 <div key={item.id} >
-                  {collection.entity && <CMSEntityItem
+                  {collection.fields && <CMSEntityItem
                     item={item}
                     icon={collection.icon}
-                    entity={collection.entity}
+                    fields={collection.fields}
                   />}
                 </div >
               ))}
@@ -103,7 +103,7 @@ export default compose(
       subcollections: [{
         collection: 'data',
         // where: [['active', '==', true]],
-        orderBy: ['displayOrder', 'desc'],
+        // orderBy: ['displayOrder', 'desc'],
       }],
     }];
   }),

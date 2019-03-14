@@ -23,10 +23,10 @@ class Post extends PureComponent {
   }
 
   render() {
-    const { value, onChange, placeholder, min, onValidation, validateWith } = this.props;
+    const { value, onChange, placeholder, min, onValidation, validateWith, optional } = this.props;
     const { showValidation } = this.state;
     return (
-      <div className={styles.post}>
+      <div className={styles.post} >
         <ReactQuill
           className={styles.richContent}
           value={value || ''}
@@ -54,13 +54,15 @@ class Post extends PureComponent {
             },
           }}
         />
-        <ValidationIndicator
-          show={showValidation}
-          min={min}
-          onValidation={onValidation}
-          value={value.replace(/<[^>]*>/g, '')} // strip html tags to validate text length
-          validateWith={validateWith}
-        />
+        {!optional && (
+          <ValidationIndicator
+            show={showValidation}
+            min={min || 1}
+            onValidation={onValidation}
+            value={value.replace(/<[^>]*>/g, '')} // strip html tags to validate text length
+            validateWith={validateWith}
+          />
+        )}
       </div >
     );
   }

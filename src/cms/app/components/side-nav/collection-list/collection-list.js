@@ -15,7 +15,7 @@ class CollectionList extends PureComponent {
   componentDidUpdate() {
     const { collectionId, userCollectionIds } = this.props;
     if (!userCollectionIds.includes(collectionId) && userCollectionIds.length) {
-      hashHistory.push(`cms/collections/${userCollectionIds[0]}`);
+      hashHistory.push(`cms/collection/${userCollectionIds[0]}`);
     }
   }
 
@@ -28,7 +28,7 @@ class CollectionList extends PureComponent {
           return collection.name ? (
             <li key={collection.id} >
               <Button
-                linkTo={isActive ? null : `/cms/collections/${collection.id}`}
+                linkTo={isActive ? null : `/cms/collection/${collection.id}`}
                 className={styles.navButton}
                 textColor={isActive ? 'green' : null}
                 stretch

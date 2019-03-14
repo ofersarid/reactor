@@ -15,17 +15,18 @@ import About from '/src/website/about';
 import { ContactUs } from '/src/website/contact-us';
 import { CreateAccountDialog } from '/src/website/create-account';
 
-// const DummyComponent = () => (<div>Dummy</div>);
+const DummyComponent = () => (<div>Dummy</div>);
 
 export default (
   <Route path="/" component={ReduxRoutes} >
     <IndexRedirect to="website/home" />
     <Route path="cms" component={MainContainer} >
-      <IndexRedirect to="collections/123" />
-      <Route path="collections/:collectionId" component={Grid} >
+      <IndexRedirect to="collection" />
+      <Route path="collection/:collectionId" component={Grid} >
         <Route path="add" component={Editor} />
         <Route path="edit/:entityId" component={Editor} />
       </Route >
+      <Route path="document/:documentId" component={DummyComponent} />
       {/* {COLLECTIONS.map(col => ( */}
       {/* <Route */}
       {/* path={col.id} */}

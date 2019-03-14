@@ -47,8 +47,8 @@ class Editor extends PureComponent {
 
   initEmptyEntity() {
     const { collection, list } = this.props;
-    if (!collection.entity) return null;
-    return collection.entity.fields.reduce((fields, item) => {
+    if (!collection.fields) return null;
+    return collection.fields.reduce((fields, item) => {
       switch (true) {
         case item.initialValue !== undefined:
           fields[item.key] = item.initialValue;
@@ -70,8 +70,8 @@ class Editor extends PureComponent {
 
   getOptionalFieldsAsList() {
     const { collection } = this.props;
-    if (!collection.entity) return [];
-    return collection.entity.fields.reduce((list, field) => {
+    if (!collection.fields) return [];
+    return collection.fields.reduce((list, field) => {
       if (!field.required || field.disabled || field.key === 'published') {
         list.push(field.key);
       }
@@ -81,8 +81,8 @@ class Editor extends PureComponent {
 
   validate() {
     const { collection } = this.props;
-    if (!collection.entity) return;
-    const eFs = collection.entity.fields.map(field => field.key);
+    if (!collection.fields) return;
+    const eFs = collection.fields.map(field => field.key);
     const diff = difference(eFs, this.validatedFields.concat(this.getOptionalFieldsAsList()));
     const isValid = !diff.length;
     this.setState({ isValid });
@@ -145,10 +145,10 @@ class Editor extends PureComponent {
           disable: !isValid,
         }]}
         onClose={() => {
-          hashHistory.push(`cms/collections/${collectionId}`);
+          hashHistory.push(`cms/collection/${collectionId}`);
         }}
       >
-        {collection.entity.fields.map(field => {
+        {collection.fields.map(field => {
           const value = this.state.entity[field.key];
           return (
             <UserInput
