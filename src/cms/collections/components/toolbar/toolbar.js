@@ -7,7 +7,7 @@ import AddButton from './add-button/add-button';
 import DownloadCsv from './download-csv/download-csv';
 import DeleteButton from './delete-button/delete-button';
 import * as selectors from '../../selectors';
-// import { Filters } from '/src/cms/filters/index';
+import { Filters } from '/src/cms/filters';
 
 const ToolbarContainer = props => (
   <div className={styles.toolbar} >
@@ -16,16 +16,16 @@ const ToolbarContainer = props => (
       <DeleteButton />
       <DownloadCsv />
     </div >
-    {/* <div className={styles.right} > */}
-    {/* {props.filters && props.filters.length > 0 && ( */}
-    {/* <Filters */}
-    {/* filters={props.filters} */}
-    {/* sortOptions={props.sortOptions} */}
-    {/* collection={props.collection} */}
-    {/* fields={props.fields} */}
-    {/* /> */}
-    {/* )} */}
-    {/* </div > */}
+    <div className={styles.right} >
+      {/* {props.filters && props.filters.length > 0 && ( */}
+      <Filters />
+      {/* filters={props.filters} */}
+      {/* sortOptions={props.sortOptions} */}
+      {/* collection={props.collection} */}
+      {/* fields={props.fields} */}
+      {/* /> */}
+      {/* )} */}
+    </div >
   </div >
 );
 

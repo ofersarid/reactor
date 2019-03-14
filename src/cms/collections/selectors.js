@@ -5,13 +5,7 @@ import { blackList } from '/src/cms/app/selectors';
 import _orderBy from 'lodash/orderBy';
 import _sortBy from 'lodash/sortBy';
 
-export const map = (state, collection) => state.get('fireStore').data[collection] || {};
-
-export const entityById = (id, collection, state) => map(state, collection)[id];
-
-export const settings = state => state.get('fireStore').data.settings || {};
-
-/* NEW SELECTORS FOR SAAS */
+// export const map = (state, collection) => state.get('fireStore').data[collection] || {};
 
 export const userCollectionsMap = state => state.get('fireStore').data.collections || {};
 
@@ -68,3 +62,16 @@ export const filteredOrderedList = createSelector(filteredData, orderBy, (_data,
 export const entity = createSelector(collection, entityId, (_collection, _entityId) => {
   return _collection.data ? _collection.data[_entityId] : null;
 });
+
+export const getSortOptions = createSelector(
+  collection,
+  (_collection) => {
+    if (!_collection.fields) return [];
+    return _collection.fields.reduce((accumulator, field) => {
+      accumulator.push({
+        value: field.key,
+        label: field.label,
+      });
+      return accumulator;
+    }, []);
+  });

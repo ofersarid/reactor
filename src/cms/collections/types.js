@@ -18,10 +18,7 @@ export const uiKeyMap = PropTypes.shape({
 });
 
 export const collection = PropTypes.shape({
-  entity: PropTypes.shape({
-    fields: PropTypes.arrayOf(field).isRequired,
-    uiKeyMap: uiKeyMap.isRequired,
-  }),
+  fields: PropTypes.arrayOf(field),
   name: PropTypes.string,
   icon: PropTypes.string,
   owner: PropTypes.string,

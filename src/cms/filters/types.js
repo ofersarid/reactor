@@ -1,6 +1,6 @@
 import { deviceTypes } from '/src/cms/device/types';
 import PropTypes from 'prop-types';
-import { field } from '/src/cms/collections/types';
+// import { field } from '/src/cms/collections/types';
 
 export const toolbar = {
   ...deviceTypes,
@@ -20,12 +20,15 @@ export const deleteButton = {
 
 export const filters = {
   ...deviceTypes,
-  filters: PropTypes.arrayOf(PropTypes.string),
+  // filters: PropTypes.arrayOf(PropTypes.string),
   updateQuery: PropTypes.func.isRequired,
   updateOrder: PropTypes.func.isRequired,
   resetFilter: PropTypes.func.isRequired,
-  sortOptions: PropTypes.arrayOf(PropTypes.string),
   sortBy: PropTypes.string,
-  collection: PropTypes.string.isRequired,
-  fields: PropTypes.arrayOf(field).isRequired,
+  sortOptions: PropTypes.arrayOf(PropTypes.shape({
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    label: PropTypes.string.isRequired,
+  })).isRequired,
+  // collection: PropTypes.string.isRequired,
+  // fields: PropTypes.arrayOf(field).isRequired,
 };

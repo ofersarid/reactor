@@ -21,7 +21,7 @@ export default (
   <Route path="/" component={ReduxRoutes} >
     <IndexRedirect to="website/home" />
     <Route path="cms" component={MainContainer} >
-      <IndexRedirect to="collection" />
+      <IndexRedirect to="collection/123" />
       <Route path="collection/:collectionId" component={Grid} >
         <Route path="add" component={Editor} />
         <Route path="edit/:entityId" component={Editor} />
