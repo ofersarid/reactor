@@ -2,16 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
-import Waves from 'node-waves';
 import thunk from 'redux-thunk';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import { reduxFirestore, getFirestore } from 'redux-firestore';
+import firebase from '../firebase.config';
 import { Router, hashHistory } from 'react-router';
 import rootReducer from './cms/root-reducers';
+import Routes from '/src/routes';
+import Waves from 'node-waves';
 import './fonts/fonts.scss';
 import styles from './styles.scss';
-import firebase from '../firebase.config';
-import Routes from '/src/routes';
 
 const $root = document.getElementById('root');
 
