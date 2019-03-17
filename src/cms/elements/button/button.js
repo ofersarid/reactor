@@ -53,7 +53,7 @@ class Button extends PureComponent {
   render() {
     const {
       className, textColor, color, children, disable, stretch, tip, maxWidth,
-      noAnimation, justIcon, interactive, tipAnimation, getRef,
+      noAnimation, justIcon, interactive, tipAnimation, getRef, noScale,
     } = this.props;
     const { working } = this.state;
     return (
@@ -62,6 +62,7 @@ class Button extends PureComponent {
           className={cx(
             'ripple',
             'waves-effect',
+            (colors.includes(color) || noScale) && styles.noScale,
             color ? styles.wavesDark : styles.wavesLight,
             styles.button,
             className,

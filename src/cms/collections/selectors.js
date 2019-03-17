@@ -12,7 +12,7 @@ export const userCollections = createSelector(userCollectionsMap, (collections) 
   return _sortBy(Object.keys(collections).reduce((accumulator, collectionId) => {
     accumulator.push(Object.assign({}, collections[collectionId], { id: collectionId }));
     return accumulator;
-  }, []), item => item.name.toLowerCase(), ['asc']);
+  }, []), item => item.name ? item.name.toLowerCase() : null, ['asc']);
 });
 
 export const collection = createSelector(collectionId, userCollectionsMap, (_collectionId, _userCollectionsMap) => {

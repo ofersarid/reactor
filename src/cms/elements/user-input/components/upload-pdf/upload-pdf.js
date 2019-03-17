@@ -76,6 +76,7 @@ class UploadPdf extends PureComponent {
           <Button
             onClick={this.handleClick}
             className={styles.button}
+            noScale
           >
             {preview ? (
               <iframe src={preview} className={styles.pdfPreview} frameBorder="0" scrolling="no" />

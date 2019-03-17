@@ -179,6 +179,7 @@ class UploadImage extends PureComponent {
           <Button
             onClick={this.handleClick}
             className={styles.button}
+            noScale
           >
             {(preview.length && typeof preview === 'string') ? (
               <ImageAsync src={[preview]} >

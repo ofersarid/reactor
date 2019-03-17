@@ -9,8 +9,7 @@ import { entityItem } from '../../types';
 import styles from './styles.scss';
 import ImageAsync from 'react-image-async';
 import Puff from '/src/cms/svg-loaders/puff.svg';
-import { FileDownload } from 'styled-icons/material/FileDownload';
-import { Link } from 'styled-icons/material/Link';
+import { LinkExternal } from 'styled-icons/boxicons-regular/LinkExternal';
 import { SortDown } from 'styled-icons/boxicons-regular/SortDown';
 import { Hide } from 'styled-icons/boxicons-solid/Hide';
 import { Show } from 'styled-icons/boxicons-solid/Show';
@@ -41,9 +40,10 @@ class Item extends Component {
           }
         }}
         className={cx(styles.entityBtn)}
+        noScale
       >
         <div
-          className={cx(
+          className={cx('entity',
             styles.entity,
             deleteMode && styles.deleteMode,
             marked && styles.markForDelete,
@@ -51,29 +51,25 @@ class Item extends Component {
         >
           {/* ----- HEADER ----- */}
           <div className={styles.header} >
-
-            {/* ----- TAGS ----- */}
-            <div >
-              {item.published !== undefined && ( // todo - restrict keying a field as "published"
-                <Tooltip
-                  key="published"
-                  className={cx(styles.tag, item.published ? styles.redTag : styles.inactive)}
-                  content={item.published ? 'Published' : 'Not Published'}
-                >
-                  {item.published ? <Show /> : <Hide />}
-                </Tooltip >
-              )}
-              {typeof item.displayOrder === 'number' && (
-                <Tooltip
-                  key="displayOrder"
-                  className={cx(styles.tag, item.displayOrder ? styles.blueTag : styles.inactive)}
-                  content="Display Order"
-                >
-                  <SortDown />
-                  <div className={styles.displayOrder} >{item.displayOrder}</div >
-                </Tooltip >
-              )}
-            </div >
+            {item.published !== undefined && ( // todo - restrict keying a field as "published"
+              <Tooltip
+                key="published"
+                className={cx(styles.tag, item.published ? styles.redTag : styles.inactive)}
+                content={item.published ? 'Published' : 'Not Published'}
+              >
+                {item.published ? <Show /> : <Hide />}
+              </Tooltip >
+            )}
+            {typeof item.displayOrder === 'number' && (
+              <Tooltip
+                key="displayOrder"
+                className={cx(styles.tag, item.displayOrder ? styles.blueTag : styles.inactive)}
+                content="Display Order"
+              >
+                <SortDown />
+                <div className={styles.displayOrder} >{item.displayOrder}</div >
+              </Tooltip >
+            )}
 
           </div >
 
@@ -103,30 +99,22 @@ class Item extends Component {
                   break;
                 case 'pdf':
                   comp = (
-                    <Button
-                      color="green"
-                      className={styles.btn}
-                      onClick={() => window.open(item[key])}
-                      disable={deleteMode}
-                      tip={label}
-                    >
-                      <FileDownload />
-                      <div className={styles.link} >{item[key]}</div >
-                    </Button >
+                    <iframe src={item[key]} className={styles.pdfPreview} frameBorder="0" scrolling="no" />
                   );
                   break;
                 case 'link':
                   comp = (
-                    <Button
-                      color="green"
-                      className={styles.btn}
-                      onClick={() => window.open(item[key])}
-                      disable={deleteMode}
-                      tip={label}
-                    >
-                      <Link />
-                      <div className={styles.link} >{item[key]}</div >
-                    </Button >
+                    <div className={styles.link}>
+                      <div className={styles.linkText} >{item[key]}</div >
+                      <Button
+                        onClick={() => window.open(item[key])}
+                        disable={deleteMode}
+                        justIcon
+                        className={styles.linkButton}
+                      >
+                        <LinkExternal />
+                      </Button>
+                    </div >
                   );
                   break;
                 case 'email':
@@ -138,8 +126,8 @@ class Item extends Component {
                       disable={deleteMode}
                       tip={label}
                     >
-                      <Link />
                       <div className={styles.link} >{item[key]}</div >
+                      <LinkExternal />
                     </Button >
                   );
                   break;
@@ -163,10 +151,8 @@ class Item extends Component {
                 </li>
               ) : (
                 <li key={key} >
-                  <div key={key} className={cx(styles.sectionBox)} >
-                    <div className={styles.sectionHeader} >{label}</div >
-                    {comp}
-                  </div >
+                  <div className={styles.sectionHeader} >{label}</div >
+                  {comp}
                 </li>
               );
             })}

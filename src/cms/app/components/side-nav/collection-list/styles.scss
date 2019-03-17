@@ -36,4 +36,12 @@
       padding-left: 20px;
     }
   }
+  
+  &:hover {
+    :global {
+      .inner {
+        transform: scale(1.05);
+      }
+    }
+  }
 }

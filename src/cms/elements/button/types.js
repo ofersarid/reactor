@@ -18,4 +18,5 @@ export const button = {
   interactive: PropTypes.bool,
   tipAnimation: PropTypes.oneOf(tipAnimations),
   getRef: PropTypes.object,
+  noScale: PropTypes.bool,
 };

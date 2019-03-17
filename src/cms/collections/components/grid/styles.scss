@@ -26,17 +26,18 @@
   margin-right: 20px;
 }
 
-$gutter: 15px;
+$gutter: 10px;
 
 .entity {
-  background: white;
+  //background: #F3F3F3;
   border-radius: 2px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e3e3e3;
+  box-sizing: border-box;
   display: inline-block;
   overflow: hidden;
-  transition: .2s;
   animation: $undimm;
   width: 100%;
+  //transition: .2s ease-out;
 }
 
 .post {
@@ -49,11 +50,13 @@ $gutter: 15px;
 
 .entityBtn {
   width: 100%;
+  color: #6d6d6d;
 }
 
 .header {
-  padding: $gutter;
-  background: $green;
+  padding: $gutter 0;
+  border-bottom: 1px solid #E5E5E5;
+  margin: 0 10px;
   color: white;
   text-shadow: -1px -1px 0 #73ba73;
   display: flex;
@@ -116,7 +119,15 @@ $gutter: 15px;
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
+  background-color: #eeeeee;
+  border: 1px solid #E5E5E5;
   width: 100%; // for the iframe
+  border-radius: 3px;
+}
+
+.pdfPreview {
+  width: 100%;
+  border-radius: 3px;
 }
 
 .gridWrapper {
@@ -200,8 +211,8 @@ svg.standAlone {
 }
 
 .blueTag {
-  background: #6da0bf;
-  text-shadow: -1px -1px 0px #6190ac;
+  background: #3971ce;
+  text-shadow: -1px -1px 0px #314f9d;
 }
 
 .redTag {
@@ -224,17 +235,12 @@ svg.standAlone {
   display: flex;
   align-items: center;
   padding: 4px;
-  margin: 0 0 0 10px;
   font-size: 13px;
   line-height: 13px;
   border-radius: 2px;
   color: white;
   animation: $popIn;
   animation-duration: .3s;
-  
-  &:last-child {
-    margin-right: 0;
-  }
   
   svg {
     height: 16px;
@@ -248,11 +254,18 @@ svg.standAlone {
 }
 
 .link {
+  display: flex;
+  align-items: center;
+}
+
+.linkText {
   word-break: break-word;
-  width: calc(100% - 40px);
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-overflow: ellipsis;
+  padding-bottom: 2px;
+  width: 100%;
 }
 
 .btn {
@@ -265,48 +278,39 @@ svg.standAlone {
   }
 }
 
-.sectionBox {
-  padding: 35px 15px 15px;
-  background: #f1f1f1;
-  border-radius: 2px;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #ffffff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
-}
-
 .sectionHeader {
-  width: 100%;
-  font-size: 12px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #f7f7f7;
-  color: #b1b1b1;
-  padding: 2px 15px;
-  box-sizing: border-box;
-  border-bottom: none;
-  text-align: right;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .body {
   max-height: 600px;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 10px;
   
-  & > * {
-    &:last-child {
-      margin-bottom: 0;
+  li {
+    padding: 15px 10px;
+    
+    //&:nth-of-type(2n) {
+    //  background: rgba(0, 0, 0, 0.03);
+    //}
+  }
+}
+
+.linkButton {
+  :global {
+    .inner {
+      padding: 2px;
     }
   }
   
-  li {
-    margin-bottom: 10px;
-  
-    &:last-of-type {
-      margin-bottom: 0;
+  &:hover {
+    :global {
+      .inner {
+        color: $green;
+        transform: scale(1.1);
+      }
     }
   }
 }

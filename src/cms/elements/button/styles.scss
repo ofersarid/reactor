@@ -12,6 +12,12 @@
   
   &:hover {
     color: black;
+    
+    :global {
+      .inner {
+        transform: scale(1.1);
+      }
+    }
   }
 }
 
@@ -50,6 +56,7 @@
   border-radius: 2px;
   display: flex;
   align-items: center;
+  will-change: transform;
   
   svg {
     height: 24px;
@@ -139,4 +146,14 @@
 
 .noAnimation {
   animation: none !important;
+}
+
+.noScale {
+  &:hover {
+    :global {
+      .inner {
+        transform: none;
+      }
+    }
+  }
 }
