@@ -10,7 +10,7 @@ const DeleteButton = props => (
   <Button
     justIcon
     onClick={props.toggleDeleteMode}
-    textColor={props.deleteMode ? 'yellow' : null}
+    textColor={props.deleteMode ? 'red' : null}
     tip="Toggle Delete Mode"
   >
     <TrashAlt />

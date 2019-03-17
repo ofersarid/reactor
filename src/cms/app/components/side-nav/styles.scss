@@ -5,6 +5,7 @@
   transition: .3s;
   will-change: width;
   border-right: 1px inset $lightGray;
+  flex-shrink: 0;
 }
 
 .btn {

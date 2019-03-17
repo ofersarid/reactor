@@ -48,7 +48,7 @@
     }
   
     .select__single-value {
-      color: $yellow;
+      color: black;
     }
     
     .select__input {
@@ -64,7 +64,7 @@
 .icon {
   margin-left: 20px;
   height: 26px !important;
-  color: $yellow;
+  //color: $yellow;
   transform: translateY(0) !important;
 }
 
@@ -97,5 +97,6 @@
 .flexRow {
   display: flex;
   align-items: center;
-  
+  border: 1px solid #E5E5E5;
+  margin-right: 10px;
 }
