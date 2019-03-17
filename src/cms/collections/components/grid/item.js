@@ -90,8 +90,8 @@ class Item extends Component {
                 case 'image':
                   comp = <ImageAsync src={[item[key]]} >
                     {({ loaded, error }) => (
-                      <div
-                        style={{ backgroundImage: `url(${loaded ? item[key] : Puff})` }}
+                      <img
+                        src={loaded ? item[key] : Puff}
                         className={styles.image}
                       />
                     )}
