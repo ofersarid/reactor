@@ -5,3 +5,4 @@ export { default as UserInput } from './user-input/user-input';
 export { default as CheckBox } from './check-box/check-box';
 export { default as Tooltip } from './tooltip/tooltip';
 export { default as Icons } from './icons/icons';
+export { default as Toaster } from './toaster/toaster';

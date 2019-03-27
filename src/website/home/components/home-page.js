@@ -19,6 +19,12 @@ const HomePage = props => {
       >
         <div >Create Account</div >
       </Button >
+      <Button
+        linkTo="cms/login"
+        color="green"
+      >
+        <div >Log In</div >
+      </Button >
       {/* <h2>My Events:</h2> */}
       {/* {props.events.map(event => <div key={event.id}>{event.title}</div>)} */}
     </Fragment >

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Device from '/src/cms/device';
 import autoBind from 'auto-bind';
-import { Button, UserInput } from '/src/cms/elements';
+import { Button, UserInput, Toaster } from '/src/cms/elements';
 import { toTitleCase, validateEmail } from '/src/cms/utils';
 import difference from 'lodash/difference';
 import * as actions from '../../actions';
@@ -18,21 +18,21 @@ class CreateAccountDialog extends PureComponent {
       name: '',
       email: '',
       password: '',
-      companyName: '',
-      websiteURL: '',
+      passwordConfirm: '',
     };
     this.state = {
       ...this.fields,
       isValid: false,
       showSuccess: false,
       showSending: false,
+      showPassword: false,
+      emailInUse: false,
     };
     this.defaultState = this.state;
     this.nameRef = React.createRef();
     this.emailRef = React.createRef();
-    this.companyNameRef = React.createRef();
-    this.websiteURLRef = React.createRef();
-    this.industryRef = React.createRef();
+    this.passwordRef = React.createRef();
+    this.passwordConfirmRef = React.createRef();
   }
   componentDidUpdate() {
     this.validate();
@@ -62,8 +62,8 @@ class CreateAccountDialog extends PureComponent {
     this.setState(this.defaultState);
     this.nameRef.current.hideValidation();
     this.emailRef.current.hideValidation();
-    this.companyNameRef.current.hideValidation();
-    this.websiteURLRef.current.hideValidation();
+    this.passwordRef.current.hideValidation();
+    this.passwordConfirmRef.current.hideValidation();
   }
 
   hideToast() {
@@ -84,13 +84,15 @@ class CreateAccountDialog extends PureComponent {
   }
 
   render() {
-    const { name, email, companyName, isValid, websiteURL, password } = this.state;
+    const { name, email, passwordConfirm, isValid, password, emailInUse } = this.state;
     const { setUpAccount } = this.props;
+    // todo - validate Full Name
+    // todo - add show password
     return (
       <div className={styles.createAccountDialog} >
         <section className={styles.info} >
           <UserInput
-            placeholder="Name"
+            placeholder="Full Name"
             onChange={value => this.onChange({ name: toTitleCase(value) })}
             value={name}
             min={1}
@@ -99,7 +101,10 @@ class CreateAccountDialog extends PureComponent {
           />
           <UserInput
             placeholder="Email"
-            onChange={value => this.onChange({ email: value })}
+            onChange={value => {
+              this.onChange({ email: value });
+              this.setState({ emailInUse: false });
+            }}
             value={email}
             min={1}
             getRef={this.emailRef}
@@ -111,25 +116,19 @@ class CreateAccountDialog extends PureComponent {
             onChange={val => this.onChange({ password: val })}
             value={password}
             type="password"
-            min={4}
+            min={6}
             max={12}
             onValidation={isValid => this.onValidation('password', isValid)}
+            getRef={this.passwordRef}
           />
           <UserInput
-            placeholder="Company Name"
-            onChange={value => this.onChange({ companyName: value })}
-            value={companyName}
-            min={1}
-            getRef={this.companyNameRef}
-            onValidation={isValid => this.onValidation('companyName', isValid)}
-          />
-          <UserInput
-            placeholder="Website URL"
-            onChange={value => this.onChange({ websiteURL: value })}
-            value={websiteURL}
-            min={1}
-            getRef={this.websiteURLRef}
-            onValidation={isValid => this.onValidation('websiteURL', isValid)}
+            placeholder="Confirm Password"
+            onChange={val => this.onChange({ passwordConfirm: val })}
+            value={passwordConfirm}
+            type="password"
+            validateWith={val => (val === password && val.length >= 6)}
+            onValidation={isValid => this.onValidation('passwordConfirm', isValid)}
+            getRef={this.passwordConfirmRef}
           />
           <Button
             stretch
@@ -137,13 +136,27 @@ class CreateAccountDialog extends PureComponent {
             className={styles.sendBtn}
             disable={!isValid}
             onClick={() => {
-              setUpAccount(this.state);
+              setUpAccount(this.state).catch(err => {
+                if (err.code === 'auth/email-already-in-use') {
+                  this.setState({ emailInUse: true });
+                }
+              });
             }}
           >
             SEND
           </Button>
         </section>
-        <section className={styles.confirmation}></section>
+        <Toaster show={emailInUse} type="error" >
+          {email} - already exists. Please
+          <Button
+            linkTo="cms/login"
+            color="white"
+            className={styles.login}
+          >
+            Log In
+          </Button >
+          instead.
+        </Toaster >
       </div >
     );
   }
