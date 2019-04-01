@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
+import Device from '/src/device';
 import styles from './styles.scss';
 import { stage } from '../../types';
 import { compose } from 'redux';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device/index';
+import Device from '/src/device/index';
 import styles from './styles.scss';
 import { toolbar } from './types';
 import AddButton from './add-button/add-button';

@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
 import { Tooltip as Tippy } from 'react-tippy';
-import Routes from '/src/routes';
+import Routes from '/src/routes/index';
 import styles from './styles.scss';
 import types from './types';
-import Device from '../../device';
+import Device from '../../device/index';
 
 class Tooltip extends PureComponent {
   constructor(props) {

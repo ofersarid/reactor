@@ -6,7 +6,7 @@ import App from '/src/cms/app';
 import { hashHistory } from 'react-router';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { Button, Tooltip, Icons } from '/src/cms/elements';
+import { Button, Tooltip, Icons } from '/src/elements';
 import Collections from '/src/cms/collections';
 import styles from './styles.scss';
 import { collections } from '../types';

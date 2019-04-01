@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
+import Device from '/src/device';
 import Routes from '/src/routes/index';
 import styles from './styles.scss';
 import types from './types';

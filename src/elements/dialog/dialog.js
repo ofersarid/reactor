@@ -3,11 +3,11 @@ import types from './types';
 import ReactDOM from 'react-dom';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
-import Device from '/src/cms/device';
+import Device from '/src/device/index';
 import connect from 'react-redux/es/connect/connect';
 import styles from './styles.scss';
-import Button from '/src/cms/elements/button';
-import Toaster from '/src/cms/elements/toaster';
+import Button from '/src/elements/button/index';
+import Toaster from '/src/elements/toaster/index';
 
 class Dialog extends PureComponent {
   constructor(props) {

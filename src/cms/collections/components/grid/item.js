@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import Device from '/src/cms/device/index';
-import { Button, Tooltip } from '/src/cms/elements';
+import Device from '/src/device/index';
+import { Button, Tooltip } from '/src/elements';
 import App from '/src/cms/app/index';
 import cx from 'classnames';
 import { entityItem } from '../../types';
 import styles from './styles.scss';
 import ImageAsync from 'react-image-async';
-import Puff from '/src/cms/svg-loaders/puff.svg';
+import Puff from '/src/svg-loaders/puff.svg';
 import { LinkExternal } from 'styled-icons/boxicons-regular/LinkExternal';
 import { SortDown } from 'styled-icons/boxicons-regular/SortDown';
 import { Hide } from 'styled-icons/boxicons-solid/Hide';

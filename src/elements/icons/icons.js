@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device/index';
+import Device from '/src/device/index';
 import { Collection } from 'styled-icons/boxicons-solid/Collection';
 import { Contacts } from 'styled-icons/material/Contacts';
 import { CartAlt } from 'styled-icons/boxicons-solid/CartAlt';

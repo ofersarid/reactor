@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
-import Device from '/src/cms/device';
+import Device from '/src/device';
 import { navBar } from '../../types';
 import styles from './styles.scss';
 import LeftCol from './left-col/left-col';

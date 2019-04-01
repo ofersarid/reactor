@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
-import Toaster from '/src/cms/elements/toaster';
+import Device from '/src/device';
+import Toaster from '/src/elements/toaster';
 import autoBind from 'auto-bind';
 import ContactForm from '../contacts-form/contact-form';
 import { contactUs } from '../../types';

@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Device from '/src/cms/device/index';
+import Device from '/src/device/index';
 // import { filteredOrderedList } from '/src/cms/collections/selectors';
-import { Button } from '/src/cms/elements';
+import { Button } from '/src/elements';
 import types from '../types';
 import { firestoreConnect } from 'react-redux-firebase';
 import Collections from '/src/cms/collections';

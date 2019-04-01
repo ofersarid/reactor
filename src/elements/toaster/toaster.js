@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import cx from 'classnames';
-import Device from '/src/cms/device';
+import Device from '/src/device/index';
 import noop from 'lodash/noop';
 import types from './types';
 import styles from './styles.scss';

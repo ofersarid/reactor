@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
+import Device from '/src/device';
 import { compose } from 'redux';
-import { Button } from '/src/cms/elements';
+import { Button } from '/src/elements';
 import Routes from '/src/routes/index';
 import styles from './styles.scss';
 import CollectionList from './collection-list/collection-list';

@@ -2,13 +2,13 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 // import noop from 'lodash/noop';
-import Device from '/src/cms/device';
+import Device from '/src/device';
 import autoBind from 'auto-bind';
 // import { Filter } from 'styled-icons/boxicons-regular/Filter';
 import { SortDown } from 'styled-icons/boxicons-regular/SortDown';
 import { Title } from 'styled-icons/material/Title';
 import { Description } from 'styled-icons/material/Description';
-import { Select } from '/src/cms/elements';
+import { Select } from '/src/elements';
 // import { toCapitalizedWords } from '/src/cms/utils';
 import isEqual from 'lodash/isEqual';
 import Collections from '/src/cms/collections';
@@ -16,7 +16,7 @@ import { filters } from '../../types';
 import styles from './styles.scss';
 import { updateQuery, updateOrder, resetFilter } from '../../actions';
 import { orderBy } from '../../selectors';
-import Tooltip from '../../../elements/tooltip/tooltip';
+import Tooltip from '../../../../elements/tooltip/tooltip';
 
 class Filters extends PureComponent {
   constructor(props) {

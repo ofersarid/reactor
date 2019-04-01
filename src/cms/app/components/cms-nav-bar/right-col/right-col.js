@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Globe } from 'styled-icons/fa-solid/Globe';
-import Button from '/src/cms/elements/button';
+import Button from '/src/elements/button';
 import { rightCol } from '../../../types';
-import Device from '/src/cms/device';
+import Device from '/src/device';
 import Auth from '/src/cms/auth';
 import { PowerOff } from 'styled-icons/boxicons-regular/PowerOff';
 import { hashHistory } from 'react-router';

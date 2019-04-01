@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux-immutable';
-import device from '/src/cms/device/reducers';
+import device from '/src/device/reducers';
 import { firestoreReducer as fireStore } from 'redux-firestore';
 import { firebaseReducer as firebase } from 'react-redux-firebase';
 import auth from '/src/cms/auth/reducers';

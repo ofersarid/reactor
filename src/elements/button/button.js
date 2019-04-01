@@ -2,9 +2,9 @@ import React, { Fragment, PureComponent } from 'react';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
 import { hashHistory } from 'react-router';
-import Puff from '/src/cms/svg-loaders/puff.svg';
-import Tooltip from '/src/cms/elements/tooltip/tooltip';
-import { store } from '/src';
+import Puff from '/src/svg-loaders/puff.svg';
+import Tooltip from '/src/elements/tooltip/tooltip';
+import { store } from '/src/index';
 import styles from './styles.scss';
 import { button } from './types';
 

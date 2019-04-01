@@ -5,10 +5,10 @@ import ImageAsync from 'react-image-async';
 // import Resizer from 'react-image-file-resizer';
 import { imageFile } from '../../types';
 import styles from './styles.scss';
-import Button from '/src/cms/elements/button';
+import Button from '/src/elements/button/index';
 import { Image as ImageIcon } from 'styled-icons/material/Image';
 import { Rotate90DegreesCcw } from 'styled-icons/material/Rotate90DegreesCcw';
-import Puff from '/src/cms/svg-loaders/puff.svg';
+import Puff from '/src/svg-loaders/puff.svg';
 import noop from 'lodash/noop';
 import ValidationIndicator from '../validation-indicator/validation-indicator';
 

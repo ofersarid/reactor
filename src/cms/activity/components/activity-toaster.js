@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { CloudUploadAlt } from 'styled-icons/fa-solid/CloudUploadAlt';
 import { activity } from '../types';
-import Toaster from '/src/cms/elements/toaster';
+import Toaster from '/src/elements/toaster';
 import { uploadStatus, uploadingFiles } from '../selectors';
 import styles from './styles.scss';
 

@@ -3,7 +3,7 @@ import cx from 'classnames';
 import autoBind from 'auto-bind';
 import { pdfFile } from '../../types';
 import styles from './styles.scss';
-import Button from '/src/cms/elements/button';
+import Button from '/src/elements/button/index';
 import { PictureAsPdf } from 'styled-icons/material/PictureAsPdf';
 import noop from 'lodash/noop';
 import ValidationIndicator from '../validation-indicator/validation-indicator';

@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
+import Device from '/src/device';
 import autoBind from 'auto-bind';
-import { Button, UserInput, Toaster } from '/src/cms/elements';
+import { Button, UserInput, Toaster } from '/src/elements';
 import { toTitleCase, validateEmail } from '/src/cms/utils';
 import difference from 'lodash/difference';
 import * as actions from '../../actions';

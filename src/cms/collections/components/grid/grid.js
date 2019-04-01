@@ -1,12 +1,12 @@
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Device from '/src/cms/device/index';
-import Button from '/src/cms/elements/button/index';
+import Device from '/src/device/index';
+import Button from '/src/elements/button/index';
 import { Check } from 'styled-icons/fa-solid/Check';
 import { Cancel } from 'styled-icons/material/Cancel';
 import { ActivityToaster } from '/src/cms/activity';
-import Toaster from '/src/cms/elements/toaster/index';
+import Toaster from '/src/elements/toaster/index';
 import StackGrid from 'react-stack-grid';
 import { TrashAlt } from 'styled-icons/boxicons-solid/TrashAlt';
 import App from '/src/cms/app/index';

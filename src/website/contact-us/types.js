@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { deviceTypes } from '/src/cms/device/types';
+import { deviceTypes } from '/src/device/types';
 
 export const contactForm = {
   onSend: PropTypes.func.isRequired,

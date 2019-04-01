@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
+import Device from '/src/device/index';
 import autoBind from 'auto-bind';
 import { validationIndicator } from '../../types';
 import styles from './styles.scss';

@@ -1,4 +1,4 @@
-import { deviceTypes } from '/src/cms/device/types';
+import { deviceTypes } from '/src/device/types';
 import PropTypes from 'prop-types';
 
 export const login = {

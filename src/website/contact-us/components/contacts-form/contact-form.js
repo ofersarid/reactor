@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
+import Device from '/src/device';
 import autoBind from 'auto-bind';
 import { compose } from 'redux';
-import { UserInput } from '/src/cms/elements';
-import Button from '/src/cms/elements/button';
+import { UserInput } from '/src/elements';
+import Button from '/src/elements/button';
 import { validateEmail, toTitleCase } from '/src/cms/utils';
 import { createContact } from './actions';
 import { contactForm } from '../../types';

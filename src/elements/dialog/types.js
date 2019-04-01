@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { deviceTypes } from '/src/cms/device/types';
-import { button } from '/src/cms/elements/button/types';
+import { deviceTypes } from '/src/device/types';
+import { button } from '/src/elements/button/types';
 
 const types = {
   ...deviceTypes,

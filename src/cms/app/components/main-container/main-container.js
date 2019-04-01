@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device';
+import Device from '/src/device';
 import { mainContainer } from '../../types';
 import Routes from '/src/routes';
 import Stage from '/src/cms/app/components/stage/stage';

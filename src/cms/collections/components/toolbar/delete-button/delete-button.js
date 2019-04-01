@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device/index';
-import Button from '/src/cms/elements/button/index';
+import Device from '/src/device/index';
+import Button from '/src/elements/button/index';
 import { deleteButton } from '../types';
 import App from '/src/cms/app/index';
 import { TrashAlt } from 'styled-icons/boxicons-solid/TrashAlt';

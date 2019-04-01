@@ -1,8 +1,8 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Check } from 'styled-icons/fa-solid/Check';
-import { Dialog } from '/src/cms/elements/dialog/index';
-import { UserInput } from '/src/cms/elements/index';
+import { Dialog } from '/src/elements/dialog/index';
+import { UserInput } from '/src/elements/index';
 import { hashHistory } from 'react-router';
 import { ModeEdit } from 'styled-icons/material/ModeEdit';
 import { AddCircle } from 'styled-icons/material/AddCircle';

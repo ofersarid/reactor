@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { deviceTypes } from '/src/cms/device/types';
+import { deviceTypes } from '/src/device/types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { inputTypes } from '/src/cms/elements/user-input/types';
+import { inputTypes } from '/src/elements/user-input/types';
 
 export const field = PropTypes.shape({
   disabled: PropTypes.bool.isRequired,

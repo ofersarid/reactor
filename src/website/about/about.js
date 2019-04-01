@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/cms/device/index';
+import Device from '/src/device/index';
 import types from './types';
 
 const About = () => (

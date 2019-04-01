@@ -13,7 +13,7 @@ import SingleLine from './components/single-line/single-line';
 import MultiLine from './components/multi-line/multi-line';
 import Link from './components/link/link';
 import Switch from './components/switch/switch';
-import Device from '../../device';
+import Device from '../../device/index';
 import Select from '../select/select';
 
 const onKeyPress = (e, onEnterKeyPress) => {
