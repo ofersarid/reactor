@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Device from '/src/cms/device';
 import { compose } from 'redux';
 import { Button } from '/src/cms/elements';
+import Routes from '/src/routes/index';
 import styles from './styles.scss';
 import CollectionList from './collection-list/collection-list';
 import { ChevronLeft } from 'styled-icons/fa-solid/ChevronLeft';
@@ -47,6 +48,7 @@ SideNav.propTypes = sideNav;
 const mapStateToProps = state => ({
   isMobile: Device.selectors.isMobile(state),
   sideNavOpen: sideNavOpen(state),
+  pathname: Routes.selectors.pathname(state),
 });
 
 const mapDispatchToProps = dispatch => ({
