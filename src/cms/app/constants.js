@@ -5,4 +5,4 @@ export const ACTIONS = {
   STORE_DELETED_IDS_HACK: 'APP/STORE_DELETED_IDS_HACK',
 };
 export const SIDE_NAV_WIDTH = 250;
-export const SIDE_NAV_COLLAPSE_WIDTH = 54;
+export const SIDE_NAV_COLLAPSE_WIDTH = 64;

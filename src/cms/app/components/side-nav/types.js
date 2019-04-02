@@ -12,5 +12,5 @@ export const collections = {
     icon: PropTypes.string,
   })),
   collectionId: PropTypes.string.isRequired,
-  sideNavOpen: PropTypes.bool.isRequired,
+  // sideNavOpen: PropTypes.bool.isRequired,
 };

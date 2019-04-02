@@ -1,24 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Globe } from 'styled-icons/fa-solid/Globe';
 import Button from '/src/elements/button';
 import { rightCol } from '../../../types';
 import Device from '/src/device';
 import Auth from '/src/cms/auth';
-import { PowerOff } from 'styled-icons/boxicons-regular/PowerOff';
+import { Power } from 'styled-icons/feather/Power';
+import { Settings } from 'styled-icons/feather/Settings';
 import { hashHistory } from 'react-router';
+import Routes from '/src/routes';
 import styles from './styles.scss';
 
 const RightCol = props => (
   <ul className={styles.rightCol} >
-    {!props.isMobile && <li className={styles.clientId} >Client-Id: ?</li >}
     <li >
       <Button
-        linkTo="website/home"
         className={styles.btn}
         justIcon
+        linkTo="/cms/settings"
+        textColor={props.isSettingsPage ? 'green' : null}
       >
-        <Globe />
+        {props.isSettingsPage && <div className={styles.indicator} />}
+        <Settings />
       </Button >
     </li >
     <li >
@@ -31,7 +33,7 @@ const RightCol = props => (
           });
         }}
       >
-        <PowerOff />
+        <Power />
       </Button >
     </li >
   </ul >
@@ -41,6 +43,7 @@ RightCol.propTypes = rightCol;
 
 const mapStateToProps = state => ({
   isMobile: Device.selectors.isMobile(state),
+  isSettingsPage: Routes.selectors.pathname(state) === '/cms/settings',
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,28 +1,36 @@
 @import '/src/cms/colors';
 
 .sideNav {
-  height: calc(100% - 10px);
+  height: calc(100% - 30px);
+  transform: translateY(15px);
   transition: .3s;
-  will-change: width;
+  //will-change: width;
   border-right: 1px inset $lightGray;
   flex-shrink: 0;
 }
 
 .btn {
-  :global {
-    .inner {
-      justify-content: flex-end;
-      font-size: 15px;
-      font-weight: 500;
-      height: 46px;
+  position: absolute;
+  bottom: 0;
+
+  :global(.inner) {
+    justify-content: flex-end;
+    font-size: 15px;
+    font-weight: 500;
+    height: 46px;
+    transform-origin: calc(100% - 30px) 50%;
+  }
+  &:hover {
+    :global(.inner) {
+      transform: scale(1.2);
     }
   }
-  
+
   svg {
-    height: 17px;
-    margin-right: 4px;
+    //height: 17px;
+    margin-right: 12px;
   }
-  
+
   * {
     transition: .4s;
   }
@@ -36,5 +44,25 @@
 
 .flip {
   transform: scaleX(-1);
+}
+
+.logo {
+  width: 160px;
+  display: block;
+  padding: 10px 20px 20px;
+}
+
+.clientLogo {
+  border-radius: 5px;
+  height: 100px;
+  width: calc(100% - 30px);
+  margin: 0 auto 20px;
+  background-position: center center;
+  background-size: cover;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 

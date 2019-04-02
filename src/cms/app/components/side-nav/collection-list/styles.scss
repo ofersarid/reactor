@@ -4,7 +4,7 @@
   0% {
     height: 0;
   }
-  
+
   100% {
     height: calc(100% - 8px);
   }
@@ -29,14 +29,17 @@
 
 .navButton {
   text-transform: capitalize;
-  
+  font-weight: 400;
+
   :global {
     .inner {
       justify-content: initial;
       padding-left: 20px;
+      transform-origin: 0 50%;
+      font-size: 16px;
     }
   }
-  
+
   &:hover {
     :global {
       .inner {

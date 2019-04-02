@@ -19,10 +19,10 @@ import 'react-tippy/dist/tippy.css';
 const MainContainer = props => props.isLoaded ? (
   <AuthRedirect >
     <Device />
-    <CMSNavBar />
-    <div className={styles.layout} >
+    <div className={styles.main} >
       <SideNav />
       <Stage >
+        <CMSNavBar />
         {props.children}
       </Stage >
       <ToastContainer />

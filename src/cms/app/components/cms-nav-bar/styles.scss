@@ -3,7 +3,8 @@
 
 .navBar {
   //background: rgba(255, 255, 255, 0.5);
-  height: calc(#{$nav-bar-height - 10px});
+  height: 50px;
+  flex-shrink: 0;
   margin-bottom: 10px;
   width: 100%;
   display: flex;

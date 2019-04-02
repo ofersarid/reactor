@@ -1,16 +1,20 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
-import Device from '/src/device';
+// import ImageAsync from 'react-image-async';
 import { compose } from 'redux';
-import { Button } from '/src/elements';
+import Device from '/src/device';
+// import Puff from '/src/svg-loaders/puff.svg';
+// import { Button } from '/src/elements';
 import Routes from '/src/routes/index';
+// import { FileUpload } from 'styled-icons/material/FileUpload';
 import styles from './styles.scss';
 import CollectionList from './collection-list/collection-list';
-import { ChevronLeft } from 'styled-icons/fa-solid/ChevronLeft';
+import logo from './logo.svg';
+// import { ChevronLeft } from 'styled-icons/fa-solid/ChevronLeft';
 import { toggleSideNav } from '../../actions';
 import { sideNavOpen } from '../../selectors';
-import { SIDE_NAV_WIDTH, SIDE_NAV_COLLAPSE_WIDTH } from '../../constants';
+// import { SIDE_NAV_WIDTH, SIDE_NAV_COLLAPSE_WIDTH } from '../../constants';
 import { sideNav } from './types';
 
 class SideNav extends PureComponent {
@@ -22,22 +26,33 @@ class SideNav extends PureComponent {
   }
 
   render() {
-    const { toggleSideNav, sideNavOpen } = this.props;
     return (
       <div
         className={cx(styles.sideNav)}
-        style={{
-          width: sideNavOpen ? SIDE_NAV_WIDTH : SIDE_NAV_COLLAPSE_WIDTH,
-        }}
+        // style={{
+        //   width: sideNavOpen ? SIDE_NAV_WIDTH : SIDE_NAV_COLLAPSE_WIDTH,
+        // }}
       >
-        <Button
-          stretch
-          className={styles.btn}
-          onClick={toggleSideNav}
-        >
-          <ChevronLeft className={cx(!sideNavOpen && styles.flip)} />
-        </Button >
+        <img className={styles.logo} src={logo} />
+        {/* <ImageAsync src={['clientLogo']} > */}
+        {/* {({ loaded, error }) => ( */}
+        {/* <div style={{ backgroundImage: `url(${loaded ? 'clientLogo' : Puff})` }} className={styles.clientLogo} > */}
+        {/* {error && ( */}
+        {/* <Button justIcon > */}
+        {/* <FileUpload /> */}
+        {/* </Button> */}
+        {/* )} */}
+        {/* </div> */}
+        {/* )} */}
+        {/* </ImageAsync > */}
         <CollectionList />
+        {/* <Button */}
+        {/* stretch */}
+        {/* className={styles.btn} */}
+        {/* onClick={toggleSideNav} */}
+        {/* > */}
+        {/* <ChevronLeft className={cx(!sideNavOpen && styles.flip)} /> */}
+        {/* </Button > */}
       </div >
     );
   }
