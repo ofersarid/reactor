@@ -85,7 +85,7 @@
   },
   "scripts": {
     "start": "parcel index.html",
-    "publish": "rimraf ./docs && parcel build index.html --public-url '.' --out-dir docs && copyfiles CNAME ./docs/ && git add . && git commit -am \"publish\" && git push",
+    "publish": "rimraf ./docs && parcel build index.html --public-url '.' --out-dir docs && copyfiles CNAME ./docs/ && git remote set-url origin https://github.com/ofersarid/recator.git && git add . && git commit -am \"publish\" && git push && git remote set-url origin https://github.com/ofersarid/recator-staging.git",
     "lint": "esw src/",
     "lint-watch": "esw src/ -w",
     "storybook": "start-storybook -p 9001 -c .storybook"
