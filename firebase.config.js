@@ -6,12 +6,12 @@ import 'firebase/storage';
 
 // Initialize Firebase - Update this with client specific credentials
 export const config = {
-  apiKey: 'AIzaSyBF_ouTjRvczqEzaNiIHvdguL_-Bqis-Wg',
-  authDomain: 'goblins-saas.firebaseapp.com',
-  databaseURL: 'https://goblins-saas.firebaseio.com',
-  projectId: 'goblins-saas',
-  storageBucket: 'goblins-saas.appspot.com',
-  messagingSenderId: '898394464841'
+  apiKey: 'AIzaSyCVoJ1fNik-brXSirPwXfzEzpK4HDJyIdE',
+  authDomain: 'reactor-dam.firebaseapp.com',
+  databaseURL: 'https://reactor-dam.firebaseio.com',
+  projectId: 'reactor-dam',
+  storageBucket: 'reactor-dam.appspot.com',
+  messagingSenderId: '198256799515'
 };
 
 firebase.initializeApp(config);
