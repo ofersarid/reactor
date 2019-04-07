@@ -1,1 +1,1 @@
-# goblins-headless-crm
+# Reactor - Headless DAM for React.
