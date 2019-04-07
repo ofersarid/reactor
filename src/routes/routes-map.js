@@ -8,9 +8,8 @@ import { WebsiteMainContainer } from '/src/website/ws-main-container';
 import { Home } from '/src/website/home';
 import About from '/src/website/about';
 import { ContactUs } from '/src/website/contact-us';
+import { UnderConstruction } from '/src/elements';
 import { CreateAccountDialog } from '/src/website/create-account';
-
-const DummyComponent = () => (<div >Dummy</div >);
 
 export default (
   <Route path="/" component={ReduxRoutes} >
@@ -22,7 +21,7 @@ export default (
         <Route path="edit/:entityId" component={Editor} />
       </Route >
       <Route path="login" component={LoginPage} />
-      <Route path="settings" component={DummyComponent} />
+      <Route path="settings" component={UnderConstruction} />
     </Route >
     <Route path="website" component={WebsiteMainContainer} >
       <IndexRedirect to="home" />

@@ -5,3 +5,23 @@
   height: 100vh;
   width: 100vw;
 }
+
+.page {
+  height: calc(100% - 90px);
+  overflow: auto;
+}
+
+.stage {
+  //background: #f8f8f8;
+  height: 100%;
+  bottom: 0;
+  width: 100%;
+  margin: 15px;
+  flex-shrink: 1;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  //background: linear-gradient(to right, #e4e4e4, #ffffff);
+}

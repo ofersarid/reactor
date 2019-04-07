@@ -7,3 +7,4 @@ export { default as Tooltip } from './tooltip/tooltip';
 export { default as Icons } from './icons/icons';
 export { default as Toaster } from './toaster/toaster';
 export { default as Popover } from './popover/popover';
+export { default as UnderConstruction } from './under-construction/under-construction';

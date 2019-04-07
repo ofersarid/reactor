@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Device from '/src/device';
 import { mainContainer } from '../../types';
 import Routes from '/src/routes';
-import Stage from '/src/cms/app/components/stage/stage';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import Auth from '/src/cms/auth';
@@ -21,10 +20,12 @@ const MainContainer = props => props.isLoaded ? (
     <Device />
     <div className={styles.main} >
       <SideNav />
-      <Stage >
+      <div className={styles.stage} >
         <CMSNavBar />
-        {props.children}
-      </Stage >
+        <div className={styles.page}>
+          {props.children}
+        </div>
+      </div >
       <ToastContainer />
     </div >
   </AuthRedirect >
