@@ -85,8 +85,8 @@
   },
   "scripts": {
     "start": "parcel index.html",
-    "stage": "rimraf ./docs && parcel build index.html --public-url '.' --out-dir docs && copyfiles env/staging/CNAME ./docs/ && git add . && git commit -am \"stage\" && git push",
-    "publish": "git remote set-url origin https://github.com/ofersarid/reactor.git && copyfiles env/production/CNAME ./docs/ && git add . && git commit -am \"publish\" && git push && git remote set-url origin https://github.com/ofersarid/reactor-staging.git",
+    "stage": "rimraf ./docs && parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/staging/CNAME ./docs/ && git add . && git commit -am \"stage\" && git push",
+    "publish": "git remote set-url origin https://github.com/ofersarid/reactor.git && copyfiles -f env/production/CNAME ./docs/ && git add . && git commit -am \"publish\" && git push && git remote set-url origin https://github.com/ofersarid/reactor-staging.git",
     "lint": "esw src/",
     "lint-watch": "esw src/ -w",
     "storybook": "start-storybook -p 9001 -c .storybook"
