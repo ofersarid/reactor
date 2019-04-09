@@ -1,5 +1,5 @@
-@import '/src/cms/colors';
-@import '/src/cms/animations';
+@import '/src/colors';
+@import '/src/animations';
 
 $padding: 15px;
 
@@ -66,7 +66,7 @@ $padding: 15px;
   display: flex;
   align-items: center;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);
-  
+
   svg {
     height: 25px;
     margin-right: 10px;
@@ -97,7 +97,7 @@ $padding: 15px;
 .actionList {
   display: flex;
   justify-content: flex-end;
-  
+
   li {
     display: inline-block;
   }

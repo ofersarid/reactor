@@ -1,16 +1,16 @@
-@import '/src/cms/colors';
+@import '/src/colors';
 
 .filters {
   margin-left: 20px;
   display: flex;
   align-items: center;
   height: 47px;
-  
+
   svg {
     height: 25px;
   }
-  
-  
+
+
   label {
     width: auto;
     color: $yellow;
@@ -20,12 +20,12 @@
     align-items: center;
     text-transform: capitalize;
   }
-  
+
   :global {
     .single-line {
       height: 100%;
       width: 100px;
-      
+
       input {
         border-radius: 0;
         background: transparent;
@@ -34,23 +34,23 @@
         padding: 0 8px;
       }
     }
-  
+
     .select__control {
       background: transparent;
       border-radius: 0;
       border: none;
     }
-  
+
     .select__menu {
       background: $black;
       color: white;
       border-radius: 0;
     }
-  
+
     .select__single-value {
       color: black;
     }
-    
+
     .select__input {
       color: white;
     }
@@ -74,20 +74,20 @@
 
 .select {
   width: 138px;
-  
+
   :global {
     .select__option--is-focused {
       //background: transparent;
     }
-    
+
     .select__option:hover {
       background: rgba(white, 0.2);
     }
-    
+
     .select__option:active {
       background: rgba($green, 0.5);
     }
-    
+
     .select__option--is-selected:hover {
       background: $green;
     }

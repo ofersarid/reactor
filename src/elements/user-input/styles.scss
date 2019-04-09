@@ -1,4 +1,4 @@
-@import '/src/cms/animations';
+@import '/src/animations';
 
 .textArea,
 .dateTime input {
@@ -17,7 +17,7 @@
 .dateTime input {
   width: calc(50% - 5px);
   margin-right: 10px;
-  
+
   &:last-of-type {
     margin-right: 0;
   }
@@ -46,7 +46,7 @@
 .field {
   margin-bottom: 10px;
   flex-shrink: 0;
-  
+
   &:nth-last-child(1) {
     margin-bottom: 0;
   }

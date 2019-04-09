@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+@import 'colors';
+
 body {
   overflow: hidden;
   font-weight: 100;
@@ -19,4 +22,38 @@ ul {
 .root {
   font-weight: 100;
   font-family: 'sansation', sans-serif;
+}
+
+$placeholderColor: #9f9b9b;
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: $placeholderColor;
+  font-style: italic;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: $placeholderColor;
+  font-style: italic;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: $placeholderColor;
+  font-style: italic;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: $placeholderColor;
+  font-style: italic;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #bcbcbc;
 }

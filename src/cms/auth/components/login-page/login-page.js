@@ -8,7 +8,7 @@ import { UserInput } from '/src/elements';
 import { Dialog } from '/src/elements/dialog';
 import Auth from '/src/cms/auth';
 import { Fingerprint } from 'styled-icons/boxicons-regular/Fingerprint';
-import { validateEmail } from '/src/cms/utils';
+import { validateEmail } from '/src/utils';
 import styles from './styles.scss';
 
 class LoginPage extends PureComponent {

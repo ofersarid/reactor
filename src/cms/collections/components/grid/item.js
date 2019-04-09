@@ -13,7 +13,7 @@ import { LinkExternal } from 'styled-icons/boxicons-regular/LinkExternal';
 import { SortDown } from 'styled-icons/boxicons-regular/SortDown';
 import { Hide } from 'styled-icons/boxicons-solid/Hide';
 import { Show } from 'styled-icons/boxicons-solid/Show';
-import { toCapitalizedWords } from '/src/cms/utils';
+import { toCapitalizedWords } from '/src/utils';
 import Routes from '/src/routes';
 import Filters from '/src/cms/filters/index';
 

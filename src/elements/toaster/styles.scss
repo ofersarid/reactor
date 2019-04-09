@@ -1,4 +1,4 @@
-@import '/src/cms/colors';
+@import '/src/colors';
 
 .toaster {
   height: 80px;
@@ -29,7 +29,7 @@
 .warning {
   text-shadow: -1px -1px 0 #d1a503;
   background: rgba(243, 178, 32, 0.9);
-  
+
   svg {
     filter: drop-shadow(-1px -1px #d1a503);
   }
@@ -38,7 +38,7 @@
 .success {
   text-shadow: -1px -1px 0 #43b253;
   background: rgba(78, 205, 106, 0.9);
-  
+
   svg {
     filter: drop-shadow(-1px -1px #43b253);
   }

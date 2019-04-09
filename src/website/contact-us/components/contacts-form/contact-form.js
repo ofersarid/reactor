@@ -5,7 +5,7 @@ import autoBind from 'auto-bind';
 import { compose } from 'redux';
 import { UserInput } from '/src/elements';
 import Button from '/src/elements/button';
-import { validateEmail, toTitleCase } from '/src/cms/utils';
+import { validateEmail, toTitleCase } from '/src/utils';
 import { createContact } from './actions';
 import { contactForm } from '../../types';
 import styles from './styles.scss';

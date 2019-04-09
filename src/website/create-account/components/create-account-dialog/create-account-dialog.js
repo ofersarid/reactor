@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Device from '/src/device';
 import autoBind from 'auto-bind';
 import { Button, UserInput, Toaster } from '/src/elements';
-import { toTitleCase, validateEmail } from '/src/cms/utils';
+import { toTitleCase, validateEmail } from '/src/utils';
 import difference from 'lodash/difference';
 import * as actions from '../../actions';
 import styles from './styles.scss';

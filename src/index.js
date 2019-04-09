@@ -7,7 +7,7 @@ import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import { reduxFirestore, getFirestore } from 'redux-firestore';
 import firebase from '../firebase.config';
 import { Router, hashHistory } from 'react-router';
-import rootReducer from './cms/root-reducers';
+import rootReducer from './root-reducers';
 import Routes from '/src/routes';
 import Waves from 'node-waves';
 import './fonts/fonts.scss';

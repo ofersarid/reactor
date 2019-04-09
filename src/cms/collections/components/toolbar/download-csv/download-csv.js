@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Device from '/src/device/index';
 import Button from '/src/elements/button/index';
 import { Download2 } from 'styled-icons/icomoon/Download2';
-import { exportToCsv } from '/src/cms/utils';
+import { exportToCsv } from '/src/utils';
 import Collections from '/src/cms/collections';
 import { downloadCsv } from '../types';
 

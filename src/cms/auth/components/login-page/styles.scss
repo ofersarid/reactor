@@ -1,4 +1,4 @@
-@import "/src/cms/animations";
+@import "/src/animations";
 
 .logInPage {
   display: flex;
@@ -13,7 +13,7 @@
     .dark-bg {
       background: linear-gradient(to right, #ffffff, #cacaca);
     }
-    
+
     .dialog-box {
       max-width: 350px;
     }

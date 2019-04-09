@@ -1,4 +1,4 @@
-@import '/src/cms/colors';
+@import '/src/colors';
 
 $toolbarHeight: 47px;
 
@@ -15,7 +15,7 @@ $toolbarHeight: 47px;
   flex-shrink: 0;
   z-index: 3;
   //justify-content: space-between;
-  
+
   svg {
     height: 22px;
   }

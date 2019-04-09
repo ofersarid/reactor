@@ -3,7 +3,7 @@ import { Contact } from 'styled-icons/boxicons-solid/Contact';
 import { Event } from 'styled-icons/material/Event';
 import { Group } from 'styled-icons/boxicons-solid/Group';
 import { CartAlt } from 'styled-icons/boxicons-solid/CartAlt';
-import { validateEmail } from '/src/cms/utils';
+import { validateEmail } from '/src/utils';
 
 export const COLLECTIONS = [
   {

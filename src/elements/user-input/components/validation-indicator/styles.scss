@@ -1,5 +1,5 @@
-@import '/src/cms/colors';
-@import '/src/cms/animations';
+@import '/src/colors';
+@import '/src/animations';
 
 .validationIndicator {
   background: $red;
@@ -14,7 +14,7 @@
   transition: .2s ease-out;
   flex-grow: 0;
   flex-shrink: 0;
-  
+
   svg {
     animation: $popIn;
     height: 20px;

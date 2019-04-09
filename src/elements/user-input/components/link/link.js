@@ -4,7 +4,7 @@ import cx from 'classnames';
 import styles from './styles.scss';
 import noop from 'lodash/noop';
 import Button from '/src/elements/button/index';
-import { validateEmail } from '/src/cms/utils';
+import { validateEmail } from '/src/utils';
 import { ExternalLinkSquareAlt } from 'styled-icons/fa-solid/ExternalLinkSquareAlt';
 import { link } from '../../types';
 import ValidationIndicator from '../validation-indicator/validation-indicator';

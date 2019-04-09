@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import noop from 'lodash/noop';
-import { toCapitalizedWords, validateEmail, youtubeEmbedTransformer } from '/src/cms/utils';
+import { toCapitalizedWords, validateEmail, youtubeEmbedTransformer } from '/src/utils';
 import styles from './styles.scss';
 import { userInput } from './types';
 import DateTime from './components/date-time/date-time';

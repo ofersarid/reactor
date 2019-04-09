@@ -1,4 +1,4 @@
-@import '/src/cms/styles';
+@import '/src/styles';
 
 .imageUpload {
   width: 100%;
@@ -22,7 +22,7 @@
 .button {
   width: 100%;
   height: 100%;
-  
+
   :global {
     .inner {
       display: flex;
