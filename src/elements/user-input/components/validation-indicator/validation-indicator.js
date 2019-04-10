@@ -65,7 +65,7 @@ class ValidationIndicator extends PureComponent {
   }
 
   render() {
-    const { min, max, value, show, numeric, rtl } = this.props;
+    const { min, max, value, show, numeric, rtl, validationTip } = this.props;
     const { isValid, booleanMode } = this.state;
     let content = '';
     if (booleanMode) {
@@ -77,7 +77,7 @@ class ValidationIndicator extends PureComponent {
     const charCount = value.length;
     return show ? (
       <Tooltip
-        content={content}
+        content={validationTip || content}
         className={cx(styles.validationIndicator, isValid && styles.isValid, rtl && styles.rtl)}
       >
         {isValid ? <Check /> : (booleanMode || numeric) ? <Exclamation /> : charCount}

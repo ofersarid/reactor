@@ -22,12 +22,12 @@ const onKeyPress = (e, onEnterKeyPress) => {
   }
 };
 
-const resolveValidateWith = (type, validateWidth) => {
+const resolveValidateWith = (type, validateWith) => {
   switch (true) {
-    case type === 'email' && !validateWidth:
+    case type === 'email' && !validateWith:
       return validateEmail;
     default:
-      return validateWidth;
+      return validateWith;
   }
 };
 
@@ -149,10 +149,12 @@ const resolveComponentByType = (props) => {
           mask={props.type === 'password'}
           ref={props.getRef}
           validateWith={resolveValidateWith(props.type, props.validateWith)}
+          validationTip={props.validationTip}
           optional={props.optional}
           onlyNumbers={props.type === 'number'}
           rtl={props.rtl}
           stretch={props.stretch}
+          onBlur={props.onBlur}
         />
       );
   }

@@ -10,6 +10,7 @@ export const userInput = {
   label: PropTypes.node,
   value: PropTypes.any,
   onEnterKeyPress: PropTypes.func,
+  onBlur: PropTypes.func,
   min: PropTypes.number,
   max: PropTypes.number,
   onValidation: PropTypes.func,
@@ -24,6 +25,7 @@ export const userInput = {
   rtl: PropTypes.bool,
   optional: PropTypes.bool,
   stretch: PropTypes.bool,
+  validationTip: PropTypes.string,
 };
 
 export const switchTypes = {
@@ -67,6 +69,7 @@ export const validationIndicator = {
   numeric: PropTypes.bool,
   validateWith: PropTypes.func,
   rtl: PropTypes.bool,
+  validationTip: PropTypes.string,
 };
 
 export const link = {

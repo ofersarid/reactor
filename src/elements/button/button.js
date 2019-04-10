@@ -63,7 +63,7 @@ class Button extends PureComponent {
             'ripple',
             'waves-effect',
             (colors.includes(color) || noScale) && styles.noScale,
-            color ? styles.wavesDark : styles.wavesLight,
+            (color && !color.match(/invert/)) ? styles.wavesDark : styles.wavesLight,
             styles.button,
             className,
             disable && styles.disable,

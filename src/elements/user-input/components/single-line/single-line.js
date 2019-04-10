@@ -19,6 +19,7 @@ class SingleLine extends PureComponent {
     this.state = {
       showValidation: false,
     };
+    this.$input = React.createRef();
   }
 
   normalizeValue(value) {
@@ -55,7 +56,7 @@ class SingleLine extends PureComponent {
   render() {
     const {
       placeholder, onEnterKeyPress, value, max, min, onValidation, mask,
-      validateWith, onlyNumbers, optional, rtl,
+      validateWith, onlyNumbers, optional, rtl, validationTip, onBlur,
     } = this.props;
     const { showValidation } = this.state;
     return (
@@ -68,9 +69,13 @@ class SingleLine extends PureComponent {
           )}
           placeholder={placeholder}
           onChange={this.handleOnChange}
-          onKeyPress={e => onKeyPress(e, onEnterKeyPress)}
+          onKeyPress={e => {
+            this.showValidation();
+            onKeyPress(e, onEnterKeyPress);
+          }}
           value={value}
-          onFocus={this.showValidation}
+          onBlur={onBlur}
+          ref={this.$input}
         />
         {!optional && (
           <ValidationIndicator
@@ -82,6 +87,7 @@ class SingleLine extends PureComponent {
             validateWith={validateWith}
             numeric={onlyNumbers}
             rtl={rtl}
+            validationTip={validationTip}
           />
         )}
       </div >
