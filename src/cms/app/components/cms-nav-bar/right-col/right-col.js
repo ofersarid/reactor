@@ -17,7 +17,7 @@ const RightCol = props => (
         className={styles.btn}
         justIcon
         linkTo="/cms/settings"
-        textColor={props.isSettingsPage ? 'green' : null}
+        textColor={props.isSettingsPage ? 'active' : null}
       >
         {props.isSettingsPage && <div className={styles.indicator} />}
         <Settings />

@@ -14,7 +14,8 @@ const colors = [
   'black-invert',
   'white',
   'red',
-  'yellow'
+  'yellow',
+  'active'
 ];
 
 class Button extends PureComponent {

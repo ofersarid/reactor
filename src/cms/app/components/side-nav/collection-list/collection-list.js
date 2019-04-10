@@ -31,7 +31,7 @@ class CollectionList extends PureComponent {
               <Button
                 linkTo={isActive ? null : `/cms/collection/${collection.id}`}
                 className={styles.navButton}
-                textColor={isActive ? 'green' : null}
+                textColor={isActive ? 'active' : null}
                 stretch
               >
                 <div >{collection.name}</div >
