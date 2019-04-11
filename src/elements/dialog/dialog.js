@@ -45,7 +45,7 @@ class Dialog extends PureComponent {
   }
 
   render() {
-    const { header, bodyClass, children, actions, errorMsg, className, deviceType } = this.props;
+    const { header, bodyClass, children, actions, errorMsg, className, deviceType, size } = this.props;
     const { isOpen } = this.state;
     return ReactDOM.createPortal(
       <div className={cx(styles.pageBlock, className)} onClick={e => {
@@ -55,7 +55,7 @@ class Dialog extends PureComponent {
         }
       }} >
         <div className={cx('dark-bg', styles.darken, isOpen && styles.darkenShow)} />
-        <div className={cx('dialog-box', styles.dialog, isOpen && styles.dialogOpen, styles[`dialog-${deviceType}`])} >
+        <div className={cx('dialog-box', styles.dialog, isOpen && styles.dialogOpen, styles[`dialog-${deviceType}-${size}`])} >
           <div className={styles.header} >{header}</div >
           <div className={cx(styles.body, bodyClass)} >
             <Fragment >
@@ -94,6 +94,10 @@ class Dialog extends PureComponent {
 }
 
 Dialog.propTypes = types;
+
+Dialog.defaultProps = {
+  size: 'medium',
+};
 
 const mapStateToProps = state => ({
   deviceType: Device.selectors.deviceType(state),

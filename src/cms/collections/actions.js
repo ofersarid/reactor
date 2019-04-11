@@ -111,5 +111,6 @@ export const deleteEntities = (collectionId, markedForDelete) => {
 };
 
 export const createDoc = name => (dispatch, getState, { getFirebase, getFirestore }) => {
-  console.log(name);
+  const firestore = getFirestore();
+  firestore.collection('collections').add({ name });
 };

@@ -41,12 +41,20 @@ $padding: 15px;
   will-change: transform, opacity;
 }
 
-.dialog-desktop {
+.dialog-desktop-medium {
   width: 870px;
 }
 
-.dialog-mobile {
+.dialog-desktop-small {
+  width: 400px
+}
+
+.dialog-mobile-medium {
   width: 90%;
+}
+
+.dialog-mobile-small {
+  width: 50%;
 }
 
 .dialog-tablet {
@@ -102,7 +110,6 @@ $padding: 15px;
     display: inline-block;
   }
 }
-
 
 .errorMsg {
   margin-top: 260px;

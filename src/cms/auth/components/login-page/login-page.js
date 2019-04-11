@@ -46,7 +46,7 @@ class LoginPage extends PureComponent {
           header={(
             <Fragment >
               <Fingerprint />
-              <div >Goblins &mdash; Login</div >
+              <div >Reactor &mdash; Login</div >
             </Fragment >
           )}
           actions={[{
