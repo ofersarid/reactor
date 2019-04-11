@@ -8,7 +8,8 @@ import { UserInput, Button, Dialog } from '/src/elements';
 import Routes from '/src/routes/index';
 import { toTitleCase } from '/src/utils';
 import Collections from '/src/cms/collections';
-import { FilePlus } from 'styled-icons/feather/FilePlus';
+import { Plus } from 'styled-icons/octicons/Plus';
+import { Collection } from 'styled-icons/boxicons-regular/Collection';
 import styles from './styles.scss';
 import CollectionList from './collection-list/collection-list';
 import logo from './logo.svg';
@@ -86,14 +87,14 @@ class SideNav extends PureComponent {
             className={styles.addCollectionBtn}
             onClick={this.openAddCollectionDialog}
           >
-            <FilePlus />
+            <Plus />
           </Button>
           {openAddCollectionDialog && (
             <Dialog
               size="small"
               header={(
                 <Fragment >
-                  <FilePlus />
+                  <Collection />
                   <div >New Collection / Document</div >
                 </Fragment >
               )}
