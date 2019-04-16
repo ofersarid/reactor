@@ -22,6 +22,13 @@ class SingleLine extends PureComponent {
     this.$input = React.createRef();
   }
 
+  componentDidMount() {
+    const { autoFocus } = this.props;
+    if (autoFocus) {
+      this.$input.current.focus();
+    }
+  }
+
   normalizeValue(value) {
     const { onlyNumbers } = this.props;
     let normalized = value;

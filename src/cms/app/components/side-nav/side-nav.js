@@ -123,6 +123,7 @@ class SideNav extends PureComponent {
                 validationTip={this.resolveTip()}
                 blackList={['products']}
                 onValidation={isValid => this.setState({ inputValueIsValid: isValid })}
+                autoFocus
               />
             </Dialog>
           )}

@@ -148,7 +148,7 @@ class Editor extends PureComponent {
           hashHistory.push(`cms/collection/${collectionId}`);
         }}
       >
-        {collection.fields.map(field => {
+        {collection.fields.map((field, i) => {
           const value = this.state.entity[field.key];
           return (
             <UserInput
@@ -168,6 +168,7 @@ class Editor extends PureComponent {
               transformer={field.transformer}
               validateWith={field.validateWith}
               options={field.options}
+              autoFocus={i === 0}
             />
           );
         })}

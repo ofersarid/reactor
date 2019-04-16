@@ -155,6 +155,7 @@ const resolveComponentByType = (props) => {
           rtl={props.rtl}
           stretch={props.stretch}
           onBlur={props.onBlur}
+          autoFocus={props.autoFocus}
         />
       );
   }
