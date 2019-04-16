@@ -8,7 +8,7 @@ import { withRouter } from 'react-router';
 import Auth from '/src/cms/auth';
 import { ToastContainer } from 'react-toastify';
 import AuthRedirect from '/src/cms/auth/components/auth-redirect/auth-redirect';
-import CMSNavBar from '../cms-nav-bar/cms-nav-bar';
+import CMSNavBar from '../tool-bar/cms-nav-bar';
 import SideNav from '../side-nav/side-nav';
 import styles from './styles.scss';
 import 'react-quill/dist/quill.snow.css';

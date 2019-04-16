@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import cx from 'classnames';
 import Routes from '/src/routes';
 import Auth from '/src/cms/auth';
 import { hashHistory } from 'react-router';
@@ -30,7 +31,7 @@ class CollectionList extends PureComponent {
             <li key={collection.id} >
               <Button
                 linkTo={isActive ? null : `/cms/collection/${collection.id}`}
-                className={styles.navButton}
+                className={cx(styles.navButton, isActive && styles.isActive)}
                 textColor={isActive ? 'active' : null}
                 stretch
               >

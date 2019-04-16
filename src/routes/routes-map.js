@@ -3,7 +3,7 @@ import { Route, Redirect, IndexRedirect } from 'react-router';
 import { MainContainer } from '/src/cms/app';
 import LoginPage from '/src/cms/auth/components/login-page/login-page';
 import ReduxRoutes from '/src/routes/components/redux-routes/redux-routes';
-import { Grid, Editor } from '/src/cms/collections';
+import { Grid, Editor, AddCollectionDialog } from '/src/cms/collections';
 import { WebsiteMainContainer } from '/src/website/ws-main-container';
 import { Home } from '/src/website/home';
 import About from '/src/website/about';
@@ -22,6 +22,7 @@ export default (
       </Route >
       <Route path="login" component={LoginPage} />
       <Route path="settings" component={UnderConstruction} />
+      <Route path="add-collection" component={AddCollectionDialog} />
     </Route >
     <Route path="website" component={WebsiteMainContainer} >
       <IndexRedirect to="home" />

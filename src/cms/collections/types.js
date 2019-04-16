@@ -62,3 +62,5 @@ export const generalAssets = {
   ...deviceTypes,
   update: PropTypes.func.isRequired,
 };
+
+export const addCollectionDialog = {};

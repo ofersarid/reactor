@@ -1,5 +1,5 @@
-import Activity from '/src/cms/activity/index';
-import { uid } from '/src/cms/auth/selectors';
+import Activity from '/src/cms/activity';
+import Auth from '/src/cms/auth';
 import App from '../app';
 
 const getEntityById = (collectionId, entityId, firestore) =>
@@ -80,7 +80,7 @@ export const updateEntity = (entity, id, collection) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     const firebase = getFirebase();
-    return update(uid(getState()), entity, id, collection, firestore, firebase, dispatch);
+    return update(Auth.selectors.uid(getState()), entity, id, collection, firestore, firebase, dispatch);
   };
 };
 
@@ -110,7 +110,17 @@ export const deleteEntities = (collectionId, markedForDelete) => {
   };
 };
 
-export const createDoc = name => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const createCollection = name => (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
-  firestore.collection('collections').add({ name });
+  const state = getState();
+  const uid = Auth.selectors.uid(state);
+  firestore.collection('collections').add({
+    name,
+    owner: uid,
+  }).then(resp => {
+    const newId = resp.id;
+    firestore.collection('users').doc(uid).set({
+      'collections': Auth.selectors.userCollectionIds(state).concat([newId]),
+    }, { merge: true });
+  });
 };
