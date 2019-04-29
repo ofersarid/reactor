@@ -117,6 +117,10 @@ export const createCollection = name => (dispatch, getState, { getFirebase, getF
   firestore.collection('collections').add({
     name,
     owner: uid,
+    canRead: 'all',
+    canWrite: 'owner',
+    fields: [],
+    type: 'collection',
   }).then(resp => {
     const newId = resp.id;
     firestore.collection('users').doc(uid).set({

@@ -71,26 +71,6 @@
   }
 }
 
-.text-red {
-  color: $red;
-}
-
-.text-yellow {
-  color: $yellow;
-}
-
-.text-green {
-  color: $green;
-}
-
-.text-active {
-  color: $active;
-}
-
-.text-white {
-  color: white;
-}
-
 .green {
   background: $green;
   color: white;
@@ -123,6 +103,27 @@
 
 .yellow {
   background: #FFA700;
+  color: white;
+}
+
+
+.text-red {
+  color: $red;
+}
+
+.text-yellow {
+  color: $yellow;
+}
+
+.text-green {
+  color: $green;
+}
+
+.text-active {
+  color: $active;
+}
+
+.text-white {
   color: white;
 }
 

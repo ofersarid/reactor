@@ -5,13 +5,27 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import { reduxFirestore, getFirestore } from 'redux-firestore';
-import firebase from '../firebase.config';
 import { Router, hashHistory } from 'react-router';
 import rootReducer from './root-reducers';
 import Routes from '/src/routes';
 import Waves from 'node-waves';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+import 'firebase/storage';
+import 'firebase/database';
 import './fonts/fonts.scss';
 import styles from './styles.scss';
+
+firebase.initializeApp({
+  apiKey: process.env.FB_API_KEY,
+  authDomain: process.env.FB_AUTH_DOMAIN,
+  databaseURL: process.env.FB_DB_URL,
+  projectId: process.env.FB_PROJECT_URL,
+  storageBucket: process.env.FB_STORAGE_BUCKET,
+  messagingSenderId: process.env.FB_MSG_SENDER_ID,
+});
+firebase.firestore();
 
 const $root = document.getElementById('root');
 

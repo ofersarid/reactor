@@ -6,6 +6,7 @@
     "cleave.js": "^1.4.6",
     "current-device": "^0.7.8",
     "emailjs-com": "^2.3.2",
+    "env": "^0.0.2",
     "firebase": "^5.7.0",
     "grunt": "~0.4.0",
     "highlight": "^0.2.4",
@@ -84,12 +85,13 @@
     "url-loader": "^1.1.2"
   },
   "scripts": {
-    "start": "parcel index.html",
-    "stage": "rimraf ./docs && parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/staging/CNAME ./docs/ && git add . && git commit -am \"stage\" && git push",
-    "publish": "git remote set-url origin https://github.com/ofersarid/reactor.git && copyfiles -f env/production/CNAME ./docs/ && git add . && git commit -am \"publish\" && git push && git remote set-url origin https://github.com/ofersarid/reactor-staging.git",
+    "start": "NODE_ENV=dev parcel index.html",
+    "stage": "rimraf ./docs && NODE_ENV=dev parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/staging/CNAME ./docs/ && git add . && git commit -am \"stage\" && git push",
     "lint": "esw src/",
     "lint-watch": "esw src/ -w",
-    "storybook": "start-storybook -p 9001 -c .storybook"
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "build-for-production": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/production/CNAME ./docs/",
+    "publish": "yarn build-for-production && git remote set-url origin https://github.com/ofersarid/reactor.git && git add . && git commit -am \"publish\" && git push && git remote set-url origin https://github.com/ofersarid/reactor-staging.git"
   },
   "pre-commit": [
     "lint"

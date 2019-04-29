@@ -4,7 +4,7 @@ import cx from 'classnames';
 import { hashHistory } from 'react-router';
 import autoBind from 'auto-bind';
 import Device from '/src/device';
-import { UserInput } from '/src/elements';
+import { UserInput, Button } from '/src/elements';
 import { Dialog } from '/src/elements/dialog';
 import Auth from '/src/cms/auth';
 import { Fingerprint } from 'styled-icons/boxicons-regular/Fingerprint';
@@ -82,6 +82,14 @@ class LoginPage extends PureComponent {
             onEnterKeyPress={() => logIn(this.state).then(this.redirectAfterLogin)}
           />
         </Dialog >
+        <Button
+          color="white"
+          textColor="green"
+          className={styles.signUp}
+          linkTo="/website/create-account"
+        >
+          <span>Sign Up Instead...</span>
+        </Button>
       </div >
     );
   }

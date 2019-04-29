@@ -14,13 +14,13 @@ const HomePage = props => {
     <Fragment >
       <h1 >Home Page</h1 >
       <Button
-        linkTo="website/create-account"
+        linkTo="/website/create-account"
         color="green"
       >
         <div >Create Account</div >
       </Button >
       <Button
-        linkTo="cms/login"
+        linkTo="/cms/login"
         color="green"
       >
         <div >Log In</div >
@@ -43,11 +43,11 @@ export default compose(
   connect(mapStateToProps, {}),
   firestoreConnect(() => ([{
     collection: 'collections',
-    doc: '8gFxx830klmI0HDeOIEU',
+    doc: 'xB6QKYKm7tnXl2QNjjfF',
     subcollections: [{
       collection: 'data',
       // where: [['active', '==', true]],
-      orderBy: ['name', 'desc'],
+      // orderBy: ['name', 'desc'],
     }],
   }])),
 )(HomePage);

@@ -18,5 +18,6 @@ module.exports = {
     Image: true,
     FileReader: true,
     Blob: true,
+    process: true,
   }
 };
