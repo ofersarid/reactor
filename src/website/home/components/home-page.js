@@ -5,8 +5,8 @@ import Device from '/src/device/index';
 // import { filteredOrderedList } from '/src/cms/collections/selectors';
 import { Button } from '/src/elements';
 import types from '../types';
-import { firestoreConnect } from 'react-redux-firebase';
-import Collections from '/src/cms/collections';
+// import { firestoreConnect } from 'react-redux-firebase';
+// import Collections from '/src/cms/collections';
 
 const HomePage = props => {
   console.log(props.contacts);
@@ -36,18 +36,18 @@ HomePage.propTypes = types;
 const mapStateToProps = state => ({
   deviceType: Device.selectors.deviceType(state),
   deviceOrientation: Device.selectors.deviceOrientation(state),
-  contacts: Collections.selectors.collection(state, '8gFxx830klmI0HDeOIEU'),
+  // contacts: Collections.selectors.collection(state, '8gFxx830klmI0HDeOIEU'),
 });
 
 export default compose(
   connect(mapStateToProps, {}),
-  firestoreConnect(() => ([{
-    collection: 'collections',
-    doc: 'xB6QKYKm7tnXl2QNjjfF',
-    subcollections: [{
-      collection: 'data',
-      // where: [['active', '==', true]],
-      // orderBy: ['name', 'desc'],
-    }],
-  }])),
+  // firestoreConnect(() => ([{
+  //   collection: 'collections',
+  //   doc: 'xB6QKYKm7tnXl2QNjjfF',
+  //   subcollections: [{
+  //     collection: 'data',
+  //     // where: [['active', '==', true]],
+  //     // orderBy: ['name', 'desc'],
+  //   }],
+  // }])),
 )(HomePage);

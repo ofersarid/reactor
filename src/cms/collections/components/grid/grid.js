@@ -97,7 +97,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
-    return [{
+    return props.collectionId !== 'NO_ID' ? [{
       collection: 'collections',
       doc: props.collectionId,
       subcollections: [{
@@ -105,6 +105,6 @@ export default compose(
         // where: [['active', '==', true]],
         // orderBy: ['displayOrder', 'desc'],
       }],
-    }];
+    }] : [];
   }),
 )(Grid);
