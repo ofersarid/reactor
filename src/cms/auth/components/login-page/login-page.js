@@ -26,17 +26,6 @@ class LoginPage extends PureComponent {
     this.setState(newState);
   }
 
-  redirectAfterLogin() {
-    hashHistory.push('/cms');
-  }
-
-  componentDidUpdate(prevProps) {
-    const { uid } = this.props;
-    if (uid && !prevProps.uid) {
-      this.redirectAfterLogin();
-    }
-  }
-
   render() {
     const { email, password } = this.state;
     const { logIn, authError, uid, deviceType } = this.props;
