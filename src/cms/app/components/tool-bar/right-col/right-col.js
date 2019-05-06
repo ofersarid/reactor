@@ -7,6 +7,7 @@ import Auth from '/src/cms/auth';
 import { PowerOff } from 'styled-icons/boxicons-regular/PowerOff';
 import { Cog } from 'styled-icons/boxicons-regular/Cog';
 import { Collection } from 'styled-icons/boxicons-regular/Collection';
+import { FileBlank } from 'styled-icons/boxicons-regular/FileBlank';
 import { hashHistory } from 'react-router';
 import Routes from '/src/routes';
 import styles from './styles.scss';
@@ -45,6 +46,16 @@ const RightCol = props => (
         tip="New Collection"
       >
         <Collection />
+      </Button >
+    </li >
+    <li >
+      <Button
+        className={styles.btn}
+        justIcon
+        linkTo="/cms/add-document"
+        tip="New Document"
+      >
+        <FileBlank />
       </Button >
     </li >
   </ul >

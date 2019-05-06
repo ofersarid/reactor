@@ -63,4 +63,6 @@ export const generalAssets = {
   update: PropTypes.func.isRequired,
 };
 
-export const addCollectionDialog = {};
+export const addCollectionDialog = {
+  pathname: PropTypes.string,
+};

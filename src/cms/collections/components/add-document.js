@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 import autoBind from 'auto-bind';
-import { Collection } from 'styled-icons/boxicons-regular/Collection';
+import { FileBlank } from 'styled-icons/boxicons-regular/FileBlank';
 import { Dialog, UserInput } from '/src/elements';
 import { toTitleCase } from '/src/utils';
 import Routes from '/src/routes';
@@ -10,21 +10,21 @@ import { addCollectionDialog } from '../types';
 import Collections from '../';
 // import styles from '../styles.scss';
 
-class AddCollectionDialog extends PureComponent {
+class AddDocumentDialog extends PureComponent {
   constructor(props) {
     super(props);
     autoBind(this);
     this.state = {
-      newCollectionInputValue: '',
+      newDocumentInputValue: '',
       inputValueIsValid: false,
     };
   }
 
-  createNewCollection() {
-    const { newCollectionInputValue, inputValueIsValid } = this.state;
+  createNewDocument() {
+    const { newDocumentInputValue, inputValueIsValid } = this.state;
     const { createDoc } = this.props;
     if (inputValueIsValid) {
-      createDoc(newCollectionInputValue, { type: 'collection' });
+      createDoc(newDocumentInputValue, { type: 'document' });
     }
   }
 
@@ -35,13 +35,13 @@ class AddCollectionDialog extends PureComponent {
   }
 
   resolveTip() {
-    const { newCollectionInputValue } = this.state;
+    const { newDocumentInputValue } = this.state;
     switch (true) {
-      case this.nameIsAlreadyInUse(newCollectionInputValue):
-        return `You already have a collection named "${newCollectionInputValue}"`;
-      case !newCollectionInputValue.length:
+      case this.nameIsAlreadyInUse(newDocumentInputValue):
+        return `You already have a collection named "${newDocumentInputValue}"`;
+      case !newDocumentInputValue.length:
         return 'Please type something';
-      case newCollectionInputValue.length > 16:
+      case newDocumentInputValue.length > 16:
         return 'To Long...';
       default :
         return 'Looks Good';
@@ -49,20 +49,20 @@ class AddCollectionDialog extends PureComponent {
   }
 
   render() {
-    const { inputValueIsValid, newCollectionInputValue } = this.state;
+    const { inputValueIsValid, newDocumentInputValue } = this.state;
     return (
       <Dialog
         size="small"
         header={(
           <Fragment >
-            <Collection />
-            <div >New Collection</div >
+            <FileBlank />
+            <div >New Document</div >
           </Fragment >
         )}
         actions={[{
           label: 'Save',
           onClick: () => {
-            this.createNewCollection();
+            this.createNewDocument();
           },
           closeDialog: true,
           color: 'green',
@@ -75,8 +75,8 @@ class AddCollectionDialog extends PureComponent {
       >
         <UserInput
           placeholder="Name It..."
-          onChange={value => this.setState({ newCollectionInputValue: toTitleCase(value) })}
-          value={newCollectionInputValue}
+          onChange={value => this.setState({ newDocumentInputValue: toTitleCase(value) })}
+          value={newDocumentInputValue}
           min={1}
           max={16}
           validateWith={value => value.length > 0 && value.length < 16 && !this.nameIsAlreadyInUse(value)}
@@ -89,7 +89,7 @@ class AddCollectionDialog extends PureComponent {
   }
 }
 
-AddCollectionDialog.propTypes = addCollectionDialog;
+AddDocumentDialog.propTypes = addCollectionDialog;
 
 const mapStateToProps = state => ({
   userCollections: Collections.selectors.userCollections(state),
@@ -97,7 +97,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createDoc: name => dispatch(Collections.actions.createCollection(name)),
+  createDoc: (...props) => dispatch(Collections.actions.createCollection(...props)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCollectionDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(AddDocumentDialog);

@@ -4,6 +4,7 @@ import * as _actions from './actions';
 export { default as Grid } from './components/grid/grid';
 export { default as Editor } from './components/editor/editor';
 export { default as AddCollectionDialog } from './components/add-collection';
+export { default as AddDocumentDialog } from './components/add-document';
 
 export default {
   selectors: _selectors,

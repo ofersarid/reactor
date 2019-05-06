@@ -110,7 +110,7 @@ export const deleteEntities = (collectionId, markedForDelete) => {
   };
 };
 
-export const createCollection = name => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const createCollection = (name, { type }) => (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = Auth.selectors.uid(state);
@@ -120,7 +120,7 @@ export const createCollection = name => (dispatch, getState, { getFirebase, getF
     canRead: 'all',
     canWrite: 'owner',
     fields: [],
-    type: 'collection',
+    type,
   }).then(resp => {
     const newId = resp.id;
     firestore.collection('users').doc(uid).set({
