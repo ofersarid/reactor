@@ -85,7 +85,7 @@
     "url-loader": "^1.1.2"
   },
   "scripts": {
-    "start": "NODE_ENV=dev parcel index.html",
+    "start": "NODE_ENV=prod parcel index.html",
     "stage": "rimraf ./docs && NODE_ENV=dev parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/staging/CNAME ./docs/ && git add . && git commit -am \"stage\" && git push",
     "lint": "esw src/",
     "lint-watch": "esw src/ -w",

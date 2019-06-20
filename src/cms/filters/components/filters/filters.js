@@ -30,7 +30,7 @@ class Filters extends PureComponent {
 
   componentDidMount() {
     const { updateOrder, sortOptions } = this.props;
-    updateOrder(sortOptions[0]);
+    updateOrder(sortOptions[0].value);
   }
 
   // updateState(val, fltr) {
