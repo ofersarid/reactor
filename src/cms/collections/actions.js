@@ -90,19 +90,19 @@ export const deleteEntities = (collectionId, markedForDelete) => {
     const firebase = getFirebase();
     const batch = firestore.batch();
     const filePaths = [];
-    const ids = [];
+    const blackList = [];
     markedForDelete.forEach(item => {
       const entityRef = getEntityById(collectionId, item.id, firestore);
+      blackList.push(item.id);
       Object.keys(item).forEach(key => {
         if (key.match(/^ref--/)) {
           filePaths.push(item[key]);
-          ids.push(item.id);
         }
       });
       batch.delete(entityRef);
     });
     return batch.commit().then(() => {
-      dispatch(App.actions.storeBlackList(ids));
+      dispatch(App.actions.storeBlackList(blackList));
       filePaths.forEach(path => {
         deleteFile(path, firebase);
       });

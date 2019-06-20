@@ -19,7 +19,15 @@ class Dialog extends PureComponent {
   }
 
   componentDidMount() {
+    const { onEnterKeyPress } = this.props;
     this.to = setTimeout(this.open, 100);
+    document.onkeydown = e => {
+      const code = e.keyCode ? e.keyCode : e.which;
+      if (code === 13) {
+        onEnterKeyPress();
+        this.close();
+      }
+    };
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -44,18 +52,28 @@ class Dialog extends PureComponent {
     this.setState({ isOpen: true });
   }
 
+  onKeyPress(e, cb) {
+    if (e.which === 13) {
+      cb();
+    }
+  }
+
   render() {
     const { header, bodyClass, children, actions, errorMsg, className, deviceType, size } = this.props;
     const { isOpen } = this.state;
     return ReactDOM.createPortal(
-      <div className={cx(styles.pageBlock, className)} onClick={e => {
-        e.stopPropagation();
-        if (e.target.classList.contains('dark-bg')) {
-          this.close();
-        }
-      }} >
+      <div
+        className={cx(styles.pageBlock, className)}
+        onClick={e => {
+          e.stopPropagation();
+          if (e.target.classList.contains('dark-bg')) {
+            this.close();
+          }
+        }}
+      >
         <div className={cx('dark-bg', styles.darken, isOpen && styles.darkenShow)} />
-        <div className={cx('dialog-box', styles.dialog, isOpen && styles.dialogOpen, styles[`dialog-${deviceType}-${size}`])} >
+        <div
+          className={cx('dialog-box', styles.dialog, isOpen && styles.dialogOpen, styles[`dialog-${deviceType}-${size}`])} >
           <div className={styles.header} >{header}</div >
           <div className={cx(styles.body, bodyClass)} >
             <Fragment >

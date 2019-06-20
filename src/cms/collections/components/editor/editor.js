@@ -119,9 +119,16 @@ class Editor extends PureComponent {
     }
   }
 
+  update() {
+    const { collectionId, entityId, update } = this.props;
+    if (this.shouldUpdateStore()) {
+      update(this.state.entity, entityId, collectionId);
+    }
+  }
+
   render() {
     const { isValid, entity } = this.state;
-    const { isAdd, collection, collectionId, list, entityId, update } = this.props;
+    const { isAdd, collection, collectionId, list } = this.props;
     return entity && collection.name ? (
       <Dialog
         header={(
@@ -134,16 +141,14 @@ class Editor extends PureComponent {
         )}
         actions={[{
           label: 'Save',
-          onClick: () => {
-            if (this.shouldUpdateStore()) {
-              update(this.state.entity, entityId, collectionId);
-            }
-          },
+          onClick: this.update,
           closeDialog: true,
           color: isValid ? 'green' : 'red',
           icon: <Check />,
           disable: !isValid,
+          triggerOnEnter: true,
         }]}
+        onEnterKeyPress={this.update}
         onClose={() => {
           hashHistory.push(`cms/collection/${collectionId}`);
         }}

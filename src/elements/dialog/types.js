@@ -17,6 +17,7 @@ const types = {
   onClose: PropTypes.func.isRequired,
   errorMsg: PropTypes.string,
   className: PropTypes.string,
+  onEnterKeyPress: PropTypes.func,
   size: PropTypes.oneOf(['small', 'medium', 'large']),
 };
 
