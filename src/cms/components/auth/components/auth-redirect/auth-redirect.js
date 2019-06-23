@@ -1,9 +1,9 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import Auth from '/src/cms/auth/index';
+import Auth from '/src/cms/components/auth';
 import { hashHistory } from 'react-router';
-import Routes from '/src/routes/index';
-import { compose } from 'redux';
+import Routes from '/src/routes';
+import { compose } from 'redux/index';
 
 class AuthRedirect extends PureComponent {
   constructor(props) {
@@ -22,11 +22,12 @@ class AuthRedirect extends PureComponent {
     const { uid, pathname } = this.props;
     if (!uid) {
       if (pathname !== '/cms/login') {
-        if (pathname.match(/^\/cms/)) {
-          hashHistory.push('cms/login');
-        } else {
-          hashHistory.push('website/home');
-        }
+        // if (pathname.match(/^\/cms/)) {
+        //   hashHistory.push('cms/login');
+        // } else {
+        //   hashHistory.push('website/home');
+        // }
+        hashHistory.push('cms/login');
       }
     } else {
       hashHistory.push('cms');

@@ -1,6 +1,6 @@
-import { fromJS } from 'immutable';
+import { fromJS } from 'immutable/dist/immutable-nonambient';
 import { ACTIONS } from './constants';
-import Routes from '../../routes';
+import Routes from '../../../routes';
 
 const initialState = fromJS({
   sideNavOpen: true,

@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose } from 'redux/index';
 import Device from '/src/device';
 import autoBind from 'auto-bind';
-import Routes from '/src/routes/index';
+import Routes from '/src/routes';
 import Collections from '/src/cms/collections';
 import styles from './styles.scss';
 import CollectionList from './collection-list/collection-list';

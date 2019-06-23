@@ -9,7 +9,7 @@ import { ActivityToaster } from '/src/cms/activity';
 import Toaster from '/src/elements/toaster/index';
 import StackGrid from 'react-stack-grid';
 import { TrashAlt } from 'styled-icons/boxicons-solid/TrashAlt';
-import App from '/src/cms/app/index';
+import App from '/src/cms/components/app/index';
 import { firestoreConnect } from 'react-redux-firebase';
 import Routes from '/src/routes';
 import Toolbar from '../toolbar/toolbar';
