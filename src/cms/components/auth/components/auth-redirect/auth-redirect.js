@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Auth from '/src/cms/components/auth';
 import { hashHistory } from 'react-router';
 import Routes from '/src/routes';
-import { compose } from 'redux/index';
+import { compose } from 'redux';
 
 class AuthRedirect extends PureComponent {
   constructor(props) {

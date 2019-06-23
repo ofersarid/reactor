@@ -4,7 +4,7 @@ import cx from 'classnames';
 import Routes from '/src/routes';
 import Auth from '/src/cms/components/auth';
 import { hashHistory } from 'react-router';
-import { compose } from 'redux/index';
+import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase/index';
 import { Button } from '/src/elements';
 import Collections from '/src/cms/collections';

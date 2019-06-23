@@ -6,7 +6,7 @@ import auth from '/src/cms/components/auth/reducers';
 import routs from '/src/routes/reducers';
 import activity from '/src/cms/activity/reducers';
 import filter from '/src/cms/filters/reducers';
-import app from '/src/cms/components/app/reducers';
+import SERVICES from '/src/cms/services';
 
 const rootReducer = combineReducers({
   router: routs,
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   firebase,
   activity,
   filter,
-  app,
+  blacklist: SERVICES.BLACK_LIST.reducers,
 });
 
 export default rootReducer;

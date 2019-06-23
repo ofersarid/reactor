@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable/dist/immutable-nonambient';
+import { fromJS } from 'immutable';
 import { ACTIONS } from './constants';
 
 const initialState = fromJS({

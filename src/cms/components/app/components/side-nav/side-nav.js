@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
-import { compose } from 'redux/index';
+import { compose } from 'redux';
 import Device from '/src/device';
 import autoBind from 'auto-bind';
 import Routes from '/src/routes';

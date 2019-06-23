@@ -1,0 +1,33 @@
+@import '/src/colors';
+@import '/src/dimentions';
+
+.main {
+  display: flex;
+  height: 100%;
+  width: 100vw;
+  flex-direction: column;
+}
+
+.navBar {
+  background: $green;
+  height: $nav-bar-height;
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.pageContainer {
+  height: calc(100% - #{$nav-bar-height});
+  width: 100vw;
+  box-sizing: border-box;
+  flex-shrink: 1;
+  position: relative;
+}
+
+.navBarMobile {
+
+}
+
