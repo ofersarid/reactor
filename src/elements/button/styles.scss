@@ -4,25 +4,24 @@
 .button {
   cursor: pointer;
   user-select: none;
-  display: inline-block;
   text-decoration: none;
-  color: inherit;
+  color: white;
   position: relative;
   animation: $undimm;
-
-  &:hover {
-    color: black;
-
-    :global {
-      .inner {
-        transform: scale(1.1);
-      }
-    }
-  }
+  background: black;
+  border-radius: 50px;
+  height: 65px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: normal;
 }
 
 .wavesLight {
-  $waves-color: #81cd81;
+  $waves-color: #ffffff;
   :global {
     .waves-ripple {
       background: rgba($waves-color, 0.4);
@@ -35,7 +34,7 @@
 }
 
 .wavesDark {
-  $waves-dark: #143614;
+  $waves-dark: #000000;
   :global {
     .waves-ripple {
       background: rgba($waves-dark, 0.4);
@@ -54,9 +53,9 @@
   line-height: 15px;
   transition: .2s ease-out;
   border-radius: 2px;
-  display: flex;
   align-items: center;
   will-change: transform;
+  display: inline-flex;
 
   svg {
     height: 24px;
@@ -68,102 +67,5 @@
 .justIcon {
   svg {
     margin-right: 0;
-  }
-}
-
-.green {
-  background: $green;
-  color: white;
-}
-
-.gray {
-  background: $green;
-  color: white;
-}
-
-.black {
-  background: $black;
-  color: white;
-}
-
-.black-invert {
-  color: $black;
-  border: 1px solid $black;
-}
-
-.white {
-  background: white;
-  color: $black;
-}
-
-.red {
-  background: #FF234E;
-  color: white;
-}
-
-.yellow {
-  background: #FFA700;
-  color: white;
-}
-
-
-.text-red {
-  color: $red;
-}
-
-.text-yellow {
-  color: $yellow;
-}
-
-.text-green {
-  color: $green;
-}
-
-.text-active {
-  color: $active;
-}
-
-.text-white {
-  color: white;
-}
-
-.hideChildren {
-  * {
-    opacity: 0;
-  }
-}
-
-.activityIndicator {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 30px;
-}
-
-.disable {
-  pointer-events: none;
-  animation: $dimm;
-}
-
-.stretch {
-  width: 100%;
-
-  .inner {
-    justify-content: center;
-  }
-}
-
-.noAnimation {
-  animation: none !important;
-}
-
-.noScale {
-  &:hover {
-    :global {
-      .inner {
-        transform: none;
-      }
-    }
   }
 }

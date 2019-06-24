@@ -2,22 +2,10 @@ import React, { Fragment, PureComponent } from 'react';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
 import { hashHistory } from 'react-router';
-import Puff from '/src/svg-loaders/puff.svg';
 import Tooltip from '/src/elements/tooltip/tooltip';
 import { store } from '/src/index';
 import styles from './styles.scss';
 import { button } from './types';
-
-const colors = [
-  'green',
-  'black',
-  'black-invert',
-  'white',
-  'red',
-  'yellow',
-  'active',
-  'gray'
-];
 
 class Button extends PureComponent {
   constructor(props) {
@@ -54,23 +42,20 @@ class Button extends PureComponent {
 
   render() {
     const {
-      className, textColor, color, children, disable, stretch, tip, maxWidth,
-      noAnimation, justIcon, interactive, tipAnimation, getRef, noScale,
+      className, children, disable, tip, maxWidth,
+      interactive, tipAnimation, getRef
     } = this.props;
-    const { working } = this.state;
+    // const { working } = this.state;
     return (
       <Tooltip content={tip} interactive={interactive} store={store} animation={tipAnimation} >
         <div
           className={cx(
             'ripple',
             'waves-effect',
-            (colors.includes(color) || noScale) && styles.noScale,
-            (color && !color.match(/invert/)) ? styles.wavesDark : styles.wavesLight,
+            styles.wavesLight,
             styles.button,
             className,
             disable && styles.disable,
-            stretch && styles.stretch,
-            noAnimation && styles.noAnimation,
           )}
           style={{
             maxWidth,
@@ -78,20 +63,11 @@ class Button extends PureComponent {
           ref={getRef}
           onClick={this.handleClick}
         >
-          {working && <img className={styles.activityIndicator} src={Puff} />}
           <div
             className={cx(
               'inner',
               styles.inner,
-              colors.includes(textColor) && styles[`text-${textColor}`],
-              colors.includes(color) && styles[color],
-              working && styles.hideChildren,
-              justIcon && styles.justIcon,
             )}
-            style={{
-              backgroundColor: !colors.includes(color) ? color : undefined,
-              color: !colors.includes(textColor) ? textColor : undefined,
-            }}
           >
             <Fragment >
               {children}
@@ -106,11 +82,7 @@ class Button extends PureComponent {
 Button.propTypes = button;
 
 Button.defaultProps = {
-  textColor: null,
   disable: false,
-  stretch: false,
-  justIcon: false,
-  interactive: false,
 };
 
 export default Button;

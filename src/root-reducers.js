@@ -7,6 +7,7 @@ import routs from '/src/routes/reducers';
 import activity from '/src/cms/activity/reducers';
 import filter from '/src/cms/filters/reducers';
 import SERVICES from '/src/cms/services';
+import splashScreen from './cms/components/splash-screen/reducers';
 
 const rootReducer = combineReducers({
   router: routs,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   activity,
   filter,
   blacklist: SERVICES.BLACK_LIST.reducers,
+  splashScreen,
 });
 
 export default rootReducer;

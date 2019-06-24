@@ -8,6 +8,7 @@ import { reduxFirestore, getFirestore } from 'redux-firestore';
 import { Router, hashHistory } from 'react-router';
 import rootReducer from './root-reducers';
 import Routes from '/src/routes';
+import 'babel-polyfill';
 import Waves from 'node-waves';
 import firebase from 'firebase/app';
 import 'firebase/firestore';

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Device from '/src/device';
+import PropTypes from 'prop-types';
 // import { mainContainer } from '../../types';
 import Routes from '/src/routes';
 import { withRouter } from 'react-router';
@@ -14,10 +15,9 @@ import styles from './styles.scss';
 import 'react-quill/dist/quill.snow.css';
 import 'react-image-crop/lib/ReactCrop.scss';
 import 'react-tippy/dist/tippy.css';
-import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-const MainContainer = props => props.isLoaded ? (
+const APP = props => props.isLoaded ? (
   <AuthRedirect >
     <Device />
     <div className={styles.main} >
@@ -26,6 +26,7 @@ const MainContainer = props => props.isLoaded ? (
       <div className={cx(styles.navBar)} >
         {/* <LeftCol /> */}
         {/* <RightCol /> */}
+        <div className={styles.navBarTitle}>REACTOR</div>
       </div >
       <div className={styles.pageContainer} >
         {props.children}
@@ -36,7 +37,7 @@ const MainContainer = props => props.isLoaded ? (
   </AuthRedirect >
 ) : null;
 
-MainContainer.propTypes = {
+APP.propTypes = {
   children: PropTypes.any,
   isLoaded: PropTypes.bool.isRequired,
   isCMS: PropTypes.bool.isRequired,
@@ -54,4 +55,4 @@ const mapStateToProps = state => ({
 export default compose(
   connect(mapStateToProps, {}),
   withRouter,
-)(MainContainer);
+)(APP);
