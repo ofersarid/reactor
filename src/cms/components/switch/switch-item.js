@@ -4,9 +4,10 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
+import btnStyles from '/src/cms/components/button/styles.scss';
 
 const SwitchItem = ({ children, onClick }) => (
-  <div className={cx(styles.switchItem)} onClick={onClick}>{children}</div >
+  <div className={cx('ripple wave-effect', styles.switchItem, btnStyles.wavesDark)} onClick={onClick}>{children}</div >
 );
 
 SwitchItem.propTypes = {
