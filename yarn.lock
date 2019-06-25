@@ -12268,9 +12268,9 @@ styled-components@^4.1.2:
     stylis-rule-sheet "^0.0.10"
     supports-color "^5.5.0"
 
-styled-icons@^7.9.0:
-  version "7.9.0"
-  resolved "https://registry.yarnpkg.com/styled-icons/-/styled-icons-7.9.0.tgz#7c442efbce96ccf73f67732f3c2c3d6b82181b0e"
+styled-icons@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/styled-icons/-/styled-icons-8.1.0.tgz#d3b2c2c563a24d4f186190c9f89baff02c394b79"
   dependencies:
     "@emotion/is-prop-valid" "^0.7.3"
     tslib "^1.9.3"

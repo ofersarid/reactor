@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import Device from '/src/device';
 import PropTypes from 'prop-types';
 // import { mainContainer } from '../../types';
-import Routes from '/src/routes';
+// import Routes from '/src/routes';
 import { withRouter } from 'react-router';
 import Auth from '/src/cms/components/auth';
 // import { ToastContainer } from 'react-toastify';
@@ -37,7 +37,6 @@ const APP = props => props.isLoaded ? (
 APP.propTypes = {
   children: PropTypes.any,
   isLoaded: PropTypes.bool.isRequired,
-  isCMS: PropTypes.bool.isRequired,
   // uid: PropTypes.string,
 };
 
@@ -45,7 +44,6 @@ const mapStateToProps = state => ({
   // deviceType: Device.selectors.deviceType(state),
   // deviceOrientation: Device.selectors.deviceOrientation(state),
   isLoaded: Auth.selectors.isLoaded(state),
-  isCMS: Routes.selectors.isCMS(state),
   // uid: Auth.selectors.uid(state),
 });
 

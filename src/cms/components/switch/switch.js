@@ -32,8 +32,8 @@ class Switch extends PureComponent {
 
     const direaction = to.left < from.left ? 'left' : 'right';
 
-    const configFrom = { mass: 1, tension: 300, friction: 26 };
-    const configTo = { mass: 2, tension: 300, friction: 26 };
+    const configFrom = { mass: 1, tension: 400, friction: 36 };
+    const configTo = { mass: 2, tension: 400, friction: 36 };
     const Springs = Keyframes.Spring({
       indicate: async (next) => {
         await next({

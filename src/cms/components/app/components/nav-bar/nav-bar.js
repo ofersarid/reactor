@@ -2,18 +2,19 @@ import React from 'react';
 import cx from 'classnames';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { PowerOff } from 'styled-icons/boxicons-regular/PowerOff/PowerOff';
+import { LogOutCircle } from 'styled-icons/boxicons-regular/LogOutCircle';
 import { Button } from '/src/cms/components';
+import Routes from '/src/routes';
 import Auth from '/src/cms/components/auth';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
 
-const NavBar = ({ logOut, uid }) => (
+const NavBar = ({ logOut, uid, pathname }) => (
   <div className={cx(styles.navBar)} >
     <div className={styles.navBarTitle}>REACTOR</div>
-    {uid && (
-      <Button type="icon" className={styles.toTheRight} onClick={logOut}>
-        <PowerOff />
+    {uid && pathname === '/cms/collections-pages' && (
+      <Button type="icon" className={styles.toTheLeft} onClick={logOut}>
+        <LogOutCircle />
       </Button>
     )}
   </div >
@@ -22,10 +23,12 @@ const NavBar = ({ logOut, uid }) => (
 NavBar.propTypes = {
   logOut: PropTypes.func.isRequired,
   uid: PropTypes.string,
+  pathname: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   uid: Auth.selectors.uid(state),
+  pathname: Routes.selectors.pathname(state),
 });
 
 const mapDispatchToProps = dispatch => ({
