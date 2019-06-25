@@ -42,12 +42,13 @@ class Button extends PureComponent {
 
   render() {
     const {
-      className, children, disable, tip, tipAnimation, getRef, type
+      className, children, disable, tip, tipAnimation, getRef, type, style, tag
     } = this.props;
     // const { working } = this.state;
+    const Tag = tag;
     return (
       <Tooltip content={tip} animation={tipAnimation} >
-        <div
+        <Tag
           className={cx(
             'ripple',
             'waves-effect',
@@ -57,6 +58,7 @@ class Button extends PureComponent {
             disable && styles.disable,
             [styles[type]],
           )}
+          style={style}
           ref={getRef}
           onClick={this.handleClick}
         >
@@ -70,7 +72,7 @@ class Button extends PureComponent {
               {children}
             </Fragment >
           </div >
-        </div >
+        </Tag >
       </Tooltip >
     );
   }
@@ -85,12 +87,15 @@ Button.propTypes = {
   tip: PropTypes.node,
   tipAnimation: PropTypes.oneOf(tipAnimations),
   getRef: PropTypes.object,
-  type: PropTypes.oneOf(['icon', 'black']),
+  style: PropTypes.object,
+  type: PropTypes.oneOf(['icon', 'black', 'white']),
+  tag: PropTypes.string.isRequired,
 };
 
 Button.defaultProps = {
   disable: false,
   type: 'black',
+  tag: 'div',
 };
 
 export default Button;
