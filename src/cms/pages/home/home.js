@@ -40,17 +40,14 @@ const Home = ({ list, selectList }) => {
         native
         items={collections}
         keys={item => item.name}
-        from={list === 'collections' ? { opacity: 0, transform: 'translateX(100%)' } : {
-          opacity: 1,
-          transform: 'translateX(0)'
-        }}
-        to={list === 'collections' ? { opacity: 1, transform: 'translateX(0)' } : {
-          opacity: 0,
-          transform: 'translateX(-100%)'
-        }}
+        from={list === 'collections' ? { opacity: 0, x: 100 } : { opacity: 1, x: 0 }}
+        to={list === 'collections' ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }}
       >
         {item => (springs) => ( // eslint-disable-line
-          <animated.div key={item.name} className={styles.listItemWrap} style={springs} >
+          <animated.div key={item.name} className={styles.listItemWrap} style={{
+            opacity: springs.opacity,
+            transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
+          }} >
             <Button onClick={console.log} type="white" >
               {item.name}
             </Button >
