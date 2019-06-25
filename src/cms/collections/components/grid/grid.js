@@ -2,7 +2,7 @@ import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Device from '/src/device/index';
-import Button from '/src/elements/button/index';
+import { Button } from '/src/cms/components';
 import { Check } from 'styled-icons/fa-solid/Check';
 import { Cancel } from 'styled-icons/material/Cancel';
 import { ActivityToaster } from '/src/cms/activity';

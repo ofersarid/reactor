@@ -8,14 +8,15 @@ import Routes from '/src/routes';
 import { withRouter } from 'react-router';
 import Auth from '/src/cms/components/auth';
 // import { ToastContainer } from 'react-toastify';
-import AuthRedirect from '/src/cms/components/auth/components/auth-redirect/auth-redirect';
+import AuthRedirect from '/src/cms/components/auth/components/auth-redirect';
 // import CMSNavBar from '../tool-bar/cms-nav-bar';
 // import SideNav from '../side-nav/side-nav';
 import styles from './styles.scss';
 import 'react-quill/dist/quill.snow.css';
 import 'react-image-crop/lib/ReactCrop.scss';
 import 'react-tippy/dist/tippy.css';
-import cx from 'classnames';
+// import cx from 'classnames';
+import NavBar from './components/nav-bar/nav-bar';
 
 const APP = props => props.isLoaded ? (
   <AuthRedirect >
@@ -23,11 +24,7 @@ const APP = props => props.isLoaded ? (
     <div className={styles.main} >
       {/* <SideNav /> */}
       {/* <div className={styles.stage} > */}
-      <div className={cx(styles.navBar)} >
-        {/* <LeftCol /> */}
-        {/* <RightCol /> */}
-        <div className={styles.navBarTitle}>REACTOR</div>
-      </div >
+      <NavBar />
       <div className={styles.pageContainer} >
         {props.children}
       </div >

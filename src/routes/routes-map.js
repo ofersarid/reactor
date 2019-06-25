@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect, IndexRedirect } from 'react-router';
 import { App } from '/src/cms/components';
-import { LoginPage } from '/src/cms/pages';
+import { LoginPage, PagesCollections } from '/src/cms/pages';
 import ReduxRoutes from '/src/routes/components/redux-routes/redux-routes';
 // import { Grid, Editor, AddCollectionDialog, AddDocumentDialog } from '/src/cms/collections';
 // import { WebsiteMainContainer } from '/src/website/ws-main-container';
@@ -15,11 +15,12 @@ export default (
   <Route path="/" component={ReduxRoutes} >
     <IndexRedirect to="cms/login" />
     <Route path="cms" component={App} >
-      {/* <IndexRedirect to="collection/NO_ID" /> */}
+      <IndexRedirect to="collections-pages" />
       {/* <Route path="collection/:collectionId" component={Grid} > */}
       {/*   <Route path="add" component={Editor} /> */}
       {/*   <Route path="edit/:entityId" component={Editor} /> */}
       {/* </Route > */}
+      <Route path="collections-pages" component={PagesCollections} />
       <Route path="login" component={LoginPage} />
       {/* <Route path="settings" component={UnderConstruction} /> */}
       {/* <Route path="add-collection" component={AddCollectionDialog} /> */}

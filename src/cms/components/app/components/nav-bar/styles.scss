@@ -1,0 +1,23 @@
+@import '/src/colors';
+@import '/src/dimentions';
+
+.navBar {
+  background: $green;
+  height: $nav-bar-height;
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  box-sizing: border-box;
+  color: white;
+
+  .navBarTitle {
+    font-size: 31px;
+  }
+}
+
+.toTheRight {
+  position: absolute !important;
+  right: 10px;
+}

@@ -6,7 +6,7 @@ import auth from '/src/cms/components/auth/reducers';
 import routs from '/src/routes/reducers';
 import activity from '/src/cms/activity/reducers';
 import filter from '/src/cms/filters/reducers';
-import SERVICES from '/src/cms/services';
+import services from '/src/cms/services';
 import splashScreen from './cms/components/splash-screen/reducers';
 
 const rootReducer = combineReducers({
@@ -17,7 +17,8 @@ const rootReducer = combineReducers({
   firebase,
   activity,
   filter,
-  blacklist: SERVICES.BLACK_LIST.reducers,
+  blacklist: services.blackList.reducers,
+  home: services.home.reducers,
   splashScreen,
 });
 

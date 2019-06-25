@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Device from '/src/device/index';
 import { AddCircle } from 'styled-icons/material/AddCircle';
-import Button from '/src/elements/button/index';
+import { Button } from '/src/cms/components';
 import Routes from '/src/routes/index';
 import { addButton } from '../types';
 

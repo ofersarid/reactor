@@ -5,7 +5,7 @@ import cx from 'classnames';
 // import { hashHistory } from 'react-router';
 import autoBind from 'auto-bind';
 import Device from '/src/device';
-import { UserInput, Button } from '/src/elements';
+import { UserInput, Button } from '/src/cms/components';
 // import { Dialog } from '/src/elements/dialog';
 import Auth from '/src/cms/components/auth';
 // import { Fingerprint } from 'styled-icons/boxicons-regular/Fingerprint/Fingerprint';
@@ -20,7 +20,12 @@ class Login extends PureComponent {
     this.state = {
       email: '',
       password: '',
+      valid: false,
     };
+  }
+
+  componentDidUpdate() {
+    this.validate();
   }
 
   updateState(updatedProps) {
@@ -33,8 +38,15 @@ class Login extends PureComponent {
     logIn(this.state);
   }
 
-  render() {
+  validate() {
     const { email, password } = this.state;
+    this.setState({
+      valid: (validateEmail(email) && password.length >= 4),
+    });
+  }
+
+  render() {
+    const { email, password, valid } = this.state;
     const { deviceType } = this.props;
     // const { logIn, authError, uid, deviceType } = this.props;
     return (
@@ -45,7 +57,7 @@ class Login extends PureComponent {
         {/*  </div > */}
         {/* </SplashScreen > */}
         <div className={styles.logInForm} >
-          <div className={styles.top}>
+          <div className={styles.top} >
             <UserInput
               placeholder="Email"
               onChange={val => this.updateState({ email: val })}
@@ -66,7 +78,7 @@ class Login extends PureComponent {
             />
           </div >
           <Button
-            disable={false}
+            disable={!valid}
             onClick={this.logIn}
           >
             <span >LOG IN</span >

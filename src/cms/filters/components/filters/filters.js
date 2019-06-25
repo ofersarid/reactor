@@ -9,6 +9,7 @@ import { SortDown } from 'styled-icons/boxicons-regular/SortDown';
 import { Title } from 'styled-icons/material/Title';
 import { Description } from 'styled-icons/material/Description';
 import { Select } from '/src/elements';
+import { Tooltip } from '/src/cms/components';
 // import { toCapitalizedWords } from '/src/cms/utils';
 import isEqual from 'lodash/isEqual';
 import Collections from '/src/cms/collections';
@@ -16,7 +17,6 @@ import { filters } from '../../types';
 import styles from './styles.scss';
 import { updateQuery, updateOrder, resetFilter } from '../../actions';
 import { orderBy } from '../../selectors';
-import Tooltip from '../../../../elements/tooltip/tooltip';
 
 class Filters extends PureComponent {
   constructor(props) {

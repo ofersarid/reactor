@@ -1,0 +1,29 @@
+@import "../single-line/styles";
+
+.linkPreview {
+}
+
+.link {
+
+}
+
+.testLinkButton {
+  height: 43px;
+  width: 43px;
+  flex-shrink: 0;
+  
+  svg {
+    margin: 0;
+    height: 24px;
+  }
+  
+  :global {
+    .inner {
+      border-radius: 0;
+      height: 100%;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+@import "/src/colors";
+
+.switch {
+  display: flex;
+  width: 100%;
+  background: $gray;
+  color: white;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50px;
+}
+
+.switchItem {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.indicator {
+  background: black;
+  height: 100%;
+  left: 0;
+  right: 0;
+  position: absolute;
+}
