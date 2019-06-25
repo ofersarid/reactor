@@ -13,7 +13,7 @@ const NavBar = ({ logOut, uid, pathname }) => (
   <div className={cx(styles.navBar)} >
     <div className={styles.navBarTitle}>REACTOR</div>
     {uid && pathname === '/cms/collections-pages' && (
-      <Button type="icon" className={styles.toTheLeft} onClick={logOut}>
+      <Button type="icon" className={cx(styles.toTheLeft, styles.btn)} onClick={logOut} >
         <LogOutCircle />
       </Button>
     )}

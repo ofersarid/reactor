@@ -11,6 +11,7 @@
   justify-content: space-around;
   box-sizing: border-box;
   color: white;
+  position: relative;
 
   .navBarTitle {
     font-size: 31px;
@@ -19,5 +20,12 @@
 
 .toTheLeft {
   position: absolute !important;
-  left: 10px;
+  left: 0;
+}
+
+.btn {
+  border-radius: 0 !important;
+  height: 100% !important;
+  width: auto !important;
+  padding: 0 20px !important;
 }
