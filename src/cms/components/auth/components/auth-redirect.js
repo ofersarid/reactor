@@ -24,8 +24,8 @@ class AuthRedirect extends PureComponent {
       if (pathname !== '/cms/login') {
         hashHistory.push('cms/login');
       }
-    } else if (pathname !== '/cms/collections-pages') {
-      hashHistory.push('/cms/collections-pages');
+    } else if (pathname !== '/cms/home') {
+      hashHistory.push('/cms/home');
     }
   }
 

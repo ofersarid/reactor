@@ -1,2 +1,2 @@
 export { default as LoginPage } from './login/login';
-export { default as PagesCollections } from './pages-collections/pages-collections';
+export { default as Home } from './home/home';

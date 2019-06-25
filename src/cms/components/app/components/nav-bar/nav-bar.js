@@ -12,7 +12,7 @@ import styles from './styles.scss';
 const NavBar = ({ logOut, uid, pathname }) => (
   <div className={cx(styles.navBar)} >
     <div className={styles.navBarTitle}>REACTOR</div>
-    {uid && pathname === '/cms/collections-pages' && (
+    {uid && pathname === '/cms/home' && (
       <Button type="icon" className={cx(styles.toTheLeft, styles.btn)} onClick={logOut} >
         <LogOutCircle />
       </Button>
