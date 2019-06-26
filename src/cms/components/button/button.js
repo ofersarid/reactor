@@ -42,7 +42,7 @@ class Button extends PureComponent {
 
   render() {
     const {
-      className, children, disable, tip, tipAnimation, getRef, type, style, tag
+      className, children, disable, tip, tipAnimation, getRef, type, style, tag, justifyContent
     } = this.props;
     // const { working } = this.state;
     const Tag = tag;
@@ -58,7 +58,9 @@ class Button extends PureComponent {
             disable && styles.disable,
             [styles[type]],
           )}
-          style={style}
+          style={Object.assign({
+            justifyContent,
+          }, style)}
           ref={getRef}
           onClick={this.handleClick}
         >
@@ -89,6 +91,7 @@ Button.propTypes = {
   getRef: PropTypes.object,
   style: PropTypes.object,
   type: PropTypes.oneOf(['icon', 'black', 'white']),
+  justifyContent: PropTypes.oneOf(['start', 'center']),
   tag: PropTypes.string.isRequired,
 };
 
@@ -96,6 +99,7 @@ Button.defaultProps = {
   disable: false,
   type: 'black',
   tag: 'div',
+  justifyContent: 'center',
 };
 
 export default Button;

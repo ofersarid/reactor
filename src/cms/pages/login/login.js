@@ -1,11 +1,11 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 // import { Spring, Keyframes } from 'react-spring/renderprops';
 import cx from 'classnames';
 // import { hashHistory } from 'react-router';
 import autoBind from 'auto-bind';
 import Device from '/src/device';
-import { UserInput, Button } from '/src/cms/components';
+import { UserInput, Button, Page } from '/src/cms/components';
 // import { Dialog } from '/src/elements/dialog';
 import Auth from '/src/cms/components/auth';
 // import { Fingerprint } from 'styled-icons/boxicons-regular/Fingerprint/Fingerprint';
@@ -50,7 +50,7 @@ class Login extends PureComponent {
     const { deviceType } = this.props;
     // const { logIn, authError, uid, deviceType } = this.props;
     return (
-      <Fragment >
+      <Page orientation="prev" >
         {/* <SplashScreen > */}
         {/*  <div className={styles.welcomeSplash} > */}
         {/*    WELCOME TO<br /> REACTOR */}
@@ -84,7 +84,7 @@ class Login extends PureComponent {
             <span >LOG IN</span >
           </Button >
         </div >
-      </Fragment >
+      </Page >
     );
   }
 }

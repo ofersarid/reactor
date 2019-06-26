@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { Trail, animated } from 'react-spring/renderprops';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Switch, SwitchItem, Button } from '/src/cms/components';
+import { Switch, SwitchItem, Button, Page } from '/src/cms/components';
 import PropTypes from 'prop-types';
 import services from '/src/cms/services';
 import styles from './styles.scss';
@@ -31,7 +31,7 @@ const pages = [{
 
 const Home = ({ list, selectList }) => {
   return (
-    <div className={cx(styles.home)} >
+    <Page orientation="next" >
       <Switch indicateIndex={listToIndex(list)} className={styles.switch} >
         <SwitchItem onClick={() => selectList('collections')} >Collections</SwitchItem >
         <SwitchItem onClick={() => selectList('pages')} >Pages</SwitchItem >
@@ -51,7 +51,7 @@ const Home = ({ list, selectList }) => {
               opacity: springs.opacity,
               transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
             }} >
-              <Button onClick={console.log} type="white" >
+              <Button onClick={console.log} type="white" justifyContent="start" >
                 {item.name}
               </Button >
             </animated.div >
@@ -73,14 +73,14 @@ const Home = ({ list, selectList }) => {
               opacity: springs.opacity,
               transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
             }} >
-              <Button onClick={console.log} type="white" >
+              <Button onClick={console.log} type="white" justifyContent="start" >
                 {item.name}
               </Button >
             </animated.div >
           )}
         </Trail >
       </div >
-    </div >
+    </Page >
   );
 };
 
