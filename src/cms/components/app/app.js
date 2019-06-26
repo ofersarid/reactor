@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 // import Routes from '/src/routes';
 import { withRouter } from 'react-router';
 import Auth from '/src/cms/components/auth';
-import { Page } from '/src/cms/components';
 // import { ToastContainer } from 'react-toastify';
 import AuthRedirect from '/src/cms/components/auth/components/auth-redirect';
 // import CMSNavBar from '../tool-bar/cms-nav-bar';
@@ -26,9 +25,7 @@ const APP = props => props.isLoaded ? (
       {/* <SideNav /> */}
       {/* <div className={styles.stage} > */}
       <NavBar />
-      <Page >
-        {props.children}
-      </Page >
+      {props.children}
       {/* </div > */}
       {/* <ToastContainer /> */}
     </div >
