@@ -1,5 +1,7 @@
+@import '/src/classes';
+
 .home {
-  width: 100%;
+  @extend %pageContainer;
 }
 
 .switch {

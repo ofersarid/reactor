@@ -9,7 +9,12 @@ import styles from './styles.scss';
 class Switch extends PureComponent {
   constructor(props) {
     super(props);
-    this.prevIndex = props.indicateIndex;
+    this.prevIndex = Math.abs(props.indicateIndex - 1);
+  }
+
+  componentDidMount() {
+    const { indicateIndex } = this.props;
+    this.prevIndex = indicateIndex;
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

@@ -4,6 +4,7 @@ import { ACTIONS } from './constants';
 const initialState = fromJS({
   hash: '',
   pathname: '',
+  prevPath: '',
   params: {},
   search: '',
   state: '',
