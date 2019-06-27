@@ -14,26 +14,13 @@ class MultiLine extends PureComponent {
     super(props);
     autoBind(this);
     this.state = {
-      showValidation: false,
+      isValid: true,
     };
   }
 
-  showValidation() {
-    const { required } = this.props;
-    if (!required) return;
-    this.setState({ showValidation: true });
-  }
-
-  validate(value) {
-    const { max, min } = this.props;
-    if (max && min) {
-      return value.length <= max && value.length >= min;
-    } else if (max) {
-      return value.length <= max;
-    } else if (min) {
-      return value.length >= min;
-    }
-    return true;
+  componentDidMount() {
+    const { validateWith, value } = this.props;
+    this.setState({ isValid: validateWith(value) });
   }
 
   normalizeValue(value) {
@@ -41,14 +28,15 @@ class MultiLine extends PureComponent {
   };
 
   handleOnChange(e) {
-    const { onChange } = this.props;
-    const newValue = e.target.value;
-    onChange(this.normalizeValue(newValue));
+    const { onChange, validateWith } = this.props;
+    const newValue = this.normalizeValue(e.target.value);
+    onChange(newValue);
+    this.setState({ isValid: validateWith(newValue) });
   }
 
   render() {
     const { placeholder, value, max, min, onValidation, validateWith, required, rtl } = this.props;
-    const { showValidation } = this.state;
+    const { isValid } = this.state;
     return (
       <div className={styles.multiLine} >
         <div className={cx(styles.textArea)} >
@@ -58,17 +46,9 @@ class MultiLine extends PureComponent {
             onChange={this.handleOnChange}
           />
         </div >
-        {/*{required && (*/}
-        {/*  <ValidationIndicator*/}
-        {/*    show={showValidation}*/}
-        {/*    min={min}*/}
-        {/*    max={max}*/}
-        {/*    onValidation={onValidation}*/}
-        {/*    value={value}*/}
-        {/*    validateWith={validateWith}*/}
-        {/*    rtl={rtl}*/}
-        {/*  />*/}
-        {/*)}*/}
+        <div className={cx(styles.tip, { [styles.notValid]: !isValid })} >
+          (<span className={styles.number} >{value.length}</span >/<span className={styles.number} >{max}</span >)
+        </div >
       </div >
     );
   }

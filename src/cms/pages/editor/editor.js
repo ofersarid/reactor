@@ -31,12 +31,20 @@ class Editor extends PureComponent {
     }
   }
 
-  // resolveValidationFunction(validationType) {
-  //   switch (validationType) {
-  //     case 'min-max':
-  //       return
-  //   }
-  // }
+  resolveValidationFunction(field) {
+    switch (field.validateWith) {
+      case 'min-max':
+        return value => {
+          if (field.maxChars && field.minChars) {
+            return value.length <= field.maxChars && value.length >= field.minChars;
+          } else if (field.maxChars) {
+            return value.length <= field.maxChars;
+          } else if (field.minChars) {
+            return value.length >= field.minChars;
+          }
+        };
+    }
+  }
 
   onChange(change) {
     this.setState({ entity: Object.assign({}, this.state.entity, change) });
@@ -65,7 +73,7 @@ class Editor extends PureComponent {
                 required={field.required}
                 type={field.type}
                 transformer={field.transformer}
-                // validateWith={this.resolveValidationFunction(field.validateWith)}
+                validateWith={this.resolveValidationFunction(field)}
                 // options={field.options}
                 autoFocus={i === 0}
               />
