@@ -53,7 +53,7 @@ class Editor extends PureComponent {
             <div key={field.key} className={styles.inputWrapper} >
               <UserInput
                 key={field.key}
-                placeholder={field.required ? 'required' : 'optional'}
+                placeholder="Type here"
                 onChange={value => this.onChange({
                   [field.key]: value,
                 })}

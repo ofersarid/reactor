@@ -55,7 +55,6 @@ class MultiLine extends PureComponent {
           <Textarea
             placeholder={placeholder}
             value={value}
-            defaultValue="Type"
             onChange={this.handleOnChange}
           />
         </div >
