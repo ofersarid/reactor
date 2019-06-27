@@ -4,6 +4,7 @@ import cx from 'classnames';
 import noop from 'lodash/noop';
 import { toCapitalizedWords, validateEmail, youtubeEmbedTransformer } from '/src/utils';
 import Device from '/src/device';
+import { Asterisk } from 'styled-icons/fa-solid/Asterisk';
 import styles from './styles.scss';
 import { userInput } from './types';
 import DateTime from './components/date-time/date-time';
@@ -22,12 +23,12 @@ const onKeyPress = (e, onEnterKeyPress) => {
   }
 };
 
-const resolveValidateWith = (type, validateWith) => {
-  switch (true) {
-    case type === 'email' && !validateWith:
+const resolveValidateWith = (validateWith) => {
+  switch (validateWith) {
+    case 'email':
       return validateEmail;
     default:
-      return validateWith;
+      return () => true;
   }
 };
 
@@ -41,6 +42,7 @@ const transformValue = (type, value) => {
 };
 
 const resolveComponentByType = (props) => {
+  // todo - change optional prop to required instead
   switch (props.type) {
     case 'multi-line':
       return (
@@ -53,7 +55,7 @@ const resolveComponentByType = (props) => {
           onValidation={props.onValidation}
           ref={props.getRef}
           validateWith={props.validateWith}
-          optional={props.optional}
+          required={props.required}
           rtl={props.rtl}
           stretch={props.stretch}
         />
@@ -77,7 +79,7 @@ const resolveComponentByType = (props) => {
           min={props.min}
           ref={props.getRef}
           validateWith={props.validateWith}
-          optional={props.optional}
+          required={props.required}
         />);
     case 'image':
       return (
@@ -88,7 +90,7 @@ const resolveComponentByType = (props) => {
           placeholder={props.placeholder}
           ref={props.getRef}
           validateWith={props.validateWith}
-          optional={props.optional}
+          required={props.required}
           transformer={props.transformer}
         />);
     case 'pdf':
@@ -100,7 +102,7 @@ const resolveComponentByType = (props) => {
           placeholder={props.placeholder}
           ref={props.getRef}
           validateWith={props.validateWith}
-          optional={props.optional}
+          required={props.required}
         />);
     case 'link':
     case 'youtube':
@@ -113,7 +115,7 @@ const resolveComponentByType = (props) => {
           validateWith={props.validateWith}
           min={props.min}
           ref={props.getRef}
-          optional={props.optional}
+          required={props.required}
         />);
     case 'switch':
       return (
@@ -150,7 +152,7 @@ const resolveComponentByType = (props) => {
           ref={props.getRef}
           validateWith={resolveValidateWith(props.type, props.validateWith)}
           validationTip={props.validationTip}
-          optional={props.optional}
+          required={props.required}
           onlyNumbers={props.type === 'number'}
           rtl={props.rtl}
           stretch={props.stretch}
@@ -162,18 +164,21 @@ const resolveComponentByType = (props) => {
 };
 
 const UserInput = props => (
-  <div className={cx(
-    styles.field,
-    props.label && styles.withLabel,
-    props.label && styles[`withLabel-${props.deviceType}`],
-    props.className,
-    props.disabled && styles.disabled,
-    props.stretch && styles.stretch,
-    (['multi-line', 'post', 'image', 'pdf'].includes(props.type)) && styles.areaField)}
+  <div
+    className={cx(
+      styles.field,
+      // props.label && styles.withLabel,
+      // props.label && styles[`withLabel-${props.deviceType}`],
+      props.className,
+      props.disabled && styles.disabled,
+      // props.stretch && styles.stretch,
+      // (['multi-line', 'post', 'image', 'pdf'].includes(props.type)) && styles.areaField
+    )}
   >
     {props.label && (
       <label className={styles.label} >
         {props.label}
+        {props.required && <Asterisk className={styles.asterisk}/>}
       </label >
     )}
     {resolveComponentByType(props)}
@@ -190,7 +195,7 @@ UserInput.defaultProps = {
   disabled: false,
   value: '',
   rtl: false,
-  optional: false,
+  required: false,
 };
 
 const mapStateToProps = state => ({

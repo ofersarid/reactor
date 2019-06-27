@@ -1,7 +1,10 @@
+// todo - remove eslint disable
+/* eslint-disable */
 import React, { PureComponent } from 'react';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
 import noop from 'lodash/noop';
+import Textarea from 'react-textarea-autosize';
 import styles from './styles.scss';
 import { userInput } from '../../types';
 import ValidationIndicator from '../validation-indicator/validation-indicator';
@@ -16,8 +19,8 @@ class MultiLine extends PureComponent {
   }
 
   showValidation() {
-    const { optional } = this.props;
-    if (optional) return;
+    const { required } = this.props;
+    if (!required) return;
     this.setState({ showValidation: true });
   }
 
@@ -44,31 +47,29 @@ class MultiLine extends PureComponent {
   }
 
   render() {
-    const { placeholder, value, max, min, onValidation, validateWith, optional, rtl } = this.props;
+    const { placeholder, value, max, min, onValidation, validateWith, required, rtl } = this.props;
     const { showValidation } = this.state;
     return (
       <div className={styles.multiLine} >
-        <textarea
-          className={cx(
-            styles.textArea,
-            showValidation && (rtl ? styles.removeLeftBorder : styles.removeRightBorder),
-          )}
-          placeholder={placeholder}
-          value={value}
-          onChange={this.handleOnChange}
-          onFocus={this.showValidation}
-        />
-        {!optional && (
-          <ValidationIndicator
-            show={showValidation}
-            min={min}
-            max={max}
-            onValidation={onValidation}
+        <div className={cx(styles.textArea)} >
+          <Textarea
+            placeholder={placeholder}
             value={value}
-            validateWith={validateWith}
-            rtl={rtl}
+            defaultValue="Type"
+            onChange={this.handleOnChange}
           />
-        )}
+        </div >
+        {/*{required && (*/}
+        {/*  <ValidationIndicator*/}
+        {/*    show={showValidation}*/}
+        {/*    min={min}*/}
+        {/*    max={max}*/}
+        {/*    onValidation={onValidation}*/}
+        {/*    value={value}*/}
+        {/*    validateWith={validateWith}*/}
+        {/*    rtl={rtl}*/}
+        {/*  />*/}
+        {/*)}*/}
       </div >
     );
   }

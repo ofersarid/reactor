@@ -23,7 +23,7 @@ export const userInput = {
   unCheckedChildren: PropTypes.any,
   options: PropTypes.arrayOf(PropTypes.string),
   rtl: PropTypes.bool,
-  optional: PropTypes.bool,
+  required: PropTypes.bool,
   stretch: PropTypes.bool,
   validationTip: PropTypes.string,
   autoFocus: PropTypes.bool,
@@ -42,7 +42,7 @@ export const richContent = {
   min: PropTypes.number,
   onValidation: PropTypes.func.isRequired,
   validateWith: PropTypes.func,
-  optional: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 export const pdfFile = {

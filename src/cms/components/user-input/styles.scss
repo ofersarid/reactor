@@ -1,4 +1,5 @@
 @import '/src/animations';
+@import '/src/colors';
 
 .textArea,
 .dateTime input {
@@ -27,20 +28,28 @@
   width: 100%;
 }
 
-.withLabel {
-  display: flex;
-  align-items: center;
-}
+//.withLabel {
+//  display: flex;
+//  align-items: center;
+//}
 
-.withLabel-mobile {
-  flex-direction: column;
-  align-items: flex-start;
-}
+//.withLabel-mobile {
+//  flex-direction: column;
+//  align-items: flex-start;
+//}
 
 .label {
-  width: 150px;
-  padding: 11px 0;
-  flex-shrink: 0;
+  margin-bottom: 21px;
+  height: 23px;
+  border-bottom: 1px solid $black;
+  color: $black;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 18px;
+  text-transform: capitalize;
+  display: inline-block;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .field {
@@ -69,4 +78,13 @@
 input,
 textarea {
   font-weight: 100;
+}
+
+.asterisk {
+  height: 7px;
+  position: absolute;
+  top: 0;
+  right: -3px;
+  color: $red;
+  transform: translate(100%, 0);
 }
