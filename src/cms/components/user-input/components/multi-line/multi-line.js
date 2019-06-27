@@ -37,7 +37,7 @@ class MultiLine extends PureComponent {
   }
 
   normalizeValue(value) {
-    return value.replace(/^\s+/, '').replace(/\s{2,}/g, ' ');
+    return value.replace(/^\s+/, '').replace(/\s{2,}|(?:\r|\n|\r\n)/g, ' ');
   };
 
   handleOnChange(e) {
