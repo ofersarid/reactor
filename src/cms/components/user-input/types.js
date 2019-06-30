@@ -57,9 +57,7 @@ export const pdfFile = {
 export const imageFile = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  onValidation: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
-  validateWith: PropTypes.func,
 };
 
 export const validationIndicator = {

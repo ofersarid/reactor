@@ -6,11 +6,10 @@ import ImageAsync from 'react-image-async';
 import { imageFile } from '../../types';
 import styles from './styles.scss';
 import { Button } from '/src/cms/components';
-import { Image as ImageIcon } from 'styled-icons/material/Image';
-import { Rotate90DegreesCcw } from 'styled-icons/material/Rotate90DegreesCcw';
+// import { Image as ImageIcon } from 'styled-icons/material/Image';
+// import { Rotate90DegreesCcw } from 'styled-icons/material/Rotate90DegreesCcw';
 import Puff from '/src/svg-loaders/puff.svg';
 import noop from 'lodash/noop';
-import ValidationIndicator from '../validation-indicator/validation-indicator';
 
 const MAX_DIMENSION = 1200;
 
@@ -99,6 +98,10 @@ class UploadImage extends PureComponent {
     });
   };
 
+  onRotateClick() {
+    this.rotateImage90Deg().then(resp => this.handleChange(resp));
+  }
+
   rotateImage90Deg() {
     return new Promise(resolve => {
       // Load the image
@@ -157,64 +160,49 @@ class UploadImage extends PureComponent {
   }
 
   render() {
-    const { preview, showValidation, validateWith } = this.state;
-    const { onValidation, placeholder } = this.props;
+    const { preview } = this.state;
+    const hasImage = preview.length && typeof preview === 'string';
     return (
       <div className={styles.imageUpload} >
-        <div className={cx(styles.imagePreviewContainer, showValidation && styles.removeRightBorder)} >
-          <ul className={styles.tools} >
-            <li >
-              <Button
-                justIcon
-                disable={!this.file}
-                onClick={() => {
-                  this.rotateImage90Deg().then(resp => this.handleChange(resp));
-                }}
-                tip="Rotate"
-              >
-                <Rotate90DegreesCcw />
-              </Button >
-            </li >
-          </ul >
+
+        {hasImage ? (
+          <div className={cx(styles.imagePreviewContainer)} >
+            <ImageAsync src={[preview]} >
+              {({ loaded, error }) => (
+                <Fragment >
+                  <img src={loaded ? preview : Puff} className={styles.image} />
+                </Fragment >
+              )}
+            </ImageAsync >
+          </div >
+        ) : null}
+        {hasImage ? (
           <Button
-            onClick={this.handleClick}
             className={styles.button}
-            noScale
+            onClick={this.onRotateClick}
+            tip="Rotate"
+            type="white"
           >
-            {(preview.length && typeof preview === 'string') ? (
-              <ImageAsync src={[preview]} >
-                {({ loaded, error }) => (
-                  <Fragment >
-                    <div style={{ backgroundImage: `url(${loaded ? preview : Puff})` }} className={styles.image} />
-                  </Fragment >
-                )}
-              </ImageAsync >
-            ) : (
-              <Fragment >
-                <ImageIcon className={styles.imageIcon}/>
-                <div >Select an image file from your computer</div >
-                <div className={styles.placeholder} >{placeholder}</div >
-              </Fragment >
-            )}
-            <input
-              ref={this.fileInput}
-              type="file"
-              onChange={e => {
-                const firstFile = e.target.files[0];
-                this.handleChange(firstFile);
-              }}
-              accept="image/*"
-              className={styles.fileInput}
-            />
+            Rotate
           </Button >
-        </div >
-        <ValidationIndicator
-          show={showValidation}
-          min={1}
-          onValidation={onValidation}
-          value={preview}
-          validateWith={validateWith}
-        />
+        ) : null}
+        <Button
+          onClick={this.handleClick}
+          className={styles.button}
+          type={hasImage ? 'white' : 'red'}
+        >
+          {hasImage ? 'Replace' : 'Upload'}
+          <input
+            ref={this.fileInput}
+            type="file"
+            onChange={e => {
+              const firstFile = e.target.files[0];
+              this.handleChange(firstFile);
+            }}
+            accept="image/*"
+            className={styles.fileInput}
+          />
+        </Button >
       </div >
     );
   }

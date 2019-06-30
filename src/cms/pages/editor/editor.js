@@ -104,7 +104,6 @@ Editor.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
   fields: [{
-    disabled: false,
     key: 'cover-tagline',
     label: 'Cover Tagline',
     maxChars: 70,
@@ -112,7 +111,6 @@ const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
     type: 'multi-line',
     validateWith: 'min-max',
   }, {
-    disabled: false,
     key: 'frame-1-title',
     label: 'Screen Title',
     maxChars: 50,
@@ -120,7 +118,6 @@ const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
     type: 'multi-line',
     validateWith: 'min-max',
   }, {
-    disabled: false,
     key: 'frame-1-body',
     label: 'Body',
     maxChars: 950,
@@ -131,28 +128,24 @@ const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
     // initialValue: 'Veins are the preferred conduits for peripheral bypass and arterial reconstruction procedures. However, the inherent structural limitations of vein grafts coupled with the hemodynamics of the arterial circulation, result in pathological remodeling and graft failure. When used in lower limb bypass, approximately 20% of vein grafts are occluded at 12 months(1)  and 30%-50% will fail within 3-5 years(2) . months(1)  and 30%-50% will fail within 3-5 years(2). Veins are the preferred conduits for peripheral bypass and arterial reconstruction procedures. However, the inherent structural limitations of vein grafts coupled with the hemodynamics of the arterial circulation, result in pathological remodeling and graft failure. When used in lower limb bypass, approximately 20% of vein grafts are occluded at 12 months(1)  and 30%-50% will fail within 3-5 years(2) . months(1)  and 30%-50% will fail within 3-5 years(2).',
     preserveLineBreaks: true,
   }, {
-    disabled: false,
     key: 'frame-1-footnote-1',
     label: 'Footnote 1',
     maxChars: 210,
     type: 'multi-line',
     validateWith: 'min-max',
   }, {
-    disabled: false,
     key: 'frame-1-footnote-2',
     label: 'Footnote 2',
     maxChars: 210,
     type: 'multi-line',
     validateWith: 'min-max',
   }, {
-    disabled: false,
     key: 'frame-1-footnote-3',
     label: 'Footnote 3',
     maxChars: 210,
     type: 'multi-line',
     validateWith: 'min-max',
   }, {
-    disabled: false,
     key: 'frame-2-title',
     label: 'Screen Title',
     maxChars: 50,
@@ -160,11 +153,16 @@ const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
     type: 'multi-line',
     validateWith: 'min-max',
   }, {
-    disabled: false,
     key: 'frame-2-image',
     label: 'Image',
     required: true,
     type: 'image',
+  }, {
+    key: 'frame-2-subtitle',
+    label: 'Image Subtitle',
+    maxChars: 50,
+    type: 'multi-line',
+    validateWith: 'min-max',
   }],
 });
 

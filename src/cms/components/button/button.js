@@ -47,23 +47,23 @@ class Button extends PureComponent {
     // const { working } = this.state;
     const Tag = tag;
     return (
-      <Tooltip content={tip} animation={tipAnimation} >
-        <Tag
-          className={cx(
-            'ripple',
-            'waves-effect',
-            styles[type === 'white' ? 'wavesDark' : 'wavesLight'],
-            styles.button,
-            className,
-            disable && styles.disable,
-            [styles[type]],
-          )}
-          style={Object.assign({
-            justifyContent,
-          }, style)}
-          ref={getRef}
-          onClick={this.handleClick}
-        >
+      <Tag
+        className={cx(
+          'ripple',
+          'waves-effect',
+          styles[type === 'white' ? 'wavesDark' : 'wavesLight'],
+          styles.button,
+          className,
+          disable && styles.disable,
+          [styles[type]],
+        )}
+        style={Object.assign({
+          justifyContent,
+        }, style)}
+        ref={getRef}
+        onClick={this.handleClick}
+      >
+        <Tooltip content={tip} animation={tipAnimation} >
           <div
             className={cx(
               'inner',
@@ -74,8 +74,8 @@ class Button extends PureComponent {
               {children}
             </Fragment >
           </div >
-        </Tag >
-      </Tooltip >
+        </Tooltip >
+      </Tag >
     );
   }
 }
