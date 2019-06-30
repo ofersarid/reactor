@@ -24,7 +24,14 @@ class MultiLine extends PureComponent {
   }
 
   normalizeValue(value) {
-    return value.replace(/^\s+/, '').replace(/\s{2,}|(?:\r|\n|\r\n)/g, ' ');
+    const { preserveLineBreaks } = this.props;
+    let normalizedVal;
+    normalizedVal = value.replace(/^\s+/, ''); //  remove pre text white space
+    normalizedVal = normalizedVal.replace(/\s{2,}/g, ' '); // remove extra white space inside text
+    if (!preserveLineBreaks) {
+      normalizedVal = normalizedVal.replace(/(?:\r|\n|\r\n)/g, ' ');
+    }
+    return normalizedVal;
   };
 
   handleOnChange(e) {
@@ -47,7 +54,7 @@ class MultiLine extends PureComponent {
           />
         </div >
         <div className={cx(styles.tip, { [styles.notValid]: !isValid })} >
-          (<span className={styles.number} >{value.length}</span >/<span className={styles.number} >{max}</span >)
+          ({value.length}/{max})
         </div >
       </div >
     );

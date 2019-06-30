@@ -58,6 +58,7 @@ const resolveComponentByType = (props) => {
           required={props.required}
           rtl={props.rtl}
           stretch={props.stretch}
+          preserveLineBreaks={props.preserveLineBreaks}
         />
       );
     case 'date-time':

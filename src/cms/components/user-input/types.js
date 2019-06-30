@@ -27,6 +27,7 @@ export const userInput = {
   stretch: PropTypes.bool,
   validationTip: PropTypes.string,
   autoFocus: PropTypes.bool,
+  preserveLineBreaks: PropTypes.bool,
 };
 
 export const switchTypes = {
