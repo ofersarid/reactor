@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
-// import cx from 'classnames';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { UserInput } from '/src/cms/components';
+import { Button, UserInput } from '/src/cms/components';
 import { inputTypes } from '/src/cms/components/user-input/types';
 import styles from './styles.scss';
+import { hashHistory } from 'react-router';
 
 class Editor extends PureComponent {
   constructor(props) {
@@ -18,6 +18,21 @@ class Editor extends PureComponent {
       isValid: false,
     };
     this.validatedFields = [];
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { entity } = this.state;
+    let isValid = true;
+    Object.keys(entity).forEach(key => {
+      const validationFuntion = this.resolveValidationFunction(this.getField(key));
+      isValid = isValid && validationFuntion(entity[key]);
+    });
+    this.setState({ isValid });
+  }
+
+  getField(key) {
+    const { fields } = this.props;
+    return fields.find(field => field.key === key);
   }
 
   resolveValue(value, field) {
@@ -33,19 +48,17 @@ class Editor extends PureComponent {
   }
 
   resolveValidationFunction(field) {
-    switch (field.validateWith) {
-      case 'min-max':
-        field.minChars = field.required ? (field.minChars || 1) : undefined;
-        switch (true) {
-          case Boolean(field.maxChars && field.minChars):
-            return value => (value.length <= field.maxChars && value.length >= field.minChars);
-          case Boolean(field.maxChars):
-            return value => (value.length <= field.maxChars);
-          case Boolean(field.minChars):
-            return value => (value.length >= field.minChars);
-          default:
-            return () => true;
-        }
+    switch (true) {
+      case field.validateWith === 'min-max' && Boolean(field.maxChars && field.minChars):
+        return value => (value.length <= field.maxChars && value.length >= field.minChars);
+      case field.validateWith === 'min-max' && Boolean(field.maxChars):
+        return value => (value.length <= field.maxChars);
+      case field.validateWith === 'min-max' && Boolean(field.minChars):
+        return value => (value.length >= field.minChars);
+      case ['image', 'pdf'].includes(field.type) && field.required:
+        return file => (typeof file.name === 'string');
+      default:
+        return () => true;
     }
   }
 
@@ -53,12 +66,21 @@ class Editor extends PureComponent {
     this.setState({ entity: Object.assign({}, this.state.entity, change) });
   }
 
+  handleClickOnDone() {
+    const canGoBack = document.referrer.length > 0;
+    if (canGoBack) {
+      hashHistory.goBack();
+    } else {
+      hashHistory.push('cms/home');
+    }
+  }
+
   render() {
     const { fields } = this.props;
-    // const { isValid, entity } = this.state;
+    const { isValid } = this.state;
     return (
       <div className={cx(styles.assetEditor)} >
-        {fields.map((field, i) => {
+        {fields.map(field => {
           const value = this.state.entity[field.key];
           return (
             <div key={field.key} className={styles.inputWrapper} >
@@ -83,6 +105,13 @@ class Editor extends PureComponent {
             </div >
           );
         })}
+        <Button
+          className={styles.footerBtn}
+          disable={!isValid}
+          onClick={this.handleClickOnDone}
+        >
+          Done
+        </Button>
       </div >
     );
   }
@@ -95,7 +124,7 @@ Editor.propTypes = {
     label: PropTypes.string.isRequired,
     maxChars: PropTypes.number,
     minChars: PropTypes.number,
-    required: PropTypes.bool.isRequired,
+    required: PropTypes.bool,
     type: PropTypes.oneOf(inputTypes).isRequired,
     validateWith: PropTypes.string,
   })).isRequired,
@@ -161,6 +190,39 @@ const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
     key: 'frame-2-subtitle',
     label: 'Image Subtitle',
     maxChars: 50,
+    type: 'multi-line',
+    validateWith: 'min-max',
+  }, {
+    key: 'frame-2-body',
+    label: 'Body',
+    maxChars: 350,
+    required: true,
+    type: 'multi-line',
+    validateWith: 'min-max',
+    // eslint-disable-next-line no-irregular-whitespace
+    // initialValue: 'Veins are the preferred conduits for peripheral bypass and arterial reconstruction procedures. However, the inherent structural limitations of vein grafts coupled with the hemodynamics of the arterial circulation, result in pathological remodeling and graft failure. When used in lower limb bypass, approximately 20% of vein grafts are occluded at 12 months(1)  and 30%-50% will fail within 3-5 years(2) . months(1)  and 30%-50% will fail within 3-5 years(2). Veins are the preferred conduits for peripheral bypass and arterial reconstruction procedures. However, the inherent structural limitations of vein grafts coupled with the hemodynamics of the arterial circulation, result in pathological remodeling and graft failure. When used in lower limb bypass, approximately 20% of vein grafts are occluded at 12 months(1)  and 30%-50% will fail within 3-5 years(2) . months(1)  and 30%-50% will fail within 3-5 years(2).',
+    preserveLineBreaks: true,
+  }, {
+    key: 'frame-2-pdf',
+    label: 'PDF',
+    required: true,
+    type: 'pdf',
+  }, {
+    key: 'frame-2-footnote-1',
+    label: 'Footnote 1',
+    maxChars: 210,
+    type: 'multi-line',
+    validateWith: 'min-max',
+  }, {
+    key: 'frame-2-footnote-2',
+    label: 'Footnote 2',
+    maxChars: 210,
+    type: 'multi-line',
+    validateWith: 'min-max',
+  }, {
+    key: 'frame-2-footnote-3',
+    label: 'Footnote 3',
+    maxChars: 210,
     type: 'multi-line',
     validateWith: 'min-max',
   }],

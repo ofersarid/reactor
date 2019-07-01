@@ -1,12 +1,9 @@
-import React, { PureComponent, Fragment } from 'react';
-import cx from 'classnames';
+import React, { PureComponent } from 'react';
 import autoBind from 'auto-bind';
-import { pdfFile } from '../../types';
 import styles from './styles.scss';
 import { Button } from '/src/cms/components';
-import { PictureAsPdf } from 'styled-icons/material/PictureAsPdf';
 import noop from 'lodash/noop';
-import ValidationIndicator from '../validation-indicator/validation-indicator';
+import PropTypes from 'prop-types';
 
 class UploadPdf extends PureComponent {
   constructor(props) {
@@ -16,29 +13,30 @@ class UploadPdf extends PureComponent {
     this.state = {
       hover: false,
       preview: props.value,
-      showValidation: false,
+      isValid: false,
     };
   }
 
+  componentDidMount() {
+    const { value, validateWith } = this.props;
+    this.setState({ isValid: validateWith(value) });
+  }
+
   componentDidUpdate(prevProps) {
-    const { value } = this.props;
+    const { value, validateWith } = this.props;
     if (value !== prevProps.value && typeof value === 'string') {
       this.setState({ preview: value });
     }
+    this.setState({ isValid: validateWith(value) });
   }
 
   componentWillUnmount() {
-    this.willUnmount = true;
-  }
-
-  showValidation() {
-    const { optional } = this.props;
-    if (optional) return;
-    this.setState({ showValidation: true });
+    this.willUnmount = true; // todo - check if redundant
   }
 
   handleChange(file) {
-    const { onChange } = this.props;
+    const { onChange, validateWith } = this.props;
+    let preview;
     if (file) {
       onChange(file);
       // const fileProps = {
@@ -46,8 +44,7 @@ class UploadPdf extends PureComponent {
       //   lastModified: file.lastModified,
       //   size: file.size,
       // };
-      const preview = URL.createObjectURL(file);
-      this.setState({ preview: preview });
+      preview = URL.createObjectURL(file);
       // const reader = new window.FileReader();
       // reader.readAsDataURL(file);
       // if (reader.result) {
@@ -58,60 +55,48 @@ class UploadPdf extends PureComponent {
       //   };
       // }
     }
-    this.showValidation();
+    this.setState({ preview: preview });
+    this.setState({ isValid: validateWith(preview) });
   }
 
   handleClick(e) {
     e.stopPropagation();
     this.fileInput.current.click();
-    this.showValidation();
   }
 
   render() {
-    const { preview, showValidation, validateWith } = this.state;
-    const { onValidation, placeholder } = this.props;
+    const { preview, isValid } = this.state;
+    const hasPDF = preview.length && typeof preview === 'string';
     return (
-      <div className={styles.imageUpload} >
-        <div className={cx(styles.imagePreviewContainer, showValidation && styles.removeRightBorder)} >
-          <Button
-            onClick={this.handleClick}
-            className={styles.button}
-            noScale
-          >
-            {preview ? (
-              <iframe src={preview} className={styles.pdfPreview} frameBorder="0" scrolling="no" />
-            ) : (
-              <Fragment >
-                <PictureAsPdf className={styles.pfdIcon} />
-                <div >Select a PDF file from your computer</div >
-                <div className={styles.placeholder} >{placeholder}</div >
-              </Fragment >
-            )}
-            <input
-              ref={this.fileInput}
-              type="file"
-              onChange={e => {
-                const firstFile = e.target.files[0];
-                this.handleChange(firstFile);
-              }}
-              accept="application/pdf"
-              className={styles.fileInput}
-            />
-          </Button >
-        </div >
-        <ValidationIndicator
-          show={showValidation}
-          min={1}
-          onValidation={onValidation}
-          value={preview}
-          validateWith={validateWith}
-        />
+      <div className={styles.pdfUpload} >
+        {preview ? <a rel="noreferrer noopener" target="_blank" href={preview}>pdf</a> : null}
+        <Button
+          onClick={this.handleClick}
+          className={styles.button}
+          type={isValid ? 'white' : 'red'}
+        >
+          {hasPDF ? 'Replace' : 'Upload'}
+          <input
+            ref={this.fileInput}
+            type="file"
+            onChange={e => {
+              const firstFile = e.target.files[0];
+              this.handleChange(firstFile);
+            }}
+            accept="application/pdf"
+            className={styles.fileInput}
+          />
+        </Button >
       </div >
     );
   }
 }
 
-UploadPdf.propTypes = pdfFile;
+UploadPdf.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  validateWith: PropTypes.func,
+};
 
 UploadPdf.defaultProps = {
   onValidation: noop,

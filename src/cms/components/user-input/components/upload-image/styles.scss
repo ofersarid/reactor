@@ -7,11 +7,9 @@
 }
 
 .imagePreviewContainer {
-  //border: 1px solid $lightGray;
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 10px;
-  //padding: 10px;
 }
 
 .image {
@@ -29,27 +27,7 @@
   &:last-of-type {
     margin-bottom: 0;
   }
-
-  //:global {
-  //  .inner {
-  //    display: flex;
-  //    align-items: center;
-  //    height: 100%;
-  //    justify-content: center;
-  //    flex-direction: column;
-  //    text-align: center;
-  //  }
-  //}
 }
-
-//.spaceRight {
-//  margin-right: 20px;
-//
-//  h3 {
-//    margin: 0;
-//    display: inline;
-//  }
-//}
 
 .placeholder {
   color: $placeholderColor;

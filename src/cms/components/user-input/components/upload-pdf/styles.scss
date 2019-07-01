@@ -1,18 +1,8 @@
 @import '/src/styles';
 
-.imageUpload {
+.pdfUpload {
   width: 100%;
-  height: 250px;
   position: relative;
-  display: flex;
-}
-
-.imagePreviewContainer {
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  width: 100%;
-  height: 100%;
-  flex-shrink: 1;
-  box-sizing: border-box;
 }
 
 .fileInput {
@@ -20,24 +10,8 @@
 }
 
 .button {
-  width: 100%;
-  height: 100%;
-
-  :global {
-    .inner {
-      display: flex;
-      align-items: center;
-      height: 100%;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-    }
-  }
-}
-
-.pdfPreview {
-  width: 100%;
-  height: calc(100% - 22px);
+  height: 42px;
+  margin-bottom: 10px;
 }
 
 .placeholder {

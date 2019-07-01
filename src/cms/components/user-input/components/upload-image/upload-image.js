@@ -1,9 +1,10 @@
 import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
 import ImageAsync from 'react-image-async';
 // import Resizer from 'react-image-file-resizer';
-import { imageFile } from '../../types';
+// import { imageFile } from '../../types';
 import styles from './styles.scss';
 import { Button } from '/src/cms/components';
 // import { Image as ImageIcon } from 'styled-icons/material/Image';
@@ -21,19 +22,25 @@ class UploadImage extends PureComponent {
     this.state = {
       hover: false,
       preview: props.value,
-      showValidation: false,
+      isValid: false,
     };
   }
 
+  componentDidMount() {
+    const { value, validateWith } = this.props;
+    this.setState({ isValid: validateWith(value) });
+  }
+
   componentDidUpdate(prevProps) {
-    const { value } = this.props;
+    const { value, validateWith } = this.props;
     if (value !== prevProps.value && typeof value === 'string') {
       this.setState({ preview: value });
     }
+    this.setState({ isValid: validateWith(value) });
   }
 
   componentWillUnmount() {
-    this.willUnmount = true;
+    this.willUnmount = true; // todo - check if redundant
   }
 
   dataURLToBlob(dataURL) {
@@ -131,36 +138,25 @@ class UploadImage extends PureComponent {
     });
   };
 
-  showValidation() {
-    const { optional } = this.props;
-    if (optional) return;
-    this.setState({ showValidation: true });
-  }
-
   handleChange(file) {
     this.file = file;
-    const { onChange } = this.props;
+    const { onChange, validateWith } = this.props;
+    let preview;
     if (file) {
       this.imageOptimizer().then(resp => onChange(resp));
-      const preview = URL.createObjectURL(file);
-      this.setState({ preview: preview });
+      preview = URL.createObjectURL(file);
     }
-    this.showValidation();
+    this.setState({ preview: preview });
+    this.setState({ isValid: validateWith(preview) });
   }
 
   handleClick(e) {
     e.stopPropagation();
     this.fileInput.current.click();
-    this.clearError();
-    this.showValidation();
-  }
-
-  clearError() {
-    this.setState({ fileToBig: false, fileSize: null });
   }
 
   render() {
-    const { preview } = this.state;
+    const { preview, isValid } = this.state;
     const hasImage = preview.length && typeof preview === 'string';
     return (
       <div className={styles.imageUpload} >
@@ -189,7 +185,7 @@ class UploadImage extends PureComponent {
         <Button
           onClick={this.handleClick}
           className={styles.button}
-          type={hasImage ? 'white' : 'red'}
+          type={isValid ? 'white' : 'red'}
         >
           {hasImage ? 'Replace' : 'Upload'}
           <input
@@ -208,7 +204,11 @@ class UploadImage extends PureComponent {
   }
 }
 
-UploadImage.propTypes = imageFile;
+UploadImage.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  validateWith: PropTypes.func,
+};
 
 UploadImage.defaultProps = {
   onValidation: noop,

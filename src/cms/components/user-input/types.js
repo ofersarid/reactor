@@ -46,20 +46,6 @@ export const richContent = {
   required: PropTypes.bool,
 };
 
-export const pdfFile = {
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  onValidation: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
-  validateWith: PropTypes.func,
-};
-
-export const imageFile = {
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  placeholder: PropTypes.string,
-};
-
 export const validationIndicator = {
   min: PropTypes.number,
   max: PropTypes.number,
