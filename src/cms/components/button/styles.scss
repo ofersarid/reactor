@@ -1,12 +1,12 @@
 @import '/src/colors';
-@import '/src/animations';
+//@import '/src/animations';
 
 .button {
   cursor: pointer;
   user-select: none;
   text-decoration: none;
   position: relative;
-  animation: $undimm;
+  //animation: $undimm;
   border-radius: 50px;
   height: 65px;
   text-align: center;

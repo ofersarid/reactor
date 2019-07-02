@@ -1,5 +1,5 @@
-const list = state => state.getIn(['home', 'list']);
+const listName = state => state.getIn(['home', 'listName']);
 
 export default {
-  list,
+  listName,
 };

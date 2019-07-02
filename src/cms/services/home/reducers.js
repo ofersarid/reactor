@@ -2,13 +2,13 @@ import { fromJS } from 'immutable';
 import { ACTIONS } from './constants';
 
 const initialState = fromJS({
-  list: 'collections',
+  listName: 'collections',
 });
 
 const home = (state = initialState, action) => {
   switch (action.type) {
     case ACTIONS.SELECT_LIST:
-      return state.set('list', action.list);
+      return state.set('listName', action.list);
     default:
       return state;
   }
