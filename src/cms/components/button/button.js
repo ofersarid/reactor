@@ -90,7 +90,7 @@ Button.propTypes = {
   tipAnimation: PropTypes.oneOf(tipAnimations),
   getRef: PropTypes.object,
   style: PropTypes.object,
-  type: PropTypes.oneOf(['icon', 'black', 'white', 'red']),
+  type: PropTypes.oneOf(['icon', 'black', 'white', 'red', 'circle']),
   justifyContent: PropTypes.oneOf(['start', 'center']),
   tag: PropTypes.string.isRequired,
 };

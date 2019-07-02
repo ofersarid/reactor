@@ -9,3 +9,4 @@ export const isAdd = createSelector(pathname, _pathName => Boolean(_pathName.mat
 export const collectionId = state => state.getIn(['router', 'params', 'collectionId']);
 export const entityId = state => state.getIn(['router', 'params', 'entityId']);
 export const prevPath = state => state.getIn(['router', 'prevPath']);
+export const assetId = state => state.getIn(['router', 'params', 'assetId']);

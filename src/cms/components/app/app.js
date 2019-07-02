@@ -9,7 +9,7 @@ import { Transition, animated } from 'react-spring/renderprops';
 // import Routes from '/src/routes';
 import { withRouter } from 'react-router';
 import Auth from '/src/cms/components/auth';
-import { Home, LoginPage, Editor } from '/src/cms/pages';
+import { Home, LoginPage, Editor, Collection } from '/src/cms/pages';
 // import { ToastContainer } from 'react-toastify';
 import AuthRedirect from '/src/cms/components/auth/components/auth-redirect';
 // import CMSNavBar from '../tool-bar/cms-nav-bar';
@@ -24,6 +24,7 @@ import NavBar from './components/nav-bar/nav-bar';
 const pages = [
   springs => <animated.div className={cx(styles.pageContainer)} style={springs} ><LoginPage /></animated.div>,
   springs => <animated.div className={cx(styles.pageContainer)} style={springs} ><Home /></animated.div>,
+  springs => <animated.div className={cx(styles.pageContainer)} style={springs} ><Collection /></animated.div>,
   springs => <animated.div className={cx(styles.pageContainer)} style={springs} ><Editor /></animated.div>
 ];
 
@@ -33,8 +34,10 @@ const resolvePageIndex = pathname => {
       return 0;
     case pathname === '/cms/home':
       return 1;
-    case pathname.includes('/cms/editor'):
+    case Boolean(pathname.match('/cms/collection')) && !pathname.match('editor'):
       return 2;
+    case Boolean(pathname.match('editor')):
+      return 3;
     default:
       return 0;
   };

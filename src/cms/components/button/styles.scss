@@ -24,6 +24,20 @@
   color: $white;
 }
 
+.circle {
+  background: $black;
+  color: $white;
+  width: 65px;
+  height: 65px;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+
+  svg {
+    height: 42px;
+  }
+}
+
 .white {
   background: $white;
   color: $black;

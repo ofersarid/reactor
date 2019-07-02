@@ -20,9 +20,11 @@ export default (
       {/*   <Route path="add" component={Editor} /> */}
       {/*   <Route path="edit/:entityId" component={Editor} /> */}
       {/* </Route > */}
-      <Route path="home" />
-      <Route path="editor/:id" />
       <Route path="login" />
+      <Route path="home" />
+      <Route path="collection/:collectionId" />
+      <Route path="collection/:collectionId/editor/:assetId" />
+      <Route path="page/:pageId/editor" />
       {/* <Route path="settings" component={UnderConstruction} /> */}
       {/* <Route path="add-collection" component={AddCollectionDialog} /> */}
       {/* <Route path="add-document" component={AddDocumentDialog} /> */}

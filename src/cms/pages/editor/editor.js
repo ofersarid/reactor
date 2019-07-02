@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
+import Routes from '/src/routes';
 import { Button, UserInput } from '/src/cms/components';
 import { inputTypes } from '/src/cms/components/user-input/types';
 import styles from './styles.scss';
@@ -66,7 +67,7 @@ class Editor extends PureComponent {
     this.setState({ entity: Object.assign({}, this.state.entity, change) });
   }
 
-  handleClickOnDone() {
+  goBack() {
     const canGoBack = document.referrer.length > 0;
     if (canGoBack) {
       hashHistory.goBack();
@@ -75,8 +76,16 @@ class Editor extends PureComponent {
     }
   }
 
+  handleClickOnDone() {
+    this.goBack();
+  }
+
+  handleClickOnDelete() {
+    this.goBack();
+  }
+
   render() {
-    const { fields } = this.props;
+    const { fields, collectionId } = this.props;
     const { isValid } = this.state;
     return (
       <div className={cx(styles.assetEditor)} >
@@ -111,7 +120,16 @@ class Editor extends PureComponent {
           onClick={this.handleClickOnDone}
         >
           Done
-        </Button>
+        </Button >
+        {collectionId && (
+          <Button
+            className={styles.footerBtn}
+            type="red"
+            onClick={this.handleClickOnDelete}
+          >
+            Delete
+          </Button >
+        )}
       </div >
     );
   }
@@ -129,6 +147,7 @@ Editor.propTypes = {
     validateWith: PropTypes.string,
   })).isRequired,
   entity: PropTypes.object,
+  collectionId: PropTypes.string,
 };
 
 const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
@@ -226,6 +245,7 @@ const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
     type: 'multi-line',
     validateWith: 'min-max',
   }],
+  collectionId: Routes.selectors.collectionId(state),
 });
 
 const mapDispatchToProps = dispatch => ({}); // eslint-disable-line

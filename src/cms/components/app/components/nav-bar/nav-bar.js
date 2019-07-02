@@ -13,35 +13,47 @@ import PropTypes from 'prop-types';
 import styles from './styles.scss';
 
 class NavBar extends React.PureComponent {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
+  //
+  //   this.titles = [springs => <animated.div
+  //     className={cx(styles.navBarTitle)}
+  //     style={springs} >
+  //     REACTOR
+  //   </animated.div >];
+  //
+  //   props.pages.forEach(item => {
+  //     this.titles.push(springs => <animated.div
+  //       className={cx(styles.navBarTitle)}
+  //       style={springs} >
+  //       {item.name}
+  //     </animated.div >);
+  //   });
+  //
+  //   props.collections.forEach(item => {
+  //     this.titles.push(springs => <animated.div
+  //       className={cx(styles.navBarTitle)}
+  //       style={springs} >
+  //       {item.name}
+  //     </animated.div >);
+  //   });
+  // }
 
-    this.titles = [springs => <animated.div
-      className={cx(styles.navBarTitle)}
-      style={springs} >
-      REACTOR
-    </animated.div >];
-
-    props.pages.forEach(p => {
-      this.titles.push(springs => <animated.div
-        className={cx(styles.navBarTitle)}
-        style={springs} >
-        {p.name}
-      </animated.div >);
-    });
-  }
-
-  resolvePageIndex(path) {
-    switch (true) {
-      case path === '/cms/login':
-      case path === '/cms/home':
-        return 0;
-      case path.includes('/cms/editor'):
-        return 1;
-      default:
-        return 0;
-    }
-  };
+  // resolvePageIndex(path) {
+  //   const { assetId, collectionId, pages, collections } = this.props;
+  //   switch (true) {
+  //     case path === '/cms/login':
+  //     case path === '/cms/home':
+  //       return 0;
+  //     case path.includes('/cms/editor'):
+  //       const collection = collections.find(item => item.id === collectionId);
+  //       const titleProp = collection.layout.title;
+  //
+  //       return 1;
+  //     default:
+  //       return 0;
+  //   }
+  // };
 
   goBack() {
     const canGoBack = document.referrer.length > 0;
@@ -53,37 +65,41 @@ class NavBar extends React.PureComponent {
   }
 
   render() {
-    const { logOut, uid, pathname, prevPath } = this.props;
-    const pageIndex = this.resolvePageIndex(pathname);
-    const pageIndexPrev = this.resolvePageIndex(prevPath);
-    const direction = pageIndex > pageIndexPrev ? 'right' : 'left';
+    const { logOut, uid, pathname, appTitle } = this.props;
+    // const pageIndex = this.resolvePageIndex(pathname);
+    // const pageIndexPrev = this.resolvePageIndex(prevPath);
+    // const direction = pageIndex > pageIndexPrev ? 'right' : 'left';
+
+    // const titleSprings = {
+    //   from: { opacity: 0 },
+    //   enter: { opacity: 1 },
+    //   leave: { opacity: 0 },
+    // };
 
     return (
       <div className={cx(styles.navBar)} >
+        {/* <Transition */}
+        {/*  native */}
+        {/*  reset */}
+        {/*  unique */}
+        {/*  items={pageIndex} */}
+        {/*  from={{ transform: `translateX(${direction === 'right' ? '0%' : '-100%'})`, opacity: 0 }} */}
+        {/*  enter={{ transform: 'translateX(-50%)', opacity: 1 }} */}
+        {/*  leave={{ transform: `translateX(${direction === 'right' ? '-100%' : '0%'})`, opacity: 0 }} > */}
+        {/*  {index => this.titles[index]} */}
+        {/* </Transition > */}
         <Transition
-          native
-          reset
           unique
-          items={pageIndex}
-          from={{ transform: `translateX(${direction === 'right' ? '0%' : '-100%'})`, opacity: 0 }}
-          enter={{ transform: 'translateX(-50%)', opacity: 1 }}
-          leave={{ transform: `translateX(${direction === 'right' ? '-100%' : '0%'})`, opacity: 0 }} >
-          {index => this.titles[index]}
+          items={0}
+          from={{ opacity: 0 }}
+          enter={{ opacity: 1 }}
+          leave={{ opacity: 0 }} >
+          {() => springs => <animated.div
+            className={cx(styles.navBarTitle)}
+            style={springs} >
+            {appTitle}
+          </animated.div >}
         </Transition >
-        {Boolean(pathname.match(/^\/cms\/editor/)) && (
-          <Transition
-            unique
-            items={0}
-            from={{ opacity: 0, transform: 'scale(0)' }}
-            enter={{ opacity: 1, transform: 'scale(1)' }}
-            leave={{ opacity: 0, transform: 'scale(0)' }} >
-            {() => springs => <animated.div className={cx(styles.toTheLeft, styles.btnWrap)} style={springs} >
-              <Button type="icon" className={cx(styles.btn)} onClick={this.goBack} >
-                <ChevronLeft />
-              </Button >
-            </animated.div >}
-          </Transition >
-        )}
         {(uid && pathname === '/cms/home') && (
           <Transition
             unique
@@ -98,6 +114,20 @@ class NavBar extends React.PureComponent {
             </animated.div >}
           </Transition >
         )}
+        {(uid && pathname !== '/cms/home' && pathname !== '/cms/login') && (
+          <Transition
+            unique
+            items={0}
+            from={{ opacity: 0, transform: 'scale(0)' }}
+            enter={{ opacity: 1, transform: 'scale(1)' }}
+            leave={{ opacity: 0, transform: 'scale(0)' }} >
+            {() => springs => <animated.div className={cx(styles.toTheLeft, styles.btnWrap)} style={springs} >
+              <Button type="icon" className={cx(styles.btn)} onClick={this.goBack} >
+                <ChevronLeft />
+              </Button >
+            </animated.div >}
+          </Transition >
+        )}
       </div >
     );
   }
@@ -107,18 +137,13 @@ NavBar.propTypes = {
   logOut: PropTypes.func.isRequired,
   uid: PropTypes.string,
   pathname: PropTypes.string.isRequired,
-  prevPath: PropTypes.string.isRequired,
-  pages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  appTitle: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   uid: Auth.selectors.uid(state),
   pathname: Routes.selectors.pathname(state),
-  prevPath: Routes.selectors.prevPath(state),
-  pages: [{
-    name: 'FRAME',
-    id: '3',
-  }],
+  appTitle: 'Reactor',
 });
 
 const mapDispatchToProps = dispatch => ({

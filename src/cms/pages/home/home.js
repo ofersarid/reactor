@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { Trail, animated } from 'react-spring/renderprops';
-import { hashHistory } from 'react-router';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Switch, SwitchItem, Button } from '/src/cms/components';
@@ -43,9 +42,11 @@ class Home extends React.PureComponent {
           <SwitchItem onClick={() => selectList('collections')} >Collections</SwitchItem >
           <SwitchItem onClick={() => selectList('pages')} >Pages</SwitchItem >
         </Switch >
-        <div className={cx(styles.listContainer, {
-          [styles.focus]: list === 'collections',
-        })} >
+        <div
+          className={cx(styles.listContainer, {
+            [styles.focus]: list === 'collections',
+          })}
+        >
           <Trail
             native
             initial={list === 'collections' ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }}
@@ -59,7 +60,7 @@ class Home extends React.PureComponent {
                 opacity: springs.opacity,
                 transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
               }} >
-                <Button onClick={console.log} type="white" justifyContent="start" >
+                <Button linkTo={`/cms/collection/${item.id}`} type="white" justifyContent="start" >
                   {item.name}
                 </Button >
               </animated.div >
@@ -82,7 +83,7 @@ class Home extends React.PureComponent {
                 opacity: springs.opacity,
                 transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
               }} >
-                <Button onClick={() => hashHistory.push(`cms/editor/${item.id}`)} type="white" justifyContent="start" >
+                <Button linkTo={`/cms/page/${item.id}/editor`} type="white" justifyContent="start" >
                   {item.name}
                 </Button >
               </animated.div >
