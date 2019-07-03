@@ -31,6 +31,7 @@ class Collection extends PureComponent {
             className={cx(styles.itemWrapper, { [styles.published]: item.published || item.published === undefined })}
             type="white"
             linkTo={`/cms/collection/${collectionId}/editor/${item.id}`}
+            justifyContent="start"
           >
             <div className={styles.itemTitle} >{this.interpolateValue(item, collectionMeta.layout.title)}</div >
             <div className={styles.itemBody} >{this.interpolateValue(item, collectionMeta.layout.body)}</div >
