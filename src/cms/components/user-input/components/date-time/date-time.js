@@ -4,8 +4,8 @@ import autoBind from 'auto-bind';
 import Cleave from 'cleave.js/react';
 import enhanceWithClickOutside from 'react-click-outside';
 import isEqual from 'lodash/isEqual';
-import types from './types';
-import styles from '../../styles.scss';
+import PropTypes from 'prop-types';
+import styles from './styles.scss';
 
 class DateTime extends PureComponent {
   constructor(props) {
@@ -70,11 +70,11 @@ class DateTime extends PureComponent {
   }
 
   validate(date, month, year, hour, min) {
-    return date.toString().length === 2 &&
-      month.toString().length === 2 &&
-      year.toString().length === 4 &&
-      hour.toString().length === 2 &&
-      min.toString().length === 2;
+    const { hideTime, hideDate } = this.props;
+    return (hideDate ||
+      (date.toString().length === 2 && month.toString().length === 2 && year.toString().length === 4)) &&
+      (hideTime ||
+      (hour.toString().length === 2 && min.toString().length === 2));
   };
 
   handleDateChange(e) {
@@ -110,8 +110,13 @@ class DateTime extends PureComponent {
 
   handleClickOutside() { // eslint-disable-line
     const { date, month, year, hour, min } = this.state;
-    this.dateCleave.setRawValue(`${date}${month}${year}`);
-    this.timeCleave.setRawValue(`${hour}${min}`);
+    const { hideTime, hideDate } = this.props;
+    if (!hideDate) {
+      this.dateCleave.setRawValue(`${date}${month}${year}`);
+    }
+    if (!hideTime) {
+      this.timeCleave.setRawValue(`${hour}${min}`);
+    }
   }
 
   onDateInit(cleave) {
@@ -123,40 +128,50 @@ class DateTime extends PureComponent {
   }
 
   render() {
-    const { onKeyPress } = this.props;
+    const { onKeyPress, hideTime, hideDate } = this.props;
     const { date, month, year, hour, min } = this.state;
     return (
       <div className={styles.dateTime} >
-        <Cleave
-          onInit={this.onDateInit}
-          placeholder="DD / MM / YYYY"
-          options={{
-            date: true,
-          }}
-          onChange={this.handleDateChange}
-          onFocus={e => {
-            // this.dateCleave.setRawValue();
-          }}
-          value={`${date}${month}${year}`}
-          onKeyPress={onKeyPress}
-        />
-        <Cleave
-          onInit={this.onTimeInit}
-          placeholder="HH : MM"
-          options={{
-            time: true,
-            timePattern: ['h', 'm'],
-          }}
-          onChange={this.handleTimeChange}
-          value={`${hour}${min}`}
-          onKeyPress={onKeyPress}
-        />
+        {!hideDate && (
+          <Cleave
+            onInit={this.onDateInit}
+            placeholder="DD / MM / YYYY"
+            options={{
+              date: true,
+            }}
+            onChange={this.handleDateChange}
+            onFocus={e => {
+              // this.dateCleave.setRawValue();
+            }}
+            value={`${date}${month}${year}`}
+            onKeyPress={onKeyPress}
+          />
+        )}
+        {!hideTime && (
+          <Cleave
+            onInit={this.onTimeInit}
+            placeholder="HH : MM"
+            options={{
+              time: true,
+              timePattern: ['h', 'm'],
+            }}
+            onChange={this.handleTimeChange}
+            value={`${hour}${min}`}
+            onKeyPress={onKeyPress}
+          />
+        )}
       </div >
     );
   }
 }
 
-DateTime.propTypes = types;
+DateTime.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([''])]),
+  onChange: PropTypes.func.isRequired,
+  onKeyPress: PropTypes.func.isRequired,
+  hideTime: PropTypes.bool,
+  hideDate: PropTypes.bool,
+};
 
 const mapStateToProps = state => ({}); // eslint-disable-line
 

@@ -58,7 +58,23 @@ const resolveComponentByType = (props) => {
           required={props.required}
           rtl={props.rtl}
           stretch={props.stretch}
-          preserveLineBreaks={props.preserveLineBreaks}
+        />
+      );
+    case 'multi-line-preserve-lines':
+      return (
+        <MultiLine
+          placeholder={props.placeholder}
+          value={props.value}
+          onChange={props.onChange}
+          min={props.min}
+          max={props.max}
+          onValidation={props.onValidation}
+          ref={props.getRef}
+          validateWith={props.validateWith}
+          required={props.required}
+          rtl={props.rtl}
+          stretch={props.stretch}
+          preserveLineBreaks
         />
       );
     case 'date-time':
@@ -69,6 +85,26 @@ const resolveComponentByType = (props) => {
           onKeyPress={e => onKeyPress(e, props.onEnterKeyPress)}
           ref={props.getRef}
           validateWith={props.validateWith}
+        />);
+    case 'date':
+      return (
+        <DateTime
+          value={props.value}
+          onChange={props.onChange}
+          onKeyPress={e => onKeyPress(e, props.onEnterKeyPress)}
+          ref={props.getRef}
+          validateWith={props.validateWith}
+          hideTime
+        />);
+    case 'time':
+      return (
+        <DateTime
+          value={props.value}
+          onChange={props.onChange}
+          onKeyPress={e => onKeyPress(e, props.onEnterKeyPress)}
+          ref={props.getRef}
+          validateWith={props.validateWith}
+          hideDate
         />);
     case 'post':
       return (

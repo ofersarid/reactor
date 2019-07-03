@@ -6,7 +6,7 @@ const initialState = fromJS({
   // sideNavOpen: true,
   // deleteMode: false,
   // markedForDelete: [],
-  blackList: [],
+  deletedAssets: [],
 });
 
 const blacklist = (state = initialState, action) => {
@@ -29,7 +29,7 @@ const blacklist = (state = initialState, action) => {
     //   );
 
     case ACTIONS.STORE_DELETED_IDS_HACK:
-      return state.set('blackList', state.get('blackList').concat(action.ids));
+      return state.set('blackList', state.get('deletedAssets').concat(action.ids));
 
       // case Routes.consts.ACTIONS.LOCATION_CHANGE:
       //   return state.withMutations(ctx =>

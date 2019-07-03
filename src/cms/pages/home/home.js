@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { Trail, animated } from 'react-spring/renderprops';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
+// import { firestoreConnect } from 'react-redux-firebase';
 import { Switch, SwitchItem, Button } from '/src/cms/components';
 import PropTypes from 'prop-types';
 import services from '/src/cms/services';
@@ -30,7 +30,7 @@ class Home extends React.PureComponent {
           <SwitchItem onClick={() => selectList('pages')} >Pages</SwitchItem >
         </Switch >
         {(collections.length === userCollectionIds.length) && (
-          <Fragment>
+          <Fragment >
             <div
               className={cx(styles.listContainer, {
                 [styles.focus]: listName === 'collections',
@@ -49,7 +49,12 @@ class Home extends React.PureComponent {
                     opacity: springs.opacity,
                     transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
                   }} >
-                    <Button linkTo={`/cms/collection/${item.id}`} type="white" justifyContent="start" >
+                    <Button
+                      linkTo={`/cms/collection/${item.id}`}
+                      type="white"
+                      justifyContent="start"
+                      disable={item.fields === undefined}
+                    >
                       {item.name}
                     </Button >
                   </animated.div >
@@ -77,7 +82,7 @@ class Home extends React.PureComponent {
                 )}
               </Trail >
             </div >
-          </Fragment>
+          </Fragment >
         )}
       </Fragment >
     );
@@ -85,22 +90,19 @@ class Home extends React.PureComponent {
 }
 
 Home.propTypes = {
+  listName: PropTypes.string.isRequired,
+  prevPath: PropTypes.string.isRequired,
   userCollectionIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  userCollections: PropTypes.arrayOf(PropTypes.shape({
+  userPageIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  collections: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     id: PropTypes.string.required,
   })),
-  selectList: PropTypes.func.isRequired,
-  listName: PropTypes.string.isRequired,
-  prevPath: PropTypes.string.isRequired,
-  collections: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-  })).isRequired,
   pages: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
   })),
+  selectList: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -108,8 +110,8 @@ const mapStateToProps = state => ({
   prevPath: Routes.selectors.prevPath(state),
   userCollectionIds: Auth.selectors.userCollectionIds(state),
   userPageIds: Auth.selectors.userPageIds(state),
-  collections: services.collections.selectors.collections(state),
-  pages: services.pages.selectors.pages(state),
+  collections: services.collections.selectors.list(state),
+  pages: services.pages.selectors.list(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -118,22 +120,4 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    let aggregated = [];
-    aggregated = aggregated.concat(props.userCollectionIds.reduce((accumulator, id) => {
-      accumulator.push({
-        collection: 'collections',
-        doc: id,
-      });
-      return accumulator;
-    }, []));
-    aggregated = aggregated.concat(props.userPageIds.reduce((accumulator, id) => {
-      accumulator.push({
-        collection: 'pages',
-        doc: id,
-      });
-      return accumulator;
-    }, []));
-    return aggregated;
-  }),
 )(Home);

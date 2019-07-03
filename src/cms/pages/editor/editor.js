@@ -3,9 +3,11 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
+import _isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import Routes from '/src/routes';
-import { Button, UserInput } from '/src/cms/components';
+import services from '/src/cms/services';
+import { Button, Switch, SwitchItem, UserInput } from '/src/cms/components';
 import { inputTypes } from '/src/cms/components/user-input/types';
 import styles from './styles.scss';
 import { hashHistory } from 'react-router';
@@ -25,10 +27,15 @@ class Editor extends PureComponent {
     const { entity } = this.state;
     let isValid = true;
     Object.keys(entity).forEach(key => {
-      const validationFuntion = this.resolveValidationFunction(this.getField(key));
-      isValid = isValid && validationFuntion(entity[key]);
+      if (key !== 'published') {
+        const validationFuntion = this.resolveValidationFunction(this.getField(key));
+        isValid = isValid && validationFuntion(entity[key]);
+      }
     });
     this.setState({ isValid });
+    if (!_isEqual(this.props.entity, prevProps.entity)) {
+      this.setState({ entity: this.props.entity });
+    }
   }
 
   getField(key) {
@@ -37,14 +44,13 @@ class Editor extends PureComponent {
   }
 
   resolveValue(value, field) {
-    if (!value) return '';
     switch (true) {
-      case Boolean(value && value.toDate):
-        return value.toDate();
       case field.type === 'switch':
         return Boolean(value);
+      case ['date', 'time', 'date-time'].includes(field.type):
+        return value.toDate ? value.toDate() : '';
       default:
-        return value;
+        return value || '';
     }
   }
 
@@ -58,6 +64,8 @@ class Editor extends PureComponent {
         return value => (value.length >= field.minChars);
       case ['image', 'pdf'].includes(field.type) && field.required:
         return file => (typeof file.name === 'string');
+      case field.validateWith === 'date-time' && field.required:
+        return value => (typeof value === 'object');
       default:
         return () => true;
     }
@@ -86,12 +94,12 @@ class Editor extends PureComponent {
 
   render() {
     const { fields, collectionId } = this.props;
-    const { isValid } = this.state;
+    const { isValid, entity } = this.state;
     return (
       <div className={cx(styles.assetEditor)} >
         {fields.map(field => {
           const value = this.state.entity[field.key];
-          return (
+          return value !== undefined ? (
             <div key={field.key} className={styles.inputWrapper} >
               <UserInput
                 key={field.key}
@@ -112,8 +120,14 @@ class Editor extends PureComponent {
                 preserveLineBreaks={field.preserveLineBreaks}
               />
             </div >
-          );
+          ) : null;
         })}
+        {Boolean(entity.published !== undefined) && (
+          <Switch indicateIndex={entity.published ? 0 : 1} className={styles.switch} >
+            <SwitchItem onClick={() => this.onChange({ published: true })} >Show</SwitchItem >
+            <SwitchItem onClick={() => this.onChange({ published: false })} >Hide</SwitchItem >
+          </Switch >
+        )}
         <Button
           className={styles.footerBtn}
           disable={!isValid}
@@ -151,112 +165,29 @@ Editor.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
-  fields: [{
-    key: 'cover-tagline',
-    label: 'Cover Tagline',
-    maxChars: 70,
-    required: true,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }, {
-    key: 'frame-1-title',
-    label: 'Screen Title',
-    maxChars: 50,
-    required: true,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }, {
-    key: 'frame-1-body',
-    label: 'Body',
-    maxChars: 950,
-    required: true,
-    type: 'multi-line',
-    validateWith: 'min-max',
-    // eslint-disable-next-line no-irregular-whitespace
-    // initialValue: 'Veins are the preferred conduits for peripheral bypass and arterial reconstruction procedures. However, the inherent structural limitations of vein grafts coupled with the hemodynamics of the arterial circulation, result in pathological remodeling and graft failure. When used in lower limb bypass, approximately 20% of vein grafts are occluded at 12 months(1)  and 30%-50% will fail within 3-5 years(2) . months(1)  and 30%-50% will fail within 3-5 years(2). Veins are the preferred conduits for peripheral bypass and arterial reconstruction procedures. However, the inherent structural limitations of vein grafts coupled with the hemodynamics of the arterial circulation, result in pathological remodeling and graft failure. When used in lower limb bypass, approximately 20% of vein grafts are occluded at 12 months(1)  and 30%-50% will fail within 3-5 years(2) . months(1)  and 30%-50% will fail within 3-5 years(2).',
-    preserveLineBreaks: true,
-  }, {
-    key: 'frame-1-footnote-1',
-    label: 'Footnote 1',
-    maxChars: 210,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }, {
-    key: 'frame-1-footnote-2',
-    label: 'Footnote 2',
-    maxChars: 210,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }, {
-    key: 'frame-1-footnote-3',
-    label: 'Footnote 3',
-    maxChars: 210,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }, {
-    key: 'frame-2-title',
-    label: 'Screen Title',
-    maxChars: 50,
-    required: true,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }, {
-    key: 'frame-2-image',
-    label: 'Image',
-    required: true,
-    type: 'image',
-  }, {
-    key: 'frame-2-subtitle',
-    label: 'Image Subtitle',
-    maxChars: 50,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }, {
-    key: 'frame-2-body',
-    label: 'Body',
-    maxChars: 350,
-    required: true,
-    type: 'multi-line',
-    validateWith: 'min-max',
-    // eslint-disable-next-line no-irregular-whitespace
-    // initialValue: 'Veins are the preferred conduits for peripheral bypass and arterial reconstruction procedures. However, the inherent structural limitations of vein grafts coupled with the hemodynamics of the arterial circulation, result in pathological remodeling and graft failure. When used in lower limb bypass, approximately 20% of vein grafts are occluded at 12 months(1)  and 30%-50% will fail within 3-5 years(2) . months(1)  and 30%-50% will fail within 3-5 years(2). Veins are the preferred conduits for peripheral bypass and arterial reconstruction procedures. However, the inherent structural limitations of vein grafts coupled with the hemodynamics of the arterial circulation, result in pathological remodeling and graft failure. When used in lower limb bypass, approximately 20% of vein grafts are occluded at 12 months(1)  and 30%-50% will fail within 3-5 years(2) . months(1)  and 30%-50% will fail within 3-5 years(2).',
-    preserveLineBreaks: true,
-  }, {
-    key: 'frame-2-pdf',
-    label: 'PDF',
-    required: true,
-    type: 'pdf',
-  }, {
-    key: 'frame-2-footnote-1',
-    label: 'Footnote 1',
-    maxChars: 210,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }, {
-    key: 'frame-2-footnote-2',
-    label: 'Footnote 2',
-    maxChars: 210,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }, {
-    key: 'frame-2-footnote-3',
-    label: 'Footnote 3',
-    maxChars: 210,
-    type: 'multi-line',
-    validateWith: 'min-max',
-  }],
   collectionId: Routes.selectors.collectionId(state),
+  pageId: Routes.selectors.pageId(state),
+  collection: services.collections.selectors.item(state),
+  page: services.collections.selectors.item(state),
 });
 
 const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
 
 const mergeProps = (state, dispatch, own) => {
+  const fields = state.collection
+    ? state.collection.fields
+    : state.page
+      ? state.page.fields
+      : [];
+
   const initEntity = () => {
-    return state.fields.reduce((entity, field) => {
+    const emptyEntity = {};
+    if (state.collectionId) {
+      emptyEntity.published = true;
+    }
+
+    Object.assign(emptyEntity, fields.reduce((entity, field) => {
       switch (true) {
-        case field.initialValue !== undefined:
-          entity[field.key] = entity[field.key] || field.initialValue;
-          return entity;
         case field.type === 'date-time':
           entity[field.key] = entity[field.key] || new Date();
           return entity;
@@ -270,11 +201,14 @@ const mergeProps = (state, dispatch, own) => {
           entity[field.key] = entity[field.key] || '';
           return entity;
       }
-    }, {});
+    }, {}));
+
+    return emptyEntity;
   };
 
   return Object.assign({}, own, state, {
-    entity: own.entity ? own.entity : initEntity(),
+    fields,
+    entity: state.entity ? state.entity : initEntity(),
   });
 };
 
