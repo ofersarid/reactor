@@ -1,5 +1,3 @@
-// todo - remove eslint disable
-/* eslint-disable */
 import React, { PureComponent } from 'react';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
@@ -7,7 +5,6 @@ import noop from 'lodash/noop';
 import Textarea from 'react-textarea-autosize';
 import styles from './styles.scss';
 import { userInput } from '../../types';
-import ValidationIndicator from '../validation-indicator/validation-indicator';
 
 class MultiLine extends PureComponent {
   constructor(props) {
@@ -24,11 +21,11 @@ class MultiLine extends PureComponent {
   }
 
   normalizeValue(value) {
-    const { preserveLineBreaks } = this.props;
+    const { type } = this.props;
     let normalizedVal;
     normalizedVal = value.replace(/^\s+/, ''); //  remove pre text white space
     normalizedVal = normalizedVal.replace(/\s{2,}/g, ' '); // remove extra white space inside text
-    if (!preserveLineBreaks) {
+    if (type !== 'multi-line-preserve-lines') {
       normalizedVal = normalizedVal.replace(/(?:\r|\n|\r\n)/g, ' ');
     }
     return normalizedVal;
@@ -42,7 +39,7 @@ class MultiLine extends PureComponent {
   }
 
   render() {
-    const { placeholder, value, max, min, onValidation, validateWith, required, rtl } = this.props;
+    const { placeholder, value, max, type } = this.props;
     const { isValid } = this.state;
     return (
       <div className={styles.multiLine} >
@@ -53,9 +50,11 @@ class MultiLine extends PureComponent {
             onChange={this.handleOnChange}
           />
         </div >
-        <div className={cx(styles.tip, { [styles.notValid]: !isValid })} >
-          ({value.length}/{max})
-        </div >
+        {type !== 'link' && (
+          <div className={cx(styles.tip, { [styles.notValid]: !isValid })} >
+            ({value.length}/{max})
+          </div >
+        )}
       </div >
     );
   }

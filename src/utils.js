@@ -21,6 +21,16 @@ export const validatePhone = phone => {
   return phone.replace(/\D/g, '').length >= 9;
 };
 
+const validateLink = str => {
+  const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+    '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+  return !!pattern.test(str);
+};
+
 export const toTitleCase = str => {
   return str.replace(/\w\S*/g, txt => {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -49,4 +59,15 @@ export const exportToCsv = (filename, rows) => {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+};
+
+export default {
+  toCapitalizedWords,
+  validateEmail,
+  validatePhone,
+  toTitleCase,
+  resolveSocialIconByURL,
+  youtubeEmbedTransformer,
+  exportToCsv,
+  validateLink,
 };

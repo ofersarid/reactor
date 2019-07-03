@@ -24,7 +24,6 @@ export const userInput = {
   options: PropTypes.arrayOf(PropTypes.string),
   rtl: PropTypes.bool,
   required: PropTypes.bool,
-  stretch: PropTypes.bool,
   validationTip: PropTypes.string,
   autoFocus: PropTypes.bool,
   preserveLineBreaks: PropTypes.bool,

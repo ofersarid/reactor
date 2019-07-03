@@ -45,22 +45,8 @@ const resolveComponentByType = (props) => {
   // todo - change optional prop to required instead
   switch (props.type) {
     case 'multi-line':
-      return (
-        <MultiLine
-          placeholder={props.placeholder}
-          value={props.value}
-          onChange={props.onChange}
-          min={props.min}
-          max={props.max}
-          onValidation={props.onValidation}
-          ref={props.getRef}
-          validateWith={props.validateWith}
-          required={props.required}
-          rtl={props.rtl}
-          stretch={props.stretch}
-        />
-      );
     case 'multi-line-preserve-lines':
+    case 'link':
       return (
         <MultiLine
           placeholder={props.placeholder}
@@ -73,8 +59,7 @@ const resolveComponentByType = (props) => {
           validateWith={props.validateWith}
           required={props.required}
           rtl={props.rtl}
-          stretch={props.stretch}
-          preserveLineBreaks
+          type={props.type}
         />
       );
     case 'date-time':
@@ -141,7 +126,6 @@ const resolveComponentByType = (props) => {
           validateWith={props.validateWith}
           required={props.required}
         />);
-    case 'link':
     case 'youtube':
       return (
         <Link
@@ -192,7 +176,6 @@ const resolveComponentByType = (props) => {
           required={props.required}
           onlyNumbers={props.type === 'number'}
           rtl={props.rtl}
-          stretch={props.stretch}
           onBlur={props.onBlur}
           autoFocus={props.autoFocus}
         />

@@ -6,6 +6,7 @@ import cx from 'classnames';
 import _isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import Routes from '/src/routes';
+import utils from '/src/utils';
 import services from '/src/cms/services';
 import { Button, Switch, SwitchItem, UserInput } from '/src/cms/components';
 import { inputTypes } from '/src/cms/components/user-input/types';
@@ -64,8 +65,10 @@ class Editor extends PureComponent {
         return value => (value.length >= field.minChars);
       case ['image', 'pdf'].includes(field.type) && field.required:
         return file => (typeof file.name === 'string');
-      case field.validateWith === 'date-time' && field.required:
+      case field.validateWith === 'date-time':
         return value => (typeof value === 'object');
+      case field.validateWith === 'link':
+        return utils.validateLink;
       default:
         return () => true;
     }
