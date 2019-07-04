@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import { reduxRoutes } from '../../types';
-import { updateLocation } from '../../actions';
+import actions from '../../actions';
 
 class ReduxRoutes extends Component {
   constructor(props) {
@@ -47,7 +47,7 @@ ReduxRoutes.propTypes = reduxRoutes;
 const mapStateToProps = state => ({}); // eslint-disable-line
 
 const mapDispatchToProps = dispatch => ({
-  update: (...props) => dispatch(updateLocation(...props)),
+  update: (...props) => dispatch(actions.updateLocation(...props)),
 });
 
 export default compose(

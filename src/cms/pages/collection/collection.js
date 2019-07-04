@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import LinesEllipsisLoose from 'react-lines-ellipsis/lib/loose';
 import moment from 'moment';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
@@ -11,6 +12,25 @@ import { Add } from 'styled-icons/material/Add';
 import styles from './styles.scss';
 
 class Collection extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      collectionAssets: props.collectionAssets,
+      collectionMeta: props.collectionMeta,
+      collectionId: props.collectionId,
+    };
+    props.setGoBackPath('/cms/home');
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { collectionAssets, collectionMeta, collectionId } = nextProps;
+    return {
+      collectionAssets: collectionAssets || prevState.collectionAssets,
+      collectionMeta: collectionMeta || prevState.collectionMeta,
+      collectionId: collectionId || prevState.collectionId,
+    };
+  }
+
   interpolateValue(item, property) {
     let value = item[property];
     if (typeof value === 'string') {
@@ -22,7 +42,7 @@ class Collection extends PureComponent {
   }
 
   render() {
-    const { collectionAssets, collectionMeta, collectionId } = this.props;
+    const { collectionAssets, collectionMeta, collectionId } = this.state;
     return collectionAssets ? (
       <Fragment >
         {collectionAssets.map(item => (
@@ -34,7 +54,12 @@ class Collection extends PureComponent {
             justifyContent="start"
           >
             <div className={styles.itemTitle} >{this.interpolateValue(item, collectionMeta.layout.title)}</div >
-            <div className={styles.itemBody} >{this.interpolateValue(item, collectionMeta.layout.body)}</div >
+            <LinesEllipsisLoose
+              text={this.interpolateValue(item, collectionMeta.layout.body)}
+              maxLine='4'
+              lineHeight='24'
+              className={styles.itemBody}
+            />
           </Button >
         ))}
         <Button
@@ -55,8 +80,9 @@ Collection.propTypes = {
     layout: PropTypes.shape({
       title: PropTypes.string.isRequired,
       body: PropTypes.string.isRequired,
-    }).isRequired
+    })
   }),
+  setGoBackPath: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -65,7 +91,9 @@ const mapStateToProps = (state) => ({
   collectionMeta: services.collections.selectors.item(state)
 });
 
-const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
+const mapDispatchToProps = dispatch => ({
+  setGoBackPath: path => dispatch(Routes.actions.setGoBackPath(path))
+});
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

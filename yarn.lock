@@ -10647,6 +10647,15 @@ react-dom-factories@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-dom-factories/-/react-dom-factories-1.0.2.tgz#eb7705c4db36fb501b3aa38ff759616aa0ff96e0"
 
+react-dom@*:
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.13.6"
+
 react-dom@^16.7.0:
   version "16.8.5"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.5.tgz#b3e37d152b49e07faaa8de41fdf562be3463335e"
@@ -10655,15 +10664,6 @@ react-dom@^16.7.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.13.5"
-
-react-dom@^16.8.6:
-  version "16.8.6"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
-    scheduler "^0.13.6"
 
 react-error-overlay@^5.1.0, react-error-overlay@^5.1.4:
   version "5.1.4"
@@ -10733,6 +10733,10 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+react-lines-ellipsis@^0.14.1:
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/react-lines-ellipsis/-/react-lines-ellipsis-0.14.1.tgz#dbc045b9c3bd0c46d2c1dee893d46e9260d53969"
 
 react-modal@^3.6.1:
   version "3.8.1"
@@ -10988,7 +10992,16 @@ react-treebeard@^3.1.0:
     shallowequal "^1.1.0"
     velocity-react "^1.4.1"
 
-"react@0.14.x || ^15.0.0 || ^16.0.0", react@^16.7.0:
+react@*:
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.13.6"
+
+react@^16.7.0:
   version "16.8.5"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.5.tgz#49be3b655489d74504ad994016407e8a0445de66"
   dependencies:

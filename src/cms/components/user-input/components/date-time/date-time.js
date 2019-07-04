@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
 import Cleave from 'cleave.js/react';
-import enhanceWithClickOutside from 'react-click-outside';
 import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
@@ -19,6 +18,8 @@ class DateTime extends PureComponent {
       hour: '',
       min: '',
       isValid: false,
+      initialValueDate: '',
+      initialValueTime: '',
     };
   }
 
@@ -34,7 +35,7 @@ class DateTime extends PureComponent {
         const newValue = new Date(year, parseInt(month) - 1, date, hour, min);
         onChange(newValue);
       } else {
-        onChange('invalid date time');
+        onChange('');
       }
     }
 
@@ -52,7 +53,7 @@ class DateTime extends PureComponent {
     let hour = '';
     let min = '';
 
-    if (typeof value === 'object') {
+    if (value) {
       const d = value;
       date = d.getDate();
       month = d.getMonth() + 1;
@@ -73,6 +74,8 @@ class DateTime extends PureComponent {
       year,
       hour,
       min,
+      initialValueDate: `${date}${month}${year}`,
+      initialValueTime: `${hour}${min}`,
     });
     this.validate(date, month, year, hour, min);
   }
@@ -88,9 +91,10 @@ class DateTime extends PureComponent {
 
   handleDateChange(e) {
     const { hour, min } = this.state;
-    const date = e.target.rawValue.substr(0, 2);
-    const month = e.target.rawValue.substr(2, 2);
-    const year = e.target.rawValue.substr(4, 4);
+    const splitValue = e.target.value.split('/');
+    const date = splitValue[0];
+    const month = splitValue[1];
+    const year = splitValue[2];
     this.setState({
       date,
       month,
@@ -114,56 +118,51 @@ class DateTime extends PureComponent {
     });
   }
 
-  handleClickOutside() { // eslint-disable-line
-    const { date, month, year, hour, min } = this.state;
-    const { hideTime, hideDate } = this.props;
-    if (!hideDate) {
-      this.dateCleave.setRawValue(`${date}${month}${year}`);
-    }
-    if (!hideTime) {
-      this.timeCleave.setRawValue(`${hour}${min}`);
-    }
-  }
+  // handleClickOutside() { // eslint-disable-line
+  //   const { date, month, year, hour, min } = this.state;
+  //   const { hideTime, hideDate } = this.props;
+  //   if (!hideDate) {
+  //     this.dateCleave.setRawValue(`${date}${month}${year}`);
+  //   }
+  //   if (!hideTime) {
+  //     this.timeCleave.setRawValue(`${hour}${min}`);
+  //   }
+  // }
 
-  onDateInit(cleave) {
-    this.dateCleave = cleave;
-  }
-
-  onTimeInit(cleave) {
-    this.timeCleave = cleave;
-  }
+  // onDateInit(cleave) {
+  //   this.dateCleave = cleave;
+  // }
+  //
+  // onTimeInit(cleave) {
+  //   this.timeCleave = cleave;
+  // }
 
   render() {
-    const { onKeyPress, hideTime, hideDate } = this.props;
-    const { date, month, year, hour, min, isValid } = this.state;
+    const { hideTime, hideDate } = this.props;
+    const { initialValueDate, initialValueTime, isValid } = this.state;
     return (
       <div className={cx(styles.dateTime, { [styles.inValid]: !isValid })} >
         {!hideDate && (
           <Cleave
-            onInit={this.onDateInit}
+            // onInit={this.onDateInit}
             placeholder="DD / MM / YYYY"
             options={{
               date: true,
             }}
             onChange={this.handleDateChange}
-            onFocus={e => {
-              // this.dateCleave.setRawValue();
-            }}
-            value={`${date}${month}${year}`}
-            onKeyPress={onKeyPress}
+            value={initialValueDate}
           />
         )}
         {!hideTime && (
           <Cleave
-            onInit={this.onTimeInit}
+            // onInit={this.onTimeInit}
             placeholder="HH : MM"
             options={{
               time: true,
               timePattern: ['h', 'm'],
             }}
             onChange={this.handleTimeChange}
-            value={`${hour}${min}`}
-            onKeyPress={onKeyPress}
+            value={initialValueTime}
           />
         )}
       </div >
@@ -172,9 +171,8 @@ class DateTime extends PureComponent {
 }
 
 DateTime.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.oneOf(['invalid date time'])]),
+  value: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.oneOf([''])]),
   onChange: PropTypes.func.isRequired,
-  onKeyPress: PropTypes.func.isRequired,
   hideTime: PropTypes.bool,
   hideDate: PropTypes.bool,
 };
@@ -183,6 +181,6 @@ const mapStateToProps = state => ({}); // eslint-disable-line
 
 const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
 
-export default connect(mapStateToProps, mapDispatchToProps)(enhanceWithClickOutside(DateTime));
+export default connect(mapStateToProps, mapDispatchToProps)(DateTime);
 
 // todo - support the custom validateWith prop.

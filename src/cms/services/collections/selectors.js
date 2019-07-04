@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 // import { collectionId, entityId } from '/src/routes/selectors';
-import { collectionId } from '/src/routes/selectors';
+import Routes from '/src/routes';
 // import { query, ignoreCase, orderBy } from '/src/cms/filters/selectors';
 import blackList from '../blacklist';
 import _sortBy from 'lodash/sortBy';
@@ -16,13 +16,13 @@ const list = createSelector(userCollectionsMap, (list) => {
   }, []), item => item.name ? item.name.toLowerCase() : null, ['asc']);
 });
 
-const item = createSelector(collectionId, userCollectionsMap, (_collectionId, _userCollectionsMap) => {
+const item = createSelector(Routes.selectors.collectionId, userCollectionsMap, (_collectionId, _userCollectionsMap) => {
   return _userCollectionsMap[_collectionId];
 });
 
 const assets = createSelector(
   userCollectionsMap,
-  collectionId,
+  Routes.selectors.collectionId,
   blackList.selectors.deletedAssets,
   (_userCollectionsMap, _collectionId, _blackList) => {
     if (_userCollectionsMap && _userCollectionsMap[_collectionId] && _userCollectionsMap[_collectionId].data) {
@@ -31,7 +31,7 @@ const assets = createSelector(
         if (!data[key] || _blackList.includes(key)) return accumulator; // object is empty (null)
         accumulator.push(Object.assign({}, data[key], { id: key }));
         return accumulator;
-      }, []);
+      }, []).reverse();
     }
   });
 

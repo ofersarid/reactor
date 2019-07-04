@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { compose } from 'redux';
+import autoBind from 'auto-bind';
 import { Transition, animated } from 'react-spring/renderprops';
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
@@ -13,31 +14,31 @@ import PropTypes from 'prop-types';
 import styles from './styles.scss';
 
 class NavBar extends React.PureComponent {
-  // constructor(props) {
-  //   super(props);
-  //
-  //   this.titles = [springs => <animated.div
-  //     className={cx(styles.navBarTitle)}
-  //     style={springs} >
-  //     REACTOR
-  //   </animated.div >];
-  //
-  //   props.pages.forEach(item => {
-  //     this.titles.push(springs => <animated.div
-  //       className={cx(styles.navBarTitle)}
-  //       style={springs} >
-  //       {item.name}
-  //     </animated.div >);
-  //   });
-  //
-  //   props.collections.forEach(item => {
-  //     this.titles.push(springs => <animated.div
-  //       className={cx(styles.navBarTitle)}
-  //       style={springs} >
-  //       {item.name}
-  //     </animated.div >);
-  //   });
-  // }
+  constructor(props) {
+    super(props);
+    autoBind(this);
+    // this.titles = [springs => <animated.div
+    //   className={cx(styles.navBarTitle)}
+    //   style={springs} >
+    //   REACTOR
+    // </animated.div >];
+    //
+    // props.pages.forEach(item => {
+    //   this.titles.push(springs => <animated.div
+    //     className={cx(styles.navBarTitle)}
+    //     style={springs} >
+    //     {item.name}
+    //   </animated.div >);
+    // });
+    //
+    // props.collections.forEach(item => {
+    //   this.titles.push(springs => <animated.div
+    //     className={cx(styles.navBarTitle)}
+    //     style={springs} >
+    //     {item.name}
+    //   </animated.div >);
+    // });
+  }
 
   // resolvePageIndex(path) {
   //   const { assetId, collectionId, pages, collections } = this.props;
@@ -56,12 +57,8 @@ class NavBar extends React.PureComponent {
   // };
 
   goBack() {
-    const canGoBack = document.referrer.length > 0;
-    if (canGoBack) {
-      hashHistory.goBack();
-    } else {
-      hashHistory.push('cms/home');
-    }
+    const { goBackPath } = this.props;
+    hashHistory.push(goBackPath);
   }
 
   render() {
@@ -138,11 +135,13 @@ NavBar.propTypes = {
   uid: PropTypes.string,
   pathname: PropTypes.string.isRequired,
   appTitle: PropTypes.string.isRequired,
+  goBackPath: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   uid: Auth.selectors.uid(state),
   pathname: Routes.selectors.pathname(state),
+  goBackPath: Routes.selectors.goBackPath(state),
   appTitle: 'Reactor',
 });
 

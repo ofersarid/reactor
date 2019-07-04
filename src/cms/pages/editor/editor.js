@@ -21,15 +21,18 @@ class Editor extends PureComponent {
       asset: props.asset,
       isValid: false,
     };
-    this.validate();
+    props.setGoBackPath(`/cms/collection/${props.collectionId}`);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    if (!this.props.pathname.includes('editor')) {
+      return;
+    }
     if (!_isEqual(this.props.asset, prevProps.asset)) {
       this.setState({ asset: this.props.asset });
     }
     if (!_isEqual(this.state.asset, prevState.asset)) {
-      this.validate();
+      this.setState({ isValid: this.validate() });
     }
   }
 
@@ -43,9 +46,9 @@ class Editor extends PureComponent {
       case field.type === 'switch':
         return Boolean(value);
       case ['date', 'time', 'date-time'].includes(field.type):
-        return value.toDate ? value.toDate() : value;
+        return (value && value.toDate) ? value.toDate() : value;
       default:
-        return value || '';
+        return value;
     }
   }
 
@@ -59,8 +62,9 @@ class Editor extends PureComponent {
           isValid = isValid && validationFunction(asset[key]);
         }
       });
-      this.setState({ isValid });
+      return isValid;
     }
+    return false;
   }
 
   resolveValidationFunction(field) {
@@ -87,15 +91,18 @@ class Editor extends PureComponent {
   }
 
   goBack() {
-    const canGoBack = document.referrer.length > 0;
-    if (canGoBack) {
-      hashHistory.goBack();
+    const { prevPath } = this.props;
+    if (prevPath) {
+      hashHistory.push(prevPath);
     } else {
       hashHistory.push('cms/home');
     }
   }
 
   handleClickOnDone() {
+    const { save } = this.props;
+    const { asset } = this.state;
+    save(asset);
     this.goBack();
   }
 
@@ -110,7 +117,7 @@ class Editor extends PureComponent {
       <div className={cx(styles.assetEditor)} >
         {fields.map(field => {
           const value = this.state.asset[field.key];
-          return value !== undefined ? (
+          return (
             <div key={field.key} className={styles.inputWrapper} >
               <UserInput
                 key={field.key}
@@ -131,7 +138,7 @@ class Editor extends PureComponent {
                 preserveLineBreaks={field.preserveLineBreaks}
               />
             </div >
-          ) : null;
+          );
         })}
         {Boolean(asset.published !== undefined) && (
           <Switch indicateIndex={asset.published ? 0 : 1} className={styles.switch} >
@@ -173,15 +180,24 @@ Editor.propTypes = {
   })),
   asset: PropTypes.object,
   collectionId: PropTypes.string,
+  save: PropTypes.func.isRequired,
+  prevPath: PropTypes.string.isRequired,
+  pathname: PropTypes.string.isRequired,
+  setGoBackPath: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({ // eslint-disable-line
   fields: services.asset.selectors.fields(state),
   asset: services.asset.selectors.item(state),
   collectionId: Routes.selectors.collectionId(state),
+  prevPath: Routes.selectors.prevPath(state),
+  pathname: Routes.selectors.pathname(state),
 });
 
-const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
+const mapDispatchToProps = dispatch => ({
+  save: asset => dispatch(services.asset.actions.save(asset)),
+  setGoBackPath: path => dispatch(Routes.actions.setGoBackPath(path))
+});
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

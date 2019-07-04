@@ -61,9 +61,9 @@ const APP = ({ pathname, isLoaded, prevPath }) => {
           reset
           unique
           items={pageIndex}
-          from={{ transform: `translateX(${direction === 'right' ? '100%' : '-100%'})`, opacity: 0 }}
-          enter={{ transform: 'translateX(0)', opacity: 1 }}
-          leave={{ transform: `translateX(${direction === 'right' ? '-50%' : '50%'})`, opacity: 0 }} >
+          from={{ marginLeft: `${direction === 'right' ? '100%' : '-100%'}`, opacity: 0 }}
+          enter={{ marginLeft: '0', opacity: 1 }}
+          leave={{ marginLeft: `${direction === 'right' ? '-50%' : '50%'}`, opacity: 0 }} >
           {index => pages[index]}
         </Transition >
         {/* </div > */}

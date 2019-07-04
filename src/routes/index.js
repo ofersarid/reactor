@@ -1,15 +1,12 @@
-import * as selectors from './selectors';
-import * as actions from './actions';
+
 import * as types from './types';
 import * as consts from './constants';
 import routesMap from './routes-map';
 
-const Routes = {
-  selectors,
-  actions,
+export default {
+  actions: require('./actions').default,
+  selectors: require('./selectors').default,
   consts,
   types,
   routesMap,
 };
-
-export default Routes;

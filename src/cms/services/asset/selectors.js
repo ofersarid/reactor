@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect';
-import { assetId } from '/src/routes/selectors';
+import Routes from '/src/routes';
 import collections from '../collections';
 import pages from '../pages';
 
 const item = createSelector(
   collections.selectors.item,
   collections.selectors.assets,
-  assetId,
+  Routes.selectors.assetId,
   (collection, collectionAssets, _assetId) => {
     let asset = collectionAssets ? collectionAssets.find(asset => asset.id === _assetId) : undefined;
     if (collection && !asset) {
@@ -14,11 +14,11 @@ const item = createSelector(
       asset.published = true;
       collection.fields.forEach(field => {
         switch (true) {
-          case field.type === 'date-time':
-          case field.type === 'date':
-          case field.type === 'time':
-            asset[field.key] = undefined;
-            return;
+          // case field.type === 'date-time':
+          // case field.type === 'date':
+          // case field.type === 'time':
+          //   asset[field.key] = undefined;
+          //   return;
           default:
             asset[field.key] = '';
         }

@@ -1,6 +1,16 @@
 import { ACTIONS } from './constants';
 
-export const updateLocation = route => ({
+const updateLocation = route => ({
   type: ACTIONS.LOCATION_CHANGE,
   route,
 });
+
+const setGoBackPath = path => ({
+  type: ACTIONS.SET_GO_BACK_PATH,
+  path,
+});
+
+export default {
+  updateLocation,
+  setGoBackPath,
+};

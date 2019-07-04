@@ -1,6 +1,7 @@
 import Activity from '/src/cms/activity';
 import Auth from '/src/cms/components/auth';
-import blackList from '../blacklist';
+import Routes from '/src/routes';
+// import blackList from '../blacklist';
 
 const getEntityById = (collectionId, entityId, firestore) =>
   firestore.collection('collections').doc(collectionId).collection('data').doc(entityId);
@@ -8,11 +9,11 @@ const getEntityById = (collectionId, entityId, firestore) =>
 const getCollectionById = (collectionId, firestore) =>
   firestore.collection('collections').doc(collectionId).collection('data');
 
-const deleteFile = (path, firebase) => {
-  const storageRef = firebase.storage().ref();
-  const ref = storageRef.child(path);
-  return ref.delete();
-};
+// const deleteFile = (path, firebase) => {
+//   const storageRef = firebase.storage().ref();
+//   const ref = storageRef.child(path);
+//   return ref.delete();
+// };
 
 const uploadFile = (path, file, key, firebase, dispatch) => {
   const storageRef = firebase.storage().ref();
@@ -54,16 +55,16 @@ const uploadFiles = (path, entity, firebase, dispatch) => {
   });
 };
 
-const update = (uid, entity, entityid, collectionId, firestore, firebase, dispatch) => {
+const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatch) => {
   const entityWithoutFiles = Object.keys(entity).reduce((accumulator, key) => {
     if (entity[key] instanceof File) return accumulator;
     accumulator[key] = entity[key];
     return accumulator;
   }, {});
-  if (entityid) {
-    const entityRef = getEntityById(collectionId, entityid, firestore);
+  if (assetId) {
+    const entityRef = getEntityById(collectionId, assetId, firestore);
     entityRef.set(entityWithoutFiles, { merge: true }).then(() => {
-      uploadFiles(`${uid}/${entityid}`, entity, firebase, dispatch).then(update => {
+      uploadFiles(`${uid}/${assetId}`, entity, firebase, dispatch).then(update => {
         entityRef.set(update, { merge: true });
       });
     });
@@ -76,55 +77,63 @@ const update = (uid, entity, entityid, collectionId, firestore, firebase, dispat
   }
 };
 
-export const updateEntity = (entity, id, collection) => {
+const save = asset => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     const firebase = getFirebase();
-    return update(Auth.selectors.uid(getState()), entity, id, collection, firestore, firebase, dispatch);
+    const uid = Auth.selectors.uid(getState());
+    const collectionId = Routes.selectors.collectionId(getState());
+    const assetId = asset.id;
+    delete asset.id;
+    return update(uid, asset, assetId, collectionId, firestore, firebase, dispatch);
   };
 };
 
-export const deleteEntities = (collectionId, markedForDelete) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firestore = getFirestore();
-    const firebase = getFirebase();
-    const batch = firestore.batch();
-    const filePaths = [];
-    const _blackList = [];
-    markedForDelete.forEach(item => {
-      const entityRef = getEntityById(collectionId, item.id, firestore);
-      _blackList.push(item.id);
-      Object.keys(item).forEach(key => {
-        if (key.match(/^ref--/)) {
-          filePaths.push(item[key]);
-        }
-      });
-      batch.delete(entityRef);
-    });
-    return batch.commit().then(() => {
-      dispatch(blackList.actions.storeBlackList(blackList));
-      filePaths.forEach(path => {
-        deleteFile(path, firebase);
-      });
-    });
-  };
-};
+// export const deleteEntities = (collectionId, markedForDelete) => {
+//   return (dispatch, getState, { getFirebase, getFirestore }) => {
+//     const firestore = getFirestore();
+//     const firebase = getFirebase();
+//     const batch = firestore.batch();
+//     const filePaths = [];
+//     const _blackList = [];
+//     markedForDelete.forEach(item => {
+//       const entityRef = getEntityById(collectionId, item.id, firestore);
+//       _blackList.push(item.id);
+//       Object.keys(item).forEach(key => {
+//         if (key.match(/^ref--/)) {
+//           filePaths.push(item[key]);
+//         }
+//       });
+//       batch.delete(entityRef);
+//     });
+//     return batch.commit().then(() => {
+//       dispatch(blackList.actions.storeBlackList(blackList));
+//       filePaths.forEach(path => {
+//         deleteFile(path, firebase);
+//       });
+//     });
+//   };
+// };
+//
+// export const createCollection = (name, { type }) => (dispatch, getState, { getFirebase, getFirestore }) => {
+//   const firestore = getFirestore();
+//   const state = getState();
+//   const uid = Auth.selectors.uid(state);
+//   firestore.collection('collections').add({
+//     name,
+//     owner: uid,
+//     canRead: 'all',
+//     canWrite: 'owner',
+//     fields: [],
+//     type,
+//   }).then(resp => {
+//     const newId = resp.id;
+//     firestore.collection('users').doc(uid).set({
+//       'collections': Auth.selectors.userCollectionIds(state).concat([newId]),
+//     }, { merge: true });
+//   });
+// };
 
-export const createCollection = (name, { type }) => (dispatch, getState, { getFirebase, getFirestore }) => {
-  const firestore = getFirestore();
-  const state = getState();
-  const uid = Auth.selectors.uid(state);
-  firestore.collection('collections').add({
-    name,
-    owner: uid,
-    canRead: 'all',
-    canWrite: 'owner',
-    fields: [],
-    type,
-  }).then(resp => {
-    const newId = resp.id;
-    firestore.collection('users').doc(uid).set({
-      'collections': Auth.selectors.userCollectionIds(state).concat([newId]),
-    }, { merge: true });
-  });
+export default {
+  save,
 };
