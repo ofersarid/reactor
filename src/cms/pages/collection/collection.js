@@ -22,10 +22,10 @@ class Collection extends PureComponent {
   }
 
   render() {
-    const { collectionData, collectionMeta, collectionId } = this.props;
-    return (
+    const { collectionAssets, collectionMeta, collectionId } = this.props;
+    return collectionAssets ? (
       <Fragment >
-        {collectionData.map(item => (
+        {collectionAssets.map(item => (
           <Button
             key={item.id}
             className={cx(styles.itemWrapper, { [styles.published]: item.published || item.published === undefined })}
@@ -44,13 +44,13 @@ class Collection extends PureComponent {
           <Add />
         </Button >
       </Fragment >
-    );
+    ) : null;
   }
 }
 
 Collection.propTypes = {
   collectionId: PropTypes.string,
-  collectionData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  collectionAssets: PropTypes.arrayOf(PropTypes.object),
   collectionMeta: PropTypes.shape({
     layout: PropTypes.shape({
       title: PropTypes.string.isRequired,
@@ -61,7 +61,7 @@ Collection.propTypes = {
 
 const mapStateToProps = (state) => ({
   collectionId: Routes.selectors.collectionId(state),
-  collectionData: services.collections.selectors.data(state),
+  collectionAssets: services.collections.selectors.assets(state),
   collectionMeta: services.collections.selectors.item(state)
 });
 

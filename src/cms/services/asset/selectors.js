@@ -15,7 +15,9 @@ const item = createSelector(
       collection.fields.forEach(field => {
         switch (true) {
           case field.type === 'date-time':
-            asset[field.key] = new Date();
+          case field.type === 'date':
+          case field.type === 'time':
+            asset[field.key] = undefined;
             return;
           default:
             asset[field.key] = '';

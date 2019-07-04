@@ -50,7 +50,7 @@ class Editor extends PureComponent {
   }
 
   validate() {
-    const { asset } = this.props;
+    const { asset } = this.state;
     if (asset) {
       let isValid = true;
       Object.keys(asset).forEach(key => {
@@ -106,7 +106,7 @@ class Editor extends PureComponent {
   render() {
     const { fields, collectionId } = this.props;
     const { isValid, asset } = this.state;
-    return asset ? (
+    return (Boolean(asset) && Boolean(fields)) ? (
       <div className={cx(styles.assetEditor)} >
         {fields.map(field => {
           const value = this.state.asset[field.key];

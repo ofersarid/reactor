@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import cx from 'classnames';
 import autoBind from 'auto-bind';
 import Cleave from 'cleave.js/react';
 import enhanceWithClickOutside from 'react-click-outside';
@@ -17,6 +18,7 @@ class DateTime extends PureComponent {
       year: '',
       hour: '',
       min: '',
+      isValid: false,
     };
   }
 
@@ -26,12 +28,17 @@ class DateTime extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     const { onChange, value } = this.props;
-    const { date, month, year, hour, min } = this.state;
+    const { date, month, year, hour, min, isValid } = this.state;
     if (!isEqual(this.state, prevState)) {
-      onChange(new Date(year, parseInt(month) - 1, date, hour, min));
+      if (isValid) {
+        const newValue = new Date(year, parseInt(month) - 1, date, hour, min);
+        onChange(newValue);
+      } else {
+        onChange('invalid date time');
+      }
     }
 
-    if (!isEqual(value, prevProps.value)) {
+    if (typeof value === 'object' && !isEqual(value, prevProps.value)) {
       this.initDateTimeProperties();
     }
   }
@@ -45,8 +52,8 @@ class DateTime extends PureComponent {
     let hour = '';
     let min = '';
 
-    if (value) {
-      const d = new Date(value);
+    if (typeof value === 'object') {
+      const d = value;
       date = d.getDate();
       month = d.getMonth() + 1;
       year = d.getFullYear();
@@ -67,14 +74,16 @@ class DateTime extends PureComponent {
       hour,
       min,
     });
+    this.validate(date, month, year, hour, min);
   }
 
   validate(date, month, year, hour, min) {
     const { hideTime, hideDate } = this.props;
-    return (hideDate ||
+    const isValid = (hideDate ||
       (date.toString().length === 2 && month.toString().length === 2 && year.toString().length === 4)) &&
       (hideTime ||
-      (hour.toString().length === 2 && min.toString().length === 2));
+        (hour.toString().length === 2 && min.toString().length === 2));
+    this.setState({ isValid });
   };
 
   handleDateChange(e) {
@@ -82,30 +91,27 @@ class DateTime extends PureComponent {
     const date = e.target.rawValue.substr(0, 2);
     const month = e.target.rawValue.substr(2, 2);
     const year = e.target.rawValue.substr(4, 4);
-    if (this.validate(date, month, year, hour, min)) {
-      this.setState({
-        date,
-        month,
-        year,
-        hour,
-        min,
-      });
-    }
+    this.setState({
+      date,
+      month,
+      year,
+      hour,
+      min,
+    });
+    this.validate(date, month, year, hour, min);
   }
 
   handleTimeChange(e) {
     const { date, month, year } = this.state;
     const hour = e.target.rawValue.substr(0, 2);
     const min = e.target.rawValue.substr(2, 2);
-    if (this.validate(date, month, year, hour, min)) {
-      this.setState({
-        date,
-        month,
-        year,
-        hour,
-        min,
-      });
-    }
+    this.setState({
+      date,
+      month,
+      year,
+      hour,
+      min,
+    });
   }
 
   handleClickOutside() { // eslint-disable-line
@@ -129,9 +135,9 @@ class DateTime extends PureComponent {
 
   render() {
     const { onKeyPress, hideTime, hideDate } = this.props;
-    const { date, month, year, hour, min } = this.state;
+    const { date, month, year, hour, min, isValid } = this.state;
     return (
-      <div className={styles.dateTime} >
+      <div className={cx(styles.dateTime, { [styles.inValid]: !isValid })} >
         {!hideDate && (
           <Cleave
             onInit={this.onDateInit}
@@ -166,7 +172,7 @@ class DateTime extends PureComponent {
 }
 
 DateTime.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([''])]),
+  value: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.oneOf(['invalid date time'])]),
   onChange: PropTypes.func.isRequired,
   onKeyPress: PropTypes.func.isRequired,
   hideTime: PropTypes.bool,
