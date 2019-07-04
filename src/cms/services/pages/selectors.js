@@ -20,5 +20,5 @@ const item = createSelector(userCollectionsMap, (_userCollectionsMap) => {
 
 export default {
   list,
-  item
+  item,
 };

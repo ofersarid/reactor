@@ -20,7 +20,7 @@ const item = createSelector(collectionId, userCollectionsMap, (_collectionId, _u
   return _userCollectionsMap[_collectionId];
 });
 
-const data = createSelector(
+const assets = createSelector(
   userCollectionsMap,
   collectionId,
   blackList.selectors.deletedAssets,
@@ -33,7 +33,6 @@ const data = createSelector(
         return accumulator;
       }, []);
     }
-    return [];
   });
 
 // const filteredData = createSelector(collectionData, query, ignoreCase, (_data, _query, _ignoreCase) => {
@@ -78,6 +77,6 @@ const data = createSelector(
 
 export default {
   list,
-  data,
   item,
+  assets,
 };

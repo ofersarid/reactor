@@ -18,24 +18,18 @@ class Editor extends PureComponent {
     super(props);
     autoBind(this);
     this.state = {
-      entity: props.entity,
+      asset: props.asset,
       isValid: false,
     };
-    this.validatedFields = [];
+    this.validate();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { entity } = this.state;
-    let isValid = true;
-    Object.keys(entity).forEach(key => {
-      if (key !== 'published') {
-        const validationFuntion = this.resolveValidationFunction(this.getField(key));
-        isValid = isValid && validationFuntion(entity[key]);
-      }
-    });
-    this.setState({ isValid });
-    if (!_isEqual(this.props.entity, prevProps.entity)) {
-      this.setState({ entity: this.props.entity });
+    if (!_isEqual(this.props.asset, prevProps.asset)) {
+      this.setState({ asset: this.props.asset });
+    }
+    if (!_isEqual(this.state.asset, prevState.asset)) {
+      this.validate();
     }
   }
 
@@ -49,9 +43,23 @@ class Editor extends PureComponent {
       case field.type === 'switch':
         return Boolean(value);
       case ['date', 'time', 'date-time'].includes(field.type):
-        return value.toDate ? value.toDate() : '';
+        return value.toDate ? value.toDate() : value;
       default:
         return value || '';
+    }
+  }
+
+  validate() {
+    const { asset } = this.props;
+    if (asset) {
+      let isValid = true;
+      Object.keys(asset).forEach(key => {
+        if (!['published', 'id'].includes(key)) {
+          const validationFunction = this.resolveValidationFunction(this.getField(key));
+          isValid = isValid && validationFunction(asset[key]);
+        }
+      });
+      this.setState({ isValid });
     }
   }
 
@@ -75,7 +83,7 @@ class Editor extends PureComponent {
   }
 
   onChange(change) {
-    this.setState({ entity: Object.assign({}, this.state.entity, change) });
+    this.setState({ asset: Object.assign({}, this.state.asset, change) });
   }
 
   goBack() {
@@ -97,11 +105,11 @@ class Editor extends PureComponent {
 
   render() {
     const { fields, collectionId } = this.props;
-    const { isValid, entity } = this.state;
-    return (
+    const { isValid, asset } = this.state;
+    return asset ? (
       <div className={cx(styles.assetEditor)} >
         {fields.map(field => {
-          const value = this.state.entity[field.key];
+          const value = this.state.asset[field.key];
           return value !== undefined ? (
             <div key={field.key} className={styles.inputWrapper} >
               <UserInput
@@ -125,8 +133,8 @@ class Editor extends PureComponent {
             </div >
           ) : null;
         })}
-        {Boolean(entity.published !== undefined) && (
-          <Switch indicateIndex={entity.published ? 0 : 1} className={styles.switch} >
+        {Boolean(asset.published !== undefined) && (
+          <Switch indicateIndex={asset.published ? 0 : 1} className={styles.switch} >
             <SwitchItem onClick={() => this.onChange({ published: true })} >Show</SwitchItem >
             <SwitchItem onClick={() => this.onChange({ published: false })} >Hide</SwitchItem >
           </Switch >
@@ -148,7 +156,7 @@ class Editor extends PureComponent {
           </Button >
         )}
       </div >
-    );
+    ) : null;
   }
 }
 
@@ -162,59 +170,19 @@ Editor.propTypes = {
     required: PropTypes.bool,
     type: PropTypes.oneOf(inputTypes).isRequired,
     validateWith: PropTypes.string,
-  })).isRequired,
-  entity: PropTypes.object,
+  })),
+  asset: PropTypes.object,
   collectionId: PropTypes.string,
 };
 
-const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
+const mapStateToProps = state => ({ // eslint-disable-line
+  fields: services.asset.selectors.fields(state),
+  asset: services.asset.selectors.item(state),
   collectionId: Routes.selectors.collectionId(state),
-  pageId: Routes.selectors.pageId(state),
-  collection: services.collections.selectors.item(state),
-  page: services.collections.selectors.item(state),
 });
 
 const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
 
-const mergeProps = (state, dispatch, own) => {
-  const fields = state.collection
-    ? state.collection.fields
-    : state.page
-      ? state.page.fields
-      : [];
-
-  const initEntity = () => {
-    const emptyEntity = {};
-    if (state.collectionId) {
-      emptyEntity.published = true;
-    }
-
-    Object.assign(emptyEntity, fields.reduce((entity, field) => {
-      switch (true) {
-        case field.type === 'date-time':
-          entity[field.key] = entity[field.key] || new Date();
-          return entity;
-        case field.key === 'published':
-          entity[field.key] = entity[field.key] || false;
-          return entity;
-        // case field.key === 'displayOrder':
-        //   entity[field.key] = list.length + 1;
-        //   return entity;
-        default:
-          entity[field.key] = entity[field.key] || '';
-          return entity;
-      }
-    }, {}));
-
-    return emptyEntity;
-  };
-
-  return Object.assign({}, own, state, {
-    fields,
-    entity: state.entity ? state.entity : initEntity(),
-  });
-};
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+  connect(mapStateToProps, mapDispatchToProps),
 )(Editor);
