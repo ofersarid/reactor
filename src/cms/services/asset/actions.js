@@ -9,11 +9,11 @@ const getEntityById = (collectionId, entityId, firestore) =>
 const getCollectionById = (collectionId, firestore) =>
   firestore.collection('collections').doc(collectionId).collection('data');
 
-// const deleteFile = (path, firebase) => {
-//   const storageRef = firebase.storage().ref();
-//   const ref = storageRef.child(path);
-//   return ref.delete();
-// };
+const deleteFile = (path, firebase) => {
+  const storageRef = firebase.storage().ref();
+  const ref = storageRef.child(path);
+  return ref.delete();
+};
 
 const uploadFile = (path, file, key, firebase, dispatch) => {
   const storageRef = firebase.storage().ref();
@@ -81,15 +81,40 @@ const save = asset => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     const firebase = getFirebase();
-    const uid = Auth.selectors.uid(getState());
-    const collectionId = Routes.selectors.collectionId(getState());
+    const state = getState();
+    const uid = Auth.selectors.uid(state);
+    const collectionId = Routes.selectors.collectionId(state);
     const assetId = asset.id;
     delete asset.id;
     return update(uid, asset, assetId, collectionId, firestore, firebase, dispatch);
   };
 };
 
-// export const deleteEntities = (collectionId, markedForDelete) => {
+const _delete = asset => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const state = getState();
+    const collectionId = Routes.selectors.collectionId(state);
+    const firestore = getFirestore();
+    const firebase = getFirebase();
+    const filePaths = [];
+    const entityRef = getEntityById(collectionId, asset.id, firestore);
+    Object.keys(asset).forEach(key => {
+      if (key.match(/^ref--/)) {
+        filePaths.push(asset[key]);
+      }
+    });
+    return entityRef.delete().then(() => {
+      filePaths.forEach(path => {
+        return deleteFile(path, firebase);
+      });
+    });
+  };
+};
+
+/**
+*  OLD IMPLEMENTATION FOR BULK DELETE
+***/
+// const deleteAsset = (collectionId, markedForDelete) => {
 //   return (dispatch, getState, { getFirebase, getFirestore }) => {
 //     const firestore = getFirestore();
 //     const firebase = getFirebase();
@@ -114,6 +139,7 @@ const save = asset => {
 //     });
 //   };
 // };
+
 //
 // export const createCollection = (name, { type }) => (dispatch, getState, { getFirebase, getFirestore }) => {
 //   const firestore = getFirestore();
@@ -136,4 +162,5 @@ const save = asset => {
 
 export default {
   save,
+  delete: _delete,
 };

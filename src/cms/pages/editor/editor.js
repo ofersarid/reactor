@@ -107,7 +107,11 @@ class Editor extends PureComponent {
   }
 
   handleClickOnDelete() {
-    this.goBack();
+    const { deleteAsset } = this.props;
+    const { asset } = this.state;
+    deleteAsset(asset).then(() => {
+      this.goBack();
+    });
   }
 
   render() {
@@ -184,6 +188,7 @@ Editor.propTypes = {
   prevPath: PropTypes.string.isRequired,
   pathname: PropTypes.string.isRequired,
   setGoBackPath: PropTypes.func.isRequired,
+  deleteAsset: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({ // eslint-disable-line
@@ -196,6 +201,7 @@ const mapStateToProps = state => ({ // eslint-disable-line
 
 const mapDispatchToProps = dispatch => ({
   save: asset => dispatch(services.asset.actions.save(asset)),
+  deleteAsset: asset => dispatch(services.asset.actions.delete(asset)),
   setGoBackPath: path => dispatch(Routes.actions.setGoBackPath(path))
 });
 
