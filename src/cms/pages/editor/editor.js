@@ -80,7 +80,7 @@ class Editor extends PureComponent {
       case field.validateWith === 'min-max' && Boolean(field.minChars):
         return value => (value.length >= field.minChars);
       case ['image', 'pdf'].includes(field.type) && field.required:
-        return file => (typeof file.name === 'string');
+        return file => (((typeof file === 'string') && file.length > 0) || (typeof file.name === 'string'));
       case field.validateWith === 'date-time':
         return value => (typeof value === 'object');
       case field.validateWith === 'link':
