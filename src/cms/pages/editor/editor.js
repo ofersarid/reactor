@@ -61,7 +61,7 @@ class Editor extends PureComponent {
     if (asset) {
       let isValid = true;
       Object.keys(asset).forEach(key => {
-        if (!['published', 'id'].includes(key)) {
+        if (!key.match(/^ref--|^published|^id$/)) {
           const validationFunction = this.resolveValidationFunction(this.getField(key));
           isValid = isValid && validationFunction(asset[key]);
         }
