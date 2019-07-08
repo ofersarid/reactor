@@ -128,6 +128,30 @@ export const create = (name, fields) => (dispatch, getState, { getFirebase, getF
   });
 };
 
+export const duplicate = (name, pageId) => (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const state = getState();
+  const uid = Auth.selectors.uid(state);
+  const pageRef = firestore.collection('pages').doc(pageId);
+  pageRef.get().then(doc => {
+    if (doc.exists) {
+      const data = doc.data();
+      firestore.collection('pages').add({
+        name,
+        ...data,
+      }).then(resp => {
+        const newId = resp.id;
+        firestore.collection('users').doc(uid).set({
+          'pages': Auth.selectors.userPageIds(state).concat([newId]),
+        }, { merge: true });
+      });
+    } else {
+      console.warn('No such document!');
+    }
+  });
+};
+
 export default {
   create,
+  duplicate,
 };
