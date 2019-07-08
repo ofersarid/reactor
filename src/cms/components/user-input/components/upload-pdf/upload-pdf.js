@@ -4,6 +4,7 @@ import styles from './styles.scss';
 import { Button } from '/src/cms/components';
 import noop from 'lodash/noop';
 import PropTypes from 'prop-types';
+import pdfIcon from './pdf-icon.svg';
 
 class UploadPdf extends PureComponent {
   constructor(props) {
@@ -69,7 +70,15 @@ class UploadPdf extends PureComponent {
     const hasPDF = preview.length && typeof preview === 'string';
     return (
       <div className={styles.pdfUpload} >
-        {preview ? <a rel="noreferrer noopener" target="_blank" href={preview}>pdf</a> : null}
+        {preview ? (
+          <Button tag="a" type="icon" className={styles.icon} domProps={{
+            rel: 'noreferrer noopener',
+            target: '_blank',
+            href: preview,
+          }} >
+            <img src={pdfIcon} />
+          </Button >
+        ) : null}
         <Button
           onClick={this.handleClick}
           className={styles.button}

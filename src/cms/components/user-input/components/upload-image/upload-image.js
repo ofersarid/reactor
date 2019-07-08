@@ -21,7 +21,7 @@ class UploadImage extends PureComponent {
     this.fileInput = React.createRef();
     this.state = {
       hover: false,
-      preview: props.value,
+      preview: this.imagePreventCaching(props.value),
       isValid: false,
     };
   }
@@ -34,9 +34,16 @@ class UploadImage extends PureComponent {
   componentDidUpdate(prevProps) {
     const { value, validateWith } = this.props;
     if (value !== prevProps.value && typeof value === 'string') {
-      this.setState({ preview: value });
+      this.setState({ preview: this.imagePreventCaching(value) });
     }
     this.setState({ isValid: validateWith(value) });
+  }
+
+  imagePreventCaching(src) {
+    if (typeof src === 'string' && src.length > 0) {
+      return `${src}&noCache=${new Date().getTime()}`;
+    }
+    return src;
   }
 
   componentWillUnmount() {

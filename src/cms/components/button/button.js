@@ -42,7 +42,7 @@ class Button extends PureComponent {
 
   render() {
     const {
-      className, children, disable, tip, tipAnimation, getRef, type, style, tag, justifyContent
+      className, children, disable, tip, tipAnimation, getRef, type, style, tag, justifyContent, domProps,
     } = this.props;
     // const { working } = this.state;
     const Tag = tag;
@@ -51,7 +51,7 @@ class Button extends PureComponent {
         className={cx(
           'ripple',
           'waves-effect',
-          styles[type === 'white' ? 'wavesDark' : 'wavesLight'],
+          styles[['white', 'icon'].includes(type) ? 'wavesDark' : 'wavesLight'],
           styles.button,
           className,
           disable && styles.disable,
@@ -62,6 +62,7 @@ class Button extends PureComponent {
         }, style)}
         ref={getRef}
         onClick={this.handleClick}
+        {...domProps}
       >
         <Tooltip content={tip} animation={tipAnimation} >
           <div
@@ -90,6 +91,7 @@ Button.propTypes = {
   tipAnimation: PropTypes.oneOf(tipAnimations),
   getRef: PropTypes.object,
   style: PropTypes.object,
+  domProps: PropTypes.object,
   type: PropTypes.oneOf(['icon', 'black', 'white', 'red', 'circle']),
   justifyContent: PropTypes.oneOf(['start', 'center']),
   tag: PropTypes.string.isRequired,
