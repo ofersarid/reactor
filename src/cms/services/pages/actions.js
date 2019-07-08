@@ -136,10 +136,7 @@ export const duplicate = (name, pageId) => (dispatch, getState, { getFirebase, g
   pageRef.get().then(doc => {
     if (doc.exists) {
       const data = doc.data();
-      firestore.collection('pages').add({
-        name,
-        ...data,
-      }).then(resp => {
+      firestore.collection('pages').add(Object.assign({}, data, name)).then(resp => {
         const newId = resp.id;
         firestore.collection('users').doc(uid).set({
           'pages': Auth.selectors.userPageIds(state).concat([newId]),
