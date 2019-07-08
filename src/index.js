@@ -51,6 +51,8 @@ export const store = createStore(
   )
 );
 
+window.store = store;
+
 ReactDOM.render(
   <Provider store={store} >
     <Router history={hashHistory} routes={Routes.routesMap} />

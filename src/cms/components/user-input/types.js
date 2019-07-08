@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const inputTypes = ['single-line', 'multi-line', 'post', 'image', 'select',
+export const inputTypes = ['single-line', 'multi-line', 'multi-line-preserve-lines', 'post', 'image', 'select',
   'pdf', 'date-time', 'date', 'time', 'link', 'password', 'number', 'switch', 'email', 'youtube'];
 
 export const userInput = {

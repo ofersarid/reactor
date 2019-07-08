@@ -6,23 +6,39 @@ import pages from '../pages';
 const item = createSelector(
   collections.selectors.item,
   collections.selectors.assets,
+  pages.selectors.item,
   Routes.selectors.assetId,
-  (collection, collectionAssets, _assetId) => {
-    let asset = collectionAssets ? collectionAssets.find(asset => asset.id === _assetId) : undefined;
-    if (collection && !asset) {
-      asset = {};
-      asset.published = true;
-      collection.fields.forEach(field => {
-        switch (true) {
-          // case field.type === 'date-time':
-          // case field.type === 'date':
-          // case field.type === 'time':
-          //   asset[field.key] = undefined;
-          //   return;
-          default:
-            asset[field.key] = '';
-        }
-      });
+  (collection, collectionAssets, page, _assetId) => {
+    let asset;
+    if (collectionAssets) {
+      asset = collectionAssets.find(asset => asset.id === _assetId);
+    } else if (page) {
+      asset = page.data;
+    }
+    if (!asset) {
+      if (collection) {
+        asset = {};
+        asset.published = true;
+        collection.fields.forEach(field => {
+          switch (true) {
+            // case field.type === 'date-time':
+            // case field.type === 'date':
+            // case field.type === 'time':
+            //   asset[field.key] = undefined;
+            //   return;
+            default:
+              asset[field.key] = '';
+          }
+        });
+      } else if (page) {
+        asset = {};
+        page.fields.forEach(field => {
+          switch (true) {
+            default:
+              asset[field.key] = '';
+          }
+        });
+      }
     }
     return asset;
   });

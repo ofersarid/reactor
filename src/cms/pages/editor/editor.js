@@ -21,7 +21,11 @@ class Editor extends PureComponent {
       asset: props.asset,
       isValid: false,
     };
-    props.setGoBackPath(`/cms/collection/${props.collectionId}`);
+    if (props.collectionId) {
+      props.setGoBackPath(`/cms/collection/${props.collectionId}`);
+    } else {
+      props.setGoBackPath(`/cms/home`);
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

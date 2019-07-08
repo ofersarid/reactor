@@ -75,7 +75,12 @@ class Home extends React.PureComponent {
                     opacity: springs.opacity,
                     transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
                   }} >
-                    <Button linkTo={`/cms/page/${item.id}/editor`} type="white" justifyContent="start" >
+                    <Button
+                      linkTo={`/cms/page/${item.id}/editor`}
+                      type="white"
+                      justifyContent="start"
+                      disable={item.fields === undefined}
+                    >
                       {item.name}
                     </Button >
                   </animated.div >

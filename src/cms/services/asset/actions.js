@@ -3,7 +3,7 @@ import Auth from '/src/cms/components/auth';
 import Routes from '/src/routes';
 // import blackList from '../blacklist';
 
-const getEntityById = (collectionId, entityId, firestore) =>
+const getCollectionAssetRef = (collectionId, entityId, firestore) =>
   firestore.collection('collections').doc(collectionId).collection('data').doc(entityId);
 
 const getCollectionById = (collectionId, firestore) =>
@@ -62,8 +62,15 @@ const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatc
     return accumulator;
   }, {});
   if (assetId) {
-    const entityRef = getEntityById(collectionId, assetId, firestore);
-    entityRef.set(entityWithoutFiles, { merge: true }).then(() => {
+    let entityRef;
+    if (collectionId) {
+      // this is an entity from a collection
+      entityRef = getCollectionAssetRef(collectionId, assetId, firestore);
+    } else {
+      // this is a page
+      entityRef = firestore.collection('pages').doc(assetId);
+    }
+    entityRef.set(collectionId ? entityWithoutFiles : { data: entityWithoutFiles }, { merge: true }).then(() => {
       uploadFiles(`${uid}/${assetId}`, entity, firebase, dispatch).then(update => {
         entityRef.set(update, { merge: true });
       });
@@ -71,7 +78,7 @@ const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatc
   } else {
     getCollectionById(collectionId, firestore).add(entityWithoutFiles).then(resp => {
       uploadFiles(`${uid}/${resp.id}`, entity, firebase, dispatch).then(update => {
-        getEntityById(collectionId, resp.id, firestore).set(update, { merge: true });
+        getCollectionAssetRef(collectionId, resp.id, firestore).set(update, { merge: true });
       });
     });
   }
@@ -84,7 +91,7 @@ const save = asset => {
     const state = getState();
     const uid = Auth.selectors.uid(state);
     const collectionId = Routes.selectors.collectionId(state);
-    const assetId = asset.id;
+    const assetId = asset.id || Routes.selectors.pageId(state);
     delete asset.id;
     return update(uid, asset, assetId, collectionId, firestore, firebase, dispatch);
   };
@@ -97,7 +104,7 @@ const _delete = asset => {
     const firestore = getFirestore();
     const firebase = getFirebase();
     const filePaths = [];
-    const entityRef = getEntityById(collectionId, asset.id, firestore);
+    const entityRef = getCollectionAssetRef(collectionId, asset.id, firestore);
     Object.keys(asset).forEach(key => {
       if (key.match(/^ref--/)) {
         filePaths.push(asset[key]);
@@ -122,7 +129,7 @@ const _delete = asset => {
 //     const filePaths = [];
 //     const _blackList = [];
 //     markedForDelete.forEach(item => {
-//       const entityRef = getEntityById(collectionId, item.id, firestore);
+//       const entityRef = getCollectionAssetRef(collectionId, item.id, firestore);
 //       _blackList.push(item.id);
 //       Object.keys(item).forEach(key => {
 //         if (key.match(/^ref--/)) {
