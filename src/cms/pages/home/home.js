@@ -22,14 +22,14 @@ const listToIndex = list => {
 
 class Home extends React.PureComponent {
   render() {
-    const { listName, selectList, collections, pages, userCollectionIds } = this.props;
+    const { listName, selectList, collections, pages, userCollectionIds, userPageIds } = this.props;
     return (
       <Fragment >
         <Switch indicateIndex={listToIndex(listName)} className={styles.switch} >
           <SwitchItem onClick={() => selectList('collections')} >Collections</SwitchItem >
           <SwitchItem onClick={() => selectList('pages')} >Pages</SwitchItem >
         </Switch >
-        {(collections.length === userCollectionIds.length) && (
+        {(collections.length === userCollectionIds.length && pages.length === userPageIds.length) && (
           <Fragment >
             <div
               className={cx(styles.listContainer, {
