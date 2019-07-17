@@ -1,6 +1,6 @@
 import Activity from '/src/cms/activity';
-import Auth from '/src/cms/components/auth';
-import App from '../components/app';
+import Auth from '/src/cms/shared/auth';
+import App from '../shared/app';
 
 const getEntityById = (collectionId, entityId, firestore) =>
   firestore.collection('collections').doc(collectionId).collection('data').doc(entityId);

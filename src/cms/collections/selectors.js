@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { collectionId, entityId } from '/src/routes/selectors';
 import { query, ignoreCase, orderBy } from '/src/cms/filters/selectors';
-import { blackList } from '/src/cms/components/app/selectors';
+import { blackList } from '/src/cms/shared/app/selectors';
 import _sortBy from 'lodash/sortBy';
 
 // export const map = (state, collection) => state.get('fireStore').data[collection] || {};

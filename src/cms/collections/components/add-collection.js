@@ -24,7 +24,7 @@ class AddCollectionDialog extends PureComponent {
     const { newCollectionInputValue, inputValueIsValid } = this.state;
     const { createDoc } = this.props;
     if (inputValueIsValid) {
-      createDoc(newCollectionInputValue, { type: 'collection' });
+      createDoc(newCollectionInputValue, { type: 'collection-assets.js' });
     }
   }
 

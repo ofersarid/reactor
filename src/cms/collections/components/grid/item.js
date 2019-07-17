@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import Device from '/src/device/index';
 import { Button, Tooltip } from '/src/elements';
-import App from '/src/cms/components/app/index';
+import App from '/src/cms/shared/app/index';
 import cx from 'classnames';
 import { entityItem } from '../../types';
 import styles from './styles.scss';

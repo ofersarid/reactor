@@ -1,4 +1,4 @@
-import Auth from '../../components/auth';
+import Auth from '../../shared/auth';
 
 // const getEntityById = (collectionId, entityId, firestore) =>
 //   firestore.collection('collections').doc(collectionId).collection('data').doc(entityId);

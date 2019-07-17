@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Device from '/src/device/index';
-import { Button } from '/src/cms/components';
+import { Button } from '/src/cms/shared';
 import { Download2 } from 'styled-icons/icomoon/Download2';
 import { exportToCsv } from '/src/utils';
 import Collections from '/src/cms/collections';

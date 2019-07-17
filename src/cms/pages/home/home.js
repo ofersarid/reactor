@@ -4,12 +4,12 @@ import { Trail, animated } from 'react-spring/renderprops';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 // import { firestoreConnect } from 'react-redux-firebase';
-import { Switch, SwitchItem, Button } from '/src/cms/components';
+import { Switch, SwitchItem, Button } from '/src/cms/shared';
 import PropTypes from 'prop-types';
 import services from '/src/cms/services';
 import Routes from '/src/routes';
 import styles from './styles.scss';
-import Auth from '../../components/auth';
+import Auth from '../../shared/auth';
 
 const listToIndex = list => {
   switch (list) {

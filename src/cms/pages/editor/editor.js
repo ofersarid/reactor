@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import Routes from '/src/routes';
 import utils from '/src/utils';
 import services from '/src/cms/services';
-import { Button, Switch, SwitchItem, UserInput } from '/src/cms/components';
-import { inputTypes } from '/src/cms/components/user-input/types';
+import { Button, Switch, SwitchItem, UserInput } from '/src/cms/shared';
+import { inputTypes } from '/src/cms/shared/user-input/types';
 import styles from './styles.scss';
 import { hashHistory } from 'react-router';
 
