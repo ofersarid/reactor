@@ -26,6 +26,12 @@ class Editor extends PureComponent {
     } else {
       props.setGoBackPath(`/cms/home`);
     }
+    if (props.pageMeta) {
+      props.updateAppTitle(props.pageMeta.name);
+    }
+    if (props.collectionMeta) {
+      props.updateAppTitle(props.collectionMeta.name);
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -37,6 +43,12 @@ class Editor extends PureComponent {
     }
     if (!_isEqual(this.state.asset, prevState.asset)) {
       this.setState({ isValid: this.validate() });
+    }
+    if (!prevProps.pageMeta && this.props.pageMeta) {
+      this.props.updateAppTitle(this.props.pageMeta.name);
+    }
+    if (!prevProps.collectionMeta && this.props.collectionMeta) {
+      this.props.updateAppTitle(this.props.collectionMeta.name);
     }
   }
 
@@ -193,6 +205,13 @@ Editor.propTypes = {
   pathname: PropTypes.string.isRequired,
   setGoBackPath: PropTypes.func.isRequired,
   deleteAsset: PropTypes.func.isRequired,
+  updateAppTitle: PropTypes.func.isRequired,
+  pageMeta: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }),
+  collectionMeta: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }),
 };
 
 const mapStateToProps = state => ({ // eslint-disable-line
@@ -201,12 +220,15 @@ const mapStateToProps = state => ({ // eslint-disable-line
   collectionId: Routes.selectors.collectionId(state),
   prevPath: Routes.selectors.prevPath(state),
   pathname: Routes.selectors.pathname(state),
+  pageMeta: services.pages.selectors.item(state),
+  collectionMeta: services.collections.selectors.item(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   save: asset => dispatch(services.asset.actions.save(asset)),
   deleteAsset: asset => dispatch(services.asset.actions.delete(asset)),
-  setGoBackPath: path => dispatch(Routes.actions.setGoBackPath(path))
+  setGoBackPath: path => dispatch(Routes.actions.setGoBackPath(path)),
+  updateAppTitle: newTitle => dispatch(services.app.actions.updateAppTitle(newTitle)),
 });
 
 export default compose(
