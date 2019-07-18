@@ -1,4 +1,4 @@
-export { default as App } from './app/app';
+export { default as App } from '../containers/app/app';
 export { default as SplashScreen } from './splash-screen/splash-screen';
 export { default as Button } from './button/button';
 export { default as UserInput } from './user-input/user-input';

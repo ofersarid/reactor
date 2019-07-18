@@ -4,6 +4,7 @@ const services = {
   collections: require('./collections').default,
   pages: require('./pages').default,
   asset: require('./asset').default,
+  app: require('./app').default,
 };
 
 window.services = services;

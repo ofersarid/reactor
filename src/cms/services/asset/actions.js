@@ -1,4 +1,4 @@
-import Activity from '/src/cms/activity';
+// import Activity from '/src/cms/activity';
 import Auth from '/src/cms/shared/auth';
 import Routes from '/src/routes';
 // import blackList from '../blacklist';
@@ -20,9 +20,9 @@ const uploadFile = (path, file, key, firebase, dispatch) => {
   const imageRef = storageRef.child(path);
   // upload new image
   const task = imageRef.put(file);
-  dispatch(Activity.actions.uploadingFiles());
+  // dispatch(Activity.actions.uploadingFiles());
   task.on('state_changed', snapshot => {
-    dispatch(Activity.actions.uploadStatus(snapshot, key));
+    // dispatch(Activity.actions.uploadStatus(snapshot, key));
   }, () => {
     // Handle unsuccessful uploads
   });
@@ -50,7 +50,7 @@ const uploadFiles = (path, entity, firebase, dispatch) => {
     });
 
     /* Set activity - uploadingFiles to false */
-    dispatch(Activity.actions.uploadComplete());
+    // dispatch(Activity.actions.uploadComplete());
     return update;
   });
 };

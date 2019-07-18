@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect, IndexRedirect } from 'react-router';
-import { App } from '/src/cms/shared';
+import { App } from '/src/cms/containers';
 // import { LoginPage, Home, Page } from '/src/cms/pages';
 import ReduxRoutes from '/src/routes/components/redux-routes/redux-routes';
 // import { Grid, Editor, AddCollectionDialog, AddDocumentDialog } from '/src/cms/collections';
