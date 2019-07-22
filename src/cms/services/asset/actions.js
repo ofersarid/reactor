@@ -70,10 +70,9 @@ const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatc
       // this is a page
       entityRef = firestore.collection('pages').doc(assetId);
     }
-    entityRef.set(collectionId ? entityWithoutFiles : { data: entityWithoutFiles }, { merge: true }).then(() => {
-      uploadFiles(`${uid}/${assetId}`, entity, firebase, dispatch).then(update => {
-        entityRef.set(update, { merge: true });
-      });
+    uploadFiles(`${uid}/${assetId}`, entity, firebase, dispatch).then(update => {
+      const data = Object.assign({}, entityWithoutFiles, update);
+      entityRef.set(collectionId ? data : { data }, { merge: true });
     });
   } else {
     getCollectionById(collectionId, firestore).add(entityWithoutFiles).then(resp => {
