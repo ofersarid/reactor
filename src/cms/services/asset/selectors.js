@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import JSON5 from 'json5';
 import Routes from '/src/routes';
 import collections from '../collections';
 import pages from '../pages';
@@ -50,11 +51,11 @@ const fields = createSelector(
     switch (true) {
       // get fields from collection.
       case Boolean(collection):
-        return collection.fields;
+        return JSON5.parse(collection.schema);
 
       // get fields from page.
       case Boolean(page):
-        return page.fields;
+        return JSON5.parse(page.schema);
 
       // can't get fields return empty array
       default:
