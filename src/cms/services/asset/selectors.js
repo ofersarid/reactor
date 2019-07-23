@@ -57,7 +57,7 @@ const fields = createSelector(
       case Boolean(page):
         return JSON5.parse(page.schema);
 
-      // can't get fields return empty array
+      // can't get fields
       default:
         return undefined;
     }
