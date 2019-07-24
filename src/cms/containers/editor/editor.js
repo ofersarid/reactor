@@ -173,7 +173,7 @@ class Editor extends PureComponent {
         >
           Done
         </Button >
-        {collectionId && (
+        {collectionId && asset.id && (
           <Button
             className={styles.footerBtn}
             type="red"
