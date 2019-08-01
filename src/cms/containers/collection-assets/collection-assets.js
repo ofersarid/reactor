@@ -53,9 +53,9 @@ class Collection extends PureComponent {
 
   render() {
     const { collectionAssets, collectionMeta, collectionId } = this.state;
-    return collectionAssets ? (
+    return (
       <Fragment >
-        {collectionAssets.map(item => (
+        {collectionAssets && collectionAssets.map(item => (
           <Button
             key={item.id}
             className={cx(styles.itemWrapper, { [styles.published]: item.published || item.published === undefined })}
@@ -79,7 +79,7 @@ class Collection extends PureComponent {
           <Add />
         </Button >
       </Fragment >
-    ) : null;
+    );
   }
 }
 
