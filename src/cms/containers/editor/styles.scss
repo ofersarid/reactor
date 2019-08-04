@@ -2,6 +2,19 @@
 
 .assetEditor {
   @extend %pageContainer;
+  /* this block of code is a temporary hack*/
+  [data-label="Screen title"] {
+    padding-top: 30px;
+    &:before {
+      content: '';
+      position: absolute;
+      width: calc(100% + 80px);
+      height: 10px;
+      left: -40px;
+      top: -20px;
+      background: #f1f1f1;
+    }
+  }
 }
 
 .inputWrapper {

@@ -194,6 +194,7 @@ const UserInput = props => (
       // props.stretch && styles.stretch,
       // (['multi-line', 'post', 'image', 'pdf'].includes(props.type)) && styles.areaField
     )}
+    data-label={props.label}
   >
     {props.label && (
       <label className={styles.label} >
