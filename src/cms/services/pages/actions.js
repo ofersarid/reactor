@@ -108,7 +108,7 @@ import Auth from '/src/cms/shared/auth';
 //   };
 // };
 //
-export const create = (name, fields) => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const create = (name, schema) => (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = Auth.selectors.uid(state);
@@ -118,7 +118,7 @@ export const create = (name, fields) => (dispatch, getState, { getFirebase, getF
       read: 'all',
       write: uid,
     },
-    fields,
+    schema,
     data: {},
   }).then(resp => {
     const newId = resp.id;
