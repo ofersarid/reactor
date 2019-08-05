@@ -148,7 +148,17 @@ export const duplicate = (name, pageId) => (dispatch, getState, { getFirebase, g
   });
 };
 
+export const order = idList => (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const state = getState();
+  const uid = Auth.selectors.uid(state);
+  firestore.collection('users').doc(uid).set({
+    'pages': idList,
+  }, { merge: true });
+};
+
 export default {
   create,
   duplicate,
+  order,
 };

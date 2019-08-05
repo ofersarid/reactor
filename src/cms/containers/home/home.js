@@ -58,7 +58,7 @@ class Home extends React.PureComponent {
                       linkTo={`/cms/collection/${item.id}`}
                       type="white"
                       justifyContent="start"
-                      disable={item.fields === undefined}
+                      disable={item.schema === undefined}
                     >
                       {item.name}
                     </Button >
@@ -84,7 +84,7 @@ class Home extends React.PureComponent {
                       linkTo={`/cms/page/${item.id}/editor`}
                       type="white"
                       justifyContent="start"
-                      disable={item.fields === undefined}
+                      disable={item.schema === undefined}
                     >
                       {item.name}
                     </Button >
