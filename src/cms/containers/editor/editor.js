@@ -34,6 +34,10 @@ class Editor extends PureComponent {
     }
   }
 
+  componentDidMount() {
+    this.validate();
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (!this.props.pathname.includes('editor')) {
       return;
@@ -42,7 +46,7 @@ class Editor extends PureComponent {
       this.setState({ asset: this.props.asset });
     }
     if (!_isEqual(this.state.asset, prevState.asset)) {
-      this.setState({ isValid: this.validate() });
+      this.validate();
     }
     if (!prevProps.pageMeta && this.props.pageMeta) {
       this.props.updateAppTitle(this.props.pageMeta.name);
@@ -78,9 +82,10 @@ class Editor extends PureComponent {
           isValid = isValid && validationFunction(asset[key]);
         }
       });
-      return isValid;
+      this.setState({ isValid });
+    } else {
+      this.setState({ isValid: false });
     }
-    return false;
   }
 
   resolveValidationFunction(field) {
