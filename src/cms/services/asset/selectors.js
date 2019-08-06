@@ -20,7 +20,7 @@ const item = createSelector(
       if (collection) {
         asset = {};
         asset.published = true;
-        collection.fields.forEach(field => {
+        JSON5.parse(collection.schema).forEach(field => {
           switch (true) {
             // case field.type === 'date-time':
             // case field.type === 'date':
@@ -33,7 +33,7 @@ const item = createSelector(
         });
       } else if (page) {
         asset = {};
-        page.fields.forEach(field => {
+        JSON5.parse(page.schema).forEach(field => {
           switch (true) {
             default:
               asset[field.key] = '';
