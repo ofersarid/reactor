@@ -57,35 +57,38 @@ const uploadFiles = (path, entity, firebase, dispatch) => {
 };
 
 const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatch, state) => {
-  const entityWithoutFiles = Object.keys(entity).reduce((accumulator, key) => {
-    if (entity[key] instanceof File) return accumulator;
-    accumulator[key] = entity[key];
-    return accumulator;
-  }, {});
-  if (assetId) {
-    let entityRef;
-    if (collectionId) {
-      // this is an entity from a collection
-      entityRef = getCollectionAssetRef(collectionId, assetId, firestore);
-    } else {
-      // this is a page
-      entityRef = firestore.collection('pages').doc(assetId);
-    }
-    uploadFiles(`${uid}/${assetId}`, entity, firebase, dispatch).then(update => {
-      const data = Object.assign({}, entityWithoutFiles, update);
-      entityRef.set(collectionId ? data : { data }, { merge: true });
-    });
-  } else {
-    getCollectionById(collectionId, firestore).add(entityWithoutFiles).then(resp => {
-      uploadFiles(`${uid}/${resp.id}`, entity, firebase, dispatch).then(update => {
-        const orderedList = collectionsService.selectors.item(state).order;
-        firestore.collection('collections').doc(collectionId).set({
-          'order': `${orderedList} | ${resp.id}`,
-        }, { merge: true });
-        getCollectionAssetRef(collectionId, resp.id, firestore).set(update, { merge: true });
+  const promise = new Promise(resolve => {
+    const entityWithoutFiles = Object.keys(entity).reduce((accumulator, key) => {
+      if (entity[key] instanceof File) return accumulator;
+      accumulator[key] = entity[key];
+      return accumulator;
+    }, {});
+    if (assetId) {
+      let entityRef;
+      if (collectionId) {
+        // this is an entity from a collection
+        entityRef = getCollectionAssetRef(collectionId, assetId, firestore);
+      } else {
+        // this is a page
+        entityRef = firestore.collection('pages').doc(assetId);
+      }
+      uploadFiles(`${uid}/${assetId}`, entity, firebase, dispatch).then(update => {
+        const data = Object.assign({}, entityWithoutFiles, update);
+        entityRef.set(collectionId ? data : { data }, { merge: true });
       });
-    });
-  }
+    } else {
+      getCollectionById(collectionId, firestore).add(entityWithoutFiles).then(resp => {
+        uploadFiles(`${uid}/${resp.id}`, entity, firebase, dispatch).then(update => {
+          const orderedList = collectionsService.selectors.item(state).order;
+          firestore.collection('collections').doc(collectionId).set({
+            'order': `${orderedList} | ${resp.id}`,
+          }, { merge: true }).then(resolve);
+          getCollectionAssetRef(collectionId, resp.id, firestore).set(update, { merge: true });
+        });
+      });
+    }
+  });
+  return promise;
 };
 
 const save = asset => {
@@ -114,15 +117,20 @@ const _delete = asset => {
         filePaths.push(asset[key]);
       }
     });
-    return entityRef.delete().then(() => {
-      filePaths.forEach(path => {
-        return deleteFile(path, firebase);
+    const promise = new Promise((resolve) => {
+      entityRef.delete().then(() => {
+        filePaths.forEach(path => {
+          return deleteFile(path, firebase);
+        });
+        const orderedList = collectionsService.selectors.item(state).order.split(' | ');
+        firestore.collection('collections').doc(collectionId).set({
+          'order': orderedList.filter(id => id !== asset.id,).join(' | '),
+        }, { merge: true }).then(() => {
+          resolve();
+        });
       });
-      const orderedList = collectionsService.selectors.item(state).order.split(' | ');
-      firestore.collection('collections').doc(collectionId).set({
-        'order': orderedList.filter(id => id !== asset.id,).join(' | '),
-      }, { merge: true });
     });
+    return promise;
   };
 };
 

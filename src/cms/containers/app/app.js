@@ -13,8 +13,6 @@ import Auth from '/src/cms/shared/auth';
 import { Home, LoginPage, Editor, CollectionAssets } from '/src/cms/containers';
 // import { ToastContainer } from 'react-toastify';
 import AuthRedirect from '/src/cms/shared/auth/components/auth-redirect';
-// import CMSNavBar from '../tool-bar/cms-nav-bar';
-// import SideNav from '../side-nav/side-nav';
 import styles from './styles.scss';
 import 'react-quill/dist/quill.snow.css';
 import 'react-image-crop/lib/ReactCrop.scss';

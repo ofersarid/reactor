@@ -75,14 +75,27 @@
 }
 
 .wavesDark {
-  $waves-dark: #000000;
+  $waves-color: #000000;
   :global {
     .waves-ripple {
-      background: rgba($waves-dark, 0.4);
-      background: -webkit-radial-gradient(rgba($waves-dark, .2) 0, rgba($waves-dark, .3) 40%, rgba($waves-dark, .4) 50%, rgba($waves-dark, .5) 60%, rgba($waves-dark, 0) 70%);
-      background: -o-radial-gradient(rgba($waves-dark, .2) 0, rgba($waves-dark, .3) 40%, rgba($waves-dark, .4) 50%, rgba($waves-dark, .5) 60%, rgba($waves-dark, 0) 70%);
-      background: -moz-radial-gradient(rgba($waves-dark, .2) 0, rgba($waves-dark, .3) 40%, rgba($waves-dark, .4) 50%, rgba($waves-dark, .5) 60%, rgba($waves-dark, 0) 70%);
-      background: radial-gradient(rgba($waves-dark, .2) 0, rgba($waves-dark, .3) 40%, rgba($waves-dark, .4) 50%, rgba($waves-dark, .5) 60%, rgba($waves-dark, 0) 70%)
+      background: rgba($waves-color, 0.4);
+      background: -webkit-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+      background: -o-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+      background: -moz-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+      background: radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%)
+    }
+  }
+}
+
+.wavesRed {
+  $waves-color: $red;
+  :global {
+    .waves-ripple {
+      background: rgba($waves-color, 0.4);
+      background: -webkit-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+      background: -o-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+      background: -moz-radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%);
+      background: radial-gradient(rgba($waves-color, .2) 0, rgba($waves-color, .3) 40%, rgba($waves-color, .4) 50%, rgba($waves-color, .5) 60%, rgba($waves-color, 0) 70%)
     }
   }
 }

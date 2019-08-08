@@ -6,6 +6,7 @@ import cx from 'classnames';
 import _isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import Routes from '/src/routes';
+// import { firestoreConnect } from 'react-redux-firebase';
 import utils from '/src/utils';
 import services from '/src/cms/services';
 import { Button, Switch, SwitchItem, UserInput } from '/src/cms/shared';
@@ -31,6 +32,9 @@ class Editor extends PureComponent {
     }
     if (props.collectionMeta) {
       props.updateAppTitle(props.collectionMeta.name);
+    }
+    if (!props.collectionMeta && !props.pageMeta) {
+      this.goBack();
     }
   }
 
@@ -123,15 +127,13 @@ class Editor extends PureComponent {
   handleClickOnDone() {
     const { save } = this.props;
     const { asset } = this.state;
-    save(asset);
-    this.goBack();
+    save(asset).then(this.goBack);
   }
 
   handleClickOnDelete() {
     const { deleteAsset } = this.props;
     const { asset } = this.state;
-    deleteAsset(asset).then();
-    this.goBack();
+    deleteAsset(asset).then(this.goBack);
   }
 
   render() {
@@ -204,6 +206,7 @@ Editor.propTypes = {
   })),
   asset: PropTypes.object,
   collectionId: PropTypes.string,
+  pageId: PropTypes.string,
   save: PropTypes.func.isRequired,
   prevPath: PropTypes.string.isRequired,
   pathname: PropTypes.string.isRequired,
@@ -222,6 +225,7 @@ const mapStateToProps = state => ({ // eslint-disable-line
   fields: services.asset.selectors.fields(state),
   asset: services.asset.selectors.item(state),
   collectionId: Routes.selectors.collectionId(state),
+  pageId: Routes.selectors.pageId(state),
   prevPath: Routes.selectors.prevPath(state),
   pathname: Routes.selectors.pathname(state),
   pageMeta: services.pages.selectors.item(state),
@@ -237,4 +241,19 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  // firestoreConnect(props => {
+  //   return props.collectionId ? [{
+  //     collection: 'collections',
+  //     doc: props.collectionId,
+  //   }, {
+  //     collection: 'collections',
+  //     doc: props.collectionId,
+  //     subcollections: [{
+  //       collection: 'data',
+  //     }],
+  //   }] : props.pageId ? [{
+  //     collection: 'pages',
+  //     doc: props.pageId,
+  //   }] : [];
+  // }),
 )(Editor);

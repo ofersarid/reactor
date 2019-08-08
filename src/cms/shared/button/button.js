@@ -40,6 +40,19 @@ class Button extends PureComponent {
     }
   }
 
+  resolveWaveColor() {
+    const { type } = this.props;
+    switch (type) {
+      case 'white':
+      case 'icon':
+        return 'wavesDark';
+      case 'red':
+        return 'wavesRed';
+      default:
+        return 'wavesLight';
+    }
+  }
+
   render() {
     const {
       className, children, disable, tip, tipAnimation, getRef, type, style, tag, justifyContent, domProps,
@@ -51,7 +64,7 @@ class Button extends PureComponent {
         className={cx(
           'ripple',
           'waves-effect',
-          styles[['white', 'icon'].includes(type) ? 'wavesDark' : 'wavesLight'],
+          styles[this.resolveWaveColor()],
           styles.button,
           className,
           disable && styles.disable,
