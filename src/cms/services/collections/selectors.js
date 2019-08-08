@@ -27,11 +27,12 @@ const assets = createSelector(
   (_userCollectionsMap, _collectionId, _blackList) => {
     if (_userCollectionsMap && _userCollectionsMap[_collectionId] && _userCollectionsMap[_collectionId].data) {
       const data = _userCollectionsMap[_collectionId].data;
-      return Object.keys(data).reduce((accumulator, key) => {
+      const orderedList = _userCollectionsMap[_collectionId].order.split(' | ');
+      return orderedList.reduce((accumulator, key) => {
         if (!data[key] || _blackList.includes(key)) return accumulator; // object is empty (null)
         accumulator.push(Object.assign({}, data[key], { id: key }));
         return accumulator;
-      }, []).reverse();
+      }, []);
     }
   });
 

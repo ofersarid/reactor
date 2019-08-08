@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import Device from '/src/device';
 import PropTypes from 'prop-types';
 import Routes from '/src/routes';
-import { firestoreConnect } from 'react-redux-firebase';
+// import { firestoreConnect } from 'react-redux-firebase';
 import { Transition, animated } from 'react-spring/renderprops';
 // import { mainContainer } from '../../types';
 // import Routes from '/src/routes';
@@ -76,7 +76,7 @@ const APP = ({ pathname, isLoaded, prevPath }) => {
 APP.propTypes = {
   // children: PropTypes.any,
   isLoaded: PropTypes.bool.isRequired,
-  userCollectionIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // userCollectionIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   userPageIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pathname: PropTypes.string.isRequired,
   prevPath: PropTypes.string.isRequired,
@@ -88,7 +88,7 @@ const mapStateToProps = state => ({
   // deviceOrientation: Device.selectors.deviceOrientation(state),
   isLoaded: Auth.selectors.isLoaded(state),
   // uid: Auth.selectors.uid(state),
-  userCollectionIds: Auth.selectors.userCollectionIds(state),
+  // userCollectionIds: Auth.selectors.userCollectionIds(state),
   userPageIds: Auth.selectors.userPageIds(state),
   pathname: Routes.selectors.pathname(state),
   prevPath: Routes.selectors.prevPath(state),
@@ -97,31 +97,31 @@ const mapStateToProps = state => ({
 export default compose(
   connect(mapStateToProps, {}),
   withRouter,
-  firestoreConnect(props => {
-    let aggregated = [];
-    aggregated = aggregated.concat(props.userCollectionIds.reduce((accumulator, id) => {
-      accumulator.push({
-        collection: 'collections',
-        doc: id,
-      });
-      accumulator.push({
-        collection: 'collections',
-        doc: id,
-        subcollections: [{
-          collection: 'data',
-          // where: [['active', '==', true]],
-          // orderBy: ['displayOrder', 'desc'],
-        }],
-      });
-      return accumulator;
-    }, []));
-    aggregated = aggregated.concat(props.userPageIds.reduce((accumulator, id) => {
-      accumulator.push({
-        collection: 'pages',
-        doc: id,
-      });
-      return accumulator;
-    }, []));
-    return aggregated;
-  }),
+  // firestoreConnect(props => {
+  //   let aggregated = [];
+  //   aggregated = aggregated.concat(props.userCollectionIds.reduce((accumulator, id) => {
+  //     accumulator.push({
+  //       collection: 'collections',
+  //       doc: id,
+  //     });
+  //     accumulator.push({
+  //       collection: 'collections',
+  //       doc: id,
+  //       subcollections: [{
+  //         collection: 'data',
+  //         // where: [['active', '==', true]],
+  //         // orderBy: ['displayOrder', 'desc'],
+  //       }],
+  //     });
+  //     return accumulator;
+  //   }, []));
+  //   aggregated = aggregated.concat(props.userPageIds.reduce((accumulator, id) => {
+  //     accumulator.push({
+  //       collection: 'pages',
+  //       doc: id,
+  //     });
+  //     return accumulator;
+  //   }, []));
+  //   return aggregated;
+  // }),
 )(APP);

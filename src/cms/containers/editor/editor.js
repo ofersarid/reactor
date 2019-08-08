@@ -130,9 +130,8 @@ class Editor extends PureComponent {
   handleClickOnDelete() {
     const { deleteAsset } = this.props;
     const { asset } = this.state;
-    deleteAsset(asset).then(() => {
-      this.goBack();
-    });
+    deleteAsset(asset).then();
+    this.goBack();
   }
 
   render() {

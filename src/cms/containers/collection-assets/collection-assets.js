@@ -2,6 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import LinesEllipsisLoose from 'react-lines-ellipsis/lib/loose';
+import { firestoreConnect } from 'react-redux-firebase';
 import moment from 'moment';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
@@ -36,7 +37,7 @@ class Collection extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { collectionMeta, updateAppTitle } = this.props;
-    if (!prevProps.collectionMeta && collectionMeta) {
+    if (!prevProps.collectionMeta && collectionMeta.name) {
       updateAppTitle(collectionMeta.name);
     }
   }
@@ -93,7 +94,7 @@ Collection.propTypes = {
       title: PropTypes.string,
       body: PropTypes.string,
     }),
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
   }),
   setGoBackPath: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
@@ -112,4 +113,18 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect(props => {
+    return props.collectionId ? [{
+      collection: 'collections',
+      doc: props.collectionId,
+    }, {
+      collection: 'collections',
+      doc: props.collectionId,
+      subcollections: [{
+        collection: 'data',
+        // where: [['active', '==', true]],
+        // orderBy: ['displayOrder', 'desc'],
+      }],
+    }] : [];
+  }),
 )(Collection);

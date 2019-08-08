@@ -1,6 +1,7 @@
 // import Activity from '/src/cms/activity';
 import Auth from '/src/cms/shared/auth';
 import Routes from '/src/routes';
+import collectionsService from '../collections';
 // import blackList from '../blacklist';
 
 const getCollectionAssetRef = (collectionId, entityId, firestore) =>
@@ -55,7 +56,7 @@ const uploadFiles = (path, entity, firebase, dispatch) => {
   });
 };
 
-const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatch) => {
+const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatch, state) => {
   const entityWithoutFiles = Object.keys(entity).reduce((accumulator, key) => {
     if (entity[key] instanceof File) return accumulator;
     accumulator[key] = entity[key];
@@ -77,6 +78,10 @@ const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatc
   } else {
     getCollectionById(collectionId, firestore).add(entityWithoutFiles).then(resp => {
       uploadFiles(`${uid}/${resp.id}`, entity, firebase, dispatch).then(update => {
+        const orderedList = collectionsService.selectors.item(state).order;
+        firestore.collection('collections').doc(collectionId).set({
+          'order': `${orderedList} | ${resp.id}`,
+        }, { merge: true });
         getCollectionAssetRef(collectionId, resp.id, firestore).set(update, { merge: true });
       });
     });
@@ -92,7 +97,7 @@ const save = asset => {
     const collectionId = Routes.selectors.collectionId(state);
     const assetId = asset.id || Routes.selectors.pageId(state);
     delete asset.id;
-    return update(uid, asset, assetId, collectionId, firestore, firebase, dispatch);
+    return update(uid, asset, assetId, collectionId, firestore, firebase, dispatch, state);
   };
 };
 
@@ -113,6 +118,10 @@ const _delete = asset => {
       filePaths.forEach(path => {
         return deleteFile(path, firebase);
       });
+      const orderedList = collectionsService.selectors.item(state).order.split(' | ');
+      firestore.collection('collections').doc(collectionId).set({
+        'order': orderedList.filter(id => id !== asset.id,).join(' | '),
+      }, { merge: true });
     });
   };
 };

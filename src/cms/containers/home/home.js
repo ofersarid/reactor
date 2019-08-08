@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { Trail, animated } from 'react-spring/renderprops';
+import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-// import { firestoreConnect } from 'react-redux-firebase';
 import { Switch, SwitchItem, Button } from '/src/cms/shared';
 import PropTypes from 'prop-types';
 import services from '/src/cms/services';
@@ -132,4 +132,22 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect(props => {
+    let aggregated = [];
+    aggregated = aggregated.concat(props.userCollectionIds.reduce((accumulator, id) => {
+      accumulator.push({
+        collection: 'collections',
+        doc: id,
+      });
+      return accumulator;
+    }, []));
+    aggregated = aggregated.concat(props.userPageIds.reduce((accumulator, id) => {
+      accumulator.push({
+        collection: 'pages',
+        doc: id,
+      });
+      return accumulator;
+    }, []));
+    return aggregated;
+  }),
 )(Home);
