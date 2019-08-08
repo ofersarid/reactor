@@ -63,13 +63,15 @@ class Collection extends PureComponent {
             linkTo={`/cms/collection/${collectionId}/editor/${item.id}`}
             justifyContent="start"
           >
-            <div className={styles.itemTitle} >{this.interpolateValue(item, collectionMeta.layout.title)}</div >
-            <LinesEllipsisLoose
-              text={this.interpolateValue(item, collectionMeta.layout.body)}
-              maxLine='4'
-              lineHeight='24'
-              className={styles.itemBody}
-            />
+            {collectionMeta.layout.title && <div className={styles.itemTitle} >{this.interpolateValue(item, collectionMeta.layout.title)}</div >}
+            {collectionMeta.layout.body && (
+              <LinesEllipsisLoose
+                text={this.interpolateValue(item, collectionMeta.layout.body)}
+                maxLine='4'
+                lineHeight='24'
+                className={styles.itemBody}
+              />
+            )}
           </Button >
         ))}
         <Button
@@ -88,8 +90,8 @@ Collection.propTypes = {
   collectionAssets: PropTypes.arrayOf(PropTypes.object),
   collectionMeta: PropTypes.shape({
     layout: PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      body: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      body: PropTypes.string,
     }),
     name: PropTypes.string.isRequired,
   }),

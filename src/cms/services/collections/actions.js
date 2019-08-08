@@ -139,7 +139,7 @@ export const remove = id => (dispatch, getState, { getFirebase, getFirestore }) 
   });
 };
 
-export const create = (name, fields) => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const create = (name, schema) => (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = Auth.selectors.uid(state);
@@ -149,12 +149,11 @@ export const create = (name, fields) => (dispatch, getState, { getFirebase, getF
       read: 'all',
       write: uid,
     },
-    fields,
-    data: {},
+    schema: JSON.stringify(schema),
   }).then(resp => {
     const newId = resp.id;
     firestore.collection('users').doc(uid).set({
-      'collections': Auth.selectors.userPageIds(state).concat([newId]),
+      'collections': Auth.selectors.userCollectionIds(state).concat([newId]),
     }, { merge: true });
   });
 };
@@ -186,8 +185,18 @@ export const duplicate = (name, collectionId) => (dispatch, getState, { getFireb
   });
 };
 
+export const register = idList => (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const state = getState();
+  const uid = Auth.selectors.uid(state);
+  firestore.collection('users').doc(uid).set({
+    'collections': idList,
+  }, { merge: true });
+};
+
 export default {
   create,
   duplicate,
   remove,
+  register,
 };

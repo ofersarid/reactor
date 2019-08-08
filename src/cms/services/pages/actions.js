@@ -148,7 +148,7 @@ export const duplicate = (name, pageId) => (dispatch, getState, { getFirebase, g
   });
 };
 
-export const order = idList => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const register = idList => (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = Auth.selectors.uid(state);
@@ -157,8 +157,21 @@ export const order = idList => (dispatch, getState, { getFirebase, getFirestore 
   }, { merge: true });
 };
 
+export const remove = id => (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const state = getState();
+  const uid = Auth.selectors.uid(state);
+  const collectionRef = firestore.collection('pages').doc(id);
+  collectionRef.delete().then(() => {
+    firestore.collection('users').doc(uid).set({
+      'pages': Auth.selectors.userCollectionIds(state).filter(_id => _id !== id),
+    }, { merge: true });
+  });
+};
+
 export default {
   create,
   duplicate,
-  order,
+  remove,
+  register,
 };
