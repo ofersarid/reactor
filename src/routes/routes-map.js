@@ -36,6 +36,6 @@ export default (
     {/*  <Route path="about" component={About} /> */}
     {/*  <Route path="contact" component={ContactUs} /> */}
     {/* </Route > */}
-    <Redirect from="*" to="cms/login" />
+    <Redirect from="*" to="cms/home" />
   </Route >
 );

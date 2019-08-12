@@ -15,25 +15,25 @@ import styles from './styles.scss';
 class Collection extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      collectionAssets: props.collectionAssets,
-      collectionMeta: props.collectionMeta,
-      collectionId: props.collectionId,
-    };
+    // this.state = {
+    //   collectionAssets: props.collectionAssets,
+    //   collectionMeta: props.collectionMeta,
+    //   collectionId: props.collectionId,
+    // };
     props.setGoBackPath('/cms/home');
     if (props.collectionMeta) {
       props.updateAppTitle(props.collectionMeta.name);
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { collectionAssets, collectionMeta, collectionId } = nextProps;
-    return {
-      collectionAssets: collectionAssets || prevState.collectionAssets,
-      collectionMeta: collectionMeta || prevState.collectionMeta,
-      collectionId: collectionId || prevState.collectionId,
-    };
-  }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   const { collectionAssets, collectionMeta, collectionId } = nextProps;
+  //   return {
+  //     collectionAssets: collectionAssets || prevState.collectionAssets,
+  //     collectionMeta: collectionMeta || prevState.collectionMeta,
+  //     collectionId: collectionId || prevState.collectionId,
+  //   };
+  // }
 
   componentDidUpdate(prevProps) {
     const { collectionMeta, updateAppTitle } = this.props;
@@ -43,7 +43,8 @@ class Collection extends PureComponent {
   }
 
   interpolateValue(item, property) {
-    let value = item[property];
+    const value = item[property];
+    if (!value) return '';
     if (typeof value === 'string') {
       return value;
     } else if (value.toDate) {
@@ -53,7 +54,7 @@ class Collection extends PureComponent {
   }
 
   render() {
-    const { collectionAssets, collectionMeta, collectionId } = this.state;
+    const { collectionAssets, collectionMeta, collectionId } = this.props;
     return (
       <Fragment >
         {collectionAssets && collectionAssets.map(item => (

@@ -6,7 +6,7 @@ import cx from 'classnames';
 import _isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import Routes from '/src/routes';
-// import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import utils from '/src/utils';
 import services from '/src/cms/services';
 import { Button, Switch, SwitchItem, UserInput } from '/src/cms/shared';
@@ -21,21 +21,22 @@ class Editor extends PureComponent {
     this.state = {
       asset: props.asset,
       isValid: false,
+      deleting: false,
     };
-    if (props.collectionId) {
-      props.setGoBackPath(`/cms/collection/${props.collectionId}`);
-    } else {
-      props.setGoBackPath(`/cms/home`);
-    }
+    // if (props.collectionId) {
+    //   props.setGoBackPath(`/cms/collection/${props.collectionId}`);
+    // } else {
+    //   props.setGoBackPath(`/cms/home`);
+    // }
     if (props.pageMeta) {
       props.updateAppTitle(props.pageMeta.name);
     }
     if (props.collectionMeta) {
       props.updateAppTitle(props.collectionMeta.name);
     }
-    if (!props.collectionMeta && !props.pageMeta) {
-      this.goBack();
-    }
+    // if (!props.collectionMeta && !props.pageMeta) {
+    //   this.goBack();
+    // }
   }
 
   componentDidMount() {
@@ -46,7 +47,7 @@ class Editor extends PureComponent {
     if (!this.props.pathname.includes('editor')) {
       return;
     }
-    if (!_isEqual(this.props.asset, prevProps.asset)) {
+    if (!_isEqual(this.props.asset, prevProps.asset) && !this.state.deleting) {
       this.setState({ asset: this.props.asset });
     }
     if (!_isEqual(this.state.asset, prevState.asset)) {
@@ -57,6 +58,12 @@ class Editor extends PureComponent {
     }
     if (!prevProps.collectionMeta && this.props.collectionMeta) {
       this.props.updateAppTitle(this.props.collectionMeta.name);
+    }
+    if (this.props.collectionId) {
+      this.props.setGoBackPath(`/cms/collection/${this.props.collectionId}`);
+    }
+    if (this.props.pageId) {
+      this.props.setGoBackPath(`/cms/home`);
     }
   }
 
@@ -116,9 +123,9 @@ class Editor extends PureComponent {
   }
 
   goBack() {
-    const { prevPath } = this.props;
-    if (prevPath) {
-      hashHistory.push(prevPath);
+    const { goBackPath } = this.props;
+    if (goBackPath) {
+      hashHistory.push(goBackPath);
     } else {
       hashHistory.push('cms/home');
     }
@@ -133,6 +140,7 @@ class Editor extends PureComponent {
   handleClickOnDelete() {
     const { deleteAsset } = this.props;
     const { asset } = this.state;
+    this.setState({ deleting: true });
     deleteAsset(asset).then(this.goBack);
   }
 
@@ -208,11 +216,12 @@ Editor.propTypes = {
   collectionId: PropTypes.string,
   pageId: PropTypes.string,
   save: PropTypes.func.isRequired,
-  prevPath: PropTypes.string.isRequired,
+  goBackPath: PropTypes.string.isRequired,
   pathname: PropTypes.string.isRequired,
   setGoBackPath: PropTypes.func.isRequired,
   deleteAsset: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
+  assetId: PropTypes.string,
   pageMeta: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }),
@@ -226,7 +235,8 @@ const mapStateToProps = state => ({ // eslint-disable-line
   asset: services.asset.selectors.item(state),
   collectionId: Routes.selectors.collectionId(state),
   pageId: Routes.selectors.pageId(state),
-  prevPath: Routes.selectors.prevPath(state),
+  assetId: Routes.selectors.assetId(state),
+  goBackPath: Routes.selectors.goBackPath(state),
   pathname: Routes.selectors.pathname(state),
   pageMeta: services.pages.selectors.item(state),
   collectionMeta: services.collections.selectors.item(state),
@@ -241,19 +251,20 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  // firestoreConnect(props => {
-  //   return props.collectionId ? [{
-  //     collection: 'collections',
-  //     doc: props.collectionId,
-  //   }, {
-  //     collection: 'collections',
-  //     doc: props.collectionId,
-  //     subcollections: [{
-  //       collection: 'data',
-  //     }],
-  //   }] : props.pageId ? [{
-  //     collection: 'pages',
-  //     doc: props.pageId,
-  //   }] : [];
-  // }),
+  firestoreConnect(props => {
+    return props.collectionId ? [{
+      collection: 'collections',
+      doc: props.collectionId,
+    }, {
+      collection: 'collections',
+      doc: props.collectionId,
+      subcollections: [{
+        collection: 'data',
+        doc: props.assetId,
+      }],
+    }] : props.pageId ? [{
+      collection: 'pages',
+      doc: props.pageId,
+    }] : [];
+  }),
 )(Editor);
