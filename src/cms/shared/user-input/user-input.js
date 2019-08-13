@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import noop from 'lodash/noop';
-import { toCapitalizedWords, validateEmail, youtubeEmbedTransformer } from '/src/utils';
+import { validateEmail, youtubeEmbedTransformer } from '/src/utils';
 import Device from '/src/device';
 import { Asterisk } from 'styled-icons/fa-solid/Asterisk';
 import styles from './styles.scss';
@@ -15,7 +15,8 @@ import SingleLine from './components/single-line/single-line';
 import MultiLine from './components/multi-line/multi-line';
 import Link from './components/link/link';
 import Switch from './components/switch/switch';
-import Select from './components/select/select';
+import MultiSelect from './components/multi-select/multi-select';
+// import Select from './components/select/select';
 
 const onKeyPress = (e, onEnterKeyPress) => {
   if (e.key === 'Enter') {
@@ -146,17 +147,25 @@ const resolveComponentByType = (props) => {
           unCheckedChildren={props.unCheckedChildren}
           checked={props.value}
         />);
-    case 'select':
+    // case 'select':
+    //   return (
+    //     <Select
+    //       options={props.options.map(opt => ({
+    //         value: opt,
+    //         label: toCapitalizedWords(opt),
+    //       }))}
+    //       value={props.value}
+    //       onChange={props.onChange}
+    //       className={props.className}
+    //       placeholder={props.placeholder}
+    //     />
+    //   );
+    case 'multi-select':
       return (
-        <Select
-          options={props.options.map(opt => ({
-            value: opt,
-            label: toCapitalizedWords(opt),
-          }))}
-          value={props.value}
+        <MultiSelect
+          options={props.options}
           onChange={props.onChange}
           className={props.className}
-          placeholder={props.placeholder}
         />
       );
     default:

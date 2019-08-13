@@ -174,6 +174,23 @@ class Editor extends PureComponent {
             </div >
           );
         })}
+        <UserInput
+          type="multi-select"
+          options={[{
+            view: 'Option 1',
+            value: 1,
+            active: true,
+          }, {
+            view: 'Option 2',
+            value: 2,
+            active: false,
+          }, {
+            view: 'Option 3',
+            value: 3,
+            active: false,
+          }]}
+          onChange={console.log}
+        />
         {Boolean(asset.published !== undefined) && (
           <Switch indicateIndex={asset.published ? 0 : 1} className={styles.switch} >
             <SwitchItem onClick={() => this.onChange({ published: true })} >Show</SwitchItem >

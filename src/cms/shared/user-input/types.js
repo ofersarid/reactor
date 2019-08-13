@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const inputTypes = ['single-line', 'multi-line', 'multi-line-preserve-lines', 'post', 'image', 'select',
-  'pdf', 'date-time', 'date', 'time', 'link', 'password', 'number', 'switch', 'email', 'youtube'];
+  'pdf', 'date-time', 'date', 'time', 'link', 'password', 'number', 'switch', 'email', 'youtube', 'multi-select'];
 
 export const userInput = {
   placeholder: PropTypes.string,
@@ -21,7 +21,11 @@ export const userInput = {
   onlyNumbers: PropTypes.bool,
   checkedChildren: PropTypes.any,
   unCheckedChildren: PropTypes.any,
-  options: PropTypes.arrayOf(PropTypes.string),
+  options: PropTypes.arrayOf(PropTypes.shape({
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    active: PropTypes.bool.isRequired,
+    view: PropTypes.any.isRequired,
+  })),
   rtl: PropTypes.bool,
   required: PropTypes.bool,
   validationTip: PropTypes.string,
@@ -66,4 +70,8 @@ export const link = {
   transformer: PropTypes.func,
   validateWith: PropTypes.func,
   rtl: PropTypes.bool,
+};
+
+export default {
+  userInput,
 };

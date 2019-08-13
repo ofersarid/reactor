@@ -6,4 +6,3 @@ export { default as Tooltip } from './tooltip/tooltip';
 export { default as Auth } from './auth';
 export { default as Switch } from './switch/switch';
 export { default as SwitchItem } from './switch/switch-item';
-export { default as PageWrapper } from './page-wrapper/page-wrapper';
