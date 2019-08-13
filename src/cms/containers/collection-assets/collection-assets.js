@@ -78,6 +78,7 @@ class Collection extends PureComponent {
         ))}
         <Button
           type="circle"
+          className={styles.addBtn}
           linkTo={`/cms/collection/${collectionId}/editor/new`}
         >
           <Add />
