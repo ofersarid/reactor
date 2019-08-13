@@ -1,0 +1,17 @@
+@mixin media($size) {
+  @if $size == ">phone" {
+    @media (min-width: 768px) { @content; }
+  } @else if $size == ">tablet" {
+    @media (min-width: 1025px) { @content; }
+  }  @else if $size == ">desktop" {
+    @media (min-width: 1921px) { @content; }
+  }
+}
+
+@mixin orientation($mode) {
+  @if $mode == "landscape" {
+    @media screen and (orientation:landscape) { @content; }
+  } @else if $size == "portrait" {
+    @media screen and (orientation:portrait) { @content; }
+  }
+}

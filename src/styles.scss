@@ -1,17 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
 @import 'colors';
+@import 'media-query-mixins';
 
 body {
   overflow: hidden;
   font-weight: 100;
   font-family: 'sansation', sans-serif;
   color: #9f9f9f;
-  max-width: 1024px;
   background: #FAFAFA;
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  max-height: 600px;
+  //left: 50%;
+  //transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 ul {
@@ -27,6 +29,14 @@ ul {
 .root {
   font-weight: 100;
   font-family: 'sansation', sans-serif;
+  width: 414px;
+  height: 736px;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+
+  @include media('>phone') {
+    border-radius: 15px;
+  }
 }
 
 $placeholderColor: #9f9b9b;
