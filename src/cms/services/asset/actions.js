@@ -74,7 +74,7 @@ const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatc
       }
       uploadFiles(`${uid}/${assetId}`, entity, firebase, dispatch).then(update => {
         const data = Object.assign({}, entityWithoutFiles, update);
-        entityRef.set(collectionId ? data : { data }, { merge: true });
+        entityRef.set(collectionId ? data : { data }, { merge: true }).then(resolve);
       });
     } else {
       getCollectionById(collectionId, firestore).add(entityWithoutFiles).then(resp => {
