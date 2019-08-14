@@ -1,5 +1,5 @@
 // import Activity from '/src/cms/activity';
-import Auth from '/src/cms/shared/auth';
+import Auth from '/src/shared/auth';
 import Routes from '/src/routes';
 import collectionsService from '../collections';
 // import blackList from '../blacklist';

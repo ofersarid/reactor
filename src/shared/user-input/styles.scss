@@ -1,0 +1,90 @@
+@import '/src/shared/styles/animations';
+@import '/src/shared/styles/colors';
+
+.textArea {
+  outline: none;
+  padding: 11px;
+  font-size: inherit !important;
+  line-height: 43px;
+  box-sizing: border-box;
+  height: 43px;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  font-family: inherit !important;
+}
+
+.dateTime input {
+  width: calc(50% - 5px);
+  margin-right: 10px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
+.dateTime {
+  width: 100%;
+}
+
+//.withLabel {
+//  display: flex;
+//  align-items: center;
+//}
+
+//.withLabel-mobile {
+//  flex-direction: column;
+//  align-items: flex-start;
+//}
+
+.label {
+  margin-bottom: 21px;
+  height: 23px;
+  border-bottom: 1px solid $black;
+  color: $black;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 18px;
+  text-transform: capitalize;
+  display: inline-block;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.field {
+  margin-bottom: 10px;
+  flex-shrink: 0;
+  width: 100%;
+  position: relative;
+
+  &:nth-last-child(1) {
+    margin-bottom: 0;
+  }
+}
+
+.areaField {
+  align-items: flex-start;
+}
+
+.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.stretch {
+  width: 100%;
+}
+
+input,
+textarea {
+  font-weight: 100;
+}
+
+.asterisk {
+  height: 7px;
+  position: absolute;
+  top: 0;
+  right: -3px;
+  color: $red;
+  transform: translate(100%, 0);
+}

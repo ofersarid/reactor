@@ -6,7 +6,7 @@ import cx from 'classnames';
 import Device from '/src/device/index';
 import connect from 'react-redux/es/connect/connect';
 import styles from './styles.scss';
-import { Button } from '/src/cms/shared';
+import { Button } from '/src/shared';
 import Toaster from '/src/elements/toaster/index';
 
 class Dialog extends PureComponent {

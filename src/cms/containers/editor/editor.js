@@ -10,8 +10,8 @@ import Routes from '/src/routes';
 import { firestoreConnect } from 'react-redux-firebase';
 import utils from '/src/utils';
 import services from '/src/cms/services';
-import { Button, Switch, SwitchItem, UserInput } from '/src/cms/shared';
-import { inputTypes } from '/src/cms/shared/user-input/types';
+import { Button, Switch, SwitchItem, UserInput } from '/src/shared';
+import { inputTypes } from '/src/shared/user-input/types';
 import styles from './styles.scss';
 import { hashHistory } from 'react-router';
 

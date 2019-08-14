@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
-import { Button } from '/src/cms/shared';
+import { Button } from '/src/shared';
 import ReactTinyPopover from 'react-tiny-popover';
 import { AngleDown } from 'styled-icons/fa-solid/AngleDown';
 import noop from 'lodash/noop';

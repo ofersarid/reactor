@@ -7,10 +7,10 @@ import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 import { LogOutCircle } from 'styled-icons/boxicons-regular/LogOutCircle/LogOutCircle';
 import { ChevronLeft } from 'styled-icons/fa-solid/ChevronLeft/ChevronLeft';
-import { Button } from '/src/cms/shared';
+import { Button } from '/src/shared';
 import Routes from '/src/routes';
 import services from '/src/cms/services';
-import Auth from '/src/cms/shared/auth';
+import Auth from '/src/shared/auth';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
 

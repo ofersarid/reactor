@@ -1,4 +1,4 @@
-import Auth from '../../shared/auth';
+import Auth from '../../../shared/auth';
 import JSON5 from 'json5';
 
 // const getEntityById = (collectionId, entityId, firestore) =>

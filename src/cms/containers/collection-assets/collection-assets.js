@@ -8,7 +8,7 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import Routes from '/src/routes';
 import services from '/src/cms/services';
-import { Button } from '/src/cms/shared';
+import { Button } from '/src/shared';
 import { Add } from 'styled-icons/material/Add';
 import styles from './styles.scss';
 
