@@ -45,6 +45,7 @@ class Button extends PureComponent {
     switch (type) {
       case 'white':
       case 'icon':
+      case 'transparent':
         return 'wavesDark';
       case 'red':
         return 'wavesRed';
@@ -105,7 +106,7 @@ Button.propTypes = {
   getRef: PropTypes.object,
   style: PropTypes.object,
   domProps: PropTypes.object,
-  type: PropTypes.oneOf(['icon', 'black', 'white', 'red', 'circle']),
+  type: PropTypes.oneOf(['icon', 'black', 'white', 'red', 'circle', 'transparent']),
   justifyContent: PropTypes.oneOf(['start', 'center']),
   tag: PropTypes.string.isRequired,
 };

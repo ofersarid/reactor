@@ -23,7 +23,7 @@ export const userInput = {
   unCheckedChildren: PropTypes.any,
   options: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    active: PropTypes.bool.isRequired,
+    active: PropTypes.bool,
     view: PropTypes.any.isRequired,
   })),
   rtl: PropTypes.bool,

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import JSON5 from 'json5';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
 import _isEqual from 'lodash/isEqual';
@@ -78,6 +79,8 @@ class Editor extends PureComponent {
         return Boolean(value);
       case ['date', 'time', 'date-time'].includes(field.type):
         return (value && value.toDate) ? value.toDate() : value;
+      // case field.type === 'multi-select':
+      //   return JSON5.parse(value);
       default:
         return value;
     }
@@ -157,7 +160,7 @@ class Editor extends PureComponent {
                 key={field.key}
                 placeholder="Type here"
                 onChange={value => this.onChange({
-                  [field.key]: value,
+                  [field.key]: field.type === 'multi-select' ? JSON5.stringify(value) : value,
                 })}
                 value={this.resolveValue(value, field)}
                 label={field.label}
@@ -165,32 +168,15 @@ class Editor extends PureComponent {
                 // onValidation={isValid => this.onValidation(field.required ? isValid : true, field.key)}
                 disabled={field.disabled}
                 required={field.required}
+                options={field.options}
                 type={field.type}
                 transformer={field.transformer}
                 validateWith={this.resolveValidationFunction(field)}
-                // options={field.options}
                 preserveLineBreaks={field.preserveLineBreaks}
               />
             </div >
           );
         })}
-        <UserInput
-          type="multi-select"
-          options={[{
-            view: 'Option 1',
-            value: 1,
-            active: true,
-          }, {
-            view: 'Option 2',
-            value: 2,
-            active: false,
-          }, {
-            view: 'Option 3',
-            value: 3,
-            active: false,
-          }]}
-          onChange={console.log}
-        />
         {Boolean(asset.published !== undefined) && (
           <Switch indicateIndex={asset.published ? 0 : 1} className={styles.switch} >
             <SwitchItem onClick={() => this.onChange({ published: true })} >Show</SwitchItem >

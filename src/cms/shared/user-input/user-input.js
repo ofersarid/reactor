@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import JSON5 from 'json5';
 import cx from 'classnames';
 import noop from 'lodash/noop';
 import { validateEmail, youtubeEmbedTransformer } from '/src/utils';
@@ -163,7 +164,7 @@ const resolveComponentByType = (props) => {
     case 'multi-select':
       return (
         <MultiSelect
-          options={props.options}
+          options={props.value ? JSON5.parse(props.value) : props.options}
           onChange={props.onChange}
           className={props.className}
         />
