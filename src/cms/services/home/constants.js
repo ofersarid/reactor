@@ -1,3 +1,0 @@
-export const ACTIONS = {
-  SELECT_LIST: 'PAGES-COLLECTIONS/SELECT_LIST',
-};

@@ -1,0 +1,35 @@
+@import "/src/shared/styles/animations";
+@import "/src/shared/styles/colors";
+@import "/src/shared/styles/text";
+
+.logInForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  padding: 92px 0;
+  box-sizing: border-box;
+}
+
+.welcomeSplash {
+  width: 100%;
+  height: 100%;
+  background: $green;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  @extend %txt-big;
+}
+
+.loginBtn {
+
+}
+
+.top {
+  width: 100%;
+}

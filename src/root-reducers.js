@@ -6,7 +6,7 @@ import auth from '/src/shared/auth/reducers';
 import routs from '/src/routes/reducers';
 // import activity from '/src/cms/activity/reducers';
 // import filter from '/src/cms/filters/reducers';
-import services from '/src/cms/services';
+import services from '/src/services';
 import splashScreen from './shared/splash-screen/reducers';
 
 const rootReducer = combineReducers({

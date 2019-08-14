@@ -1,0 +1,36 @@
+@import '/src/shared/styles/classes';
+
+.assetEditor {
+  @extend %pageContainer;
+  /* this block of code is a temporary hack*/
+  [data-label="Screen title"] {
+    padding-top: 30px;
+    &:before {
+      content: '';
+      position: absolute;
+      width: calc(100% + 80px);
+      height: 10px;
+      left: -40px;
+      top: -20px;
+      background: #f1f1f1;
+    }
+  }
+}
+
+.inputWrapper {
+  width: 100%;
+  margin-bottom: 80px;
+}
+
+.footerBtn {
+  margin: 0 0 20px 0;
+  flex-shrink: 0;
+}
+
+.switch {
+  margin-bottom: 20px;
+  height: 65px !important;
+  font-size: 20px;
+  font-weight: normal;
+}
+
