@@ -2,7 +2,6 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
-import jsonp from 'jsonp';
 import ImageAsync from 'react-image-async';
 // import Resizer from 'react-image-file-resizer';
 // import { imageFile } from '../../types';
@@ -117,25 +116,6 @@ class UploadImage extends PureComponent {
     this.rotateImage90Deg().then(resp => this.handleChange(resp));
   }
 
-  getBlobFromSrc(src) {
-    return new Promise(resolve => {
-      jsonp(src, {}, resp => resolve(resp));
-      // const xhr = new XMLHttpRequest();
-      // xhr.open('GET', src, true);
-      //
-      // xhr.responseType = 'arraybuffer';
-      //
-      // xhr.onload = function (e) {
-      //   // Obtain a blob: URL for the image data.
-      //   const arrayBufferView = new Uint8Array(this.response);
-      //   const blob = new Blob([arrayBufferView], { type: 'image/jpeg' });
-      //   resolve(blob);
-      // };
-      //
-      // xhr.send();
-    });
-  }
-
   rotateImage90Deg() {
     return new Promise(resolve => {
       // Load the image
@@ -161,13 +141,7 @@ class UploadImage extends PureComponent {
         };
         image.src = readerEvent.target.result;
       };
-      if (this.file) {
-        reader.readAsDataURL(this.file);
-      } else if (this.state.preview) {
-        this.getBlobFromSrc(this.state.preview).then(blob => {
-          reader.readAsDataURL(blob);
-        });
-      }
+      reader.readAsDataURL(this.file);
     });
   };
 
@@ -205,7 +179,7 @@ class UploadImage extends PureComponent {
             </ImageAsync >
           </div >
         ) : null}
-        {hasImage ? (
+        {hasImage && this.file ? (
           <Button
             className={styles.button}
             onClick={this.onRotateClick}
