@@ -115,11 +115,11 @@ class Home extends React.PureComponent {
               </Trail >
             </div >
             <Spring
-              from={{ opacity: showInputField ? 0 : 1, transform: showInputField ? 'translateY(100%)' : 'translateY(0%)' }}
-              to={{ opacity: showInputField ? 1 : 0, transform: showInputField ? 'translateY(0%)' : 'translateY(100%)' }}
+              from={{ transform: showInputField ? 'translateY(100%)' : 'translateY(0%)' }}
+              to={{ transform: showInputField ? 'translateY(0%)' : 'translateY(100%)' }}
               immediate={immediate}
             >
-              {springs => <div className={cx(styles.inputContainer)} style={springs}>
+              {springs => <div className={cx(styles.inputContainer)} style={springs} >
                 <UserInput
                   placeholder="Type..."
                   onChange={this.handleInputChange}
@@ -127,8 +127,8 @@ class Home extends React.PureComponent {
                   // className={cx(styles.input, styles[`input-${deviceType}`])}
                   // onEnterKeyPress={this.logIn}
                 />
-              </div>}
-            </Spring>
+              </div >}
+            </Spring >
           </Fragment >
         )}
         {devMode && (
@@ -145,7 +145,7 @@ class Home extends React.PureComponent {
             >
               <Add />
             </Button >}
-          </Spring>
+          </Spring >
         )}
       </Fragment >
     );

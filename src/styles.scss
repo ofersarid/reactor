@@ -11,9 +11,12 @@ body {
   position: relative;
   //left: 50%;
   //transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+  @include media('>phone') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 ul {
@@ -29,13 +32,15 @@ ul {
 .root {
   font-weight: 100;
   font-family: 'sansation', sans-serif;
-  width: 414px;
-  height: 736px;
+  width: 100%;
+  height: 100%;
   box-shadow: 0 10px 15px rgba(0,0,0,0.1);
   overflow: hidden;
 
   @include media('>phone') {
     border-radius: 15px;
+    height: 736px;
+    width: 414px;
   }
 }
 
