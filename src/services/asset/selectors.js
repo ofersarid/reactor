@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect/lib/index';
 import JSON5 from 'json5';
 import Routes from '/src/routes';
-import collections from '../collections';
+import collectionsSelectors from '../collections/selectors';
 import pages from '../pages';
 
 const item = createSelector(
-  collections.selectors.item,
-  collections.selectors.assets,
+  collectionsSelectors.item,
+  collectionsSelectors.assets,
   pages.selectors.item,
   Routes.selectors.assetId,
   (collection, collectionAssets, page, _assetId) => {
@@ -45,7 +45,7 @@ const item = createSelector(
   });
 
 const fields = createSelector(
-  collections.selectors.item,
+  collectionsSelectors.item,
   pages.selectors.item,
   (collection, page) => {
     switch (true) {

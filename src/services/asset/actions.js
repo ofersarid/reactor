@@ -186,4 +186,5 @@ const _delete = asset => {
 export default {
   save,
   delete: _delete,
+  deleteFile,
 };

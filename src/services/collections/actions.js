@@ -1,4 +1,5 @@
 import Auth from '../../shared/auth';
+import assetService from '../asset';
 import JSON5 from 'json5';
 
 // const getEntityById = (collectionId, entityId, firestore) =>
@@ -128,16 +129,47 @@ import JSON5 from 'json5';
 //   });
 // };
 
-export const remove = id => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const remove = id => async (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = Auth.selectors.uid(state);
   const collectionRef = firestore.collection('collections').doc(id);
+  cleanStorage(id);
   collectionRef.delete().then(() => {
     firestore.collection('users').doc(uid).set({
       'collections': Auth.selectors.userCollectionIds(state).filter(_id => _id !== id),
     }, { merge: true });
   });
+};
+
+export const clearAllAssets = id => (dispatch, getState, { getFirebase, getFirestore }) => {
+  const promise = new Promise(resolve => {
+    const firestore = getFirestore();
+    // const state = getState();
+    firestore.collection(`collections/${id}/data`).get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        dispatch(assetService.actions.delete(Object.assign({ id: doc.id }, doc.data())).then());
+      });
+    });
+  });
+  return promise;
+};
+
+export const cleanStorage = id => (dispatch, getState, { getFirebase, getFirestore }) => {
+  const promise = new Promise(resolve => {
+    const firestore = getFirestore();
+    // const state = getState();
+    firestore.collection(`collections/${id}/data`).get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        Object.keys(doc).forEach(key => {
+          if (key.match(/^ref--/)) {
+            dispatch(assetService.actions.deleteFile(doc[key]));
+          }
+        });
+      });
+    });
+  });
+  return promise;
 };
 
 export const create = (name, schema) => (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -159,7 +191,7 @@ export const create = (name, schema) => (dispatch, getState, { getFirebase, getF
   });
 };
 
-export const duplicate = (name, collectionId) => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const duplicate = (collectionId, name) => (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = Auth.selectors.uid(state);
@@ -199,5 +231,6 @@ export default {
   create,
   duplicate,
   remove,
+  clearAllAssets,
   register,
 };
