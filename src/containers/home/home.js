@@ -1,10 +1,12 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
-import { Trail, animated } from 'react-spring/renderprops';
+import { Trail, animated, Spring } from 'react-spring/renderprops';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+import autoBind from 'auto-bind';
 import { connect } from 'react-redux';
-import { Switch, SwitchItem, Button } from '/src/shared';
+import { Add } from 'styled-icons/material';
+import { Switch, SwitchItem, Button, UserInput } from '/src/shared';
 import PropTypes from 'prop-types';
 import services from '/src/services';
 import Routes from '/src/routes';
@@ -23,11 +25,31 @@ const listToIndex = list => {
 class Home extends React.PureComponent {
   constructor(props) {
     super(props);
+    autoBind(this);
+    this.state = {
+      showInputField: false,
+      inputValue: '',
+      immediate: true,
+    };
     props.updateAppTitle('Reactor');
   }
 
+  toggleInputField() {
+    this.setState({
+      showInputField: !this.state.showInputField,
+      immediate: false,
+    });
+  }
+
+  handleInputChange(val) {
+    this.setState({
+      inputValue: val,
+    });
+  }
+
   render() {
-    const { listName, selectList, collections, pages, userCollectionIds, userPageIds } = this.props;
+    const { listName, selectList, collections, pages, userCollectionIds, userPageIds, devMode } = this.props;
+    const { showInputField, inputValue, immediate } = this.state;
     return (
       <Fragment >
         <Switch indicateIndex={listToIndex(listName)} className={styles.switch} >
@@ -92,7 +114,38 @@ class Home extends React.PureComponent {
                 )}
               </Trail >
             </div >
+            <Spring
+              from={{ opacity: showInputField ? 0 : 1, transform: showInputField ? 'translateY(100%)' : 'translateY(0%)' }}
+              to={{ opacity: showInputField ? 1 : 0, transform: showInputField ? 'translateY(0%)' : 'translateY(100%)' }}
+              immediate={immediate}
+            >
+              {springs => <div className={cx(styles.inputContainer)} style={springs}>
+                <UserInput
+                  placeholder="Type..."
+                  onChange={this.handleInputChange}
+                  value={inputValue}
+                  // className={cx(styles.input, styles[`input-${deviceType}`])}
+                  // onEnterKeyPress={this.logIn}
+                />
+              </div>}
+            </Spring>
           </Fragment >
+        )}
+        {devMode && (
+          <Spring
+            from={{ transform: showInputField ? 'rotate(0deg)' : 'rotate(45deg)' }}
+            to={{ transform: showInputField ? 'rotate(45deg)' : 'rotate(0deg)' }}
+            immediate={immediate}
+          >
+            {springs => <Button
+              type="circle"
+              className={cx(styles.addBtn)}
+              onClick={this.toggleInputField}
+              style={springs}
+            >
+              <Add />
+            </Button >}
+          </Spring>
         )}
       </Fragment >
     );
@@ -114,6 +167,7 @@ Home.propTypes = {
   })),
   selectList: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
+  devMode: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -123,6 +177,7 @@ const mapStateToProps = state => ({
   userPageIds: Auth.selectors.userPageIds(state),
   collections: services.collections.selectors.list(state),
   pages: services.pages.selectors.list(state),
+  devMode: services.app.selectors.devMode(state),
 });
 
 const mapDispatchToProps = dispatch => ({

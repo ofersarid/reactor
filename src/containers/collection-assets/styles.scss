@@ -1,8 +1,9 @@
 @import '/src/shared/styles/classes';
 @import '/src/shared/styles/colors';
 
-.collection {
-
+.assetList {
+  @extend %pageContainer;
+  padding: 0;
 }
 
 .itemWrapper {
