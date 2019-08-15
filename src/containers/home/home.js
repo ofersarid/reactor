@@ -115,8 +115,8 @@ class Home extends React.PureComponent {
               </Trail >
             </div >
             <Spring
-              from={{ transform: showInputField ? 'translateY(100%)' : 'translateY(0%)' }}
-              to={{ transform: showInputField ? 'translateY(0%)' : 'translateY(100%)' }}
+              from={{ transform: showInputField ? 'translateY(120%)' : 'translateY(0%)' }}
+              to={{ transform: showInputField ? 'translateY(0%)' : 'translateY(120%)' }}
               immediate={immediate}
             >
               {springs => <div className={cx(styles.inputContainer)} style={springs} >
