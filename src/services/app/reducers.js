@@ -4,7 +4,7 @@ import { ACTIONS } from './constants';
 
 const initialState = fromJS({
   headerTitle: 'Reactor',
-  devMode: true,
+  devMode: false,
 });
 
 const app = (state = initialState, action) => {
