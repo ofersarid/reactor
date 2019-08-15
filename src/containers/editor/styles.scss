@@ -5,18 +5,30 @@
   height: 100%;
   overflow-y: auto;
   /* this block of code is a temporary hack*/
-  [data-label="Screen title"] {
-    padding-top: 30px;
-    &:before {
-      content: '';
-      position: absolute;
-      width: calc(100% + 80px);
-      height: 10px;
-      left: -40px;
-      top: -20px;
-      background: #f1f1f1;
-    }
-  }
+  //[data-label="Screen title"] {
+  //  padding-top: 30px;
+  //  &:before {
+  //    content: '';
+  //    position: absolute;
+  //    width: calc(100% + 80px);
+  //    height: 10px;
+  //    left: -40px;
+  //    top: -20px;
+  //    background: #f1f1f1;
+  //  }
+  //}
+}
+
+.divider {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 20px;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  background: #f1f1f1;
+  margin-bottom: 20px;
 }
 
 .inputWrapper {

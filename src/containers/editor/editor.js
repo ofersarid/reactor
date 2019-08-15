@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import JSON5 from 'json5';
@@ -150,12 +150,14 @@ class Editor extends PureComponent {
   render() {
     const { fields, collectionId } = this.props;
     const { isValid, asset } = this.state;
+    const groups = [];
     return (Boolean(asset) && Boolean(fields)) ? (
       <div className={cx(styles.assetEditor)} >
         {fields.map(field => {
           const value = this.state.asset[field.key];
-          return (
-            <div key={field.key} className={styles.inputWrapper} >
+          const dom = <Fragment key={field.key} >
+            {groups.slice(-1)[0] !== field.group ? <div className={styles.divider} >{field.group}</div > : null}
+            <div className={styles.inputWrapper} >
               <UserInput
                 key={field.key}
                 placeholder="Type here"
@@ -175,7 +177,11 @@ class Editor extends PureComponent {
                 preserveLineBreaks={field.preserveLineBreaks}
               />
             </div >
-          );
+          </Fragment >;
+          if (!groups.includes(field.group)) {
+            groups.push(field.group);
+          }
+          return dom;
         })}
         {Boolean(asset.published !== undefined) && (
           <Switch indicateIndex={asset.published ? 0 : 1} className={styles.switch} >
