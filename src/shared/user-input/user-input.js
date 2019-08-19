@@ -17,6 +17,7 @@ import MultiLine from './components/multi-line/multi-line';
 import Link from './components/link/link';
 import Switch from './components/switch/switch';
 import MultiSelect from './components/multi-select/multi-select';
+import Tooltip from '../tooltip/tooltip';
 // import Select from './components/select/select';
 
 const onKeyPress = (e, onEnterKeyPress) => {
@@ -193,6 +194,10 @@ const resolveComponentByType = (props) => {
   }
 };
 
+const composeTip = props => {
+  return props._key;
+};
+
 const UserInput = props => (
   <div
     className={cx(
@@ -208,8 +213,10 @@ const UserInput = props => (
   >
     {props.label && (
       <label className={styles.label} >
-        {props.label}
-        {props.required && <Asterisk className={styles.asterisk}/>}
+        <Tooltip position="top" content={composeTip(props)} >
+          {props.label}
+          {props.required && <Asterisk className={styles.asterisk} />}
+        </Tooltip >
       </label >
     )}
     {resolveComponentByType(props)}

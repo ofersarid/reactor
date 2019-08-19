@@ -160,6 +160,7 @@ class Editor extends PureComponent {
             <div className={styles.inputWrapper} >
               <UserInput
                 key={field.key}
+                _key={field.key}
                 placeholder="Type here"
                 onChange={value => this.onChange({
                   [field.key]: field.type === 'multi-select' ? JSON5.stringify(value) : value,

@@ -31,6 +31,7 @@ export const userInput = {
   validationTip: PropTypes.string,
   autoFocus: PropTypes.bool,
   preserveLineBreaks: PropTypes.bool,
+  _key: PropTypes.string,
 };
 
 export const switchTypes = {

@@ -4,7 +4,6 @@ import Device from '/src/device';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
 import { Tooltip as Tippy } from 'react-tippy';
-import Routes from '/src/routes';
 import styles from './styles.scss';
 import types from './types';
 
@@ -50,7 +49,6 @@ Tooltip.defaultProps = {
 
 const mapStateToProps = state => ({
   isMobile: Device.selectors.isMobile(state),
-  pathname: Routes.selectors.pathname(state),
 });
 
 export default connect(mapStateToProps, {})(Tooltip);
