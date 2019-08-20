@@ -6,21 +6,12 @@ import { compose } from 'redux';
 import autoBind from 'auto-bind';
 import { connect } from 'react-redux';
 import { Add } from 'styled-icons/material';
-import { Switch, SwitchItem, Button, UserInput } from '/src/shared';
+import { Button, UserInput } from '/src/shared';
 import PropTypes from 'prop-types';
 import services from '/src/services';
 import Routes from '/src/routes';
 import styles from './styles.scss';
 import Auth from '../../shared/auth';
-
-const listToIndex = list => {
-  switch (list) {
-    case 'pages':
-      return 1;
-    default:
-      return 0;
-  }
-};
 
 class Home extends React.PureComponent {
   constructor(props) {
@@ -52,10 +43,12 @@ class Home extends React.PureComponent {
     const { showInputField, inputValue, immediate } = this.state;
     return (
       <Fragment >
-        <Switch indicateIndex={listToIndex(listName)} className={styles.switch} >
-          <SwitchItem onClick={() => selectList('collections')} >Collections</SwitchItem >
-          <SwitchItem onClick={() => selectList('pages')} >Pages</SwitchItem >
-        </Switch >
+        <UserInput
+          type="switch"
+          options={[{ view: 'Collections', value: 'collections' }, { view: 'Pages', value: 'pages' }]}
+          value={listName}
+          onChange={selectList}
+        />
         {(collections.length === userCollectionIds.length && pages.length === userPageIds.length) && (
           <Fragment >
             <div

@@ -15,7 +15,7 @@ import UploadImage from './components/upload-image/upload-image';
 import SingleLine from './components/single-line/single-line';
 import MultiLine from './components/multi-line/multi-line';
 import Link from './components/link/link';
-import Switch from './components/switch/switch';
+import { Switch, SwitchItem } from '../switch';
 import MultiSelect from './components/multi-select/multi-select';
 import Tooltip from '../tooltip/tooltip';
 // import Select from './components/select/select';
@@ -142,13 +142,19 @@ const resolveComponentByType = (props) => {
           required={props.required}
         />);
     case 'switch':
-      return (
-        <Switch
-          onChange={props.onChange}
-          checkedChildren={props.checkedChildren}
-          unCheckedChildren={props.unCheckedChildren}
-          checked={props.value}
-        />);
+      if (props.value === '') {
+        props.onChange(props.options[0].value);
+        break;
+      } else {
+        const index = props.options.findIndex(item => item.value === props.value);
+        return (
+          <Switch indicateIndex={index} className={styles.switch} >
+            {props.options.map(item => (
+              <SwitchItem key={item.view} onClick={() => props.onChange(item.value)} >{item.view}</SwitchItem >
+            ))}
+          </Switch >
+        );
+      }
     // case 'select':
     //   return (
     //     <Select

@@ -59,7 +59,7 @@ class Login extends PureComponent {
               onChange={val => this.updateState({ email: val })}
               value={email}
               validateWith={validateEmail}
-              className={cx(styles.input, styles[`input-${deviceType}`])}
+              className={cx(styles.mb, styles[`input-${deviceType}`])}
               onEnterKeyPress={this.logIn}
             />
             <UserInput
@@ -69,7 +69,7 @@ class Login extends PureComponent {
               type="password"
               min={4}
               max={12}
-              className={cx(styles.input, styles[`input-${deviceType}`])}
+              className={cx(styles[`input-${deviceType}`])}
               onEnterKeyPress={this.logIn}
             />
           </div >

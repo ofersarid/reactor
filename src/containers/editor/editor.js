@@ -10,7 +10,7 @@ import Routes from '/src/routes';
 import { firestoreConnect } from 'react-redux-firebase';
 import utils from '/src/utils';
 import services from '/src/services';
-import { Button, Switch, SwitchItem, UserInput } from '/src/shared';
+import { Button, UserInput } from '/src/shared';
 import { inputTypes } from '/src/shared/user-input/types';
 import styles from './styles.scss';
 import { hashHistory } from 'react-router';
@@ -75,12 +75,8 @@ class Editor extends PureComponent {
 
   resolveValue(value, field) {
     switch (true) {
-      case field.type === 'switch':
-        return Boolean(value);
       case ['date', 'time', 'date-time'].includes(field.type):
         return (value && value.toDate) ? value.toDate() : value;
-      // case field.type === 'multi-select':
-      //   return JSON5.parse(value);
       default:
         return value;
     }
@@ -185,10 +181,13 @@ class Editor extends PureComponent {
           return dom;
         })}
         {Boolean(asset.published !== undefined) && (
-          <Switch indicateIndex={asset.published ? 0 : 1} className={styles.switch} >
-            <SwitchItem onClick={() => this.onChange({ published: true })} >Show</SwitchItem >
-            <SwitchItem onClick={() => this.onChange({ published: false })} >Hide</SwitchItem >
-          </Switch >
+          <UserInput
+            type="switch"
+            options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
+            value={asset.published}
+            onChange={val => this.onChange({ published: val })}
+            className={styles.switch}
+          />
         )}
         <Button
           className={styles.footerBtn}

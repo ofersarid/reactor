@@ -52,14 +52,9 @@
 }
 
 .field {
-  margin-bottom: 10px;
   flex-shrink: 0;
   width: 100%;
   position: relative;
-
-  &:nth-last-child(1) {
-    margin-bottom: 0;
-  }
 }
 
 .areaField {

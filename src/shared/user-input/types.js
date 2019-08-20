@@ -22,8 +22,8 @@ export const userInput = {
   checkedChildren: PropTypes.any,
   unCheckedChildren: PropTypes.any,
   options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    active: PropTypes.bool,
+    value: PropTypes.any.isRequired,
+    active: PropTypes.bool, // todo - check if this is redundant
     view: PropTypes.any.isRequired,
   })),
   rtl: PropTypes.bool,

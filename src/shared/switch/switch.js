@@ -9,7 +9,7 @@ import styles from './styles.scss';
 class Switch extends PureComponent {
   constructor(props) {
     super(props);
-    this.prevIndex = Math.abs(props.indicateIndex - 1);
+    this.prevIndex = 0;
   }
 
   componentDidMount() {
@@ -28,11 +28,11 @@ class Switch extends PureComponent {
     const childWidth = 100 / children.length;
     const from = {
       left: this.prevIndex * childWidth,
-      right: (children.length - 1 - this.prevIndex) * childWidth,
+      right: (this.prevIndex + 1) * childWidth,
     };
     const to = {
       left: indicateIndex * childWidth,
-      right: (children.length - 1 - indicateIndex) * childWidth,
+      right: (indicateIndex + 1) * childWidth,
     };
 
     const direction = to.left < from.left ? 'left' : 'right';
@@ -42,13 +42,13 @@ class Switch extends PureComponent {
     const Springs = Keyframes.Spring({
       indicate: async (next) => {
         await next({
-          from: direction === 'right' ? { right: `${from.right}%` } : { left: `${from.left}%` },
-          to: direction === 'right' ? { right: `${to.right}%` } : { left: `${to.left}%` },
+          from: direction === 'right' ? { right: `${100 - from.right}%`, left: `${from.left}%` } : { left: `${from.left}%`, right: `${100 - from.right}%` },
+          to: direction === 'right' ? { right: `${100 - to.right}%`, left: `${from.left}%` } : { left: `${to.left}%`, right: `${100 - from.right}%` },
           config: configFrom,
         });
         await next({
-          from: direction === 'right' ? { left: `${from.left}%` } : { right: `${from.right}%` },
-          to: direction === 'right' ? { left: `${to.left}%` } : { right: `${to.right}%` },
+          from: direction === 'right' ? { left: `${from.left}%` } : { right: `${100 - from.right}%` },
+          to: direction === 'right' ? { left: `${to.left}%` } : { right: `${100 - to.right}%` },
           config: configTo,
         });
       },

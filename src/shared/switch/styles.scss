@@ -5,11 +5,13 @@
   width: 100%;
   background: $gray;
   color: white;
-  height: 48px;
   position: relative;
   overflow: hidden;
   border-radius: 50px;
   flex-shrink: 0;
+  height: 60px;
+  font-size: 20px;
+  font-weight: normal;
 }
 
 .switchItem {
