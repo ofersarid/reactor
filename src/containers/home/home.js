@@ -49,81 +49,81 @@ class Home extends React.PureComponent {
           value={listName}
           onChange={selectList}
         />
-        {(collections.length === userCollectionIds.length && pages.length === userPageIds.length) && (
-          <Fragment >
-            <div
-              className={cx(styles.listContainer, {
-                [styles.focus]: listName === 'collections',
-              })}
+        {collections.length === userCollectionIds.length && (
+          <div
+            className={cx(styles.listContainer, {
+              [styles.focus]: listName === 'collections',
+            })}
+          >
+            <Trail
+              native
+              initial={listName === 'collections' ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }}
+              items={collections}
+              keys={item => item.name}
+              from={listName === 'collections' ? { opacity: 0, x: 100 } : { opacity: 1, x: 0 }}
+              to={listName === 'collections' ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }}
             >
-              <Trail
-                native
-                initial={listName === 'collections' ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }}
-                items={collections}
-                keys={item => item.name}
-                from={listName === 'collections' ? { opacity: 0, x: 100 } : { opacity: 1, x: 0 }}
-                to={listName === 'collections' ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }}
-              >
-                {item => (springs) => ( // eslint-disable-line
-                  <animated.div key={item.id} className={styles.listItemWrap} style={{
-                    opacity: springs.opacity,
-                    transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
-                  }} >
-                    <Button
-                      linkTo={`/cms/collection/${item.id}`}
-                      type="white"
-                      justifyContent="start"
-                      disable={item.schema === undefined}
-                    >
-                      {item.name}
-                    </Button >
-                  </animated.div >
-                )}
-              </Trail >
-            </div >
-            <div className={cx(styles.listContainer, { [styles.focus]: listName === 'pages' })} >
-              <Trail
-                native
-                initial={listName === 'pages' ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
-                items={pages}
-                keys={item => item.name}
-                from={listName === 'pages' ? { opacity: 0, x: 100 } : { opacity: 1, x: 0 }}
-                to={listName === 'pages' ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
-              >
-                {item => springs => (
-                  <animated.div key={item.id} className={styles.listItemWrap} style={{
-                    opacity: springs.opacity,
-                    transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
-                  }} >
-                    <Button
-                      linkTo={`/cms/page/${item.id}/editor`}
-                      type="white"
-                      justifyContent="start"
-                      disable={item.schema === undefined}
-                    >
-                      {item.name}
-                    </Button >
-                  </animated.div >
-                )}
-              </Trail >
-            </div >
-            <Spring
-              from={{ transform: showInputField ? 'translateY(120%)' : 'translateY(0%)' }}
-              to={{ transform: showInputField ? 'translateY(0%)' : 'translateY(120%)' }}
-              immediate={immediate}
-            >
-              {springs => <div className={cx(styles.inputContainer)} style={springs} >
-                <UserInput
-                  placeholder="Type..."
-                  onChange={this.handleInputChange}
-                  value={inputValue}
-                  // className={cx(styles.input, styles[`input-${deviceType}`])}
-                  // onEnterKeyPress={this.logIn}
-                />
-              </div >}
-            </Spring >
-          </Fragment >
+              {item => (springs) => ( // eslint-disable-line
+                <animated.div key={item.id} className={styles.listItemWrap} style={{
+                  opacity: springs.opacity,
+                  transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
+                }} >
+                  <Button
+                    linkTo={`/cms/collection/${item.id}`}
+                    type="white"
+                    justifyContent="start"
+                    disable={item.schema === undefined}
+                  >
+                    {item.name}
+                  </Button >
+                </animated.div >
+              )}
+            </Trail >
+          </div >
         )}
+        {pages.length === userPageIds.length && (
+          <div className={cx(styles.listContainer, { [styles.focus]: listName === 'pages' })} >
+            <Trail
+              native
+              initial={listName === 'pages' ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
+              items={pages}
+              keys={item => item.name}
+              from={listName === 'pages' ? { opacity: 0, x: 100 } : { opacity: 1, x: 0 }}
+              to={listName === 'pages' ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
+            >
+              {item => springs => (
+                <animated.div key={item.id} className={styles.listItemWrap} style={{
+                  opacity: springs.opacity,
+                  transform: springs.x.interpolate(x => `translate3d(${x}%,0,0)`),
+                }} >
+                  <Button
+                    linkTo={`/cms/page/${item.id}/editor`}
+                    type="white"
+                    justifyContent="start"
+                    disable={item.schema === undefined}
+                  >
+                    {item.name}
+                  </Button >
+                </animated.div >
+              )}
+            </Trail >
+          </div >
+        )}
+        <Spring
+          from={{ transform: showInputField ? 'translateY(120%)' : 'translateY(0%)' }}
+          to={{ transform: showInputField ? 'translateY(0%)' : 'translateY(120%)' }}
+          immediate={immediate}
+        >
+          {springs => <div className={cx(styles.inputContainer)} style={springs} >
+            <UserInput
+              placeholder="Type..."
+              onChange={this.handleInputChange}
+              value={inputValue}
+              // className={cx(styles.input, styles[`input-${deviceType}`])}
+              // onEnterKeyPress={this.logIn}
+            />
+          </div >}
+        </Spring >
         {devMode && (
           <Spring
             from={{ transform: showInputField ? 'rotate(0deg)' : 'rotate(45deg)' }}

@@ -1,4 +1,5 @@
 import Auth from '/src/shared/auth';
+import JSON5 from 'json5';
 
 // const getEntityById = (collectionId, entityId, firestore) =>
 //   firestore.collection('collections').doc(collectionId).collection('data').doc(entityId);
@@ -118,7 +119,7 @@ export const create = (name, schema) => (dispatch, getState, { getFirebase, getF
       read: 'all',
       write: uid,
     },
-    schema,
+    schema: JSON5.stringify(schema),
     data: {},
   }).then(resp => {
     const newId = resp.id;
