@@ -42,6 +42,7 @@
     "react-router": "<4.0.0",
     "react-router-dom": "^4.3.1",
     "react-select": "^2.2.0",
+    "react-shimmer": "^2.0.1",
     "react-spring": "^8.0.25",
     "react-stack-grid": "^0.7.1",
     "react-textarea-autosize": "^7.1.0",

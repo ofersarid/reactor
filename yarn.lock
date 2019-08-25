@@ -10891,6 +10891,10 @@ react-select@^2.2.0:
     react-input-autosize "^2.2.1"
     react-transition-group "^2.2.1"
 
+react-shimmer@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-shimmer/-/react-shimmer-2.0.1.tgz#e1a609e9b18d26988407baf5a5ad019504dcfbc0"
+
 react-sizeme@^2.2.0:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/react-sizeme/-/react-sizeme-2.5.2.tgz#e7041390cfb895ed15d896aa91d76e147e3b70b5"

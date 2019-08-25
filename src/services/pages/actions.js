@@ -129,24 +129,26 @@ export const create = (name, schema) => (dispatch, getState, { getFirebase, getF
   });
 };
 
-export const duplicate = (name, pageId) => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const duplicate = (pageId, name) => async (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = Auth.selectors.uid(state);
-  const pageRef = firestore.collection('pages').doc(pageId);
-  pageRef.get().then(doc => {
-    if (doc.exists) {
-      const data = doc.data();
-      firestore.collection('pages').add(Object.assign({}, data, name)).then(resp => {
-        const newId = resp.id;
-        firestore.collection('users').doc(uid).set({
-          'pages': Auth.selectors.userPageIds(state).concat([newId]),
-        }, { merge: true });
-      });
-    } else {
-      console.warn('No such document!');
-    }
-  });
+  const userRef = await firestore.collection('users').doc(uid).get();
+  const user = userRef.data();
+  const docRef = await firestore.collection('pages').doc(pageId).get();
+  if (docRef.exists) {
+    const resp = await firestore.collection('pages').add(Object.assign({}, {
+      ...docRef.data(),
+      data: {},
+      name,
+    }));
+    const newId = resp.id;
+    firestore.collection('users').doc(uid).set({
+      'pages': user.pages.concat([newId]),
+    }, { merge: true });
+  } else {
+    console.warn('No such document!');
+  }
 };
 
 export const register = idList => (dispatch, getState, { getFirebase, getFirestore }) => {
