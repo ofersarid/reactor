@@ -10,6 +10,10 @@
   width: 100%;
   margin-bottom: 10px;
 
+  &.overflow {
+    //width: calc(100% + 11px);
+  }
+
   &:last-of-type {
     margin-bottom: 0;
   }
@@ -18,17 +22,20 @@
 .listContainer {
   width: 100%;
   height: calc(100% - 100px);
-  padding: 0 20px 20px;
+  padding: 0 0 20px;
   overflow-y: auto;
   overflow-x: hidden;
   position: absolute;
   bottom: 0;
   left: 0;
   box-sizing: border-box;
+  opacity: 0;
+  transition: 1s;
 }
 
 .focus {
   z-index: 1;
+  opacity: 1;
 }
 
 .addBtn {

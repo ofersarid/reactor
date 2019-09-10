@@ -23,6 +23,7 @@ class Editor extends PureComponent {
       asset: props.asset,
       isValid: false,
       deleting: false,
+      isWorking: false,
     };
     // if (props.collectionId) {
     //   props.setGoBackPath(`/cms/collection/${props.collectionId}`);
@@ -133,6 +134,7 @@ class Editor extends PureComponent {
   handleClickOnDone() {
     const { save } = this.props;
     const { asset } = this.state;
+    this.setState({ isWorking: true });
     save(asset).then(this.goBack);
   }
 
