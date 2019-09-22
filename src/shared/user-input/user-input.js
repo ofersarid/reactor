@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import JSON5 from 'json5';
 import cx from 'classnames';
 import noop from 'lodash/noop';
-import { validateEmail, youtubeEmbedTransformer } from '/src/utils';
+import { youtubeEmbedTransformer } from '/src/utils';
 import Device from '/src/device';
 import { Asterisk } from 'styled-icons/fa-solid/Asterisk/Asterisk';
 import styles from './styles.scss';
@@ -26,15 +26,6 @@ const onKeyPress = (e, onEnterKeyPress) => {
   }
 };
 
-const resolveValidateWith = (validateWith) => {
-  switch (validateWith) {
-    case 'email':
-      return validateEmail;
-    default:
-      return () => true;
-  }
-};
-
 const transformValue = (type, value) => {
   switch (true) {
     case type === 'youtube':
@@ -50,6 +41,7 @@ const resolveComponentByType = (props) => {
     case 'multi-line':
     case 'multi-line-preserve-lines':
     case 'link':
+    case 'email':
       return (
         <MultiLine
           placeholder={props.placeholder}
@@ -174,6 +166,8 @@ const resolveComponentByType = (props) => {
           options={props.value ? JSON5.parse(props.value) : props.options}
           onChange={props.onChange}
           className={props.className}
+          value={props.value}
+          validateWith={props.validateWith}
         />
       );
     default:
@@ -188,7 +182,7 @@ const resolveComponentByType = (props) => {
           onValidation={props.onValidation}
           mask={props.type === 'password'}
           ref={props.getRef}
-          validateWith={resolveValidateWith(props.type, props.validateWith)}
+          validateWith={props.validateWith}
           validationTip={props.validationTip}
           required={props.required}
           onlyNumbers={props.type === 'number'}

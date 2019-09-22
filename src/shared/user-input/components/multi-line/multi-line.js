@@ -20,6 +20,11 @@ class MultiLine extends PureComponent {
     this.setState({ isValid: validateWith(value) });
   }
 
+  componentDidUpdate() {
+    const { validateWith, value } = this.props;
+    this.setState({ isValid: validateWith(value) });
+  }
+
   normalizeValue(value) {
     const { type } = this.props;
     let normalizedVal;
@@ -32,10 +37,10 @@ class MultiLine extends PureComponent {
   };
 
   handleOnChange(e) {
-    const { onChange, validateWith } = this.props;
+    const { onChange, validateWith, required } = this.props;
     const newValue = this.normalizeValue(e.target.value);
     onChange(newValue);
-    this.setState({ isValid: validateWith(newValue) });
+    this.setState({ isValid: validateWith(newValue) || (!required && newValue.length === 0) });
   }
 
   render() {
@@ -48,9 +53,12 @@ class MultiLine extends PureComponent {
             placeholder={placeholder}
             value={value}
             onChange={this.handleOnChange}
+            style={{
+              borderBottomColor: isValid ? 'black' : 'red',
+            }}
           />
         </div >
-        {type !== 'link' && (
+        {!['link', 'email'].includes(type) && (
           <div className={cx(styles.tip, { [styles.notValid]: !isValid })} >
             ({value.length}/{max})
           </div >

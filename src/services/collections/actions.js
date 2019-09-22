@@ -172,10 +172,26 @@ export const cleanStorage = id => (dispatch, getState, { getFirebase, getFiresto
   return promise;
 };
 
-export const create = (name, schema) => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const create = (name, schema, itemTitle, itemBody) => (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = Auth.selectors.uid(state);
+  if (!name) {
+    console.error('Missing "name" in prop 1');
+    return;
+  }
+  if (!schema) {
+    console.error('Missing "schema" in prop 2');
+    return;
+  }
+  if (!itemTitle) {
+    console.error('Missing "itemTitle" in prop 3');
+    return;
+  }
+  if (!itemBody) {
+    console.error('Missing "itemBody" in prop 4');
+    return;
+  }
   firestore.collection('collections').add({
     name,
     permissions: {
@@ -183,6 +199,11 @@ export const create = (name, schema) => (dispatch, getState, { getFirebase, getF
       write: uid,
     },
     schema: JSON5.stringify(schema),
+    order: '',
+    layout: {
+      title: itemTitle,
+      body: itemBody,
+    }
   }).then(resp => {
     const newId = resp.id;
     firestore.collection('users').doc(uid).set({

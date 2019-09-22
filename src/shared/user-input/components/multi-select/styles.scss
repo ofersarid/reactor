@@ -20,6 +20,7 @@
       .inner {
         display: flex;
         position: relative;
+        align-items: center;
       }
     }
 
@@ -47,4 +48,11 @@
   width: 15px;
   opacity: 0;
   color: $black;
+}
+
+.exclamationIcon {
+  height: 15px;
+  width: 15px;
+  opacity: 0;
+  color: $red;
 }
