@@ -81,7 +81,7 @@ const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatc
         uploadFiles(`${uid}/${resp.id}`, entity, firebase, dispatch).then(update => {
           const orderedList = collectionsService.selectors.item(state).order;
           firestore.collection('collections').doc(collectionId).set({
-            'order': `${orderedList} | ${resp.id}`,
+            'order': orderedList ? `${orderedList} | ${resp.id}` : resp.id,
           }, { merge: true }).then(resolve);
           getCollectionAssetRef(collectionId, resp.id, firestore).set(update, { merge: true });
         });

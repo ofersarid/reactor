@@ -184,14 +184,6 @@ export const create = (name, schema, itemTitle, itemBody) => (dispatch, getState
     console.error('Missing "schema" in prop 2');
     return;
   }
-  if (!itemTitle) {
-    console.error('Missing "itemTitle" in prop 3');
-    return;
-  }
-  if (!itemBody) {
-    console.error('Missing "itemBody" in prop 4');
-    return;
-  }
   firestore.collection('collections').add({
     name,
     permissions: {
