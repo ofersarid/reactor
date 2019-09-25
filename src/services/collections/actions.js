@@ -212,17 +212,17 @@ export const duplicate = (collectionId, name) => (dispatch, getState, { getFireb
   collectionRef.get().then(doc => {
     if (doc.exists) {
       const data = doc.data();
-      firestore.collection('collections').add(Object.assign({}, data, { name })).then(resp => {
+      firestore.collection('collections').add(Object.assign({}, data, { name, order: '' })).then(resp => {
         const newId = resp.id;
         firestore.collection('users').doc(uid).set({
           'collections': Auth.selectors.userCollectionIds(state).concat([newId]),
         }, { merge: true }).then(() => {
-          const dataCollectionRef = firestore.collection('collections').doc(collectionId).collection('data');
-          dataCollectionRef.get().then(snapshot => {
-            snapshot.docs.forEach(doc => {
-              firestore.collection('collections').doc(newId).collection('data').add(doc.data());
-            });
-          });
+          // const dataCollectionRef = firestore.collection('collections').doc(collectionId).collection('data');
+          // dataCollectionRef.get().then(snapshot => {
+          //   snapshot.docs.forEach(doc => {
+          //     firestore.collection('collections').doc(newId).collection('data').add(doc.data());
+          //   });
+          // });
         });
       });
     } else {

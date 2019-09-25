@@ -1,5 +1,6 @@
 @import '/src/shared/styles/classes';
 @import '/src/shared/styles/colors';
+@import '/src/shared/styles/media-query-mixins';
 
 .assetList {
   @extend %pageContainer;
@@ -47,7 +48,12 @@
 }
 
 .addBtn {
-  bottom: 6vw;
-  left: 6vw;
+  bottom: 15px;
+  left: 15px;
   position: fixed;
+
+  @include media('>phone') {
+    bottom: calc(50% - 354px);
+    left: calc(50% - 189px);
+  }
 }
