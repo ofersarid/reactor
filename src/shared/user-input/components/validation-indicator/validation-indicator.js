@@ -1,6 +1,4 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import Device from '/src/device';
 import autoBind from 'auto-bind';
 import { validationIndicator } from '../../types';
 import styles from './styles.scss';
@@ -94,11 +92,4 @@ ValidationIndicator.defaultProps = {
   rtl: false,
 };
 
-const mapStateToProps = state => ({
-  deviceType: Device.selectors.deviceType(state),
-  deviceOrientation: Device.selectors.deviceOrientation(state),
-});
-
-const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
-
-export default connect(mapStateToProps, mapDispatchToProps)(ValidationIndicator);
+export default ValidationIndicator;

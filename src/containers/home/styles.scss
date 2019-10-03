@@ -1,6 +1,4 @@
-@import '/src/shared/styles/classes';
-@import '/src/shared/styles/media-query-mixins';
-@import '/src/shared/styles/colors';
+@import '/src/shared/styles';
 
 .home {
   @extend %pageContainer;

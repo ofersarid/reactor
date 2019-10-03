@@ -1,8 +1,6 @@
-import { deviceTypes } from '/src/device/types';
 import PropTypes from 'prop-types';
 
 export const login = {
-  ...deviceTypes,
   logIn: PropTypes.func.isRequired,
   authError: PropTypes.shape({
     message: PropTypes.string.isRequired,
@@ -12,7 +10,6 @@ export const login = {
 };
 
 export const form = {
-  ...deviceTypes,
   password: PropTypes.string.isRequired,
 };
 

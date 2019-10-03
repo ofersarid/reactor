@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import Device from '/src/device';
+import services from '/src/services';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
+import PropTypes from 'prop-types';
 import { Tooltip as Tippy } from 'react-tippy';
 import styles from './styles.scss';
-import types from './types';
 
 class Tooltip extends PureComponent {
   constructor(props) {
@@ -39,7 +39,16 @@ class Tooltip extends PureComponent {
   }
 }
 
-Tooltip.propTypes = types;
+Tooltip.propTypes = {
+  children: PropTypes.any,
+  position: PropTypes.oneOf(['top', 'right', 'left', 'bottom']),
+  content: PropTypes.node,
+  className: PropTypes.string,
+  interactive: PropTypes.bool,
+  isMobile: PropTypes.bool,
+  animation: PropTypes.oneOf(['shift', 'fade', 'scale', 'perspective']),
+  store: PropTypes.any,
+};
 
 Tooltip.defaultProps = {
   position: 'top',
@@ -48,7 +57,7 @@ Tooltip.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  isMobile: Device.selectors.isMobile(state),
+  isMobile: services.device.selectors.type(state) === 'mobile',
 });
 
 export default connect(mapStateToProps, {})(Tooltip);

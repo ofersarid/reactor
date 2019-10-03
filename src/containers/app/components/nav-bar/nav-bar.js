@@ -8,7 +8,6 @@ import { hashHistory } from 'react-router';
 import { LogOutCircle } from 'styled-icons/boxicons-regular/LogOutCircle/LogOutCircle';
 import { ChevronLeft } from 'styled-icons/fa-solid/ChevronLeft/ChevronLeft';
 import { Button } from '/src/shared';
-import Routes from '/src/routes';
 import services from '/src/services';
 import Auth from '/src/shared/auth';
 import PropTypes from 'prop-types';
@@ -85,8 +84,8 @@ NavBar.propTypes = {
 
 const mapStateToProps = state => ({
   uid: Auth.selectors.uid(state),
-  pathname: Routes.selectors.pathname(state),
-  goBackPath: Routes.selectors.goBackPath(state),
+  pathname: services.router.selectors.pathname(state),
+  goBackPath: services.router.selectors.goBackPath(state),
   appTitle: services.app.selectors.headerTitle(state),
 });
 

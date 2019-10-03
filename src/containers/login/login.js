@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
-import Device from '/src/device';
+import services from '/src/services';
 import { UserInput, Button } from '/src/shared';
 import Auth from '/src/shared/auth';
 import { validateEmail } from '/src/utils';
@@ -88,7 +88,7 @@ class Login extends PureComponent {
 Login.propTypes = Auth.types.login;
 
 const mapStateToProps = state => ({
-  deviceType: Device.selectors.deviceType(state),
+  deviceType: services.device.selectors.type(state),
   authError: Auth.selectors.authError(state),
   working: Auth.selectors.working(state),
   uid: Auth.selectors.uid(state),

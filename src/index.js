@@ -6,8 +6,8 @@ import thunk from 'redux-thunk';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import { reduxFirestore, getFirestore } from 'redux-firestore';
 import { Router, hashHistory } from 'react-router';
-import rootReducer from './root-reducers';
-import Routes from '/src/routes';
+import rootReducer from './root-reducer';
+import Routes from './routes';
 import 'babel-polyfill';
 import Waves from 'node-waves';
 import firebase from 'firebase/app';
@@ -15,7 +15,6 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
 import 'firebase/database';
-import './fonts/fonts.scss';
 import styles from './styles.scss';
 
 firebase.initializeApp({
@@ -55,7 +54,7 @@ window.store = store;
 
 ReactDOM.render(
   <Provider store={store} >
-    <Router history={hashHistory} routes={Routes.routesMap} />
+    <Router history={hashHistory} routes={Routes} />
   </Provider >,
   $root
 );

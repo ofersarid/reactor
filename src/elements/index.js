@@ -1,7 +1,0 @@
-export { default as Range } from './range/range';
-export { default as CheckBox } from './check-box/check-box';
-export { default as Icons } from './icons/icons';
-export { default as Toaster } from './toaster/toaster';
-export { default as Popover } from './popover/popover';
-export { default as UnderConstruction } from './under-construction/under-construction';
-export { default as Dialog } from './dialog/dialog';

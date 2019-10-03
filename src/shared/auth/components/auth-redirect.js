@@ -3,7 +3,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Auth from '/src/shared/auth';
 import { hashHistory } from 'react-router';
-import Routes from '/src/routes';
+import services from '/src/services';
 
 class AuthRedirect extends PureComponent {
   constructor(props) {
@@ -39,7 +39,7 @@ AuthRedirect.propTypes = Auth.types.authRedirect;
 
 const mapStateToProps = state => ({
   uid: Auth.selectors.uid(state),
-  pathname: Routes.selectors.pathname(state),
+  pathname: services.router.selectors.pathname(state),
 });
 
 const mapDispatchToProps = dispatch => ({}); // eslint-disable-line

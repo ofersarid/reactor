@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect/lib/index';
-import Routes from '/src/routes';
+import router from '../redux-router';
 
 // export const map = (state, collection) => state.get('fireStore').data[collection] || {};
 
@@ -12,7 +12,7 @@ const list = createSelector(userPagesMap, (pages) => {
   }, []);
 });
 
-const item = createSelector(userPagesMap, Routes.selectors.pageId, (_userCollectionsMap, pageId) => {
+const item = createSelector(userPagesMap, router.selectors.pageId, (_userCollectionsMap, pageId) => {
   return _userCollectionsMap[pageId];
 });
 

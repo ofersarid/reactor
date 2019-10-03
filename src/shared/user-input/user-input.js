@@ -1,10 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import JSON5 from 'json5';
 import cx from 'classnames';
 import noop from 'lodash/noop';
 import { youtubeEmbedTransformer } from '/src/utils';
-import Device from '/src/device';
 import { Asterisk } from 'styled-icons/fa-solid/Asterisk/Asterisk';
 import styles from './styles.scss';
 import { userInput } from './types';
@@ -18,7 +16,6 @@ import Link from './components/link/link';
 import { Switch, SwitchItem } from '../switch';
 import MultiSelect from './components/multi-select/multi-select';
 import Tooltip from '../tooltip/tooltip';
-// import Select from './components/select/select';
 
 const onKeyPress = (e, onEnterKeyPress) => {
   if (e.key === 'Enter') {
@@ -147,19 +144,6 @@ const resolveComponentByType = (props) => {
           </Switch >
         );
       }
-    // case 'select':
-    //   return (
-    //     <Select
-    //       options={props.options.map(opt => ({
-    //         value: opt,
-    //         label: toCapitalizedWords(opt),
-    //       }))}
-    //       value={props.value}
-    //       onChange={props.onChange}
-    //       className={props.className}
-    //       placeholder={props.placeholder}
-    //     />
-    //   );
     case 'multi-select':
       return (
         <MultiSelect
@@ -202,12 +186,8 @@ const UserInput = props => (
   <div
     className={cx(
       styles.field,
-      // props.label && styles.withLabel,
-      // props.label && styles[`withLabel-${props.deviceType}`],
       props.className,
       props.disabled && styles.disabled,
-      // props.stretch && styles.stretch,
-      // (['multi-line', 'post', 'image', 'pdf'].includes(props.type)) && styles.areaField
     )}
     data-label={props.label}
   >
@@ -225,7 +205,7 @@ const UserInput = props => (
 
 UserInput.propTypes = userInput;
 
-resolveComponentByType.propTypes = userInput;
+resolveComponentByType.propTypes = UserInput.propTypes;
 
 UserInput.defaultProps = {
   type: 'single-line',
@@ -236,8 +216,4 @@ UserInput.defaultProps = {
   required: false,
 };
 
-const mapStateToProps = state => ({
-  deviceType: Device.selectors.deviceType(state),
-});
-
-export default connect(mapStateToProps, {})(UserInput);
+export default UserInput;

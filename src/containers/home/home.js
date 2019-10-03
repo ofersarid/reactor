@@ -9,7 +9,6 @@ import { Add } from 'styled-icons/material';
 import { Button, UserInput } from '/src/shared';
 import PropTypes from 'prop-types';
 import services from '/src/services';
-import Routes from '/src/routes';
 import styles from './styles.scss';
 import Auth from '../../shared/auth';
 
@@ -165,7 +164,7 @@ Home.propTypes = {
 
 const mapStateToProps = state => ({
   listName: services.home.selectors.listName(state),
-  prevPath: Routes.selectors.prevPath(state),
+  prevPath: services.router.selectors.prevPath(state),
   userCollectionIds: Auth.selectors.userCollectionIds(state),
   userPageIds: Auth.selectors.userPageIds(state),
   collections: services.collections.selectors.list(state),

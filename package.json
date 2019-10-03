@@ -6,7 +6,6 @@
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "cleave.js": "^1.4.6",
-    "current-device": "^0.7.8",
     "delay": "^4.3.0",
     "emailjs-com": "^2.3.2",
     "env": "^0.0.2",

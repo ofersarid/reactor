@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect/lib/index';
 import JSON5 from 'json5';
-import Routes from '/src/routes';
+import router from '/src/services/redux-router';
 import collectionsSelectors from '../collections/selectors';
 import pages from '../pages';
 
@@ -8,7 +8,7 @@ const item = createSelector(
   collectionsSelectors.item,
   collectionsSelectors.assets,
   pages.selectors.item,
-  Routes.selectors.assetId,
+  router.selectors.assetId,
   (collection, collectionAssets, page, _assetId) => {
     let asset;
     if (collectionAssets) {

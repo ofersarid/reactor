@@ -1,6 +1,5 @@
 import { fromJS } from 'immutable';
 import { ACTIONS } from './constants';
-// import Routes from '/src/routes';
 
 const initialState = fromJS({
   headerTitle: 'Reactor',

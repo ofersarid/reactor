@@ -1,8 +1,7 @@
 // import Activity from '/src/cms/activity';
 import Auth from '/src/shared/auth';
-import Routes from '/src/routes';
+import router from '../redux-router';
 import collectionsService from '../collections';
-// import blackList from '../blacklist';
 
 const getCollectionAssetRef = (collectionId, entityId, firestore) =>
   firestore.collection('collections').doc(collectionId).collection('data').doc(entityId);
@@ -97,8 +96,8 @@ const save = asset => {
     const firebase = getFirebase();
     const state = getState();
     const uid = Auth.selectors.uid(state);
-    const collectionId = Routes.selectors.collectionId(state);
-    const assetId = asset.id || Routes.selectors.pageId(state);
+    const collectionId = router.selectors.collectionId(state);
+    const assetId = asset.id || router.selectors.pageId(state);
     delete asset.id;
     return update(uid, asset, assetId, collectionId, firestore, firebase, dispatch, state);
   };
@@ -107,7 +106,7 @@ const save = asset => {
 const _delete = asset => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const state = getState();
-    const collectionId = Routes.selectors.collectionId(state);
+    const collectionId = router.selectors.collectionId(state);
     const firestore = getFirestore();
     const firebase = getFirebase();
     const filePaths = [];
@@ -133,55 +132,6 @@ const _delete = asset => {
     return promise;
   };
 };
-
-/**
-*  OLD IMPLEMENTATION FOR BULK DELETE
-***/
-// const deleteAsset = (collectionId, markedForDelete) => {
-//   return (dispatch, getState, { getFirebase, getFirestore }) => {
-//     const firestore = getFirestore();
-//     const firebase = getFirebase();
-//     const batch = firestore.batch();
-//     const filePaths = [];
-//     const _blackList = [];
-//     markedForDelete.forEach(item => {
-//       const entityRef = getCollectionAssetRef(collectionId, item.id, firestore);
-//       _blackList.push(item.id);
-//       Object.keys(item).forEach(key => {
-//         if (key.match(/^ref--/)) {
-//           filePaths.push(item[key]);
-//         }
-//       });
-//       batch.delete(entityRef);
-//     });
-//     return batch.commit().then(() => {
-//       dispatch(blackList.actions.storeBlackList(blackList));
-//       filePaths.forEach(path => {
-//         deleteFile(path, firebase);
-//       });
-//     });
-//   };
-// };
-
-//
-// export const createCollection = (name, { type }) => (dispatch, getState, { getFirebase, getFirestore }) => {
-//   const firestore = getFirestore();
-//   const state = getState();
-//   const uid = Auth.selectors.uid(state);
-//   firestore.collection('collections').add({
-//     name,
-//     owner: uid,
-//     canRead: 'all',
-//     canWrite: 'owner',
-//     fields: [],
-//     type,
-//   }).then(resp => {
-//     const newId = resp.id;
-//     firestore.collection('users').doc(uid).set({
-//       'collections': Auth.selectors.userCollectionIds(state).concat([newId]),
-//     }, { merge: true });
-//   });
-// };
 
 export default {
   save,

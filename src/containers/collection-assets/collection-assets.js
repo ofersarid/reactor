@@ -6,7 +6,6 @@ import { firestoreConnect } from 'react-redux-firebase';
 import moment from 'moment/moment';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import Routes from '/src/routes';
 import services from '/src/services';
 import { Button } from '/src/shared';
 import { Add } from 'styled-icons/material/Add/Add';
@@ -103,13 +102,13 @@ Collection.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  collectionId: Routes.selectors.collectionId(state),
+  collectionId: services.router.selectors.collectionId(state),
   collectionAssets: services.collections.selectors.assets(state),
   collectionMeta: services.collections.selectors.item(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  setGoBackPath: path => dispatch(Routes.actions.setGoBackPath(path)),
+  setGoBackPath: path => dispatch(services.router.actions.setGoBackPath(path)),
   updateAppTitle: newTitle => dispatch(services.app.actions.updateAppTitle(newTitle))
 });
 

@@ -6,7 +6,6 @@ import autoBind from 'auto-bind';
 import cx from 'classnames';
 import _isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
-import Routes from '/src/routes';
 import { firestoreConnect } from 'react-redux-firebase';
 import utils from '/src/utils';
 import services from '/src/services';
@@ -248,11 +247,11 @@ Editor.propTypes = {
 const mapStateToProps = state => ({ // eslint-disable-line
   fields: services.asset.selectors.fields(state),
   asset: services.asset.selectors.item(state),
-  collectionId: Routes.selectors.collectionId(state),
-  pageId: Routes.selectors.pageId(state),
-  assetId: Routes.selectors.assetId(state),
-  goBackPath: Routes.selectors.goBackPath(state),
-  pathname: Routes.selectors.pathname(state),
+  collectionId: services.router.selectors.collectionId(state),
+  pageId: services.router.selectors.pageId(state),
+  assetId: services.router.selectors.assetId(state),
+  goBackPath: services.router.selectors.goBackPath(state),
+  pathname: services.router.selectors.pathname(state),
   pageMeta: services.pages.selectors.item(state),
   collectionMeta: services.collections.selectors.item(state),
 });
@@ -260,7 +259,7 @@ const mapStateToProps = state => ({ // eslint-disable-line
 const mapDispatchToProps = dispatch => ({
   save: asset => dispatch(services.asset.actions.save(asset)),
   deleteAsset: asset => dispatch(services.asset.actions.delete(asset)),
-  setGoBackPath: path => dispatch(Routes.actions.setGoBackPath(path)),
+  setGoBackPath: path => dispatch(services.router.actions.setGoBackPath(path)),
   updateAppTitle: newTitle => dispatch(services.app.actions.updateAppTitle(newTitle)),
 });
 

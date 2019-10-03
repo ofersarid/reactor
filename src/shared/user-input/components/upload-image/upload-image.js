@@ -9,7 +9,7 @@ import styles from './styles.scss';
 import { Button } from '/src/shared';
 // import { Image as ImageIcon } from 'styled-icons/material/Image';
 // import { Rotate90DegreesCcw } from 'styled-icons/material/Rotate90DegreesCcw';
-import Puff from '/src/svg-loaders/puff.svg';
+import Puff from '/src/assets/svg-loaders/puff.svg';
 import noop from 'lodash/noop';
 
 const MAX_DIMENSION = 1200;

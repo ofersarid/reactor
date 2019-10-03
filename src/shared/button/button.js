@@ -2,10 +2,9 @@ import React, { Fragment, PureComponent } from 'react';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
 import { hashHistory } from 'react-router';
+import PropTypes from 'prop-types';
 import { Tooltip } from '/src/shared';
 import styles from './styles.scss';
-import PropTypes from 'prop-types';
-import { tipAnimations } from '../tooltip/types';
 
 class Button extends PureComponent {
   constructor(props) {
@@ -102,7 +101,7 @@ Button.propTypes = {
   linkTo: PropTypes.string,
   disable: PropTypes.bool,
   tip: PropTypes.node,
-  tipAnimation: PropTypes.oneOf(tipAnimations),
+  tipAnimation: PropTypes.oneOf(['shift', 'fade', 'scale', 'perspective']),
   getRef: PropTypes.object,
   style: PropTypes.object,
   domProps: PropTypes.object,

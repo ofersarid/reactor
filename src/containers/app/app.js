@@ -1,17 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Device from '/src/device';
+import device from '/src/services/device';
+import reduxRouter from '/src/services/redux-router';
 import PropTypes from 'prop-types';
-import Routes from '/src/routes';
-// import { firestoreConnect } from 'react-redux-firebase';
 import { Transition, animated } from 'react-spring/renderprops';
-// import { mainContainer } from '../../types';
-// import Routes from '/src/routes';
 import { withRouter } from 'react-router';
 import Auth from '/src/shared/auth';
+import services from '/src/services';
 import { Home, LoginPage, Editor, CollectionAssets } from '/src/containers';
-// import { ToastContainer } from 'react-toastify';
 import AuthRedirect from '/src/shared/auth/components/auth-redirect';
 import styles from './styles.scss';
 import 'react-quill/dist/quill.snow.css';
@@ -39,7 +36,7 @@ const resolvePageIndex = pathname => {
       return 3;
     default:
       return 0;
-  };
+  }
 };
 
 const APP = ({ pathname, isLoaded, prevPath }) => {
@@ -49,10 +46,7 @@ const APP = ({ pathname, isLoaded, prevPath }) => {
 
   return isLoaded ? (
     <AuthRedirect >
-      <Device />
       <div className={styles.main} >
-        {/* <SideNav /> */}
-        {/* <div className={styles.stage} > */}
         <NavBar />
         <Transition
           native
@@ -64,62 +58,28 @@ const APP = ({ pathname, isLoaded, prevPath }) => {
           leave={{ marginLeft: `${direction === 'right' ? '-50%' : '50%'}`, opacity: 0 }} >
           {index => pages[index]}
         </Transition >
-        {/* </div > */}
-        {/* <ToastContainer /> */}
       </div >
     </AuthRedirect >
   ) : null;
 };
 
 APP.propTypes = {
-  // children: PropTypes.any,
   isLoaded: PropTypes.bool.isRequired,
-  // userCollectionIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   userPageIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pathname: PropTypes.string.isRequired,
   prevPath: PropTypes.string.isRequired,
-  // uid: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
-  // deviceType: Device.selectors.deviceType(state),
-  // deviceOrientation: Device.selectors.deviceOrientation(state),
   isLoaded: Auth.selectors.isLoaded(state),
-  // uid: Auth.selectors.uid(state),
-  // userCollectionIds: Auth.selectors.userCollectionIds(state),
   userPageIds: Auth.selectors.userPageIds(state),
-  pathname: Routes.selectors.pathname(state),
-  prevPath: Routes.selectors.prevPath(state),
+  pathname: services.router.selectors.pathname(state),
+  prevPath: services.router.selectors.prevPath(state),
 });
 
 export default compose(
   connect(mapStateToProps, {}),
   withRouter,
-  // firestoreConnect(props => {
-  //   let aggregated = [];
-  //   aggregated = aggregated.concat(props.userCollectionIds.reduce((accumulator, id) => {
-  //     accumulator.push({
-  //       collection: 'collections',
-  //       doc: id,
-  //     });
-  //     accumulator.push({
-  //       collection: 'collections',
-  //       doc: id,
-  //       subcollections: [{
-  //         collection: 'data',
-  //         // where: [['active', '==', true]],
-  //         // orderBy: ['displayOrder', 'desc'],
-  //       }],
-  //     });
-  //     return accumulator;
-  //   }, []));
-  //   aggregated = aggregated.concat(props.userPageIds.reduce((accumulator, id) => {
-  //     accumulator.push({
-  //       collection: 'pages',
-  //       doc: id,
-  //     });
-  //     return accumulator;
-  //   }, []));
-  //   return aggregated;
-  // }),
+  device.HOC,
+  reduxRouter.HOC,
 )(APP);

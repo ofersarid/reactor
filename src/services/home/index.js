@@ -1,5 +1,5 @@
 export default {
   actions: require('./actions').default,
-  reducers: require('./reducers').default,
+  reducer: require('./reducers').default,
   selectors: require('./selectors').default,
 };
