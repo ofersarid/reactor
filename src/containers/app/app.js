@@ -3,19 +3,15 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import device from '/src/services/device';
 import reduxRouter from '/src/services/redux-router';
+import auth from '/src/services/auth';
 import PropTypes from 'prop-types';
 import { Transition, animated } from 'react-spring/renderprops';
 import { withRouter } from 'react-router';
-import Auth from '/src/shared/auth';
 import services from '/src/services';
 import { Home, LoginPage, Editor, CollectionAssets } from '/src/containers';
-import AuthRedirect from '/src/shared/auth/components/auth-redirect';
-import styles from './styles.scss';
-import 'react-quill/dist/quill.snow.css';
-import 'react-image-crop/lib/ReactCrop.scss';
-import 'react-tippy/dist/tippy.css';
 import cx from 'classnames';
-import NavBar from './components/nav-bar/nav-bar';
+import styles from './styles.scss';
+import NavBar from './nav-bar';
 
 const pages = [
   springs => <animated.div className={cx(styles.pageContainer)} style={springs} ><LoginPage /></animated.div>,
@@ -26,8 +22,6 @@ const pages = [
 
 const resolvePageIndex = pathname => {
   switch (true) {
-    case pathname === '/cms/login':
-      return 0;
     case pathname === '/cms/home':
       return 1;
     case Boolean(pathname.match('/cms/collection')) && !pathname.match('editor'):
@@ -45,21 +39,19 @@ const APP = ({ pathname, isLoaded, prevPath }) => {
   const direction = pageIndex > pageIndexPrev ? 'right' : 'left';
 
   return isLoaded ? (
-    <AuthRedirect >
-      <div className={styles.main} >
-        <NavBar />
-        <Transition
-          native
-          reset
-          unique
-          items={pageIndex}
-          from={{ marginLeft: `${direction === 'right' ? '100%' : '-100%'}`, opacity: 0 }}
-          enter={{ marginLeft: '0', opacity: 1 }}
-          leave={{ marginLeft: `${direction === 'right' ? '-50%' : '50%'}`, opacity: 0 }} >
-          {index => pages[index]}
-        </Transition >
-      </div >
-    </AuthRedirect >
+    <div className={styles.main} >
+      <NavBar />
+      <Transition
+        native
+        reset
+        unique
+        items={pageIndex}
+        from={{ marginLeft: `${direction === 'right' ? '100%' : '-100%'}`, opacity: 0 }}
+        enter={{ marginLeft: '0', opacity: 1 }}
+        leave={{ marginLeft: `${direction === 'right' ? '-50%' : '50%'}`, opacity: 0 }} >
+        {index => pages[index]}
+      </Transition >
+    </div >
   ) : null;
 };
 
@@ -71,8 +63,8 @@ APP.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isLoaded: Auth.selectors.isLoaded(state),
-  userPageIds: Auth.selectors.userPageIds(state),
+  isLoaded: services.auth.selectors.isLoaded(state),
+  userPageIds: services.auth.selectors.userPageIds(state),
   pathname: services.router.selectors.pathname(state),
   prevPath: services.router.selectors.prevPath(state),
 });
@@ -82,4 +74,5 @@ export default compose(
   withRouter,
   device.HOC,
   reduxRouter.HOC,
+  auth.HOC,
 )(APP);

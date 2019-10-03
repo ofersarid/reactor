@@ -4,10 +4,9 @@ import cx from 'classnames';
 import autoBind from 'auto-bind';
 import services from '/src/services';
 import { UserInput, Button } from '/src/shared';
-import Auth from '/src/shared/auth';
 import { validateEmail } from '/src/utils';
-// import { SplashScreen } from '/src/cms/components';
 import styles from './styles.scss';
+import PropTypes from 'prop-types';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -85,17 +84,25 @@ class Login extends PureComponent {
   }
 }
 
-Login.propTypes = Auth.types.login;
+Login.propTypes = {
+  deviceType: PropTypes.oneOf(['tablet', 'desktop', 'mobile']),
+  logIn: PropTypes.func.isRequired,
+  authError: PropTypes.shape({
+    message: PropTypes.string.isRequired,
+  }),
+  working: PropTypes.bool.isRequired,
+  uid: PropTypes.string,
+};
 
 const mapStateToProps = state => ({
   deviceType: services.device.selectors.type(state),
-  authError: Auth.selectors.authError(state),
-  working: Auth.selectors.working(state),
-  uid: Auth.selectors.uid(state),
+  authError: services.auth.selectors.authError(state),
+  working: services.auth.selectors.working(state),
+  uid: services.auth.selectors.uid(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-  logIn: (...props) => dispatch(Auth.actions.logIn(...props)),
+  logIn: (...props) => dispatch(services.auth.actions.logIn(...props)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

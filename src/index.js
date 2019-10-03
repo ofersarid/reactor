@@ -15,6 +15,9 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
 import 'firebase/database';
+import 'react-quill/dist/quill.snow.css';
+import 'react-image-crop/lib/ReactCrop.scss';
+import 'react-tippy/dist/tippy.css';
 import styles from './styles.scss';
 
 firebase.initializeApp({

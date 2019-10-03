@@ -1,5 +1,5 @@
 // import Activity from '/src/cms/activity';
-import Auth from '/src/shared/auth';
+import auth from '../auth';
 import router from '../redux-router';
 import collectionsService from '../collections';
 
@@ -95,7 +95,7 @@ const save = asset => {
     const firestore = getFirestore();
     const firebase = getFirebase();
     const state = getState();
-    const uid = Auth.selectors.uid(state);
+    const uid = auth.selectors.uid(state);
     const collectionId = router.selectors.collectionId(state);
     const assetId = asset.id || router.selectors.pageId(state);
     delete asset.id;

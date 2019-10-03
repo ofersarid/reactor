@@ -2,7 +2,6 @@ import { fromJS } from 'immutable';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import isEqual from 'lodash/isEqual';
 
 const reducer = (state = fromJS({
   hash: '',
@@ -58,16 +57,17 @@ const HOC = (WrappedComponent) => {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-      if (!isEqual(nextProps.location.pathname, prevState.pathname)) {
+      if (nextProps.location.pathname !== prevState.pathname) {
         nextProps.update(Object.assign({}, {
           params: nextProps.params,
           prevPath: prevState.pathname,
         }, nextProps.location));
+        return {
+          pathname: nextProps.location.pathname,
+          prevPath: prevState.pathname,
+        };
       }
-      return {
-        pathname: nextProps.location.pathname,
-        prevPath: prevState.pathname,
-      };
+      return null;
     }
 
     render() {

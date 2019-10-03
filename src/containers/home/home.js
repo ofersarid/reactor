@@ -10,7 +10,6 @@ import { Button, UserInput } from '/src/shared';
 import PropTypes from 'prop-types';
 import services from '/src/services';
 import styles from './styles.scss';
-import Auth from '../../shared/auth';
 
 class Home extends React.PureComponent {
   constructor(props) {
@@ -165,8 +164,8 @@ Home.propTypes = {
 const mapStateToProps = state => ({
   listName: services.home.selectors.listName(state),
   prevPath: services.router.selectors.prevPath(state),
-  userCollectionIds: Auth.selectors.userCollectionIds(state),
-  userPageIds: Auth.selectors.userPageIds(state),
+  userCollectionIds: services.auth.selectors.userCollectionIds(state),
+  userPageIds: services.auth.selectors.userPageIds(state),
   collections: services.collections.selectors.list(state),
   pages: services.pages.selectors.list(state),
   devMode: services.app.selectors.devMode(state),
