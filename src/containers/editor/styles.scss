@@ -4,19 +4,7 @@
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  /* this block of code is a temporary hack*/
-  //[data-label="Screen title"] {
-  //  padding-top: 30px;
-  //  &:before {
-  //    content: '';
-  //    position: absolute;
-  //    width: calc(100% + 80px);
-  //    height: 10px;
-  //    left: -40px;
-  //    top: -20px;
-  //    background: #f1f1f1;
-  //  }
-  //}
+  transition: .5s;
 }
 
 .divider {
@@ -40,9 +28,41 @@
 .footerBtn {
   margin: 0 0 20px 0;
   flex-shrink: 0;
+
+  &:last-of-type {
+    margin: 0;
+  }
 }
 
 .switch {
-  margin-bottom: 20px;
+  margin-bottom: 155px;
+}
+
+.editorFooter {
+  position: absolute;
+  width: 100%;
+  padding: 0 20px 40px;
+  box-sizing: border-box;
+  bottom: 0;
+  z-index: 1;
+  backdrop-filter: blur(2px);
+  background: rgba(255, 255, 255, 0.75);
+  left: 0;
+
+  .footerToggleBtn {
+    width: calc(100% + 40px);
+    left: -20px;
+    border-radius: 0;
+    border-left: transparent;
+    border-right: transparent;
+    border-bottom: transparent;
+    top: 0;
+    background: transparent;
+    margin-bottom: 20px;
+  }
+
+  .flip {
+    transform: scaleY(-1);
+  }
 }
 

@@ -71,7 +71,9 @@ class SingleLine extends PureComponent {
 
   onBlur() {
     const { onBlur } = this.props;
-    onBlur();
+    if (onBlur) {
+      onBlur();
+    }
     this.setState({ hasBlured: true });
   }
 
@@ -105,6 +107,7 @@ SingleLine.defaultProps = {
   onValidation: noop,
   onEnterKeyPress: noop,
   mask: false,
+  onBlur: noop,
 };
 
 export default SingleLine;

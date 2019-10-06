@@ -12,10 +12,10 @@
 
 .pageContainer {
   height: calc(100% - #{$nav-bar-height});
+  width: 100%;
   top: $nav-bar-height;
-  left: 20px;
-  padding: 20px 0;
-  width: calc(100% - 40px);
+  left: 0;
+  padding: 20px;
   box-sizing: border-box;
   flex-shrink: 1;
   position: absolute;

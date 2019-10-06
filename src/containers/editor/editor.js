@@ -9,10 +9,10 @@ import PropTypes from 'prop-types';
 import { firestoreConnect } from 'react-redux-firebase';
 import utils from '/src/utils';
 import services from '/src/services';
-import { Button, UserInput } from '/src/shared';
+import { UserInput } from '/src/shared';
 import { inputTypes } from '/src/shared/user-input/types';
+import EditorFooter from './editor-footer';
 import styles from './styles.scss';
-import { hashHistory } from 'react-router';
 
 class Editor extends PureComponent {
   constructor(props) {
@@ -24,20 +24,12 @@ class Editor extends PureComponent {
       deleting: false,
       isWorking: false,
     };
-    // if (props.collectionId) {
-    //   props.setGoBackPath(`/cms/collection/${props.collectionId}`);
-    // } else {
-    //   props.setGoBackPath(`/cms/home`);
-    // }
     if (props.pageMeta) {
       props.updateAppTitle(props.pageMeta.name);
     }
     if (props.collectionMeta) {
       props.updateAppTitle(props.collectionMeta.name);
     }
-    // if (!props.collectionMeta && !props.pageMeta) {
-    //   this.goBack();
-    // }
   }
 
   componentDidMount() {
@@ -125,31 +117,8 @@ class Editor extends PureComponent {
     this.setState({ asset: Object.assign({}, this.state.asset, change) });
   }
 
-  goBack() {
-    const { goBackPath } = this.props;
-    if (goBackPath) {
-      hashHistory.push(goBackPath);
-    } else {
-      hashHistory.push('cms/home');
-    }
-  }
-
-  handleClickOnDone() {
-    const { save } = this.props;
-    const { asset } = this.state;
-    this.setState({ isWorking: true });
-    save(asset).then(this.goBack);
-  }
-
-  handleClickOnDelete() {
-    const { deleteAsset } = this.props;
-    const { asset } = this.state;
-    this.setState({ deleting: true });
-    deleteAsset(asset).then(this.goBack);
-  }
-
   render() {
-    const { fields, collectionId } = this.props;
+    const { fields } = this.props;
     const { isValid, asset } = this.state;
     const groups = [];
     return (Boolean(asset) && Boolean(fields)) ? (
@@ -158,7 +127,7 @@ class Editor extends PureComponent {
           const value = this.state.asset[field.key];
           const dom = <Fragment key={field.key} >
             {groups.slice(-1)[0] !== field.group ? <div className={styles.divider} >{field.group}</div > : null}
-            <div className={styles.inputWrapper} >
+            <div className={cx(styles.inputWrapper)} >
               <UserInput
                 key={field.key}
                 _key={field.key}
@@ -194,22 +163,7 @@ class Editor extends PureComponent {
             className={styles.switch}
           />
         )}
-        <Button
-          className={styles.footerBtn}
-          disable={!isValid}
-          onClick={this.handleClickOnDone}
-        >
-          Done
-        </Button >
-        {collectionId && asset.id && (
-          <Button
-            className={styles.footerBtn}
-            type="red"
-            onClick={this.handleClickOnDelete}
-          >
-            Delete
-          </Button >
-        )}
+        <EditorFooter isValid={isValid} asset={asset} />
       </div >
     ) : null;
   }
@@ -229,11 +183,9 @@ Editor.propTypes = {
   asset: PropTypes.object,
   collectionId: PropTypes.string,
   pageId: PropTypes.string,
-  save: PropTypes.func.isRequired,
   goBackPath: PropTypes.string.isRequired,
   pathname: PropTypes.string.isRequired,
   setGoBackPath: PropTypes.func.isRequired,
-  deleteAsset: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
   assetId: PropTypes.string,
   pageMeta: PropTypes.shape({
@@ -257,8 +209,6 @@ const mapStateToProps = state => ({ // eslint-disable-line
 });
 
 const mapDispatchToProps = dispatch => ({
-  save: asset => dispatch(services.asset.actions.save(asset)),
-  deleteAsset: asset => dispatch(services.asset.actions.delete(asset)),
   setGoBackPath: path => dispatch(services.router.actions.setGoBackPath(path)),
   updateAppTitle: newTitle => dispatch(services.app.actions.updateAppTitle(newTitle)),
 });

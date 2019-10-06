@@ -77,35 +77,41 @@ const selectors = {
 
 const HOC = (WrappedComponent) => {
   class Wrapper extends Component {
-    constructor(props) {
-      super(props);
+    // constructor(props) {
+    //   super(props);
+    // }
+
+    componentDidMount() {
       this.redirect();
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-      return nextProps.pathname !== this.props.prevPath;
+      return (nextProps.pathname !== this.props.prevPath) ||
+      (!this.props.isLoaded && nextProps.isLoaded);
     }
 
     componentDidUpdate(prevProps) {
-      const { uid } = this.props;
-      if (uid !== prevProps.uid) {
+      const { isLoaded, uid, pathname } = this.props;
+      if ((isLoaded && !prevProps.isLoaded) || (pathname !== prevProps.pathname) || (uid !== prevProps.uid)) {
         this.redirect();
       }
     }
 
     redirect() {
-      const { uid, pathname } = this.props;
+      const { uid, isLoaded, isLoginPage } = this.props;
+      if (!isLoaded) return;
       if (!uid) {
-        if (pathname !== '/cms/login') {
+        if (!isLoginPage) {
           hashHistory.push('cms/login');
         }
-      } else if (pathname.match(/^\/cms\/login/)) {
+      } else if (isLoginPage) {
         hashHistory.push('/cms/home');
       }
     }
 
     render() {
-      return <WrappedComponent {...this.props} />;
+      const { isLoaded } = this.props;
+      return isLoaded ? <WrappedComponent {...this.props} /> : null;
     }
   }
 
@@ -114,12 +120,16 @@ const HOC = (WrappedComponent) => {
     uid: PropTypes.string,
     pathname: PropTypes.string.isRequired,
     prevPath: PropTypes.string.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
+    isLoginPage: PropTypes.bool.isRequired,
   };
 
   const mapStateToProps = state => ({
     uid: selectors.uid(state),
+    isLoaded: selectors.isLoaded(state),
     pathname: router.selectors.pathname(state),
     prevPath: router.selectors.prevPath(state),
+    isLoginPage: Boolean(router.selectors.pathname(state).match(/^\/cms\/login/)),
   });
 
   const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
