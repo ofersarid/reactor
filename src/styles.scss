@@ -52,7 +52,7 @@ ul {
   overflow: hidden;
 
   @include media('>phone') {
-    border-radius: 15px;
+    //border-radius: 15px;
     height: 736px;
     width: 414px;
   }

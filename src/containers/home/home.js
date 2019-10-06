@@ -114,9 +114,10 @@ class Home extends React.PureComponent {
         >
           {springs => <div className={cx(styles.inputContainer)} style={springs} >
             <UserInput
-              placeholder="Type..."
+              placeholder={listName === 'collections' ? 'Collection Name' : 'Page Name'}
               onChange={this.handleInputChange}
               value={inputValue}
+              focus={showInputField}
               // className={cx(styles.input, styles[`input-${deviceType}`])}
               // onEnterKeyPress={this.logIn}
             />

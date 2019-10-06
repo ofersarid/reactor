@@ -172,7 +172,7 @@ const resolveComponentByType = (props) => {
           onlyNumbers={props.type === 'number'}
           rtl={props.rtl}
           onBlur={props.onBlur}
-          autoFocus={props.autoFocus}
+          focus={props.focus}
         />
       );
   }

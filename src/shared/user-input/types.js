@@ -29,7 +29,7 @@ export const userInput = {
   rtl: PropTypes.bool,
   required: PropTypes.bool,
   validationTip: PropTypes.string,
-  autoFocus: PropTypes.bool,
+  focus: PropTypes.bool,
   preserveLineBreaks: PropTypes.bool,
   _key: PropTypes.string,
 };

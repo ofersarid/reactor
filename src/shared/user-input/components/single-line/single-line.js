@@ -18,13 +18,22 @@ class SingleLine extends PureComponent {
     autoBind(this);
     this.state = {
       showValidation: false,
+      wasBlured: false,
     };
     this.$input = React.createRef();
   }
 
   componentDidMount() {
-    const { autoFocus } = this.props;
-    if (autoFocus) {
+    const { focus } = this.props;
+    if (focus) {
+      this.$input.current.focus();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { focus } = this.props;
+    const { wasBlured } = this.state;
+    if (focus && !prevProps.focus && !wasBlured) {
       this.$input.current.focus();
     }
   }
@@ -60,20 +69,20 @@ class SingleLine extends PureComponent {
     this.setState({ showValidation: false });
   }
 
+  onBlur() {
+    const { onBlur } = this.props;
+    onBlur();
+    this.setState({ hasBlured: true });
+  }
+
   render() {
-    // const {
-    //   placeholder, onEnterKeyPress, value, max, min, onValidation, mask,
-    //   validateWith, onlyNumbers, optional, rtl, validationTip, onBlur,
-    // } = this.props;
-    const { placeholder, onEnterKeyPress, value, mask, onBlur } = this.props;
-    // const { showValidation } = this.state;
+    const { placeholder, onEnterKeyPress, value, mask } = this.props;
     return (
       <div className={cx('single-line', styles.singleLine)} >
         <input
           type={mask ? 'password' : 'text'}
           className={cx(
             styles.textInput,
-            // showValidation && (rtl ? styles.removeLeftBorder : styles.removeRightBorder),
           )}
           placeholder={placeholder}
           onChange={this.handleOnChange}
@@ -82,22 +91,9 @@ class SingleLine extends PureComponent {
             onKeyPress(e, onEnterKeyPress);
           }}
           value={value}
-          onBlur={onBlur}
+          onBlur={this.onBlur}
           ref={this.$input}
         />
-        {/* {!optional && ( */}
-        {/*  <ValidationIndicator */}
-        {/*    show={showValidation} */}
-        {/*    min={min || 1} */}
-        {/*    max={max} */}
-        {/*    onValidation={onValidation} */}
-        {/*    value={value} */}
-        {/*    validateWith={validateWith} */}
-        {/*    numeric={onlyNumbers} */}
-        {/*    rtl={rtl} */}
-        {/*    validationTip={validationTip} */}
-        {/*  /> */}
-        {/* )} */}
       </div >
     );
   }
