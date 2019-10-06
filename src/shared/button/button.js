@@ -12,6 +12,7 @@ class Button extends PureComponent {
     autoBind(this);
     this.state = {
       working: false,
+      disableClick: false,
     };
     this.willUmnount = false;
   }
@@ -22,6 +23,11 @@ class Button extends PureComponent {
 
   handleClick(e) {
     const { onClick, linkTo } = this.props;
+    const { disableClick } = this.state;
+    if (disableClick) {
+      this.setState({ disableClick: false });
+      return;
+    }
     e.stopPropagation();
     if (onClick) {
       const promise = onClick(e);
@@ -37,6 +43,10 @@ class Button extends PureComponent {
     if (linkTo) {
       hashHistory.push(linkTo);
     }
+  }
+
+  disableClick() {
+    this.setState({ disableClick: true });
   }
 
   resolveWaveColor() {
@@ -75,6 +85,8 @@ class Button extends PureComponent {
         }, style)}
         ref={getRef}
         onClick={this.handleClick}
+        onTouchEnd={this.handleClick}
+        onTouchMove={this.disableClick}
         {...domProps}
       >
         <Tooltip content={tip} animation={tipAnimation} >
