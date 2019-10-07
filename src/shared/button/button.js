@@ -1,6 +1,7 @@
 import React, { Fragment, PureComponent } from 'react';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
+import debounce from 'lodash/debounce';
 import { hashHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { Tooltip } from '/src/shared';
@@ -15,6 +16,7 @@ class Button extends PureComponent {
       disableClick: false,
     };
     this.willUmnount = false;
+    this.onClickDebounced = debounce(this.handleClick, 100, { leading: true, trailing: false });
   }
 
   componentWillUnmount() {
@@ -23,11 +25,6 @@ class Button extends PureComponent {
 
   handleClick(e) {
     const { onClick, linkTo } = this.props;
-    const { disableClick } = this.state;
-    if (disableClick) {
-      this.setState({ disableClick: false });
-      return;
-    }
     e.stopPropagation();
     if (onClick) {
       const promise = onClick(e);
@@ -42,6 +39,15 @@ class Button extends PureComponent {
     }
     if (linkTo) {
       hashHistory.push(linkTo);
+    }
+  }
+
+  onTouchEnd(e) {
+    const { disableClick } = this.state;
+    if (disableClick) {
+      this.setState({ disableClick: false });
+    } else {
+      this.onClickDebounced(e);
     }
   }
 
@@ -84,8 +90,8 @@ class Button extends PureComponent {
           justifyContent,
         }, style)}
         ref={getRef}
-        onClick={this.handleClick}
-        onTouchEnd={this.handleClick}
+        onClick={this.onClickDebounced}
+        onTouchEnd={this.onTouchEnd}
         onTouchMove={this.disableClick}
         {...domProps}
       >

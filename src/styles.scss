@@ -80,7 +80,8 @@ $placeholderColor: #9f9b9b;
 
 /* width */
 ::-webkit-scrollbar {
-  width: 13px;
+  //width: 13px;
+  width: 0;
 }
 
 /* Track */
@@ -90,5 +91,5 @@ $placeholderColor: #9f9b9b;
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  border-right: 1px solid $gray;
+  //border-right: 1px solid $gray;
 }

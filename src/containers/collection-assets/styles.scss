@@ -1,10 +1,5 @@
 @import '/src/shared/styles';
 
-.assetList {
-  @extend %pageContainer;
-  padding: 0;
-}
-
 .itemWrapper {
   height: auto !important;
   text-align: left !important;

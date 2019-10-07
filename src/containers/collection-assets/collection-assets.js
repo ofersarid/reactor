@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import LinesEllipsisLoose from 'react-lines-ellipsis/lib/loose';
@@ -55,7 +55,7 @@ class Collection extends PureComponent {
   render() {
     const { collectionAssets, collectionMeta, collectionId } = this.props;
     return (
-      <div className={styles.assetList} >
+      <Fragment >
         {collectionAssets && collectionAssets.map(item => (
           <Button
             key={item.id}
@@ -82,7 +82,7 @@ class Collection extends PureComponent {
         >
           <Add />
         </Button >
-      </div >
+      </Fragment >
     );
   }
 }

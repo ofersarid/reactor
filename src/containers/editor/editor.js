@@ -122,7 +122,7 @@ class Editor extends PureComponent {
     const { isValid, asset } = this.state;
     const groups = [];
     return (Boolean(asset) && Boolean(fields)) ? (
-      <div className={cx(styles.assetEditor)} >
+      <Fragment >
         {fields.map(field => {
           const value = this.state.asset[field.key];
           const dom = <Fragment key={field.key} >
@@ -164,7 +164,7 @@ class Editor extends PureComponent {
           />
         )}
         <EditorFooter isValid={isValid} asset={asset} />
-      </div >
+      </Fragment >
     ) : null;
   }
 }
