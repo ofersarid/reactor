@@ -50,13 +50,13 @@ ul {
   height: 100%;
   box-shadow: 0 10px 15px rgba(0,0,0,0.1);
   overflow: hidden;
-  position: relative;
+  position: absolute;
 
-  @include media('>phone') {
-    //border-radius: 15px;
-    height: 736px;
-    width: 414px;
-  }
+  //@include media('>phone') {
+  //  //border-radius: 15px;
+  //  height: 736px;
+  //  width: 414px;
+  //}
 }
 
 $placeholderColor: #9f9b9b;

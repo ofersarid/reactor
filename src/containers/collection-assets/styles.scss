@@ -44,9 +44,4 @@
   bottom: 15px;
   left: 15px;
   position: fixed;
-
-  @include media('>phone') {
-    bottom: calc(50% - 354px);
-    left: calc(50% - 189px);
-  }
 }
