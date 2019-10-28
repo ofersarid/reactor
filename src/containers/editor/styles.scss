@@ -47,7 +47,13 @@
   z-index: 1;
   backdrop-filter: blur(2px);
   background: rgba(255, 255, 255, 0.75);
+  transform: translateY(calc(100% - 65px));
   left: 0;
+  transition: .5s ease-out;
+
+  &.show {
+    transform: translateY(0);
+  }
 
   .footerToggleBtn {
     width: calc(100% + 40px);

@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import services from '/src/services';
 import { Button, UserInput } from '/src/shared';
 import { ChevronUp } from 'styled-icons/boxicons-regular/ChevronUp';
-import { Spring } from 'react-spring/renderprops-universal';
 import styles from './styles.scss';
 import { hashHistory } from 'react-router';
 
@@ -16,19 +15,28 @@ class EditorFooter extends PureComponent {
     super(props);
     autoBind(this);
     this.state = {
-      immediate: true,
-      show: false,
+      show: true,
       isWorking: false,
       deleting: false,
     };
+    this.$pageContainer = document.getElementById('pageContainer');
   }
 
   componentDidMount() {
-    this.setState({ immediate: false });
+    this.$pageContainer.addEventListener('scroll', this.close);
+  }
+
+  componentWillUnmount() {
+    this.$pageContainer.removeEventListener('scroll', this.close);
+  }
+
+  close() {
+    this.setState({ show: false });
   }
 
   toggleFooter() {
     const { show } = this.state;
+    clearTimeout(this.to);
     this.setState({ show: !show });
   }
 
@@ -55,64 +63,44 @@ class EditorFooter extends PureComponent {
     deleteAsset(asset).then(this.goBack);
   }
 
-  resolveOpenHeight() {
-    const { collectionId, asset } = this.props;
-    if (!collectionId) {
-      return 125;
-    }
-    if (collectionId) {
-      if (asset.id) {
-        return 300;
-      }
-    }
-    return 205;
-  }
-
   render() {
-    const { immediate, show } = this.state;
+    const { show } = this.state;
     const { asset, isValid, collectionId } = this.props;
-    const openHeight = this.resolveOpenHeight();
     return (
-      <Spring
-        from={{ transform: `translateY(${show ? openHeight : 0}px)` }}
-        to={{ transform: `translateY(${show ? 0 : openHeight}px)` }}
-        immediate={immediate}
-      >
-        {springs => <div className={cx(styles.editorFooter)} style={springs} >
-          <Button
-            className={styles.footerToggleBtn}
-            onClick={this.toggleFooter}
-            type="white"
-          >
-            <ChevronUp className={cx({ [styles.flip]: show })} />
-          </Button >
-          {Boolean(asset.published !== undefined) && (
-            <UserInput
-              type="switch"
-              options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
-              value={asset.published}
-              onChange={val => this.onChange({ published: val })}
-              className={styles.switch}
-            />
-          )}
+      <div className={cx(styles.editorFooter, { [styles.show]: show })} >
+        <Button
+          className={cx(styles.footerToggleBtn)}
+          onClick={this.toggleFooter}
+          type="white"
+        >
+          <ChevronUp className={cx({ [styles.flip]: show })} />
+        </Button >
+        {Boolean(asset.published !== undefined) && (
+          <UserInput
+            type="switch"
+            options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
+            value={asset.published}
+            onChange={val => this.onChange({ published: val })}
+            className={styles.switch}
+          />
+        )}
+        <Button
+          className={styles.footerBtn}
+          disable={!isValid}
+          onClick={this.handleClickOnDone}
+        >
+          Done
+        </Button >
+        {collectionId && asset.id && (
           <Button
             className={styles.footerBtn}
-            disable={!isValid}
-            onClick={this.handleClickOnDone}
+            type="red"
+            onClick={this.handleClickOnDelete}
           >
-            Done
+            Delete
           </Button >
-          {collectionId && asset.id && (
-            <Button
-              className={styles.footerBtn}
-              type="red"
-              onClick={this.handleClickOnDelete}
-            >
-              Delete
-            </Button >
-          )}
-        </div >}
-      </Spring >
+        )}
+      </div >
     );
   }
 }

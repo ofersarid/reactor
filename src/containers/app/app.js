@@ -14,10 +14,10 @@ import styles from './styles.scss';
 import NavBar from './nav-bar';
 
 const pages = [
-  springs => <animated.div className={cx(styles.pageContainer)} style={springs} ><LoginPage /></animated.div>,
-  springs => <animated.div className={cx(styles.pageContainer)} style={springs} ><Home /></animated.div>,
-  springs => <animated.div className={cx(styles.pageContainer)} style={springs} ><CollectionAssets /></animated.div>,
-  springs => <animated.div className={cx(styles.pageContainer)} style={springs} ><Editor /></animated.div>
+  springs => <animated.div id="pageContainer" className={cx(styles.pageContainer)} style={springs} ><LoginPage /></animated.div>,
+  springs => <animated.div id="pageContainer" className={cx(styles.pageContainer)} style={springs} ><Home /></animated.div>,
+  springs => <animated.div id="pageContainer" className={cx(styles.pageContainer)} style={springs} ><CollectionAssets /></animated.div>,
+  springs => <animated.div id="pageContainer" className={cx(styles.pageContainer)} style={springs} ><Editor /></animated.div>
 ];
 
 const resolvePageIndex = pathname => {
