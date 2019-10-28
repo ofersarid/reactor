@@ -154,15 +154,6 @@ class Editor extends PureComponent {
           }
           return dom;
         })}
-        {Boolean(asset.published !== undefined) && (
-          <UserInput
-            type="switch"
-            options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
-            value={asset.published}
-            onChange={val => this.onChange({ published: val })}
-            className={styles.switch}
-          />
-        )}
         <EditorFooter isValid={isValid} asset={asset} />
       </Fragment >
     ) : null;

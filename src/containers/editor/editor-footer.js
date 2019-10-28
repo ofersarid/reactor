@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import autoBind from 'auto-bind';
 import PropTypes from 'prop-types';
 import services from '/src/services';
-import { Button } from '/src/shared';
+import { Button, UserInput } from '/src/shared';
 import { ChevronUp } from 'styled-icons/boxicons-regular/ChevronUp';
 import { Spring } from 'react-spring/renderprops-universal';
 import styles from './styles.scss';
@@ -55,10 +55,23 @@ class EditorFooter extends PureComponent {
     deleteAsset(asset).then(this.goBack);
   }
 
+  resolveOpenHeight() {
+    const { collectionId, asset } = this.props;
+    if (!collectionId) {
+      return 125;
+    }
+    if (collectionId) {
+      if (asset.id) {
+        return 300;
+      }
+    }
+    return 205;
+  }
+
   render() {
     const { immediate, show } = this.state;
     const { asset, isValid, collectionId } = this.props;
-    const openHeight = collectionId ? 210 : 125;
+    const openHeight = this.resolveOpenHeight();
     return (
       <Spring
         from={{ transform: `translateY(${show ? openHeight : 0}px)` }}
@@ -73,6 +86,15 @@ class EditorFooter extends PureComponent {
           >
             <ChevronUp className={cx({ [styles.flip]: show })} />
           </Button >
+          {Boolean(asset.published !== undefined) && (
+            <UserInput
+              type="switch"
+              options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
+              value={asset.published}
+              onChange={val => this.onChange({ published: val })}
+              className={styles.switch}
+            />
+          )}
           <Button
             className={styles.footerBtn}
             disable={!isValid}
