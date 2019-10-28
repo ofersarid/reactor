@@ -19,10 +19,11 @@ class EditorFooter extends PureComponent {
       isWorking: false,
       deleting: false,
     };
-    this.$pageContainer = document.getElementById('pageContainer');
   }
 
   componentDidMount() {
+    this.$pageContainer = document.getElementsByClassName('pageContainer');
+    this.$pageContainer = this.$pageContainer[this.$pageContainer.length - 1];
     this.$pageContainer.addEventListener('scroll', this.close);
   }
 
