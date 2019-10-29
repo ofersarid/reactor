@@ -66,7 +66,7 @@ class EditorFooter extends PureComponent {
 
   render() {
     const { show } = this.state;
-    const { asset, isValid, collectionId } = this.props;
+    const { asset, isValid, collectionId, onShowHideChange } = this.props;
     return (
       <div className={cx(styles.editorFooter, { [styles.show]: show })} >
         <Button
@@ -81,7 +81,7 @@ class EditorFooter extends PureComponent {
             type="switch"
             options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
             value={asset.published}
-            onChange={val => this.onChange({ published: val })}
+            onChange={val => onShowHideChange({ published: val })}
             className={styles.switch}
           />
         )}
@@ -112,6 +112,7 @@ EditorFooter.propTypes = {
   collectionId: PropTypes.string,
   deleteAsset: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
+  onShowHideChange: PropTypes.func.isRequired,
   goBackPath: PropTypes.string.isRequired,
 };
 

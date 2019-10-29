@@ -113,7 +113,7 @@ class Editor extends PureComponent {
     }
   }
 
-  onChange(change) {
+  onShowHideChange(change) {
     this.setState({ asset: Object.assign({}, this.state.asset, change) });
   }
 
@@ -154,7 +154,7 @@ class Editor extends PureComponent {
           }
           return dom;
         })}
-        <EditorFooter isValid={isValid} asset={asset} />
+        <EditorFooter isValid={isValid} asset={asset} onShowHideChange={this.onShowHideChange}/>
       </Fragment >
     ) : null;
   }
