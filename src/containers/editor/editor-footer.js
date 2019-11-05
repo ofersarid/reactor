@@ -15,7 +15,7 @@ class EditorFooter extends PureComponent {
     super(props);
     autoBind(this);
     this.state = {
-      show: true,
+      show: false,
       isWorking: false,
       deleting: false,
     };

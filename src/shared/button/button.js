@@ -13,7 +13,7 @@ class Button extends PureComponent {
     autoBind(this);
     this.state = {
       working: false,
-      disableClick: false,
+      // disableClick: false,
     };
     this.willUmnount = false;
     this.onClickDebounced = debounce(this.handleClick, 100, { leading: true, trailing: false });
@@ -42,18 +42,18 @@ class Button extends PureComponent {
     }
   }
 
-  onTouchEnd(e) {
-    const { disableClick } = this.state;
-    if (disableClick) {
-      this.setState({ disableClick: false });
-    } else {
-      this.onClickDebounced(e);
-    }
-  }
+  // onTouchEnd(e) {
+  //   const { disableClick } = this.state;
+  //   if (disableClick) {
+  //     this.setState({ disableClick: false });
+  //   } else {
+  //     this.onClickDebounced(e);
+  //   }
+  // }
 
-  disableClick() {
-    this.setState({ disableClick: true });
-  }
+  // disableClick() {
+  //   this.setState({ disableClick: true });
+  // }
 
   resolveWaveColor() {
     const { type } = this.props;
@@ -91,8 +91,8 @@ class Button extends PureComponent {
         }, style)}
         ref={getRef}
         onClick={this.onClickDebounced}
-        onTouchEnd={this.onTouchEnd}
-        onTouchMove={this.disableClick}
+        // onTouchEnd={this.onTouchEnd}
+        // onTouchMove={this.disableClick}
         {...domProps}
       >
         <Tooltip content={tip} animation={tipAnimation} >
