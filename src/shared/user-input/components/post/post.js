@@ -3,34 +3,42 @@ import autoBind from 'auto-bind';
 import styles from './styles.scss';
 import { richContent } from '../../types';
 import ReactQuill from 'react-quill';
-import ValidationIndicator from '../validation-indicator/validation-indicator';
-import noop from 'lodash/noop';
-import SingleLine from '../single-line/single-line';
+import cx from 'classnames';
 
 class Post extends PureComponent {
   constructor(props) {
     super(props);
     autoBind(this);
     this.state = {
-      showValidation: false,
+      isValid: false,
     };
   }
 
-  showValidation() {
-    const { optional } = this.props;
-    if (optional) return;
-    this.setState({ showValidation: true });
+  componentDidMount() {
+    const { validateWith, value } = this.props;
+    this.setState({ isValid: validateWith(value) });
+  }
+
+  componentDidUpdate() {
+    const { validateWith, value } = this.props;
+    this.setState({ isValid: validateWith(value) });
+  }
+
+  handleOnChange(content) {
+    const { onChange, validateWith, required } = this.props;
+    onChange(content);
+    this.setState({ isValid: validateWith(content) || (!required && content.length === 0) });
   }
 
   render() {
-    const { value, onChange, placeholder, min, onValidation, validateWith, optional } = this.props;
-    const { showValidation } = this.state;
+    const { value, placeholder, max } = this.props;
+    const { isValid } = this.state;
     return (
       <div className={styles.post} >
         <ReactQuill
           className={styles.richContent}
           value={value || ''}
-          onChange={onChange}
+          onChange={this.handleOnChange}
           placeholder={placeholder}
           onFocus={this.showValidation}
           modules={{
@@ -54,24 +62,14 @@ class Post extends PureComponent {
             },
           }}
         />
-        {!optional && (
-          <ValidationIndicator
-            show={showValidation}
-            min={min || 1}
-            onValidation={onValidation}
-            value={value.replace(/<[^>]*>/g, '')} // strip html tags to validate text length
-            validateWith={validateWith}
-          />
-        )}
+        <div className={cx(styles.tip, { [styles.notValid]: !isValid })} >
+          ({value.length}/{max})
+        </div >
       </div >
     );
   }
 }
 
 Post.propTypes = richContent;
-
-SingleLine.defaultProps = {
-  onValidation: noop,
-};
 
 export default Post;

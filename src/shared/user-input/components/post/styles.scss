@@ -1,23 +1,38 @@
+@import '/src/shared/styles';
+
 .richContent {
   width: 100%;
   display: flex;
   flex-direction: column;
   height: auto;
-  
+
   :global {
     .ql-editor {
-      font-size: 15px;
+      font-size: 16px;
+      line-height: 24px;
+      font-family: 'sansation', sans-serif;
       color: initial;
       height: auto;
+      padding: 0 0 8px 0;
+      border-bottom: 1px solid $black;
     }
-    
+
     .ql-container {
       //overflow: hidden;
       height: auto;
+      border: none !important;
     }
-  
+
     .ql-tooltip {
       z-index: 1;
+    }
+
+    .ql-toolbar.ql-snow {
+      padding: 10px;
+      border: none;
+      margin-bottom: 24px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
     }
   }
 }
@@ -26,5 +41,21 @@
   width: 100%;
   height: auto;
   position: relative;
-  display: flex;
+}
+
+.tip {
+  font-size: 12px;
+  line-height: 12px;
+  color: $lightGray;
+  margin-top: 7px;
+}
+
+.number {
+  text-align: center;
+  width: 27px;
+  display: inline-block;
+}
+
+.notValid {
+  color: $red;
 }

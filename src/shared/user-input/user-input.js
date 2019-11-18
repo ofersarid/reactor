@@ -83,7 +83,7 @@ const resolveComponentByType = (props) => {
           validateWith={props.validateWith}
           hideDate
         />);
-    case 'post':
+    case 'rich':
       return (
         <Post
           value={props.value}
@@ -91,6 +91,7 @@ const resolveComponentByType = (props) => {
           onChange={props.onChange}
           onValidation={props.onValidation}
           min={props.min}
+          max={props.max}
           ref={props.getRef}
           validateWith={props.validateWith}
           required={props.required}
