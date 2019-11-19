@@ -150,7 +150,12 @@ class UploadImage extends PureComponent {
     const { onChange, validateWith } = this.props;
     let preview;
     if (file) {
-      this.imageOptimizer().then(resp => onChange(resp));
+      const ext = file.name.match(/\.[0-9a-z]+$/)[0];
+      if (ext !== '.svg') {
+        this.imageOptimizer().then(resp => onChange(resp));
+      } else {
+        onChange(file);
+      }
       preview = URL.createObjectURL(file);
     }
     this.setState({ preview: preview });
