@@ -15,7 +15,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  padding: calc(#{$nav-bar-height} + 20px) 20px 0;
+  padding: calc(#{$nav-bar-height}) 0px 0;
   box-sizing: border-box;
   flex-shrink: 1;
   position: absolute;
@@ -39,7 +39,7 @@
   color: white;
   position: fixed;
   backdrop-filter: blur(2px);
-  z-index: 1;
+  z-index: 2;
 
   .navBarTitle {
     font-size: 31px;

@@ -55,8 +55,10 @@
   }
 }
 
-$popIn: popIn .4s forwards;
-$dimm: dimm .2s forwards;
-$undimm: undimm .2s forwards;
-$fadeIn: fadeIn .2s forwards;
-$slideInUp: slideInUp .2s forwards;
+$ease: cubic-bezier(0.23, 1, 0.32, 1);
+
+$popIn: popIn .4s forwards $ease;
+$dimm: dimm .2s forwards $ease;
+$undimm: undimm .2s forwards $ease;
+$fadeIn: fadeIn .2s forwards $ease;
+$slideInUp: slideInUp .2s forwards $ease;

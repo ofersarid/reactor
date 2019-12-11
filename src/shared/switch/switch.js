@@ -56,8 +56,8 @@ class Switch extends PureComponent {
 
     return (
       <Springs state="indicate" >
-        {springs => <div className={cx(styles.switch, className)} >
-          <div className={styles.indicator} style={springs} />
+        {springs => <div className={cx('switch', styles.switch, className)} >
+          <div className={cx('indicator', styles.indicator)} style={springs} />
           {children}
         </div >}
       </Springs >

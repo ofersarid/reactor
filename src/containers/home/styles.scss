@@ -7,6 +7,9 @@
 .listItemWrap {
   width: 100%;
   margin-bottom: 10px;
+  opacity: 0;
+  transition: 1.5s $ease;
+  transform: translateX(-100%);
 
   &.overflow {
     //width: calc(100% + 11px);
@@ -17,38 +20,51 @@
   }
 }
 
+.pageListItemWrap {
+  transform: translateX(100%);
+}
+
+.newListItemWrap {
+  transform: translateX(100%);
+}
+
 .listContainer {
-  width: calc(100% - 40px);
-  height: calc(100% - 175px);
-  padding: 0 0 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: absolute;
-  bottom: 0;
-  left: 20px;
+  width: 100%;
+  padding: 20px 20px 110px;
   box-sizing: border-box;
-  opacity: 0;
-  transition: 1s;
+  position: absolute;
+  left: 0;
+
+  @for $i from 1 through 1000 {
+    & > div:nth-of-type(#{$i}) {
+      transition-delay: #{$i * 0.05}s;
+    }
+  }
 }
 
 .focus {
   z-index: 1;
-  opacity: 1;
+
+  .listItemWrap {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+.hideLeft {
+  .listItemWrap {
+    transform: translateX(-100%);
+  }
 }
 
 .addBtn {
   bottom: 20px;
   left: 20px;
-  position: fixed;
+  position: absolute;
   z-index: 1;
 
   &.rotate {
     transform: rotate(90deg);
-  }
-
-  @include media('>phone') {
-    bottom: calc(50% - 354px);
-    left: calc(50% - 189px);
   }
 }
 
@@ -57,9 +73,50 @@
   width: 100%;
   height: 100%;
   position: fixed;
-  padding: 20px 0;
+  padding: 20px;
   box-sizing: border-box;
   bottom: 0;
+  left: 0;
   z-index: 1;
   transform: translateY(100%);
+  transition: 1s $ease;
+
+  &.show {
+    transform: translateY(calc(#{$nav-bar-height} + 88px));
+  }
+}
+
+.btn {
+  margin: 20px 0;
+  flex-shrink: 0;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.tabSection {
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  background: rgba($white, 0.5);
+  backdrop-filter: blur(2px);
+
+  :global {
+    .switch {
+      height: 100%;
+      border-radius: 0;
+      background: rgba(black, 0.5);
+    }
+
+    .indicator {
+      background: rgba(black, 0.7);
+    }
+  }
 }
