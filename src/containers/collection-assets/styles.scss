@@ -40,12 +40,12 @@
 }
 
 .itemTitle {
-  height: 20px;
-  margin-bottom: 17px;
-  border-bottom: 2px solid $black;
+  margin-bottom: 0.5em;
+  //border-bottom: 2px solid $black;
   display: inline-block;
   font-size: 18px;
-  line-height: 18px;
+  font-weight: bold;
+  line-height: 1.4em;
 }
 
 .addBtn {
