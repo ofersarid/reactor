@@ -9,7 +9,7 @@
   margin-bottom: 10px;
   opacity: 0;
   transition: 1.5s $ease;
-  transform: translateX(-100%);
+  transform: translateX(calc(-100% - 20px));
 
   &.overflow {
     //width: calc(100% + 11px);
@@ -21,11 +21,11 @@
 }
 
 .pageListItemWrap {
-  transform: translateX(100%);
+  transform: translateX(calc(100% + 20px));
 }
 
 .newListItemWrap {
-  transform: translateX(100%);
+  transform: translateX(calc(100% + 20px));
 }
 
 .listContainer {
@@ -53,7 +53,7 @@
 
 .hideLeft {
   .listItemWrap {
-    transform: translateX(-100%);
+    transform: translateX(calc(-100% - 20px));
   }
 }
 

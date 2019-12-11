@@ -37,18 +37,17 @@ class Home extends React.PureComponent {
   }
 
   async create() {
-    const { createCollection, createPage } = this.props;
+    const { createCollection, createPage, selectList } = this.props;
     const { inputValue, inputType } = this.state;
     this.setState({
       working: true,
     });
     await inputType === 'collection' ? createCollection(inputValue) : createPage(inputValue);
-    this.setState({
-      showInputField: false,
-    });
+    selectList(inputType === 'collection' ? 'collections' : 'pages');
     setTimeout(() => {
       this.setState({
         inputValue: '',
+        inputType: 'collection',
         working: false,
       });
     });
