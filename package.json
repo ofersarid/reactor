@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@babel/runtime": "^7.4.5",
+    "animated-scroll-to": "^2.0.5",
     "assemble": "~0.3.11",
     "auto-bind": "^1.2.1",
     "babel-polyfill": "^6.26.0",

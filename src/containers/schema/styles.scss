@@ -1,0 +1,57 @@
+@import '/src/shared/styles';
+
+.schemaPage {
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+
+  .message {
+
+  }
+
+  .addBtn {
+    bottom: 20px;
+    left: 20px;
+    position: fixed;
+    z-index: 1;
+    transition: 2s $ease;
+
+    &.rotate {
+      transform: rotate(-45deg);
+    }
+  }
+
+  .savedBtn {
+    bottom: 20px;
+    right: 20px;
+    position: fixed;
+    z-index: 1;
+    transition: 2s $ease;
+    background: white;
+    border: 2px solid #ff2626;
+    box-sizing: border-box;
+    transform: translateY(20%);
+    opacity: 0;
+    pointer-events: none;
+
+    svg {
+      transition: 2s $ease;
+      fill: #ff2626;
+    }
+
+    &.show {
+      opacity: 1;
+      pointer-events: none;
+      transform: translateY(0);
+    }
+
+    &.valid {
+      border: 2px solid $green;
+
+      svg {
+        fill: $green;
+      }
+    }
+  }
+}
+

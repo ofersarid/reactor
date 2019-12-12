@@ -4,7 +4,10 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import autoBind from 'auto-bind';
 import { connect } from 'react-redux';
+import JSON5 from 'json5';
+import animateScrollTo from 'animated-scroll-to';
 import { Button, UserInput } from '/src/shared';
+import { Add } from 'styled-icons/material';
 import PropTypes from 'prop-types';
 import services from '/src/services';
 import styles from './styles.scss';
@@ -16,11 +19,30 @@ class Home extends React.PureComponent {
     this.state = {
       showInputField: false,
       inputValue: '',
-      inputType: 'collection',
       isValid: false,
       working: false,
+      addNow: false,
     };
     props.updateAppTitle('Reactor');
+    this.ref = {
+      collectionList: React.createRef(),
+      pageList: React.createRef(),
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { listName } = this.props;
+    const { addNow } = this.state;
+    if (prevProps.listName !== listName || prevState.addNow !== addNow) {
+      this.resetListScrollPosition(listName);
+    }
+  }
+
+  resetListScrollPosition(listName) {
+    animateScrollTo(0, {
+      elementToScroll: listName === 'collections' ? this.ref.collectionList.current : this.ref.pageList.current,
+      minDuration: 1000,
+    });
   }
 
   handleInputChange(val) {
@@ -30,38 +52,30 @@ class Home extends React.PureComponent {
     });
   }
 
-  handleInputTypeChange(val) {
-    this.setState({
-      inputType: val,
-    });
-  }
-
   async create() {
-    const { createCollection, createPage, selectList } = this.props;
-    const { inputValue, inputType } = this.state;
+    const { createCollection, createPage, listName } = this.props;
+    const { inputValue } = this.state;
     this.setState({
       working: true,
     });
-    await inputType === 'collection' ? createCollection(inputValue) : createPage(inputValue);
-    selectList(inputType === 'collection' ? 'collections' : 'pages');
+    await listName === 'collections' ? createCollection(inputValue) : createPage(inputValue);
     setTimeout(() => {
       this.setState({
         inputValue: '',
-        inputType: 'collection',
         working: false,
       });
     });
   }
 
+  toggleAddNow() {
+    const { addNow } = this.state;
+    this.setState({ addNow: !addNow });
+  }
+
   render() {
     const { listName, selectList, collections, pages, devMode } = this.props;
-    const { showInputField, inputValue, isValid, working, inputType } = this.state;
+    const { showInputField, inputValue, isValid, working, addNow } = this.state;
     const tabs = [{ view: 'Collections', value: 'collections' }, { view: 'Pages', value: 'pages' }];
-    if (devMode) {
-      tabs.push({
-        view: 'New', value: 'new'
-      });
-    }
     return (
       <Fragment >
         <UserInput
@@ -71,31 +85,31 @@ class Home extends React.PureComponent {
           onChange={selectList}
           className={styles.tabSection}
         />
-        <div
-          className={cx(styles.listContainer, {
-            [styles.focus]: listName === 'collections',
-          })}
+        <div ref={this.ref.collectionList} className={cx(styles.listContainer, {
+          [styles.focus]: listName === 'collections' && !addNow,
+        })}
         >
           {collections.map(item => (
             <div key={item.id} className={cx(styles.listItemWrap)} >
               <Button
-                linkTo={`/cms/collection/${item.id}`}
+                linkTo={`cms/collection/${item.id}${JSON5.parse(item.schema).length ? '' : '/schema'}`}
                 type="white"
                 justifyContent="start"
+                disable={devMode ? false : !JSON5.parse(item.schema).length}
               >
                 {item.name}
               </Button >
             </div >
           ))}
         </div >
-        <div className={cx(styles.listContainer, {
-          [styles.focus]: listName === 'pages',
-          [styles.hideLeft]: listName === 'new',
+        <div ref={this.ref.pageList} className={cx(styles.listContainer, {
+          [styles.focus]: listName === 'pages' && !addNow,
+          [styles.hideLeft]: addNow,
         })} >
           {pages.map(item => (
             <div key={item.id} className={cx(styles.listItemWrap, styles.pageListItemWrap)} >
               <Button
-                linkTo={`/cms/page/${item.id}/editor`}
+                linkTo={`/cms/page/${item.id}/${JSON5.parse(item.schema).length ? 'editor' : 'schema'}`}
                 type="white"
                 justifyContent="start"
               >
@@ -105,29 +119,31 @@ class Home extends React.PureComponent {
           ))}
         </div >
         {devMode && (
-          <div className={cx(styles.listContainer, { [styles.focus]: listName === 'new' })} >
-            <UserInput
-              type="switch"
-              options={[{ view: 'Collection', value: 'collection' }, { view: 'Page', value: 'page' }]}
-              value={inputType}
-              onChange={this.handleInputTypeChange}
-              className={cx(styles.listItemWrap, styles.newListItemWrap, styles.btn)}
-            />
-            <UserInput
-              placeholder={inputType === 'collection' ? 'Collection Name' : 'Page Name'}
-              onChange={this.handleInputChange}
-              value={inputValue}
-              focus={showInputField}
-              className={cx(styles.listItemWrap, styles.newListItemWrap)}
-            />
+          <Fragment >
+            <div className={cx(styles.listContainer, styles.addNowList, { [styles.focus]: addNow })} >
+              <UserInput
+                placeholder={listName === 'collections' ? 'Collection Name' : 'Page Name'}
+                onChange={this.handleInputChange}
+                value={inputValue}
+                focus={showInputField}
+                className={cx(styles.listItemWrap, styles.newListItemWrap)}
+              />
+              <Button
+                className={cx(styles.listItemWrap, styles.newListItemWrap, styles.btn)}
+                disable={!isValid || working}
+                onClick={this.create}
+              >
+                CREATE
+              </Button >
+            </div >
             <Button
-              className={cx(styles.listItemWrap, styles.newListItemWrap, styles.btn)}
-              disable={!isValid || working}
-              onClick={this.create}
+              type="circle"
+              className={cx(styles.addBtn, { [styles.rotate]: addNow })}
+              onClick={this.toggleAddNow}
             >
-              CREATE
+              <Add />
             </Button >
-          </div >
+          </Fragment >
         )}
       </Fragment >
     );

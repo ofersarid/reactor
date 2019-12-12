@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Transition, animated } from 'react-spring/renderprops';
 import { withRouter } from 'react-router';
 import services from '/src/services';
-import { Home, LoginPage, Editor, CollectionAssets } from '/src/containers';
+import { Home, LoginPage, Editor, CollectionAssets, Schema } from '/src/containers';
 import cx from 'classnames';
 import styles from './styles.scss';
 import NavBar from './nav-bar';
@@ -17,17 +17,20 @@ const pages = [
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><LoginPage /></animated.div>,
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Home /></animated.div>,
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><CollectionAssets /></animated.div>,
-  springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Editor /></animated.div>
+  springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Editor /></animated.div>,
+  springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Schema /></animated.div>
 ];
 
 const resolvePageIndex = pathname => {
   switch (true) {
     case pathname === '/cms/home':
       return 1;
-    case Boolean(pathname.match('/cms/collection')) && !pathname.match('editor'):
+    case Boolean(pathname.match('/cms/collection')) && !pathname.match('editor') && !pathname.match('schema'):
       return 2;
     case Boolean(pathname.match('editor')):
       return 3;
+    case Boolean(pathname.match('schema')):
+      return 4;
     default:
       return 0;
   }

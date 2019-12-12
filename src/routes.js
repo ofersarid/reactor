@@ -10,6 +10,7 @@ export default (
       <Route path="login" />
       <Route path="home" />
       <Route path="collection/:collectionId" />
+      <Route path="collection/:collectionId/schema" />
       <Route path="collection/:collectionId/editor/:assetId" />
       <Route path="page/:pageId/editor" />
     </Route >

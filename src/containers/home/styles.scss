@@ -30,15 +30,25 @@
 
 .listContainer {
   width: 100%;
-  padding: 90px 20px 110px;
+  padding: 152px 20px 110px;
   box-sizing: border-box;
   position: absolute;
   left: 0;
+  top: 0;
+  height: 100%;
+  overflow-y: auto;
 
   @for $i from 1 through 1000 {
     & > div:nth-of-type(#{$i}) {
       transition-delay: #{$i * 0.05}s;
     }
+  }
+
+  &.addNowList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -60,11 +70,12 @@
 .addBtn {
   bottom: 20px;
   left: 20px;
-  position: absolute;
+  position: fixed;
   z-index: 1;
+  transition: 2s $ease;
 
   &.rotate {
-    transform: rotate(90deg);
+    transform: rotate(-45deg);
   }
 }
 
