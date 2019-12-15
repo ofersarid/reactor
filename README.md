@@ -1,1 +1,1 @@
-# Reactor - Headless DAM for React.
+# Reactor - Plug and play CMS for React.
