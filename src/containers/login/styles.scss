@@ -1,31 +1,30 @@
 @import '/src/shared/styles';
 
+.pageWrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .logInForm {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   height: 100%;
-  width: 100%;
-  padding: 92px 20px;
+  width: 60vw;
   box-sizing: border-box;
 }
 
-.welcomeSplash {
-  width: 100%;
-  height: 100%;
-  background: $green;
-  color: $white;
+.header {
+  width: 100vw;
+  height: 80px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  @extend %txt-big;
-}
-
-.loginBtn {
-
 }
 
 .top {
@@ -34,4 +33,8 @@
 
 .mb {
   margin-bottom: 10px;
+}
+
+.submit {
+  background: #394DFF;
 }

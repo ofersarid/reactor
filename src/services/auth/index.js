@@ -99,13 +99,13 @@ const HOC = (WrappedComponent) => {
 
     redirect() {
       const { uid, isLoaded, isLoginPage } = this.props;
-      if (!isLoaded) return;
+      if (!uid && !isLoaded) return;
       if (!uid) {
         if (!isLoginPage) {
-          hashHistory.push('cms/login');
+          hashHistory.push('login');
         }
       } else if (isLoginPage) {
-        hashHistory.push('/cms/home');
+        hashHistory.push('cms/home');
       }
     }
 
@@ -129,7 +129,7 @@ const HOC = (WrappedComponent) => {
     isLoaded: selectors.isLoaded(state),
     pathname: router.selectors.pathname(state),
     prevPath: router.selectors.prevPath(state),
-    isLoginPage: Boolean(router.selectors.pathname(state).match(/^\/cms\/login/)),
+    isLoginPage: Boolean(router.selectors.pathname(state).match(/^\/login/)),
   });
 
   const mapDispatchToProps = dispatch => ({}); // eslint-disable-line

@@ -1,5 +1,6 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import cx from 'classnames';
 import autoBind from 'auto-bind';
 import services from '/src/services';
@@ -45,14 +46,11 @@ class Login extends PureComponent {
     const { deviceType } = this.props;
     // const { logIn, authError, uid, deviceType } = this.props;
     return (
-      <Fragment >
-        {/* <SplashScreen > */}
-        {/*  <div className={styles.welcomeSplash} > */}
-        {/*    WELCOME TO<br /> REACTOR */}
-        {/*  </div > */}
-        {/* </SplashScreen > */}
+      <div className={styles.pageWrap} >
+        <div className={styles.header}>HEADER</div>
         <div className={styles.logInForm} >
           <div className={styles.top} >
+            <h1>Log in</h1>
             <UserInput
               placeholder="Email"
               onChange={val => this.updateState({ email: val })}
@@ -71,15 +69,17 @@ class Login extends PureComponent {
               className={cx(styles[`input-${deviceType}`])}
               onEnterKeyPress={this.logIn}
             />
+            <div>Forgot My ID / Password</div>
           </div >
           <Button
             disable={!valid}
             onClick={this.logIn}
+            className={styles.submit}
           >
             <span >LOG IN</span >
           </Button >
         </div >
-      </Fragment >
+      </div >
     );
   }
 }
@@ -105,4 +105,9 @@ const mapDispatchToProps = dispatch => ({
   logIn: (...props) => dispatch(services.auth.actions.logIn(...props)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default compose(
+  services.device.HOC,
+  services.router.HOC,
+  services.auth.HOC,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Login);

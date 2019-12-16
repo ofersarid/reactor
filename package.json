@@ -49,6 +49,7 @@
     "react-tiny-popover": "^3.4.2",
     "react-tippy": "^1.2.3",
     "react-toastify": "^4.5.1",
+    "react-transition-group": "^4.3.0",
     "redux": "^3.6.0 || ^4.0.0",
     "redux-firestore": "^0.8.0",
     "redux-immutable": "^4.0.0",
@@ -100,12 +101,10 @@
   "scripts": {
     "start": "NODE_ENV=prod parcel index.html",
     "lint-watch": "esw src/ -w",
-    "stage": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/staging/CNAME ./docs/ && git add . && git commit -am \"stage\" && git push",
     "lint": "esw src/",
     "build": "rimraf ./build && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir build",
-    "storybook": "start-storybook -p 9001 -c .storybook",
-    "build-for-production": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/production/CNAME ./docs/",
-    "publish": "yarn build-for-production && git remote set-url origin https://github.com/ofersarid/reactor.git && git add . && git commit -am \"publish\""
+    "build-old": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/production/CNAME ./docs/",
+    "publish-old": "yarn build-for-production && git remote set-url origin https://github.com/ofersarid/reactor.git && git add . && git commit -am \"publish\""
   },
   "pre-commit": [
     "lint"
