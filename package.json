@@ -101,11 +101,10 @@
     "start": "NODE_ENV=prod parcel index.html",
     "lint-watch": "esw src/ -w",
     "stage": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/staging/CNAME ./docs/ && git add . && git commit -am \"stage\" && git push",
-    "build": "rimraf ./public && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir public",
     "lint": "esw src/",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "build-for-production": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/production/CNAME ./docs/",
-    "publish": "yarn build-for-production && git remote set-url origin https://github.com/ofersarid/reactor.git && git add . && git commit -am \"publish\" && git push && git remote set-url origin https://github.com/ofersarid/reactor-staging.git"
+    "publish": "yarn build-for-production && git remote set-url origin https://github.com/ofersarid/reactor.git && git add . && git commit -am \"publish\""
   },
   "pre-commit": [
     "lint"
