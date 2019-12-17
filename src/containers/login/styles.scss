@@ -34,12 +34,20 @@
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
+
+  @include media('>tablet') {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .logInForm {
   width: 85vw;
   max-width: 328px;
   box-sizing: border-box;
+  margin-top: 150px;
 
   h1 {
     margin: 0 0 35px 15px;
@@ -87,14 +95,23 @@
 .header {
   width: 100vw;
   height: 50px;
-  margin-top: 5vh;
-  margin-bottom: 10vh;
+  margin-top: 8vw;
+  margin-left: 8vw;
   display: flex;
   align-items: center;
+  transition: 1s $ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  //@include media('>tablet') {
+  //  position: absolute;
+  //  top: 0;
+  //  left: 0;
+  //}
 
   svg {
     max-width: 200px;
-    margin-left: 5vh;
   }
 }
 
