@@ -103,7 +103,7 @@
     "start": "NODE_ENV=prod parcel index.html",
     "lint-watch": "esw src/ -w",
     "lint": "esw src/",
-    "build": "rimraf ./build && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir build && copyfiles -f ./src/assets ./build/",
+    "build": "rimraf ./build && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir build && copyfiles ./src/assets ./build/src/assets",
     "build-old": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/production/CNAME ./docs/",
     "publish-old": "yarn build-for-production && git remote set-url origin https://github.com/ofersarid/reactor.git && git add . && git commit -am \"publish\""
   },
