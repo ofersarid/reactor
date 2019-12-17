@@ -32,22 +32,26 @@
   height: 100%;
   display: inline-flex;
   flex-direction: column;
-  align-items: center;
   overflow-y: auto;
+  align-items: center;
+  justify-content: center;
 
-  @include media('>tablet') {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  @include orientation('landscape') {
+    justify-content: start;
   }
 }
 
 .logInForm {
   width: 85vw;
+  min-height: 80%;
+  height: 500px;
   max-width: 328px;
   box-sizing: border-box;
-  margin-top: 150px;
+  display: inline-flex;
+  //flex-shrink: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
 
   h1 {
     margin: 0 0 35px 15px;
@@ -94,23 +98,19 @@
 
 .header {
   width: 100vw;
-  height: 50px;
-  margin-top: 8vw;
-  margin-left: 8vw;
+  padding-top: 30px;
+  padding-left: 25px;
   display: flex;
   align-items: center;
   transition: 1s $ease;
-  position: absolute;
-  top: 0;
-  left: 0;
+  box-sizing: border-box;
 
-  //@include media('>tablet') {
-  //  position: absolute;
-  //  top: 0;
-  //  left: 0;
-  //}
+  @include media('>tablet') {
+    padding-top: 50px;
+    padding-left: 50px;
+  }
 
-  svg {
+  img {
     max-width: 200px;
   }
 }

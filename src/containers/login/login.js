@@ -5,7 +5,6 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import autoBind from 'auto-bind';
 import services from '/src/services';
-import { ReactSVG } from 'react-svg';
 import { Lock } from 'styled-icons/boxicons-regular/Lock';
 import { LoginCircle } from 'styled-icons/remix-line/LoginCircle';
 import { UserInput, Button } from '/src/shared';
@@ -59,7 +58,7 @@ class Login extends PureComponent {
     return (
       <div className={styles.pageWrap} >
         <div className={styles.header} >
-          <ReactSVG src={logo} />
+          <img src={logo} />
         </div >
         <div className={styles.logInForm} >
           <h1 >Sign in</h1 >
