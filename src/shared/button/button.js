@@ -78,8 +78,6 @@ class Button extends PureComponent {
     return (
       <Tag
         className={cx(
-          'ripple',
-          'waves-effect',
           styles[this.resolveWaveColor()],
           styles.button,
           className,

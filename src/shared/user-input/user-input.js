@@ -158,22 +158,11 @@ const resolveComponentByType = (props) => {
     default:
       return (
         <SingleLine
-          placeholder={props.placeholder}
-          onChange={props.onChange}
-          onEnterKeyPress={props.onEnterKeyPress}
-          value={props.value}
-          min={props.min}
-          max={props.max}
+          {...props}
           onValidation={props.onValidation}
           mask={props.type === 'password'}
           ref={props.getRef}
-          validateWith={props.validateWith}
-          validationTip={props.validationTip}
-          required={props.required}
           onlyNumbers={props.type === 'number'}
-          rtl={props.rtl}
-          onBlur={props.onBlur}
-          focus={props.focus}
         />
       );
   }

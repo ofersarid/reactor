@@ -4,7 +4,7 @@ import cx from 'classnames';
 import styles from './styles.scss';
 import noop from 'lodash/noop';
 import { userInput } from '../../types';
-// import ValidationIndicator from '../validation-indicator/validation-indicator';
+import ValidationIndicator from '../validation-indicator/validation-indicator';
 
 const onKeyPress = (e, onEnterKeyPress) => {
   if (e.key === 'Enter') {
@@ -19,15 +19,19 @@ class SingleLine extends PureComponent {
     this.state = {
       showValidation: false,
       wasBlured: false,
+      isFocused: false,
+      isValid: false,
     };
     this.$input = React.createRef();
   }
 
   componentDidMount() {
-    const { focus } = this.props;
+    const { focus, value } = this.props;
     if (focus) {
       this.$input.current.focus();
     }
+
+    this.validate(value);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -56,7 +60,16 @@ class SingleLine extends PureComponent {
   handleOnChange(e) {
     const { onChange } = this.props;
     const newValue = e.target.value;
-    onChange(this.normalizeValue(newValue));
+    const val = this.normalizeValue(newValue);
+    onChange(val);
+    this.validate(val);
+  }
+
+  validate(val) {
+    const { validateWith } = this.props;
+    this.setState({
+      isValid: validateWith(val)
+    });
   }
 
   showValidation() {
@@ -77,10 +90,19 @@ class SingleLine extends PureComponent {
     this.setState({ hasBlured: true });
   }
 
+  onFocus() {
+    const { onFocus } = this.props;
+    if (onFocus) {
+      onFocus();
+    }
+    this.setState({ isFocused: true });
+  }
+
   render() {
     const { placeholder, onEnterKeyPress, value, mask } = this.props;
+    const { isValid } = this.state;
     return (
-      <div className={cx('single-line', styles.singleLine)} >
+      <form className={cx('single-line', styles.singleLine)} >
         <input
           type={mask ? 'password' : 'text'}
           className={cx(
@@ -94,9 +116,11 @@ class SingleLine extends PureComponent {
           }}
           value={value}
           onBlur={this.onBlur}
+          onFocus={this.onFocus}
           ref={this.$input}
         />
-      </div >
+        <ValidationIndicator status={value.length === 0 ? 'standBy' : isValid ? 'valid' : 'error'}/>
+      </form >
     );
   }
 }

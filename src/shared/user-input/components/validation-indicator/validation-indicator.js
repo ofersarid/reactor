@@ -1,95 +1,18 @@
-import React, { PureComponent } from 'react';
-import autoBind from 'auto-bind';
-import { validationIndicator } from '../../types';
-import styles from './styles.scss';
+import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { Check } from 'styled-icons/fa-solid/Check/Check';
-import { Exclamation } from 'styled-icons/fa-solid/Exclamation/Exclamation';
-import { Tooltip } from '/src/shared';
+import { ReactSVG } from 'react-svg';
+import bullet from '/src/assets/images/bullet.svg';
+import styles from './styles.scss';
 
-class ValidationIndicator extends PureComponent {
-  constructor(props) {
-    super(props);
-    autoBind(this);
-    this.state = {
-      isValid: false,
-      booleanMode: (props.min === 1 && !props.max) || Boolean(props.validateWith),
-    };
-  }
+const ValidationIndicator = ({ status }) => {
+  return (
+    <ReactSVG src={bullet} className={cx(styles.bullet, styles[status])} />
+  );
+};
 
-  componentDidMount() {
-    this.validate();
-  }
-
-  componentDidUpdate(prevProps) {
-    const { value, min, max, validateWith } = this.props;
-    if (value !== prevProps.value) {
-      this.validate();
-    }
-    this.setState({ booleanMode: (min === 1 && !max) || Boolean(validateWith) });
-  }
-
-  validate() {
-    const { value, onValidation, validateWith, numeric } = this.props;
-    const isValid = validateWith ? validateWith(value) : numeric ? this.validateNumeric() : this.validateString();
-    onValidation(isValid);
-    this.setState({ isValid });
-  }
-
-  validateString() {
-    const { max, min, value } = this.props;
-    let isValid = false;
-    if (max && min) {
-      isValid = value.length <= max && value.length >= min;
-    } else if (max) {
-      isValid = value.length <= max;
-    } else if (min) {
-      isValid = value.length >= min;
-    }
-    return isValid;
-  }
-
-  validateNumeric() {
-    const { max, min, value } = this.props;
-    let isValid = false;
-    if (max && min) {
-      isValid = value <= max && value >= min;
-    } else if (max) {
-      isValid = value <= max;
-    } else if (min) {
-      isValid = value >= min;
-    }
-    return isValid;
-  }
-
-  render() {
-    const { min, max, value, show, numeric, rtl, validationTip } = this.props;
-    const { isValid, booleanMode } = this.state;
-    let content = '';
-    if (booleanMode) {
-      content = 'Required Field';
-    } else {
-      content = min ? `min: ${min}` : '';
-      content += max ? ` \\ max: ${max}` : '';
-    }
-    const charCount = value.length;
-    return show ? (
-      <Tooltip
-        content={validationTip || content}
-        className={cx(styles.validationIndicator, isValid && styles.isValid, rtl && styles.rtl)}
-      >
-        {isValid ? <Check /> : (booleanMode || numeric) ? <Exclamation /> : charCount}
-      </Tooltip >
-    ) : null;
-  }
-}
-
-ValidationIndicator.propTypes = validationIndicator;
-
-ValidationIndicator.defaultProps = {
-  show: true,
-  value: '',
-  rtl: false,
+ValidationIndicator.propTypes = {
+  status: PropTypes.oneOf(['valid', 'error', 'standBy']),
 };
 
 export default ValidationIndicator;

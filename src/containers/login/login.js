@@ -2,12 +2,16 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 import autoBind from 'auto-bind';
 import services from '/src/services';
+import { ReactSVG } from 'react-svg';
+import { Lock } from 'styled-icons/boxicons-regular/Lock';
+import { LoginCircle } from 'styled-icons/remix-line/LoginCircle';
 import { UserInput, Button } from '/src/shared';
 import { validateEmail } from '/src/utils';
 import styles from './styles.scss';
-import PropTypes from 'prop-types';
+import logo from '/src/assets/images/logo.svg';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -17,6 +21,8 @@ class Login extends PureComponent {
       email: '',
       password: '',
       valid: false,
+      emailIsValid: false,
+      passwordIsValid: false,
     };
   }
 
@@ -30,13 +36,18 @@ class Login extends PureComponent {
   }
 
   logIn() {
+    const { valid } = this.state;
     const { logIn } = this.props;
-    logIn(this.state);
+    if (valid) {
+      logIn(this.state);
+    }
   }
 
   validate() {
     const { email, password } = this.state;
     this.setState({
+      emailIsValid: validateEmail(email),
+      passwordIsValid: password.length >= 4,
       valid: (validateEmail(email) && password.length >= 4),
     });
   }
@@ -47,36 +58,37 @@ class Login extends PureComponent {
     // const { logIn, authError, uid, deviceType } = this.props;
     return (
       <div className={styles.pageWrap} >
-        <div className={styles.header}>HEADER</div>
+        <div className={styles.header} >
+          <ReactSVG src={logo} />
+        </div >
         <div className={styles.logInForm} >
-          <div className={styles.top} >
-            <h1>Log in</h1>
-            <UserInput
-              placeholder="Email"
-              onChange={val => this.updateState({ email: val })}
-              value={email}
-              validateWith={validateEmail}
-              className={cx(styles.mb, styles[`input-${deviceType}`])}
-              onEnterKeyPress={this.logIn}
-            />
-            <UserInput
-              placeholder="Password"
-              onChange={val => this.updateState({ password: val })}
-              value={password}
-              type="password"
-              min={4}
-              max={12}
-              className={cx(styles[`input-${deviceType}`])}
-              onEnterKeyPress={this.logIn}
-            />
-            <div>Forgot My ID / Password</div>
-          </div >
+          <h1 >Sign in</h1 >
+          <UserInput
+            placeholder="Email"
+            onChange={val => this.updateState({ email: val })}
+            value={email}
+            validateWith={validateEmail}
+            className={cx(styles.input, styles[`input-${deviceType}`])}
+            onEnterKeyPress={this.logIn}
+            status="standBy"
+          />
+          <UserInput
+            placeholder="Password"
+            onChange={val => this.updateState({ password: val })}
+            value={password}
+            validateWith={val => val.length >= 4}
+            type="password"
+            min={4}
+            max={12}
+            className={cx(styles.input, styles[`input-${deviceType}`])}
+            onEnterKeyPress={this.logIn}
+          />
+          <div className={styles.iForgot} >I Forgot My Password</div >
           <Button
-            disable={!valid}
             onClick={this.logIn}
             className={styles.submit}
           >
-            <span >LOG IN</span >
+            {valid ? <LoginCircle className={styles.loginCircle} /> : <Lock className={styles.lock}/>}
           </Button >
         </div >
       </div >

@@ -1,29 +1,60 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
 @import 'shared/styles';
 
 @font-face {
-  font-family: 'sansation';
-  src: url('/src/assets/fonts/sansation/Sansation_Light.ttf') format('truetype');
+  font-family: 'gibson';
+  src: url('/src/assets/fonts/gibson/CanadaType-Gibson-Light.ttf') format('truetype');
   font-weight: 100;
 }
 
 @font-face {
-  font-family: 'sansation';
-  src: url('/src/assets/fonts/sansation/Sansation_Regular.ttf') format('truetype');
+  font-family: 'gibson';
+  src: url('/src/assets/fonts/gibson/CanadaType-Gibson-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'sansation';
-  src: url('/src/assets/fonts/sansation/Sansation_Bold.ttf') format('truetype');
-  font-weight: bold;
+  font-family: 'gibson';
+  src: url('/src/assets/fonts/gibson/CanadaType-Gibson-SemiBold.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'gibson';
+  src: url('/src/assets/fonts/gibson/CanadaType-Gibson-Bold.ttf') format('truetype');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'gibson';
+  src: url('/src/assets/fonts/gibson/CanadaType-Gibson-LightIt.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'gibson';
+  src: url('/src/assets/fonts/gibson/CanadaType-Gibson-Italic.ttf') format('truetype');
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'gibson';
+  src: url('/src/assets/fonts/gibson/CanadaType-Gibson-SemiBoldIt.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'gibson';
+  src: url('/src/assets/fonts/gibson/CanadaType-Gibson-BoldItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 800;
 }
 
 body {
   overflow: hidden;
   font-weight: 100;
-  font-family: 'sansation', sans-serif;
+  font-family: 'gibson', sans-serif;
   color: #9f9f9f;
-  background: #FAFAFA;
   position: relative;
 
   @include media('>phone') {
@@ -43,9 +74,20 @@ ul {
   outline:none;
 }
 
+h1 {
+  font-size: 36px;
+  line-height: 1.3em;
+  font-weight: 300;
+  margin: 0;
+}
+
+input {
+  font-family: 'gibson', sans-serif;
+}
+
 .root {
   font-weight: 100;
-  font-family: 'sansation', sans-serif;
+  font-family: 'gibson', sans-serif;
   width: 100%;
   height: 100%;
   box-shadow: 0 10px 15px rgba(0,0,0,0.1);
@@ -59,23 +101,29 @@ ul {
   //}
 }
 
-$placeholderColor: #9f9b9b;
-
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: $placeholderColor;
-  font-style: italic;
+  color: $blue;
+  text-transform: lowercase;
+  font-weight: 100;
+  font-size: 20px;
 }
 ::-moz-placeholder { /* Firefox 19+ */
-  color: $placeholderColor;
-  font-style: italic;
+  color: $blue;
+  text-transform: lowercase;
+  font-weight: 100;
+  font-size: 20px;
 }
 :-ms-input-placeholder { /* IE 10+ */
-  color: $placeholderColor;
-  font-style: italic;
+  color: $blue;
+  text-transform: lowercase;
+  font-weight: 100;
+  font-size: 20px;
 }
 :-moz-placeholder { /* Firefox 18- */
-  color: $placeholderColor;
-  font-style: italic;
+  color: $blue;
+  text-transform: lowercase;
+  font-weight: 100;
+  font-size: 20px;
 }
 
 /* width */

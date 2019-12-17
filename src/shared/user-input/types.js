@@ -11,6 +11,7 @@ export const userInput = {
   value: PropTypes.any,
   onEnterKeyPress: PropTypes.func,
   onBlur: PropTypes.func,
+  onFocus: PropTypes.func,
   min: PropTypes.number,
   max: PropTypes.number,
   onValidation: PropTypes.func,
@@ -48,18 +49,6 @@ export const richContent = {
   max: PropTypes.number,
   validateWith: PropTypes.func,
   required: PropTypes.bool,
-};
-
-export const validationIndicator = {
-  min: PropTypes.number,
-  max: PropTypes.number,
-  value: PropTypes.any,
-  onValidation: PropTypes.func.isRequired,
-  show: PropTypes.bool,
-  numeric: PropTypes.bool,
-  validateWith: PropTypes.func,
-  rtl: PropTypes.bool,
-  validationTip: PropTypes.string,
 };
 
 export const link = {

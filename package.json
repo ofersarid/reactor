@@ -45,6 +45,7 @@
     "react-shimmer": "^2.0.1",
     "react-spring": "^8.0.25",
     "react-stack-grid": "^0.7.1",
+    "react-svg": "^11.0.3",
     "react-textarea-autosize": "^7.1.0",
     "react-tiny-popover": "^3.4.2",
     "react-tippy": "^1.2.3",
