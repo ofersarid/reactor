@@ -117,8 +117,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
-  services.device.HOC,
-  services.router.HOC,
-  services.auth.HOC,
+  // services.device.HOC,
+  // services.router.HOC,
+  // services.auth.HOC,
   connect(mapStateToProps, mapDispatchToProps)
 )(Login);

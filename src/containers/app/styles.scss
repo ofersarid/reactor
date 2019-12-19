@@ -1,4 +1,4 @@
-@import '/src/shared/styles';
+@import '/src/shared/styles/index';
 
 .main {
   display: flex;
@@ -40,6 +40,14 @@
   position: fixed;
   backdrop-filter: blur(2px);
   z-index: 2;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: 1s $ease;
+
+  &.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
 
   .navBarTitle {
     font-size: 31px;

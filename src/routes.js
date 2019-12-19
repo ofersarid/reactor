@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Redirect, IndexRedirect } from 'react-router';
-import { App, Login } from '/src/containers';
+import { App } from '/src/containers';
 
 export default (
-  <Route path="/" >
+  <Route path="/" component={App} >
     <IndexRedirect to="login" />
-    <Route path="cms" component={App} >
+    <Route path="cms" >
       <IndexRedirect to="home" />
       <Route path="home" />
       <Route path="collection/:collectionId" />
@@ -13,7 +13,7 @@ export default (
       <Route path="collection/:collectionId/editor/:assetId" />
       <Route path="page/:pageId/editor" />
     </Route >
-    <Route path="login" component={Login}/>
+    <Route path="login" />
     <Redirect from="*" to="cms/home" />
   </Route >
 );

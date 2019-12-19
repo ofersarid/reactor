@@ -22,6 +22,18 @@
   }
 }
 
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @keyframes dimm {
   0% {
     opacity: 1;
@@ -62,3 +74,4 @@ $dimm: dimm .2s forwards $ease;
 $undimm: undimm .2s forwards $ease;
 $fadeIn: fadeIn .2s forwards $ease;
 $slideInUp: slideInUp .2s forwards $ease;
+$slideInRight: slideInRight 1s forwards $ease;

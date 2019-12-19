@@ -24,10 +24,10 @@ class NavBar extends React.PureComponent {
   }
 
   render() {
-    const { logOut, uid, pathname, appTitle } = this.props;
+    const { logOut, uid, pathname, appTitle, show } = this.props;
 
     return (
-      <div className={cx(styles.navBar)} >
+      <div className={cx(styles.navBar, { [styles.show]: show })} >
         <Transition
           unique
           items={0}
@@ -79,6 +79,7 @@ NavBar.propTypes = {
   pathname: PropTypes.string.isRequired,
   appTitle: PropTypes.string.isRequired,
   goBackPath: PropTypes.string.isRequired,
+  show: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
