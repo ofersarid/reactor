@@ -74,8 +74,6 @@ class DateTime extends PureComponent {
       year,
       hour,
       min,
-      initialValueDate: `${date}${month}${year}`,
-      initialValueTime: `${hour}${min}`,
     });
     this.validate(date, month, year, hour, min);
   }
@@ -101,6 +99,7 @@ class DateTime extends PureComponent {
       year,
       hour,
       min,
+      initialValueDate: `${date}${month}${year}`,
     });
     this.validate(date, month, year, hour, min);
   }
@@ -139,7 +138,7 @@ class DateTime extends PureComponent {
 
   render() {
     const { hideTime, hideDate } = this.props;
-    const { initialValueDate, initialValueTime, isValid } = this.state;
+    const { date, month, year, hour, min, isValid } = this.state;
     return (
       <div className={cx(styles.dateTime, { [styles.inValid]: !isValid })} >
         {!hideDate && (
@@ -150,7 +149,7 @@ class DateTime extends PureComponent {
               date: true,
             }}
             onChange={this.handleDateChange}
-            value={initialValueDate}
+            value={`${date}${month}${year}`}
           />
         )}
         {!hideTime && (
@@ -162,7 +161,7 @@ class DateTime extends PureComponent {
               timePattern: ['h', 'm'],
             }}
             onChange={this.handleTimeChange}
-            value={initialValueTime}
+            value={`${hour}${min}`}
           />
         )}
       </div >

@@ -25,7 +25,11 @@ class Login extends PureComponent {
     };
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    const { logOut, pathname } = this.props;
+    if (prevProps.pathname.match('home') && pathname.match(/login/)) {
+      logOut();
+    }
     this.validate();
   }
 
@@ -87,7 +91,7 @@ class Login extends PureComponent {
             onClick={this.logIn}
             className={styles.submit}
           >
-            {valid ? <LoginCircle className={styles.loginCircle} /> : <Lock className={styles.lock}/>}
+            {valid ? <LoginCircle className={styles.loginCircle} /> : <Lock className={styles.lock} />}
           </Button >
         </div >
       </div >
@@ -98,6 +102,8 @@ class Login extends PureComponent {
 Login.propTypes = {
   deviceType: PropTypes.oneOf(['tablet', 'desktop', 'mobile']),
   logIn: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
+  logOut: PropTypes.func.isRequired,
   authError: PropTypes.shape({
     message: PropTypes.string.isRequired,
   }),
@@ -109,11 +115,13 @@ const mapStateToProps = state => ({
   deviceType: services.device.selectors.type(state),
   authError: services.auth.selectors.authError(state),
   working: services.auth.selectors.working(state),
+  pathname: services.router.selectors.pathname(state),
   uid: services.auth.selectors.uid(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   logIn: (...props) => dispatch(services.auth.actions.logIn(...props)),
+  logOut: (...props) => dispatch(services.auth.actions.logOut(...props)),
 });
 
 export default compose(
