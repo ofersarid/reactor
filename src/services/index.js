@@ -7,6 +7,7 @@ import app from './app';
 import device from './device';
 import router from './redux-router';
 import auth from './auth';
+import users from './users';
 
 const services = {
   blackList,
@@ -17,7 +18,8 @@ const services = {
   app,
   device,
   router,
-  auth
+  auth,
+  users
 };
 
 window.services = services;

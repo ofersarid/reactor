@@ -127,6 +127,7 @@ class Home extends React.PureComponent {
                 value={inputValue}
                 focus={showInputField}
                 className={cx(styles.listItemWrap, styles.newListItemWrap)}
+                validateWith={val => val.length > 0}
               />
               <Button
                 className={cx(styles.listItemWrap, styles.newListItemWrap, styles.btn)}
