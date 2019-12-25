@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { firestoreConnect } from 'react-redux-firebase';
 import services from '/src/services';
 import { UserInput, Button } from '/src/shared';
+import { fromJS } from 'immutable';
 import { inputTypes, validationFunctionTypes } from '/src/shared/user-input/types';
 // import SchemaEditorFooter from './schema-editor-footer';
 import styles from './styles.scss';
@@ -19,10 +20,10 @@ class SchemaEditor extends PureComponent {
     this.state = {
       key: '',
       label: '',
-      type: 'multi-line-preserve-lines',
+      type: 'multi-line',
       required: true,
       validateWith: 'min-max',
-      options: [],
+      options: fromJS([]),
       maxChars: null,
       minChars: 0,
       isValid: false,
@@ -38,12 +39,16 @@ class SchemaEditor extends PureComponent {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { updateAppTitle, metaData } = this.props;
+    const { type } = this.state;
     if (metaData && prevProps.metaData) {
       if (metaData.name !== prevProps.metaData.name) {
         updateAppTitle(metaData.name);
       }
     } else if (metaData) {
       updateAppTitle(metaData.name);
+    }
+    if (type !== prevState.type) {
+      this.setState({ options: fromJS([]) });
     }
     this.validate();
   }
@@ -55,8 +60,8 @@ class SchemaEditor extends PureComponent {
         label.length > 0 &&
         inputTypes.includes(type) &&
         (required ? minChars > 0 : true) &&
-        (type === 'multi-select' ? options.length > 0 : true) &&
-        (type === 'switch' ? options.length > 1 : true) &&
+        (type === 'multi-select' ? options.size > 0 : true) &&
+        (type === 'switch' ? options.size > 1 : true) &&
         (validateWith ? validationFunctionTypes.includes(validateWith) : true) &&
         (maxChars ? maxChars > minChars : true)
     });
@@ -106,65 +111,17 @@ class SchemaEditor extends PureComponent {
             value={type}
             label="Type"
             type="select"
+            placeholder="Select Input Type"
             options={inputTypes.map(item => ({ view: item, value: item }))}
           />
         </div >
-        <div className={cx(styles.inputWrapper)} >
-          <UserInput
-            onChange={value => this.onChange({
-              required: value,
-            })}
-            value={required}
-            label="Required"
-            type="switch"
-            options={[{
-              view: 'Yes',
-              value: true,
-            }, {
-              view: 'No',
-              value: false,
-            }]}
-          />
-        </div >
-        <div className={cx(styles.inputWrapper)} >
-          <UserInput
-            onChange={value => this.onChange({
-              validateWith: value.trim().toLowerCase(),
-            })}
-            value={validateWith}
-            label="Validation Function"
-            type="select"
-            options={validationFunctionTypes.map(item => ({ view: item, value: item }))}
-            disable={['select', 'switch'].includes(type) || (type === 'multi-select' && !required)}
-          />
-        </div >
-        {options.map((opt, i) => (
+        {['select', 'switch', 'multi-select'].includes(type) && options.map((opt, i) => (
           <div key={`option-${i}`} className={cx(styles.inputWrapper)} >
             <UserInput
               placeholder="Option View"
-              onChange={value => this.onChange({
-                options: (() => {
-                  options[i].view = value;
-                  return options;
-                })()
-              })}
-              value={opt.view}
-              label="View"
-              max={40}
-              required
-              type="multi-line"
-              validateWith={val => (val > 0 && val <= 40)}
-            />
-            <UserInput
-              placeholder="Option Value"
-              onChange={value => this.onChange({
-                options: (() => {
-                  options[i].value = value;
-                  return options;
-                })()
-              })}
-              value={opt.view}
-              label="Value"
+              onChange={value => this.onChange({ options: options.set(i, value) })}
+              value={opt}
+              label={`Option #${i}`}
               max={40}
               required
               type="multi-line"
@@ -172,20 +129,51 @@ class SchemaEditor extends PureComponent {
             />
           </div >
         ))}
-        <Button
-          onClick={() => {
-            this.setState({
-              options: (() => {
-                options.push({
-                  view: '',
-                  value: '',
+        {['select', 'switch', 'multi-select'].includes(type) && (
+          <div className={cx(styles.inputWrapper)} >
+            <Button
+              onClick={() => {
+                this.setState({
+                  options: options.push('')
                 });
-              })()
-            });
-          }}
-        >
-          Add Option
-        </Button >
+              }}
+            >
+              Add Option
+            </Button >
+          </div >
+        )}
+        {!['select', 'switch'].includes(type) && (
+          <div className={cx(styles.inputWrapper)} >
+            <UserInput
+              onChange={value => this.onChange({
+                required: value,
+              })}
+              value={required}
+              label="Required"
+              type="switch"
+              options={[{
+                view: 'Yes',
+                value: true,
+              }, {
+                view: 'No',
+                value: false,
+              }]}
+            />
+          </div >
+        )}
+        {!['select', 'switch', 'multi-select'].includes(type) && (
+          <div className={cx(styles.inputWrapper)} >
+            <UserInput
+              onChange={value => this.onChange({
+                validateWith: value.trim().toLowerCase(),
+              })}
+              value={validateWith}
+              label="Validation Function"
+              type="select"
+              options={validationFunctionTypes.map(item => ({ view: item, value: item }))}
+            />
+          </div >
+        )}
         {/* <SchemaEditorFooter isValid={isValid} onShowHideChange={this.onChange} /> */}
       </div >
     );

@@ -15,56 +15,45 @@ class Select extends PureComponent {
     };
   }
 
-  getOptionByValue() {
-    const { value, options } = this.props;
-    return options.find(opt => opt.value === value);
-  }
-
-  resolveValue() {
-    const { allowMissMatch, value } = this.props;
-    if (!value || value === '') return;
-    return allowMissMatch ? {
-      view: value,
-      value: value,
-    } : this.getOptionByValue();
-  }
-
   render() {
-    const { options, className, placeholder, onChange, onInputChange, isSearchable, isClearable } = this.props;
-    const { inputValue } = this.state;
+    const { options, className, placeholder, onChange, isSearchable, isClearable, value } = this.props;
+    const optionsTransformed = options.map(opt => ({
+      value: opt.value,
+      label: opt.view,
+    }));
     return (
       <ReactSelect
-        options={inputValue !== '' ? [{
-          view: inputValue,
-          value: inputValue,
-        }].concat(options) : options}
-        classNamePrefix="select"
         className={cx(styles.select, className)}
+        classNamePrefix="select"
+        isClearable={isClearable}
+        isSearchable={isSearchable}
+        options={optionsTransformed}
         blurInputOnSelect
-        value={this.resolveValue()}
+        defaultValue={value ? {
+          label: value,
+          value: value,
+        } : undefined}
+        // value={inputValue}
         placeholder={placeholder}
         onChange={(opt, action) => {
           const val = opt ? opt.value : '';
-          this.setState({ inputValue: '' });
           onChange(val);
         }}
-        onBlur={e => {
-          // todo - remove this before pull request
-          debugger; // eslint-disable-line
-          const val = e.currentTarget.value;
-          this.setState({ inputValue: '' });
-          if (val === '') return;
-          onChange(val);
-        }}
-        onInputChange={(val, action) => {
-          if (action.action === 'input-change') {
-            this.setState({ inputValue: val });
-            // if (val === '') return;
-            onInputChange(val);
-          }
-        }}
-        isClearable={isClearable}
-        isSearchable={isSearchable}
+        // onBlur={e => {
+        //   // todo - remove this before pull request
+        //   debugger; // eslint-disable-line
+        //   const val = e.currentTarget.value;
+        //   this.setState({ inputValue: '' });
+        //   if (val === '') return;
+        //   onChange(val);
+        // }}
+        // onInputChange={(val, action) => {
+        //   if (action.action === 'input-change') {
+        //     this.setState({ inputValue: val });
+        //     // if (val === '') return;
+        //     onInputChange(val);
+        //   }
+        // }}
         // onMenuClose={() => {
         //   // todo - remove this before pull request
         //   debugger; // eslint-disable-line
@@ -78,7 +67,6 @@ Select.propTypes = select;
 
 Select.defaultProps = {
   onChange: noop,
-  onInputChange: noop,
   allowMissMatch: false,
   options: [],
   isClearable: false,

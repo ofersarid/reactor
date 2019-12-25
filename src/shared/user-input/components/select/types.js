@@ -9,7 +9,6 @@ export const select = {
   defaultValue: PropTypes.string,
   placeholder: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  onInputChange: PropTypes.func,
   allowMissMatch: PropTypes.bool, /* if true -will leave the value
   as it is if there is no match to an options */
   isSearchable: PropTypes.bool,

@@ -158,12 +158,7 @@ const resolveComponentByType = (props) => {
       );
     case 'select':
       return (
-        <Select
-          options={props.options}
-          onChange={props.onChange}
-          className={props.className}
-          value={props.value}
-        />
+        <Select {...props} />
       );
     default:
       return (
