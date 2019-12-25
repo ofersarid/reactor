@@ -56,12 +56,22 @@ export const remove = id => (dispatch, getState, { getFirebase, getFirestore }) 
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
-  const collectionRef = firestore.collection('pages').doc(id);
-  collectionRef.delete().then(() => {
+  const docRef = firestore.collection('pages').doc(id);
+  docRef.delete().then(() => {
     firestore.collection('users').doc(uid).set({
       'pages': auth.selectors.userCollectionIds(state).filter(_id => _id !== id),
     }, { merge: true });
   });
+};
+
+export const addField = (id, field) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const docRef = firestore.collection('pages').doc(id);
+  const schema = JSON5.parse(docRef.data().schema);
+  console.log(schema);
+  // docRef.set({
+  //   'schema': auth.selectors.userCollectionIds(state).filter(_id => _id !== id),
+  // }, { merge: true });
 };
 
 export default {
@@ -69,4 +79,5 @@ export default {
   duplicate,
   remove,
   register,
+  addField,
 };

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 export const select = {
   options: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.any.isRequired,
-    label: PropTypes.string.isRequired,
+    view: PropTypes.string.isRequired,
   }).isRequired),
   className: PropTypes.string,
   defaultValue: PropTypes.string,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   onInputChange: PropTypes.func,
   allowMissMatch: PropTypes.bool, /* if true -will leave the value
   as it is if there is no match to an options */

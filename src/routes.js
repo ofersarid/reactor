@@ -12,6 +12,8 @@ export default (
       <Route path="collection/:collectionId/schema" />
       <Route path="collection/:collectionId/editor/:assetId" />
       <Route path="page/:pageId/editor" />
+      <Route path="page/:pageId/schema" />
+      <Route path="page/:pageId/schema/editor" />
     </Route >
     <Route path="login" />
     <Redirect from="*" to="cms/home" />

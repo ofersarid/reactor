@@ -15,6 +15,7 @@ import MultiLine from './components/multi-line/multi-line';
 import Link from './components/link/link';
 import { Switch, SwitchItem } from '../switch';
 import MultiSelect from './components/multi-select/multi-select';
+import Select from './components/select/select';
 import Tooltip from '../tooltip/tooltip';
 
 const onKeyPress = (e, onEnterKeyPress) => {
@@ -153,6 +154,15 @@ const resolveComponentByType = (props) => {
           className={props.className}
           value={props.value}
           validateWith={props.validateWith}
+        />
+      );
+    case 'select':
+      return (
+        <Select
+          options={props.options}
+          onChange={props.onChange}
+          className={props.className}
+          value={props.value}
         />
       );
     default:

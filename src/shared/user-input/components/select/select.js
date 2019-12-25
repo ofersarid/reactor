@@ -24,7 +24,7 @@ class Select extends PureComponent {
     const { allowMissMatch, value } = this.props;
     if (!value || value === '') return;
     return allowMissMatch ? {
-      label: value,
+      view: value,
       value: value,
     } : this.getOptionByValue();
   }
@@ -35,7 +35,7 @@ class Select extends PureComponent {
     return (
       <ReactSelect
         options={inputValue !== '' ? [{
-          label: inputValue,
+          view: inputValue,
           value: inputValue,
         }].concat(options) : options}
         classNamePrefix="select"
@@ -49,6 +49,8 @@ class Select extends PureComponent {
           onChange(val);
         }}
         onBlur={e => {
+          // todo - remove this before pull request
+          debugger; // eslint-disable-line
           const val = e.currentTarget.value;
           this.setState({ inputValue: '' });
           if (val === '') return;

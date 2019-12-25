@@ -37,7 +37,7 @@ class NavBar extends React.PureComponent {
           {() => springs => <animated.div
             className={cx(styles.navBarTitle)}
             style={springs} >
-            {appTitle}
+            {appTitle || '...'}
           </animated.div >}
         </Transition >
         {(uid && pathname === '/cms/home') && (
@@ -77,7 +77,7 @@ NavBar.propTypes = {
   logOut: PropTypes.func.isRequired,
   uid: PropTypes.string,
   pathname: PropTypes.string.isRequired,
-  appTitle: PropTypes.string.isRequired,
+  appTitle: PropTypes.string,
   goBackPath: PropTypes.string.isRequired,
   show: PropTypes.bool,
 };

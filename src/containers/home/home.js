@@ -9,6 +9,7 @@ import animateScrollTo from 'animated-scroll-to';
 import { Button, UserInput } from '/src/shared';
 import { Add } from 'styled-icons/material';
 import PropTypes from 'prop-types';
+import sotrBy from 'lodash/sortBy';
 import services from '/src/services';
 import styles from './styles.scss';
 
@@ -76,6 +77,8 @@ class Home extends React.PureComponent {
     const { listName, selectList, collections, pages, devMode } = this.props;
     const { showInputField, inputValue, isValid, working, addNow } = this.state;
     const tabs = [{ view: 'Collections', value: 'collections' }, { view: 'Pages', value: 'pages' }];
+    const relevantCollections = sotrBy(collections, item => JSON5.parse(item.schema).length || devMode);
+    const relevantPages = sotrBy(pages, item => JSON5.parse(item.schema).length || devMode);
     return (
       <Fragment >
         <UserInput
@@ -89,13 +92,12 @@ class Home extends React.PureComponent {
           [styles.focus]: listName === 'collections' && !addNow,
         })}
         >
-          {collections.map(item => (
+          {relevantCollections.map(item => (
             <div key={item.id} className={cx(styles.listItemWrap)} >
               <Button
-                linkTo={`cms/collection/${item.id}${JSON5.parse(item.schema).length ? '' : '/schema'}`}
+                linkTo={`cms/collection/${item.id}${devMode ? '/schema' : ''}`}
                 type="white"
                 justifyContent="start"
-                disable={devMode ? false : !JSON5.parse(item.schema).length}
               >
                 {item.name}
               </Button >
@@ -106,10 +108,10 @@ class Home extends React.PureComponent {
           [styles.focus]: listName === 'pages' && !addNow,
           [styles.hideLeft]: addNow,
         })} >
-          {pages.map(item => (
+          {relevantPages.map(item => (
             <div key={item.id} className={cx(styles.listItemWrap, styles.pageListItemWrap)} >
               <Button
-                linkTo={`/cms/page/${item.id}/${JSON5.parse(item.schema).length ? 'editor' : 'schema'}`}
+                linkTo={`/cms/page/${item.id}/${devMode ? 'schema' : 'editor'}`}
                 type="white"
                 justifyContent="start"
               >

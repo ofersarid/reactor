@@ -1,0 +1,76 @@
+@import '/src/shared/styles';
+
+.editor {
+  padding-bottom: 50px;
+  width: 100%;
+}
+
+.divider {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 20px;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  background: #f1f1f1;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+}
+
+.inputWrapper {
+  width: calc(100% - 40px);
+  margin: 20px 20px 60px;
+}
+
+.footerBtn {
+  margin: 0 0 20px 0;
+  flex-shrink: 0;
+
+  &:last-of-type {
+    margin: 0;
+  }
+}
+
+.switch {
+  margin-bottom: 155px;
+}
+
+.editorFooter {
+  position: fixed;
+  width: 100%;
+  padding: 0 20px 40px;
+  box-sizing: border-box;
+  bottom: 0;
+  z-index: 1;
+  backdrop-filter: blur(2px);
+  background: rgba(255, 255, 255, 0.75);
+  transform: translateY(calc(100% - 65px));
+  left: 0;
+  transition: .5s ease-out;
+
+  &.show {
+    transform: translateY(0);
+  }
+
+  .footerToggleBtn {
+    width: calc(100% + 40px);
+    left: -20px;
+    border-radius: 0;
+    border-left: transparent;
+    border-right: transparent;
+    border-bottom: transparent;
+    top: 0;
+    background: transparent;
+    margin-bottom: 20px;
+  }
+
+  .flip {
+    transform: scaleY(-1);
+  }
+
+  .switch {
+    margin-bottom: 20px;
+  }
+}
+

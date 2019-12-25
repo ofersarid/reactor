@@ -6,9 +6,9 @@ export const remove = id => async (dispatch, getState, { getFirebase, getFiresto
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
-  const collectionRef = firestore.collection('collections').doc(id);
+  const docRef = firestore.collection('collections').doc(id);
   cleanStorage(id);
-  collectionRef.delete().then(() => {
+  docRef.delete().then(() => {
     firestore.collection('users').doc(uid).set({
       'collections': auth.selectors.userCollectionIds(state).filter(_id => _id !== id),
     }, { merge: true });

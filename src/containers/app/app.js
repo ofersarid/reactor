@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Transition, animated } from 'react-spring/renderprops';
 import { withRouter } from 'react-router';
 import services from '/src/services';
-import { Home, Editor, CollectionAssets, Schema, Login } from '/src/containers';
+import { Home, Editor, CollectionAssets, Schema, Login, SchemaEditor } from '/src/containers';
 import cx from 'classnames';
 import styles from './styles.scss';
 import NavBar from './nav-bar';
@@ -18,7 +18,8 @@ const pages = [
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Home /></animated.div>,
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><CollectionAssets /></animated.div>,
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Editor /></animated.div>,
-  springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Schema /></animated.div>
+  springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Schema /></animated.div>,
+  springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><SchemaEditor /></animated.div>
 ];
 
 const resolvePageIndex = pathname => {
@@ -27,6 +28,8 @@ const resolvePageIndex = pathname => {
       return 1;
     case Boolean(pathname.match('/cms/collection')) && !pathname.match('editor') && !pathname.match('schema'):
       return 2;
+    case Boolean(pathname.match('schema/editor')):
+      return 5;
     case Boolean(pathname.match('editor')):
       return 3;
     case Boolean(pathname.match('schema')):
