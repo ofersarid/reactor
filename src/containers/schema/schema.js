@@ -10,6 +10,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 import services from '/src/services';
 import { Button } from '/src/shared';
 import { Add } from 'styled-icons/material';
+import { withRouter } from 'react-router';
 import styles from './styles.scss';
 
 class Schema extends PureComponent {
@@ -94,11 +95,11 @@ const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
   collectionId: services.router.selectors.collectionId(state),
   pageId: services.router.selectors.pageId(state),
   schema: (() => {
-    const item = services[ownProps.collectionId ? 'collections' : 'pages'].selectors.item(state);
+    const item = services[ownProps.params.collectionId ? 'collections' : 'pages'].selectors.item(state);
     return item ? JSON5.parse(item.schema) : [];
   })(),
   name: (() => {
-    const metaData = services[ownProps.collectionId ? 'collections' : 'pages'].selectors.item(state);
+    const metaData = services[ownProps.params.collectionId ? 'collections' : 'pages'].selectors.item(state);
     return metaData ? metaData.name : null;
   })(),
 });
@@ -109,6 +110,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
+  withRouter,
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return props.collectionId ? [{

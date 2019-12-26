@@ -9,6 +9,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 import services from '/src/services';
 import { UserInput, Button } from '/src/shared';
 import { fromJS } from 'immutable';
+import { withRouter } from 'react-router';
 import { inputTypes, validationFunctionTypes, inputTypesWithValidationFunction } from '/src/shared/user-input/types';
 import SchemaEditorFooter from './schema-editor-footer';
 import styles from './styles.scss';
@@ -240,13 +241,13 @@ SchemaEditor.propTypes = {
   fieldIndex: PropTypes.number,
 };
 
-const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
+const mapStateToProps = state => ({ // eslint-disable-line
   collectionId: services.router.selectors.collectionId(state),
   pageId: services.router.selectors.pageId(state),
   fieldIndex: services.router.selectors.fieldIndex(state),
   pathname: services.router.selectors.pathname(state),
   metaData: (() => {
-    const metaData = services[ownProps.collectionId ? 'collections' : 'pages'].selectors.item(state);
+    const metaData = services[services.router.selectors.collectionId(state) ? 'collections' : 'pages'].selectors.item(state);
     return metaData;
   })(),
 });
@@ -257,6 +258,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
+  withRouter,
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
     return props.collectionId ? [{
