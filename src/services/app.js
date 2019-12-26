@@ -5,7 +5,7 @@ const TOGGLE_DEV_MODE = 'APP/TOGGLE_DEV_MODE';
 
 const reducer = (state = fromJS({
   headerTitle: 'Reactor',
-  devMode: true,
+  devMode: false,
 }), action) => {
   switch (action.type) {
     case HEADER_TITLE:
