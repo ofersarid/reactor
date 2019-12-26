@@ -64,13 +64,29 @@ export const remove = id => (dispatch, getState, { getFirebase, getFirestore }) 
   });
 };
 
-export const addField = (id, field) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const addField = (id, index, field) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const doc = await firestore.collection('pages').doc(id).get();
+  if (doc.exists) {
+    let schema = JSON5.parse(doc.data().schema);
+    if (index >= 0) {
+      schema[index] = field;
+    } else {
+      schema = schema.concat([field]);
+    }
+    doc.ref.set({
+      'schema': JSON5.stringify(schema),
+    }, { merge: true });
+  }
+};
+
+export const deleteField = (id, index) => async (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const doc = await firestore.collection('pages').doc(id).get();
   if (doc.exists) {
     const schema = JSON5.parse(doc.data().schema);
     doc.ref.set({
-      'schema': JSON5.stringify(schema.concat([field])),
+      'schema': JSON5.stringify(schema.splice(index, 1)),
     }, { merge: true });
   }
 };
@@ -81,4 +97,5 @@ export default {
   remove,
   register,
   addField,
+  deleteField,
 };

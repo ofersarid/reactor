@@ -37,6 +37,7 @@ const selectors = {
   pathname: state => state.getIn(['router', 'pathname']),
   collectionId: state => state.getIn(['router', 'params', 'collectionId']),
   pageId: state => state.getIn(['router', 'params', 'pageId']),
+  fieldIndex: state => parseInt(state.getIn(['router', 'params', 'fieldIndex'])),
   prevPath: state => state.getIn(['router', 'prevPath']),
   goBackPath: state => state.getIn(['router', 'goBackPath']),
   assetId: state => state.getIn(['router', 'params', 'assetId']),

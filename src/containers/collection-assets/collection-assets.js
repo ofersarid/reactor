@@ -14,25 +14,11 @@ import styles from './styles.scss';
 class Collection extends PureComponent {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   collectionAssets: props.collectionAssets,
-    //   collectionMeta: props.collectionMeta,
-    //   collectionId: props.collectionId,
-    // };
     props.setGoBackPath('/cms/home');
     if (props.collectionMeta) {
       props.updateAppTitle(props.collectionMeta.name);
     }
   }
-
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   const { collectionAssets, collectionMeta, collectionId } = nextProps;
-  //   return {
-  //     collectionAssets: collectionAssets || prevState.collectionAssets,
-  //     collectionMeta: collectionMeta || prevState.collectionMeta,
-  //     collectionId: collectionId || prevState.collectionId,
-  //   };
-  // }
 
   componentDidUpdate(prevProps) {
     const { collectionMeta, updateAppTitle } = this.props;

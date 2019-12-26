@@ -28,7 +28,7 @@ const resolvePageIndex = pathname => {
       return 1;
     case Boolean(pathname.match('/cms/collection')) && !pathname.match('editor') && !pathname.match('schema'):
       return 2;
-    case Boolean(pathname.match('schema/editor')):
+    case Boolean(pathname.match(/schema\/.*editor/)):
       return 5;
     case Boolean(pathname.match('editor')):
       return 3;

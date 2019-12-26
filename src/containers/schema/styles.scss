@@ -1,7 +1,7 @@
 @import '/src/shared/styles';
 
 .schemaPage {
-  padding: 0 20px;
+  padding: 20px;
   width: 100%;
   box-sizing: border-box;
 
@@ -14,3 +14,19 @@
   }
 }
 
+.itemWrapper {
+  height: auto !important;
+  text-align: left !important;
+  border-radius: 15px !important;
+  padding: 15px !important;
+  border-color: $lightGray !important;
+  margin-bottom: 18px;
+}
+
+.label {
+  margin-bottom: 0.5em;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.4em;
+}

@@ -51,13 +51,24 @@ class Schema extends PureComponent {
     return schema.length && JSON5.stringify(schema) !== JSON5.stringify(this.props.schema);
   }
 
-  save() {
-  }
-
   render() {
-    const { collectionId, pageId } = this.props;
+    const { collectionId, pageId, schema } = this.props;
     return (
       <div className={styles.schemaPage} >
+        {schema.map((itm, i) => (
+          <Button
+            key={itm.key}
+            className={cx(styles.itemWrapper)}
+            type="white"
+            linkTo={`/cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}/schema/${i}/editor/`}
+            justifyContent="start"
+          >
+            <div className={styles.label} >{itm.label}</div >
+            {Object.keys(itm).map((key, i) => key === 'label' ? null : (
+              <div key={`${key}-${i}`} className={styles[key]}>{key}: {itm[key].toString()}</div>
+            ))}
+          </Button >
+        ))}
         <Button
           type="circle"
           className={cx(styles.addBtn)}

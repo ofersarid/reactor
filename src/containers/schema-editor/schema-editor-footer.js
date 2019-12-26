@@ -48,10 +48,10 @@ class SchemaEditorFooter extends PureComponent {
   }
 
   handleClickOnDone() {
-    const { save, field, collectionId, pageId } = this.props;
+    const { addField, field, collectionId, pageId, fieldIndex } = this.props;
     this.setState({ isWorking: true });
     this.setState({ show: false });
-    save(collectionId || pageId, field, collectionId ? 'collections' : 'pages').then(this.goBack);
+    addField(collectionId || pageId, field, fieldIndex, collectionId ? 'collections' : 'pages').then(this.goBack);
   }
 
   goBack() {
@@ -63,16 +63,16 @@ class SchemaEditorFooter extends PureComponent {
     }
   }
 
-  // handleClickOnDelete() {
-  //   const { deleteAsset, asset } = this.props;
-  //   this.setState({ deleting: true });
-  //   this.setState({ show: false });
-  //   deleteAsset(asset).then(this.goBack);
-  // }
+  handleClickOnDelete() {
+    const { deleteField, fieldIndex, collectionId, pageId } = this.props;
+    this.setState({ deleting: true });
+    this.setState({ show: false });
+    deleteField(collectionId || pageId, fieldIndex, collectionId ? 'collections' : 'pages').then(this.goBack);
+  }
 
   render() {
     const { show } = this.state;
-    const { isValid } = this.props;
+    const { isValid, fieldIndex } = this.props;
     return (
       <div className={cx(styles.editorFooter, { [styles.show]: show })} >
         <Button
@@ -89,15 +89,15 @@ class SchemaEditorFooter extends PureComponent {
         >
           Done
         </Button >
-        {/* {collectionId && asset.id && ( */}
-        {/*  <Button */}
-        {/*    className={styles.footerBtn} */}
-        {/*    type="red" */}
-        {/*    onClick={this.handleClickOnDelete} */}
-        {/*  > */}
-        {/*    Delete */}
-        {/*  </Button > */}
-        {/* )} */}
+        {fieldIndex >= 0 && (
+          <Button
+            className={styles.footerBtn}
+            type="red"
+            onClick={this.handleClickOnDelete}
+          >
+            Delete
+          </Button >
+        )}
       </div >
     );
   }
@@ -110,19 +110,22 @@ SchemaEditorFooter.propTypes = {
   pageId: PropTypes.string,
   goBackPath: PropTypes.string,
   // deleteAsset: PropTypes.func.isRequired,
-  save: PropTypes.func.isRequired,
+  addField: PropTypes.func.isRequired,
+  deleteField: PropTypes.func.isRequired,
+  fieldIndex: PropTypes.number,
 };
 
 const mapStateToProps = state => ({
   collectionId: services.router.selectors.collectionId(state),
   pageId: services.router.selectors.pageId(state),
   goBackPath: services.router.selectors.goBackPath(state),
+  fieldIndex: services.router.selectors.fieldIndex(state),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   // deleteAsset: asset => dispatch(services.asset.actions.delete(asset)),
-  save: (id, field, serviceType) => dispatch(services[serviceType].actions
-    .addField(id, {
+  addField: (id, field, index, serviceType) => dispatch(services[serviceType].actions
+    .addField(id, index, {
       key: field.key,
       label: field.label,
       type: field.type,
@@ -132,6 +135,7 @@ const mapDispatchToProps = dispatch => ({
       minChars: inputTypesWithMinMaxChars.includes(field.type) ? field.minChars : undefined,
       maxChars: inputTypesWithMinMaxChars.includes(field.type) ? field.maxChars : undefined,
     })),
+  deleteField: (id, index, serviceType) => dispatch(services[serviceType].actions.deleteField(id, index))
 });
 
 export default compose(

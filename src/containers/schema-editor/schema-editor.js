@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-// import JSON5 from 'json5';
+import JSON5 from 'json5';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
@@ -17,7 +17,8 @@ class SchemaEditor extends PureComponent {
   constructor(props) {
     super(props);
     autoBind(this);
-    this.state = {
+    const { collectionId, pageId, metaData, fieldIndex } = this.props;
+    this.initialState = {
       key: '',
       label: '',
       type: 'multi-line',
@@ -28,7 +29,7 @@ class SchemaEditor extends PureComponent {
       minChars: 1,
       isValid: false,
     };
-    const { collectionId, pageId, metaData } = this.props;
+    this.state = (metaData && fieldIndex >= 0) ? this.parseSchema(metaData.schema, fieldIndex) : this.initialState;
     props.setGoBackPath(`cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}/schema`);
     props.updateAppTitle(metaData ? metaData.name : null);
   }
@@ -38,7 +39,7 @@ class SchemaEditor extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { updateAppTitle, metaData } = this.props;
+    const { updateAppTitle, metaData, fieldIndex } = this.props;
     const { type } = this.state;
     if (metaData && prevProps.metaData) {
       if (metaData.name !== prevProps.metaData.name) {
@@ -47,10 +48,18 @@ class SchemaEditor extends PureComponent {
     } else if (metaData) {
       updateAppTitle(metaData.name);
     }
+    if (metaData && !prevProps.metaData) {
+      this.setState(this.parseSchema(metaData.schema, fieldIndex));
+    }
     if (type !== prevState.type) {
       this.setState({ options: fromJS([]) });
     }
     this.validate();
+  }
+
+  parseSchema(schemaString, fieldIndex) {
+    const parsed = JSON5.parse(schemaString);
+    return Object.assign({}, this.initialState, parsed[fieldIndex]);
   }
 
   validate() {
@@ -175,7 +184,7 @@ class SchemaEditor extends PureComponent {
           </div >
         )}
         {inputTypesWithValidationFunction.includes(type) && validateWith === 'min-max' && (
-          <Fragment>
+          <Fragment >
             <div className={cx(styles.inputWrapper)} >
               <UserInput
                 placeholder="Min Chars"
@@ -204,7 +213,7 @@ class SchemaEditor extends PureComponent {
                 validateWith={val => (val ? minChars ? parseInt(val) >= minChars : parseInt(val) >= 1 : true)}
               />
             </div >
-          </Fragment>
+          </Fragment >
         )}
         <SchemaEditorFooter isValid={isValid} field={{
           key,
@@ -228,11 +237,13 @@ SchemaEditor.propTypes = {
   setGoBackPath: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
   metaData: PropTypes.object,
+  fieldIndex: PropTypes.number,
 };
 
 const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
   collectionId: services.router.selectors.collectionId(state),
   pageId: services.router.selectors.pageId(state),
+  fieldIndex: services.router.selectors.fieldIndex(state),
   pathname: services.router.selectors.pathname(state),
   metaData: (() => {
     const metaData = services[ownProps.collectionId ? 'collections' : 'pages'].selectors.item(state);
