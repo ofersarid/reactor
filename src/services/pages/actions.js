@@ -82,12 +82,35 @@ export const addField = (id, index, field) => async (dispatch, getState, { getFi
 
 export const deleteField = (id, index) => async (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
+  const firebase = getFirebase();
   const doc = await firestore.collection('pages').doc(id).get();
+  let key = null;
   if (doc.exists) {
-    const schema = JSON5.parse(doc.data().schema);
-    doc.ref.set({
-      'schema': JSON5.stringify(schema.splice(index, 1)),
-    }, { merge: true });
+    const data = doc.data();
+    const schema = JSON5.parse(data.schema);
+    if (schema[index].type.match(/image|pdf/)) {
+      const storageRef = firebase.storage().ref();
+      key = `ref--${schema[index].key}`;
+      const location = data.data[key];
+      if (location) {
+        const ref = storageRef.child(location);
+        try {
+          ref.delete();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+    schema.splice(index, 1);
+    const payload = {
+      'schema': JSON5.stringify(schema),
+    };
+    if (key) {
+      delete data.data[key];
+      delete data.data[key.replace(/^ref--/, '')];
+      payload.data = data.data;
+    }
+    doc.ref.set(payload, { merge: true });
   }
 };
 

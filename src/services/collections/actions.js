@@ -130,13 +130,24 @@ export const addField = (id, index, field) => async (dispatch, getState, { getFi
 };
 
 export const deleteField = (id, index) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  console.error('not supported yet');
+  return;
+  /* eslint-disable */
   const firestore = getFirestore();
   const doc = await firestore.collection('pages').doc(id).get();
   if (doc.exists) {
-    const schema = JSON5.parse(doc.data().schema);
+    const data = doc.data();
+    const schema = JSON5.parse(data.schema);
+    schema.splice(index, 1);
     doc.ref.set({
-      'schema': JSON5.stringify(schema.splice(index, 1)),
+      'schema': JSON5.stringify(schema),
     }, { merge: true });
+    const snapshot = await doc.collection('data').get();
+    snapshot.docs.forEach(doc => {
+      const assetData = doc.data();
+      // TBD
+    });
+    /* eslint-enable */
   }
 };
 
