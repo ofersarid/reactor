@@ -160,6 +160,7 @@ const resolveComponentByType = (props) => {
       return (
         <Select {...props} />
       );
+    case 'number':
     default:
       return (
         <SingleLine

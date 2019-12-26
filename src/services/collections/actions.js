@@ -113,10 +113,22 @@ export const register = idList => (dispatch, getState, { getFirebase, getFiresto
   }, { merge: true });
 };
 
+export const addField = (id, field) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const doc = await firestore.collection('collections').doc(id).get();
+  if (doc.exists) {
+    const schema = JSON5.parse(doc.data().schema);
+    doc.ref.set({
+      'schema': JSON5.stringify(schema.concat([field])),
+    }, { merge: true });
+  }
+};
+
 export default {
   create,
   duplicate,
   remove,
   clearAllAssets,
   register,
+  addField,
 };

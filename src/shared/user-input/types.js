@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 export const inputTypes = ['single-line', 'multi-line', 'multi-line-preserve-lines', 'rich', 'image', 'select',
   'pdf', 'date-time', 'date', 'time', 'link', 'password', 'number', 'switch', 'email', 'youtube', 'multi-select'];
 
+export const inputTypesWithValidationFunction = ['single-line', 'multi-line', 'multi-line-preserve-lines', 'rich',
+  'link', 'password', 'number', 'email', 'youtube'];
+
+export const inputTypesWithOptions = ['select', 'multi-select', 'switch'];
+
+export const inputTypesWithMinMaxChars = ['single-line', 'multi-line', 'multi-line-preserve-lines'];
+
 export const validationFunctionTypes = ['min-max', 'date-time', 'link', 'email'];
 
 export const userInput = {

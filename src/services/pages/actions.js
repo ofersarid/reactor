@@ -66,12 +66,13 @@ export const remove = id => (dispatch, getState, { getFirebase, getFirestore }) 
 
 export const addField = (id, field) => async (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
-  const docRef = firestore.collection('pages').doc(id);
-  const schema = JSON5.parse(docRef.data().schema);
-  console.log(schema);
-  // docRef.set({
-  //   'schema': auth.selectors.userCollectionIds(state).filter(_id => _id !== id),
-  // }, { merge: true });
+  const doc = await firestore.collection('pages').doc(id).get();
+  if (doc.exists) {
+    const schema = JSON5.parse(doc.data().schema);
+    doc.ref.set({
+      'schema': JSON5.stringify(schema.concat([field])),
+    }, { merge: true });
+  }
 };
 
 export default {

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 // import JSON5 from 'json5';
@@ -9,8 +9,8 @@ import { firestoreConnect } from 'react-redux-firebase';
 import services from '/src/services';
 import { UserInput, Button } from '/src/shared';
 import { fromJS } from 'immutable';
-import { inputTypes, validationFunctionTypes } from '/src/shared/user-input/types';
-// import SchemaEditorFooter from './schema-editor-footer';
+import { inputTypes, validationFunctionTypes, inputTypesWithValidationFunction } from '/src/shared/user-input/types';
+import SchemaEditorFooter from './schema-editor-footer';
 import styles from './styles.scss';
 
 class SchemaEditor extends PureComponent {
@@ -24,8 +24,8 @@ class SchemaEditor extends PureComponent {
       required: true,
       validateWith: 'min-max',
       options: fromJS([]),
-      maxChars: null,
-      minChars: 0,
+      maxChars: undefined,
+      minChars: 1,
       isValid: false,
     };
     const { collectionId, pageId, metaData } = this.props;
@@ -59,7 +59,7 @@ class SchemaEditor extends PureComponent {
       isValid: key.length > 0 &&
         label.length > 0 &&
         inputTypes.includes(type) &&
-        (required ? minChars > 0 : true) &&
+        (required && ['single-line', 'multi-line', 'multi-line-preserve-lines', 'rich'].includes(type) ? minChars > 0 : true) &&
         (type === 'multi-select' ? options.size > 0 : true) &&
         (type === 'switch' ? options.size > 1 : true) &&
         (validateWith ? validationFunctionTypes.includes(validateWith) : true) &&
@@ -72,7 +72,7 @@ class SchemaEditor extends PureComponent {
   }
 
   render() {
-    const { key, label, type, required, validateWith, options, isValid } = this.state; // eslint-disable-line
+    const { key, label, type, required, validateWith, options, minChars, maxChars, isValid } = this.state; // eslint-disable-line
     return (
       <div className={styles.editor} >
         <div className={cx(styles.inputWrapper)} >
@@ -86,7 +86,7 @@ class SchemaEditor extends PureComponent {
             max={40}
             required
             type="multi-line"
-            validateWith={val => (val > 0 && val <= 40)}
+            validateWith={val => (val.length > 0 && val.length <= 40)}
           />
         </div >
         <div className={cx(styles.inputWrapper)} >
@@ -100,7 +100,7 @@ class SchemaEditor extends PureComponent {
             max={40}
             required
             type="multi-line"
-            validateWith={val => (val > 0 && val <= 40)}
+            validateWith={val => (val.length > 0 && val.length <= 40)}
           />
         </div >
         <div className={cx(styles.inputWrapper)} >
@@ -125,7 +125,7 @@ class SchemaEditor extends PureComponent {
               max={40}
               required
               type="multi-line"
-              validateWith={val => (val > 0 && val <= 40)}
+              validateWith={val => (val.length > 0 && val.length <= 40)}
             />
           </div >
         ))}
@@ -161,7 +161,7 @@ class SchemaEditor extends PureComponent {
             />
           </div >
         )}
-        {!['select', 'switch', 'multi-select'].includes(type) && (
+        {inputTypesWithValidationFunction.includes(type) && (
           <div className={cx(styles.inputWrapper)} >
             <UserInput
               onChange={value => this.onChange({
@@ -174,7 +174,48 @@ class SchemaEditor extends PureComponent {
             />
           </div >
         )}
-        {/* <SchemaEditorFooter isValid={isValid} onShowHideChange={this.onChange} /> */}
+        {inputTypesWithValidationFunction.includes(type) && validateWith === 'min-max' && (
+          <Fragment>
+            <div className={cx(styles.inputWrapper)} >
+              <UserInput
+                placeholder="Min Chars"
+                onChange={value => this.onChange({
+                  minChars: parseInt(value.replace(/[\d]/g, '')),
+                })}
+                value={`${minChars}`}
+                label="Min Chars"
+                max={5}
+                required
+                type="multi-line"
+                validateWith={val => (maxChars ? parseInt(val) <= maxChars : parseInt(val) >= 0)}
+              />
+            </div >
+            <div className={cx(styles.inputWrapper)} >
+              <UserInput
+                placeholder="Auto"
+                onChange={value => this.onChange({
+                  maxChars: parseInt(value).replace(/[\d]/g, ''),
+                })}
+                value={`${maxChars || ''}`}
+                label="Max Chars"
+                max={5}
+                required
+                type="multi-line"
+                validateWith={val => (val ? minChars ? parseInt(val) >= minChars : parseInt(val) >= 1 : true)}
+              />
+            </div >
+          </Fragment>
+        )}
+        <SchemaEditorFooter isValid={isValid} field={{
+          key,
+          label,
+          type,
+          required,
+          validateWith,
+          options,
+          minChars,
+          maxChars,
+        }} />
       </div >
     );
   }
