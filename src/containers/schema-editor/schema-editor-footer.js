@@ -72,7 +72,7 @@ class SchemaEditorFooter extends PureComponent {
 
   render() {
     const { show } = this.state;
-    const { isValid, fieldIndex } = this.props;
+    const { isValid, origin } = this.props;
     return (
       <div className={cx(styles.editorFooter, { [styles.show]: show })} >
         <Button
@@ -89,7 +89,7 @@ class SchemaEditorFooter extends PureComponent {
         >
           Done
         </Button >
-        {fieldIndex >= 0 && (
+        {origin && (
           <Button
             className={styles.footerBtn}
             type="red"
@@ -113,6 +113,7 @@ SchemaEditorFooter.propTypes = {
   addField: PropTypes.func.isRequired,
   deleteField: PropTypes.func.isRequired,
   fieldIndex: PropTypes.number,
+  origin: PropTypes.object,
 };
 
 const mapStateToProps = state => ({

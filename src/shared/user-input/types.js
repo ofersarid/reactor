@@ -8,7 +8,7 @@ export const inputTypesWithValidationFunction = ['single-line', 'multi-line', 'm
 
 export const inputTypesWithOptions = ['select', 'multi-select', 'switch'];
 
-export const inputTypesWithMinMaxChars = ['single-line', 'multi-line', 'multi-line-preserve-lines'];
+export const inputTypesWithMinMaxChars = ['single-line', 'multi-line', 'multi-line-preserve-lines', 'rich'];
 
 export const validationFunctionTypes = ['min-max', 'date-time', 'link', 'email'];
 

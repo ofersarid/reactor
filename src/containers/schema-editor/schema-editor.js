@@ -82,7 +82,11 @@ class SchemaEditor extends PureComponent {
   }
 
   render() {
-    const { key, label, type, required, validateWith, options, minChars, maxChars, isValid } = this.state; // eslint-disable-line
+    const {
+      key, label, type, required, validateWith,
+      options, minChars, maxChars, isValid,
+    } = this.state;
+    const { origin } = this.props;
     return (
       <div className={styles.editor} >
         <div className={cx(styles.inputWrapper)} >
@@ -95,6 +99,7 @@ class SchemaEditor extends PureComponent {
             label="Key"
             max={40}
             required
+            disabled={Boolean(origin)}
             type="multi-line"
             validateWith={val => (val.length > 0 && val.length <= 40)}
           />
@@ -190,7 +195,7 @@ class SchemaEditor extends PureComponent {
               <UserInput
                 placeholder="Min Chars"
                 onChange={value => this.onChange({
-                  minChars: parseInt(value.replace(/[\d]/g, '')),
+                  minChars: parseInt(value.replace(/[\D]/g, '')),
                 })}
                 value={`${minChars}`}
                 label="Min Chars"
@@ -204,7 +209,7 @@ class SchemaEditor extends PureComponent {
               <UserInput
                 placeholder="Auto"
                 onChange={value => this.onChange({
-                  maxChars: parseInt(value).replace(/[\d]/g, ''),
+                  maxChars: parseInt(value.replace(/[\D]/g, '')),
                 })}
                 value={`${maxChars || ''}`}
                 label="Max Chars"
@@ -223,9 +228,9 @@ class SchemaEditor extends PureComponent {
           required,
           validateWith,
           options,
-          minChars,
-          maxChars,
-        }} />
+          minChars: minChars,
+          maxChars: maxChars,
+        }} origin={origin} />
       </div >
     );
   }
@@ -238,6 +243,7 @@ SchemaEditor.propTypes = {
   setGoBackPath: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
   metaData: PropTypes.object,
+  origin: PropTypes.object,
   fieldIndex: PropTypes.number,
 };
 
@@ -249,6 +255,10 @@ const mapStateToProps = state => ({ // eslint-disable-line
   metaData: (() => {
     const metaData = services[services.router.selectors.collectionId(state) ? 'collections' : 'pages'].selectors.item(state);
     return metaData;
+  })(),
+  origin: (() => {
+    const metaData = services[services.router.selectors.collectionId(state) ? 'collections' : 'pages'].selectors.item(state);
+    return metaData ? JSON5.parse(metaData.schema)[services.router.selectors.fieldIndex(state)] : undefined;
   })(),
 });
 

@@ -28,6 +28,9 @@ const actions = {
     type: HEADER_TITLE,
     newTitle,
   }),
+  toggleDevMode: () => ({
+    type: TOGGLE_DEV_MODE,
+  }),
 };
 
 export default {
