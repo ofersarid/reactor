@@ -5,6 +5,7 @@ import LinesEllipsisLoose from 'react-lines-ellipsis/lib/loose';
 import { firestoreConnect } from 'react-redux-firebase';
 import moment from 'moment/moment';
 import cx from 'classnames';
+import JSON5 from 'json5';
 import PropTypes from 'prop-types';
 import services from '/src/services';
 import { Button } from '/src/shared';
@@ -22,7 +23,7 @@ class Collection extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { collectionMeta, updateAppTitle } = this.props;
-    if (!prevProps.collectionMeta && collectionMeta.name) {
+    if (!prevProps.collectionMeta && collectionMeta) {
       updateAppTitle(collectionMeta.name);
     }
   }
@@ -39,7 +40,7 @@ class Collection extends PureComponent {
   }
 
   render() {
-    const { collectionAssets, collectionMeta, collectionId } = this.props;
+    const { collectionAssets, collectionMeta, collectionId, schema } = this.props;
     return (
       <div className={styles.container} >
         {collectionAssets && collectionAssets.map(item => (
@@ -50,15 +51,15 @@ class Collection extends PureComponent {
             linkTo={`/cms/collection/${collectionId}/editor/${item.id}`}
             justifyContent="start"
           >
-            {collectionMeta.layout.title && <div className={styles.itemTitle} >{this.interpolateValue(item, collectionMeta.layout.title)}</div >}
-            {collectionMeta.layout.body && (
-              <LinesEllipsisLoose
-                text={this.interpolateValue(item, collectionMeta.layout.body)}
-                maxLine='4'
-                lineHeight='24'
-                className={styles.itemBody}
-              />
-            )}
+            <div className={styles.itemTitle} >
+              {this.interpolateValue(item, collectionMeta.layout.title || schema[0].key)}
+            </div >
+            <LinesEllipsisLoose
+              text={this.interpolateValue(item, collectionMeta.layout.body || (schema[1] ? schema[1].key : ''))}
+              maxLine='4'
+              lineHeight='24'
+              className={styles.itemBody}
+            />
           </Button >
         ))}
         <Button
@@ -85,12 +86,17 @@ Collection.propTypes = {
   }),
   setGoBackPath: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
+  schema: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collectionId: services.router.selectors.collectionId(state),
   collectionAssets: services.collections.selectors.assets(state),
-  collectionMeta: services.collections.selectors.item(state)
+  collectionMeta: services.collections.selectors.item(state),
+  schema: (() => {
+    const item = services.collections.selectors.item(state);
+    return item ? JSON5.parse(item.schema) : [];
+  })(),
 });
 
 const mapDispatchToProps = dispatch => ({
