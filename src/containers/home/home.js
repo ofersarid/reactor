@@ -58,6 +58,7 @@ class Home extends React.PureComponent {
     const { inputValue } = this.state;
     this.setState({
       working: true,
+      addNow: false,
     });
     await listName === 'collections' ? createCollection(inputValue) : createPage(inputValue);
     setTimeout(() => {
