@@ -12,6 +12,17 @@
     z-index: 1;
     transition: 2s $ease;
   }
+
+  li {
+    transition: opacity tranform 1s $ease;
+  }
+
+  &.sorting {
+    li {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
 }
 
 .itemWrapper {
@@ -29,4 +40,18 @@
   font-size: 18px;
   font-weight: 400;
   line-height: 1.4em;
+}
+
+.dragging {
+  cursor: grab !important;
+  list-style: none;
+
+  & > div {
+    box-shadow: 0 5px 10px rgba(black, 0.1);
+    cursor: row-resize !important;
+    pointer-events: all;
+  }
+
+  * {
+  }
 }

@@ -113,6 +113,16 @@ export const register = idList => (dispatch, getState, { getFirebase, getFiresto
   }, { merge: true });
 };
 
+export const sortSchema = (id, schema) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const doc = await firestore.collection('collections').doc(id).get();
+  if (doc.exists) {
+    doc.ref.set({
+      'schema': JSON5.stringify(schema),
+    }, { merge: true });
+  }
+};
+
 export const addField = (id, index, field) => async (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const doc = await firestore.collection('collections').doc(id).get();
@@ -159,4 +169,5 @@ export default {
   register,
   addField,
   deleteField,
+  sortSchema,
 };

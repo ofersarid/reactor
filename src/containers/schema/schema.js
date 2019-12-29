@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import JSON5 from 'json5';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
@@ -13,6 +14,30 @@ import { Add } from 'styled-icons/material';
 import { withRouter } from 'react-router';
 import styles from './styles.scss';
 
+const SortableItem = SortableElement(({ children }) => <li >{children}</li >);
+
+const SortableList = SortableContainer(({ items, collectionId, pageId }) => {
+  return (
+    <ul >
+      {items.map((itm, i) => (
+        <SortableItem key={`item-${itm.key}`} index={i} >
+          <Button
+            className={cx(styles.itemWrapper)}
+            type="white"
+            linkTo={`/cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}/schema/${i}/editor/`}
+            justifyContent="start"
+          >
+            <div className={styles.label} >{itm.label}</div >
+            {Object.keys(itm).map((key, i) => key === 'label' ? null : (
+              <div key={`${key}-${i}`} className={styles[key]} >{key}: {itm[key].toString()}</div >
+            ))}
+          </Button >
+        </SortableItem >
+      ))}
+    </ul >
+  );
+});
+
 class Schema extends PureComponent {
   constructor(props) {
     super(props);
@@ -22,6 +47,7 @@ class Schema extends PureComponent {
       isValid: false,
       deleting: false,
       isWorking: false,
+      sorting: false,
     };
     props.setGoBackPath(`/cms/home`);
     props.updateAppTitle(props.name);
@@ -36,10 +62,6 @@ class Schema extends PureComponent {
     return {};
   }
 
-  componentDidMount() {
-    this.validate();
-  }
-
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { updateAppTitle, name } = this.props;
     if (name !== prevProps.name) {
@@ -47,29 +69,28 @@ class Schema extends PureComponent {
     }
   }
 
-  validate() {
-    const { schema } = this.state;
-    return schema.length && JSON5.stringify(schema) !== JSON5.stringify(this.props.schema);
+  onSortEnd(sorted) {
+    const { schema, sortSchema, collectionId, pageId } = this.props;
+    const moveMe = schema[sorted.oldIndex];
+    schema.splice(sorted.oldIndex, 1);
+    schema.splice(sorted.newIndex, 0, moveMe);
+    this.setState({ sorting: false });
+    sortSchema(schema, collectionId, pageId);
+  }
+
+  onSortStart() {
+    this.setState({ sorting: true });
   }
 
   render() {
     const { collectionId, pageId, schema } = this.props;
+    const { sorting } = this.state;
     return (
-      <div className={styles.schemaPage} >
-        {schema.map((itm, i) => (
-          <Button
-            key={itm.key}
-            className={cx(styles.itemWrapper)}
-            type="white"
-            linkTo={`/cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}/schema/${i}/editor/`}
-            justifyContent="start"
-          >
-            <div className={styles.label} >{itm.label}</div >
-            {Object.keys(itm).map((key, i) => key === 'label' ? null : (
-              <div key={`${key}-${i}`} className={styles[key]}>{key}: {itm[key].toString()}</div>
-            ))}
-          </Button >
-        ))}
+      <div className={cx(styles.schemaPage, { [styles.sorting]: sorting })} >
+        <SortableList
+          items={schema} onSortEnd={this.onSortEnd} pressDelay={300} collectionId={collectionId} lockAxis="y"
+          transitionDuration={500} lockToContainerEdges helperClass={styles.dragging} onSortStart={this.onSortStart}
+          pageId={pageId} />
         <Button
           type="circle"
           className={cx(styles.addBtn)}
@@ -89,6 +110,7 @@ Schema.propTypes = {
   setGoBackPath: PropTypes.func.isRequired,
   name: PropTypes.string,
   updateAppTitle: PropTypes.func.isRequired,
+  sortSchema: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
@@ -107,6 +129,8 @@ const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
 const mapDispatchToProps = dispatch => ({
   setGoBackPath: path => dispatch(services.router.actions.setGoBackPath(path)),
   updateAppTitle: newTitle => dispatch(services.app.actions.updateAppTitle(newTitle)),
+  sortSchema: (schema, collectionId, pageId) =>
+    dispatch(services[collectionId ? 'collections' : 'pages'].actions.sortSchema(collectionId || pageId, schema)),
 });
 
 export default compose(
