@@ -76,13 +76,12 @@ class Editor extends PureComponent {
 
   validate() {
     const { asset } = this.state;
+    const { fields } = this.props;
     if (asset) {
       let isValid = true;
-      Object.keys(asset).forEach(key => {
-        if (!key.match(/^ref--|^published|^id$/)) {
-          const validationFunction = this.resolveValidationFunction(this.getField(key));
-          isValid = isValid && validationFunction(asset[key]);
-        }
+      fields.forEach(field => {
+        const validationFunction = this.resolveValidationFunction(field);
+        isValid = isValid && validationFunction(asset[field.key]);
       });
       this.setState({ isValid });
     } else {
@@ -109,6 +108,8 @@ class Editor extends PureComponent {
         return value => (utils.validateEmail(value)) || (!field.required && value.length === 0);
       case field.type === 'multi-select' && field.required:
         return value => (JSON5.parse(value || '[]').filter(itm => itm.active).length > 0);
+      case field.type === 'select' && field.required:
+        return value => Boolean(value && value.length > 0);
       default:
         return () => true;
     }
@@ -142,7 +143,7 @@ class Editor extends PureComponent {
                 // onValidation={isValid => this.onValidation(field.required ? isValid : true, field.key)}
                 disabled={field.disabled}
                 required={field.required}
-                options={field.options}
+                options={field.options ? JSON5.parse(field.options) : undefined}
                 type={field.type}
                 transformer={field.transformer}
                 validateWith={this.resolveValidationFunction(field)}

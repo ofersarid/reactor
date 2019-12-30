@@ -31,11 +31,7 @@ export const userInput = {
   onlyNumbers: PropTypes.bool,
   checkedChildren: PropTypes.any,
   unCheckedChildren: PropTypes.any,
-  options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.any.isRequired,
-    active: PropTypes.bool, // todo - check if this is redundant
-    view: PropTypes.any.isRequired,
-  })),
+  options: PropTypes.array,
   rtl: PropTypes.bool,
   required: PropTypes.bool,
   validationTip: PropTypes.string,

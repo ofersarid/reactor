@@ -5,6 +5,7 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import autoBind from 'auto-bind';
 import services from '/src/services';
+import { actionTypes } from 'redux-firestore';
 import { Lock } from 'styled-icons/boxicons-regular/Lock';
 import { LoginCircle } from 'styled-icons/remix-line/LoginCircle';
 import { UserInput, Button } from '/src/shared';
@@ -26,9 +27,10 @@ class Login extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { logOut, pathname } = this.props;
+    const { logOut, pathname, clearData } = this.props;
     if (prevProps.pathname.match('home') && pathname.match(/login/)) {
       logOut();
+      clearData();
     }
     this.validate();
   }
@@ -102,6 +104,7 @@ class Login extends PureComponent {
 Login.propTypes = {
   deviceType: PropTypes.oneOf(['tablet', 'desktop', 'mobile']),
   logIn: PropTypes.func.isRequired,
+  clearData: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
   logOut: PropTypes.func.isRequired,
   authError: PropTypes.shape({
@@ -122,6 +125,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   logIn: (...props) => dispatch(services.auth.actions.logIn(...props)),
   logOut: (...props) => dispatch(services.auth.actions.logOut(...props)),
+  clearData: () => dispatch({
+    type: actionTypes.CLEAR_DATA,
+  }),
 });
 
 export default compose(

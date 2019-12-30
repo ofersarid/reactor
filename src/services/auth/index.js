@@ -5,24 +5,31 @@ import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 import router from '../redux-router';
 
+export const CONST = {
+  LOG_IN_ERROR: 'AUTH/LOG_IN_ERROR',
+  LOGGING_IN: 'AUTH/LOGGING_IN',
+  LOG_IN_SUCCESS: 'AUTH/LOG_IN_SUCCESS',
+  LOG_OUT_SUCCESS: 'AUTH/LOG_OUT_SUCCESS',
+};
+
 const reducer = (state = fromJS({
   authError: null,
   working: false,
 }), action) => {
   switch (action.type) {
-    case 'AUTH:LOG_IN_ERROR':
+    case CONST.LOG_IN_ERROR:
       return state.withMutations(ctx => {
         ctx.set('authError', fromJS(action.err))
           .set('working', false);
       });
 
-    case 'AUTH:LOGGING_IN':
+    case CONST.LOGGING_IN:
       return state.withMutations(ctx => {
         ctx.set('working', true)
           .set('authError', null);
       });
 
-    case 'AUTH/LOG_IN_SUCCESS':
+    case CONST.LOG_IN_SUCCESS:
       return state.withMutations(ctx => {
         ctx.set('working', false);
       });
@@ -36,18 +43,18 @@ const actions = {
     return (dispatch, getState, { getFirebase }) => {
       const firebase = getFirebase();
       dispatch({
-        type: 'AUTH:LOGGING_IN',
+        type: CONST.LOGGING_IN,
       });
       return firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
         .then(resp => {
           dispatch({
-            type: 'AUTH:LOG_IN_SUCCESS',
+            type: CONST.LOG_IN_SUCCESS,
             credentials,
           });
         })
         .catch(err => {
           dispatch({
-            type: 'AUTH:LOG_IN_ERROR',
+            type: CONST.LOG_IN_ERROR,
             err,
           });
         });
@@ -58,7 +65,7 @@ const actions = {
       const firebase = getFirebase();
       return firebase.auth().signOut().then(() => {
         dispatch({
-          type: 'AUTH:LOG_OUT_SUCCESS',
+          type: CONST.LOG_OUT_SUCCESS,
         });
       });
     };
@@ -142,4 +149,5 @@ export default {
   selectors,
   actions,
   HOC,
+  CONST,
 };

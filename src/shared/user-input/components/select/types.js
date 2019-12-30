@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const select = {
-  options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.any.isRequired,
-    view: PropTypes.string.isRequired,
-  }).isRequired),
+  options: PropTypes.array.isRequired,
   className: PropTypes.string,
   defaultValue: PropTypes.string,
   placeholder: PropTypes.string,

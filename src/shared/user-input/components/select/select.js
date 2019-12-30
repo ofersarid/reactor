@@ -12,18 +12,41 @@ class Select extends PureComponent {
     autoBind(this);
     this.state = {
       inputValue: '',
+      isValid: false,
     };
+  }
+
+  componentDidMount() {
+    const { validateWith, value } = this.props;
+    this.setState({ isValid: validateWith(value) });
+  }
+
+  componentDidUpdate() {
+    const { validateWith, value } = this.props;
+    this.setState({ isValid: validateWith(value) });
   }
 
   render() {
     const { options, className, placeholder, onChange, isSearchable, isClearable, value } = this.props;
-    const optionsTransformed = options.map(opt => ({
-      value: opt.value,
-      label: opt.view,
-    }));
+    const { isValid } = this.state;
+    const optionsTransformed = options.map(opt => {
+      if (typeof opt === 'object') {
+        // deprecated
+        return ({
+          value: opt.value,
+          label: opt.view,
+        });
+      } else {
+        // use this
+        return ({
+          value: opt,
+          label: opt,
+        });
+      }
+    });
     return (
       <ReactSelect
-        className={cx(styles.select, className)}
+        className={cx(styles.select, className, { [styles.error]: !isValid })}
         classNamePrefix="select"
         isClearable={isClearable}
         isSearchable={isSearchable}

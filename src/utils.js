@@ -6,6 +6,12 @@ const capitalize = word => {
   return word.charAt(0).toUpperCase() + word.substring(1);
 };
 
+export const camelize = str => {
+  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+    return index === 0 ? word.toLowerCase() : word.toUpperCase();
+  }).replace(/\s+/g, '');
+};
+
 export const toCapitalizedWords = name => {
   var words = name.match(/[A-Za-z][a-z]*/g) || [];
 
@@ -65,4 +71,5 @@ export default {
   youtubeEmbedTransformer,
   exportToCsv,
   validateLink,
+  camelize,
 };

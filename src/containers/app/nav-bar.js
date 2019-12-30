@@ -2,6 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { compose } from 'redux';
 import autoBind from 'auto-bind';
+import { actionTypes } from 'redux-firestore';
 import { Transition, animated } from 'react-spring/renderprops';
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
@@ -23,8 +24,14 @@ class NavBar extends React.PureComponent {
     hashHistory.push(goBackPath);
   }
 
+  logOut() {
+    const { logOut, clearData } = this.props;
+    logOut();
+    clearData();
+  }
+
   render() {
-    const { logOut, uid, pathname, appTitle, show } = this.props;
+    const { uid, pathname, appTitle, show } = this.props;
 
     return (
       <div className={cx(styles.navBar, { [styles.show]: show })} >
@@ -48,7 +55,7 @@ class NavBar extends React.PureComponent {
             enter={{ opacity: 1, transform: 'scale(1)' }}
             leave={{ opacity: 0, transform: 'scale(0)' }} >
             {() => springs => <animated.div className={cx(styles.toTheLeft, styles.btnWrap)} style={springs} >
-              <Button type="icon" className={cx(styles.btn)} onClick={logOut} >
+              <Button type="icon" className={cx(styles.btn)} onClick={this.logOut} >
                 <LogOutCircle />
               </Button >
             </animated.div >}
@@ -80,6 +87,7 @@ NavBar.propTypes = {
   appTitle: PropTypes.string,
   goBackPath: PropTypes.string.isRequired,
   show: PropTypes.bool,
+  clearData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -91,6 +99,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   logOut: () => dispatch(services.auth.actions.logOut()),
+  clearData: () => dispatch({
+    type: actionTypes.CLEAR_DATA,
+  }),
 });
 
 export default compose(
