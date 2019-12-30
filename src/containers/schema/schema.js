@@ -147,6 +147,7 @@ export default compose(
         collection: 'data',
         doc: props.assetId,
       }],
+      storeAs: 'assets',
     }] : props.pageId ? [{
       collection: 'pages',
       doc: props.pageId,

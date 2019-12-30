@@ -93,21 +93,21 @@ class Editor extends PureComponent {
     if (!field) return () => true;
     switch (true) {
       case field.validateWith === 'min-max' && Boolean(field.maxChars && field.minChars):
-        return value => (value.length <= field.maxChars && value.length >= field.minChars);
+        return value => Boolean(value && (value.length <= field.maxChars && value.length >= field.minChars));
       case field.validateWith === 'min-max' && Boolean(field.maxChars):
-        return value => ((value.length <= field.maxChars && (field.required ? value.length > 0 : true)) || (!field.required && value.length === 0));
+        return value => Boolean(value && ((value.length <= field.maxChars && (field.required ? value.length > 0 : true)) || (!field.required && value.length === 0)));
       case field.validateWith === 'min-max' && Boolean(field.minChars):
-        return value => (value.length >= field.minChars);
+        return value => Boolean(value && (value.length >= field.minChars));
       case ['image', 'pdf'].includes(field.type) && field.required:
-        return file => (((typeof file === 'string') && file.length > 0) || (typeof file.name === 'string'));
+        return file => Boolean(file && (((typeof file === 'string') && file.length > 0) || (typeof file.name === 'string')));
       case field.validateWith === 'date-time':
-        return value => (typeof value === 'object' || (!field.required && value.length === 0));
+        return value => (typeof value === 'object' || (!field.required && value && value.length === 0));
       case field.validateWith === 'link':
-        return value => (utils.validateLink(value)) || (!field.required && value.length === 0);
+        return value => (utils.validateLink(value)) || (!field.required && value && value.length === 0);
       case field.validateWith === 'email':
-        return value => (utils.validateEmail(value)) || (!field.required && value.length === 0);
+        return value => (utils.validateEmail(value)) || (!field.required && value && value.length === 0);
       case field.type === 'multi-select' && field.required:
-        return value => (JSON5.parse(value || '[]').filter(itm => itm.active).length > 0);
+        return value => Boolean(value && (JSON5.parse(value || '[]').filter(itm => itm.active).length > 0));
       case field.type === 'select' && field.required:
         return value => Boolean(value && value.length > 0);
       default:
@@ -219,6 +219,7 @@ export default compose(
         collection: 'data',
         doc: props.assetId,
       }],
+      storeAs: 'assets',
     }] : props.pageId ? [{
       collection: 'pages',
       doc: props.pageId,
