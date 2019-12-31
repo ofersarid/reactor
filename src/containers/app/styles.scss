@@ -39,7 +39,7 @@
   color: white;
   position: fixed;
   backdrop-filter: blur(2px);
-  z-index: 2;
+  z-index: 3;
   transform: translateX(100%);
   opacity: 0;
   transition: 1s $ease;
@@ -78,3 +78,28 @@
   }
 }
 
+.secondaryNav {
+  position: fixed;
+  left: 0;
+  z-index: 2;
+  background: rgba($white, 0.5);
+  backdrop-filter: blur(2px);
+  transform: translateY(-100%);
+  top: $nav-bar-height;
+  width: 100vw;
+  transition: 1s $ease;
+  opacity: 0;
+
+  &.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.tabSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 20px 20px;
+}

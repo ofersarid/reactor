@@ -75,20 +75,13 @@ class Home extends React.PureComponent {
   }
 
   render() {
-    const { listName, selectList, collections, pages, devMode } = this.props;
+    const { listName, collections, pages, devMode } = this.props;
     const { showInputField, inputValue, isValid, working, addNow } = this.state;
-    const tabs = [{ view: 'Collections', value: 'collections' }, { view: 'Pages', value: 'pages' }];
+    // const tabs = [{ view: 'Collections', value: 'collections' }, { view: 'Pages', value: 'pages' }];
     const relevantCollections = sotrBy(collections, item => JSON5.parse(item.schema).length || devMode);
     const relevantPages = sotrBy(pages, item => JSON5.parse(item.schema).length || devMode);
     return (
       <Fragment >
-        <UserInput
-          type="switch"
-          options={tabs}
-          value={listName}
-          onChange={selectList}
-          className={styles.tabSection}
-        />
         <div ref={this.ref.collectionList} className={cx(styles.listContainer, {
           [styles.focus]: listName === 'collections' && !addNow,
         })}
@@ -167,7 +160,6 @@ Home.propTypes = {
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
   })),
-  selectList: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
   createCollection: PropTypes.func.isRequired,
   createPage: PropTypes.func.isRequired,
@@ -185,7 +177,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  selectList: (...props) => dispatch(services.home.actions.selectList(...props)),
   updateAppTitle: newTitle => dispatch(services.app.actions.updateAppTitle(newTitle)),
   createCollection: title => dispatch(services.collections.actions.create(title, [], '', '')),
   createPage: title => dispatch(services.pages.actions.create(title, [])),
