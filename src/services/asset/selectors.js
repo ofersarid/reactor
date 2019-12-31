@@ -1,48 +1,9 @@
 import { createSelector } from 'reselect/lib/index';
 import JSON5 from 'json5';
-import router from '/src/services/redux-router';
 import collectionsSelectors from '../collections/selectors';
 import pages from '../pages';
 
-const item = createSelector(
-  collectionsSelectors.item,
-  collectionsSelectors.assets,
-  pages.selectors.item,
-  router.selectors.assetId,
-  (collection, collectionAssets, page, _assetId) => {
-    let asset;
-    if (collectionAssets) {
-      asset = collectionAssets.find(asset => asset.id === _assetId);
-    } else if (page) {
-      asset = page.data;
-    }
-    if (!asset) {
-      if (collection) {
-        asset = {};
-        asset.published = true;
-        JSON5.parse(collection.schema).forEach(field => {
-          switch (true) {
-            // case field.type === 'date-time':
-            // case field.type === 'date':
-            // case field.type === 'time':
-            //   asset[field.key] = undefined;
-            //   return;
-            default:
-              asset[field.key] = '';
-          }
-        });
-      } else if (page) {
-        asset = {};
-        JSON5.parse(page.schema).forEach(field => {
-          switch (true) {
-            default:
-              asset[field.key] = '';
-          }
-        });
-      }
-    }
-    return asset;
-  });
+const item = state => state.get('fireStore').data.asset;
 
 const fields = createSelector(
   collectionsSelectors.item,
