@@ -128,6 +128,7 @@ class SchemaEditor extends PureComponent {
             type="select"
             placeholder="Select Input Type"
             options={inputTypes.map(item => ({ view: item, value: item }))}
+            validateWith={val => val && val.length > 0}
           />
         </div >
         {['select', 'switch', 'multi-select'].includes(type) && options.map((opt, i) => (
@@ -185,7 +186,8 @@ class SchemaEditor extends PureComponent {
               value={validateWith}
               label="Validation Function"
               type="select"
-              options={validationFunctionTypes.map(item => ({ view: item, value: item }))}
+              options={validationFunctionTypes}
+              validateWith={val => val && val.length > 0}
             />
           </div >
         )}

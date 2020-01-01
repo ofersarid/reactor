@@ -81,7 +81,7 @@ class Editor extends PureComponent {
       let isValid = true;
       fields.forEach(field => {
         const validationFunction = this.resolveValidationFunction(field);
-        isValid = isValid && validationFunction(asset[field.key]);
+        isValid = Boolean(isValid && validationFunction(asset[field.key]));
       });
       this.setState({ isValid });
     } else {
@@ -102,7 +102,7 @@ class Editor extends PureComponent {
         return file => Boolean(file && (((typeof file === 'string') && file.length > 0) || (typeof file.name === 'string')));
       case field.validateWith === 'date-time':
         return value => (typeof value === 'object' || (!field.required && value && value.length === 0));
-      case field.validateWith === 'link':
+      case field.validateWith === 'link' && field.required:
         return value => (utils.validateLink(value)) || (!field.required && value && value.length === 0);
       case field.validateWith === 'email':
         return value => (utils.validateEmail(value)) || (!field.required && value && value.length === 0);
