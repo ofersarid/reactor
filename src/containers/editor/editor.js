@@ -143,7 +143,7 @@ class Editor extends PureComponent {
                 // onValidation={isValid => this.onValidation(field.required ? isValid : true, field.key)}
                 disabled={field.disabled}
                 required={field.required}
-                options={field.options ? JSON5.parse(field.options) : undefined}
+                options={typeof field.options === 'string' ? JSON5.parse(field.options) : field.options}
                 type={field.type}
                 transformer={field.transformer}
                 validateWith={this.resolveValidationFunction(field)}
