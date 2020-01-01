@@ -3,7 +3,7 @@ import JSON5 from 'json5';
 import collectionsSelectors from '../collections/selectors';
 import pages from '../pages';
 
-const item = state => state.get('fireStore').data.asset;
+const item = state => state.get('fireStore').data.editor;
 
 const fields = createSelector(
   collectionsSelectors.item,

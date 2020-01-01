@@ -123,10 +123,10 @@ class Editor extends PureComponent {
     const { fields } = this.props;
     const { isValid, asset } = this.state;
     const groups = [];
-    return (Boolean(asset) && Boolean(fields)) ? (
+    return fields ? (
       <div className={styles.editor} >
         {fields.map(field => {
-          const value = this.state.asset[field.key];
+          const value = asset ? asset[field.key] : undefined;
           const dom = <Fragment key={field.key} >
             {groups.slice(-1)[0] !== field.group ? <div className={styles.divider} >{field.group}</div > : null}
             <div className={cx(styles.inputWrapper)} >
@@ -219,7 +219,7 @@ export default compose(
         collection: 'data',
         doc: props.assetId,
       }],
-      storeAs: 'asset',
+      storeAs: 'editor',
     }] : props.pageId ? [{
       collection: 'pages',
       doc: props.pageId,

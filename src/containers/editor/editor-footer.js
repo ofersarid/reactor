@@ -42,10 +42,11 @@ class EditorFooter extends PureComponent {
   }
 
   handleClickOnDone() {
-    const { save, asset } = this.props;
+    const { save, asset, assetId } = this.props;
     this.setState({ isWorking: true });
     this.setState({ show: false });
-    save(asset).then(this.goBack);
+    save(asset, assetId);
+    this.goBack();
   }
 
   goBack() {
@@ -58,15 +59,16 @@ class EditorFooter extends PureComponent {
   }
 
   handleClickOnDelete() {
-    const { deleteAsset, asset } = this.props;
+    const { deleteAsset, asset, assetId } = this.props;
     this.setState({ deleting: true });
     this.setState({ show: false });
-    deleteAsset(asset).then(this.goBack);
+    deleteAsset(asset, assetId);
+    this.goBack();
   }
 
   render() {
     const { show } = this.state;
-    const { asset, isValid, collectionId, onShowHideChange } = this.props;
+    const { asset, isValid, collectionId, onShowHideChange, assetId } = this.props;
     return (
       <div className={cx(styles.editorFooter, { [styles.show]: show })} >
         <Button
@@ -76,15 +78,13 @@ class EditorFooter extends PureComponent {
         >
           <ChevronUp className={cx({ [styles.flip]: show })} />
         </Button >
-        {Boolean(asset.published !== undefined) && (
-          <UserInput
-            type="switch"
-            options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
-            value={asset.published}
-            onChange={val => onShowHideChange({ published: val })}
-            className={styles.switch}
-          />
-        )}
+        <UserInput
+          type="switch"
+          options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
+          value={asset ? Boolean(asset.published) : false}
+          onChange={val => onShowHideChange({ published: val })}
+          className={styles.switch}
+        />
         <Button
           className={styles.footerBtn}
           disable={!isValid}
@@ -92,7 +92,7 @@ class EditorFooter extends PureComponent {
         >
           Done
         </Button >
-        {collectionId && asset.id && (
+        {collectionId && assetId && (
           <Button
             className={styles.footerBtn}
             type="red"
@@ -114,16 +114,18 @@ EditorFooter.propTypes = {
   save: PropTypes.func.isRequired,
   onShowHideChange: PropTypes.func.isRequired,
   goBackPath: PropTypes.string.isRequired,
+  assetId: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
   collectionId: services.router.selectors.collectionId(state),
   goBackPath: services.router.selectors.goBackPath(state),
+  assetId: services.router.selectors.assetId(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-  deleteAsset: asset => dispatch(services.asset.actions.delete(asset)),
-  save: asset => dispatch(services.asset.actions.save(asset)),
+  deleteAsset: (asset, assetId) => dispatch(services.asset.actions.delete(asset, assetId)),
+  save: (asset, assetId) => dispatch(services.asset.actions.save(asset, assetId)),
 });
 
 export default compose(

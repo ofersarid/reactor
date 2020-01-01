@@ -90,27 +90,25 @@ const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatc
   return promise;
 };
 
-const save = asset => {
+const save = (asset, assetId) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     const firebase = getFirebase();
     const state = getState();
     const uid = auth.selectors.uid(state);
     const collectionId = router.selectors.collectionId(state);
-    const assetId = asset.id || router.selectors.pageId(state);
-    delete asset.id;
     return update(uid, asset, assetId, collectionId, firestore, firebase, dispatch, state);
   };
 };
 
-const _delete = asset => {
+const _delete = (asset, assetId) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const state = getState();
     const collectionId = router.selectors.collectionId(state);
     const firestore = getFirestore();
     const firebase = getFirebase();
     const filePaths = [];
-    const entityRef = getCollectionAssetRef(collectionId, asset.id, firestore);
+    const entityRef = getCollectionAssetRef(collectionId, assetId, firestore);
     Object.keys(asset).forEach(key => {
       if (key.match(/^ref--/)) {
         filePaths.push(asset[key]);
@@ -123,7 +121,7 @@ const _delete = asset => {
         });
         const orderedList = collectionsService.selectors.item(state).order.split(' | ');
         firestore.collection('collections').doc(collectionId).set({
-          'order': orderedList.filter(id => id !== asset.id,).join(' | '),
+          'order': orderedList.filter(id => id !== assetId).join(' | '),
         }, { merge: true }).then(() => {
           resolve();
         });
