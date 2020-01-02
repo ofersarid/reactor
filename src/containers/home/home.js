@@ -24,7 +24,7 @@ class Home extends React.PureComponent {
       working: false,
       addNow: false,
     };
-    props.updateAppTitle('Reactor');
+    props.updateAppTitle('REACTOR');
     this.ref = {
       collectionList: React.createRef(),
       pageList: React.createRef(),

@@ -9,8 +9,9 @@
   overflow: hidden;
   border-radius: 50px;
   flex-shrink: 0;
-  height: 60px;
-  font-size: 20px;
+  height: 50px;
+  font-size: 18px;
+  line-height: 18px;
 }
 
 .switchItem {
@@ -21,10 +22,14 @@
   justify-content: center;
   z-index: 1;
   cursor: pointer;
+
+  & > div {
+    transform: translateY(-1px);
+  }
 }
 
 .indicator {
-  background: black;
+  background: $black;
   height: 100%;
   left: 0;
   right: 0;

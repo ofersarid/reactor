@@ -6,7 +6,7 @@
 
 .listItemWrap {
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 7px;
   opacity: 0;
   transition: 1.5s $ease;
   transform: translateX(calc(-100% - 20px));
@@ -27,6 +27,7 @@
     border-radius: 0;
     padding: 24px 33px;
     border: none;
+    height: auto;
   }
 }
 
@@ -40,7 +41,7 @@
 
 .listContainer {
   width: 100%;
-  padding: 170px 0 0;
+  padding: 140px 0 0;
   box-sizing: border-box;
   position: absolute;
   left: 0;
@@ -104,7 +105,7 @@
   transition: 1s $ease;
 
   &.show {
-    transform: translateY(calc(#{$nav-bar-height} + 88px));
+    transform: translateY(calc(#{$nav-bar-height-mobile} + 88px));
   }
 }
 

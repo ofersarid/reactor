@@ -1,7 +1,7 @@
 @import '/src/shared/styles';
 
 .editor {
-  padding: calc(#{$nav-bar-height + 7px}) 0px 50px;
+  padding: calc(#{$nav-bar-height-mobile + 7px}) 0px 50px;
   width: 100%;
 }
 
@@ -21,6 +21,14 @@
 .inputWrapper {
   width: calc(100% - 40px);
   margin: 20px 20px 60px;
+
+  img {
+    max-height: 100px;
+    width: unset;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+  }
 }
 
 .footerBtn {
@@ -45,7 +53,7 @@
   z-index: 1;
   backdrop-filter: blur(2px);
   background: rgba(255, 255, 255, 0.75);
-  transform: translateY(calc(100% - 65px));
+  transform: translateY(calc(100% - 60px));
   left: 0;
   transition: .5s ease-out;
 
@@ -55,6 +63,7 @@
 
   .footerToggleBtn {
     width: calc(100% + 40px);
+    height: 60px;
     left: -20px;
     border-radius: 0;
     border-left: transparent;
@@ -63,6 +72,10 @@
     top: 0;
     background: transparent;
     margin-bottom: 20px;
+
+    svg {
+      transform: translateY(2px);
+    }
   }
 
   .flip {

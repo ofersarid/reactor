@@ -3,7 +3,7 @@
 .schemaPage {
   width: 100%;
   min-height: 100%;
-  padding: calc(#{$nav-bar-height + 7px}) 0px 0;
+  padding: calc(#{$nav-bar-height-mobile + 7px}) 0px 0;
   box-sizing: border-box;
   background: $lightGray;
 

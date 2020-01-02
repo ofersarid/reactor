@@ -33,11 +33,11 @@ class NavBar extends React.PureComponent {
 
   render() {
     const { uid, pathname, appTitle, show } = this.props;
-    const showSecondary = Boolean(pathname.match('/cms/home'));
+    const isHomePage = Boolean(pathname.match('/cms/home'));
     return (
-      <div className={cx(styles.navBar, { [styles.show]: show, [styles.hideShadow]: showSecondary })} >
-        <SecondaryNav show={showSecondary} />
-        <div className={styles.navBarInner}>
+      <div className={cx(styles.navBar, { [styles.show]: show, [styles.hideShadow]: isHomePage })} >
+        <SecondaryNav show={isHomePage} />
+        <div className={styles.navBarInner} >
           <Transition
             unique
             items={0}
@@ -45,7 +45,7 @@ class NavBar extends React.PureComponent {
             enter={{ opacity: 1 }}
             leave={{ opacity: 0 }} >
             {() => springs => <animated.div
-              className={cx(styles.navBarTitle)}
+              className={cx(styles.navBarTitle, { [styles.isReactorLogo]: isHomePage })}
               style={springs} >
               {appTitle || '...'}
             </animated.div >}

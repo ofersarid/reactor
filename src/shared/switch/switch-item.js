@@ -7,7 +7,7 @@ import styles from './styles.scss';
 import btnStyles from '/src/shared/button/styles.scss';
 
 const SwitchItem = ({ children, onClick }) => (
-  <div className={cx('ripple wave-effect', styles.switchItem, btnStyles.wavesDark)} onClick={onClick}>{children}</div >
+  <div className={cx('ripple wave-effect', styles.switchItem, btnStyles.wavesDark)} onClick={onClick}><div>{children}</div></div >
 );
 
 SwitchItem.propTypes = {

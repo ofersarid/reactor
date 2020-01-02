@@ -8,6 +8,10 @@
   position: relative;
   background: white;
   overflow: hidden;
+
+  @include media('>tablet') {
+    width: 650px;
+  }
 }
 
 .pageContainer {
@@ -26,12 +30,12 @@
 }
 
 .navBar {
-  height: $nav-bar-height;
+  height: $nav-bar-height-mobile;
   flex-shrink: 0;
   width: 100%;
   display: flex;
   //color: white;
-  position: fixed;
+  position: absolute;
   z-index: 3;
   transform: translateX(100%);
   opacity: 0;
@@ -61,16 +65,22 @@
 
   .navBarTitle {
     font-size: 24px;
-    line-height: 21px;
-    height: 21px;
+    line-height: 24px;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -1px);
     white-space: nowrap;
     width: 70%;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
+
+    &.isReactorLogo {
+      font-weight: 700;
+      letter-spacing: 0.3em;
+    }
   }
 
   .toTheLeft {
@@ -100,13 +110,13 @@
 }
 
 .secondaryNav {
-  position: fixed;
+  position: absolute;
   left: 0;
   background: rgba($lightGray, 0.9);
   backdrop-filter: blur(2px);
   transform: translateY(-100%);
-  top: $nav-bar-height;
-  width: 100vw;
+  top: $nav-bar-height-mobile;
+  width: 100%;
   @extend %boxShadow;
   transition: 1s $ease;
   opacity: 0;

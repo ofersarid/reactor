@@ -25,7 +25,6 @@
 }
 
 .pageWrap {
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -97,7 +96,7 @@
 }
 
 .header {
-  width: 100vw;
+  width: 100%;
   padding-top: 30px;
   padding-left: 25px;
   display: flex;

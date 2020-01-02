@@ -6,7 +6,7 @@ import autoBind from 'auto-bind';
 import PropTypes from 'prop-types';
 import services from '/src/services';
 import { Button, UserInput } from '/src/shared';
-import { ChevronUp } from 'styled-icons/boxicons-regular/ChevronUp';
+import { DotsHorizontalRounded } from 'styled-icons/boxicons-regular/DotsHorizontalRounded';
 import styles from './styles.scss';
 import { hashHistory } from 'react-router';
 
@@ -76,7 +76,7 @@ class EditorFooter extends PureComponent {
           onClick={this.toggleFooter}
           type="white"
         >
-          <ChevronUp className={cx({ [styles.flip]: show })} />
+          <DotsHorizontalRounded className={cx({ [styles.flip]: show })} />
         </Button >
         <UserInput
           type="switch"
@@ -90,7 +90,7 @@ class EditorFooter extends PureComponent {
           disable={!isValid}
           onClick={this.handleClickOnDone}
         >
-          Done
+          Save
         </Button >
         {collectionId && assetId && (
           <Button

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import JSON5 from 'json5';
 import services from '/src/services';
 import { Button } from '/src/shared';
-import { ChevronUp } from 'styled-icons/boxicons-regular/ChevronUp';
+import { Check } from 'styled-icons/octicons/Check';
 import {
   inputTypesWithValidationFunction,
   inputTypesWithOptions,
@@ -80,14 +80,14 @@ class SchemaEditorFooter extends PureComponent {
           onClick={this.toggleFooter}
           type="white"
         >
-          <ChevronUp className={cx({ [styles.flip]: show })} />
+          <Check className={cx({ [styles.flip]: show })} />
         </Button >
         <Button
           className={styles.footerBtn}
           disable={!isValid}
           onClick={this.handleClickOnDone}
         >
-          Done
+          Save
         </Button >
         {origin && (
           <Button

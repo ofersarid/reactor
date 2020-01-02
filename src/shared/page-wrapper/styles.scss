@@ -1,7 +1,7 @@
 @import '/src/shared/styles';
 
 .page {
-  height: calc(100% - #{$nav-bar-height});
+  height: calc(100% - #{$nav-bar-height-mobile});
   padding: 20px 20px;
   width: 100%;
   box-sizing: border-box;

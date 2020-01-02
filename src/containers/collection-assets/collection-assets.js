@@ -29,14 +29,14 @@ const SortableList = SortableContainer((
             justifyContent="start"
           >
             <div className={styles.itemTitle} >
-              {interpolateValue(itm, schema[0])}
+              {schema[0].type === 'image' ? <img className={styles.img} src={itm[schema[0].key]} /> : interpolateValue(itm, schema[0])}
             </div >
-            <LinesEllipsisLoose
+            {schema[1].type === 'image' ? <img className={styles.img} src={itm[schema[1].key]} /> : <LinesEllipsisLoose
               text={interpolateValue(itm, schema[1] ? schema[1] : '')}
               maxLine='4'
               lineHeight='24'
               className={styles.itemBody}
-            />
+            />}
           </Button >
         </SortableItem >
       ))}
@@ -68,11 +68,15 @@ class Collection extends PureComponent {
     const value = item[schema.key];
     if (!value) return '';
     switch (schema.type) {
-      case 'image':
-        return <img className={styles.img} src={value} />;
       case 'date':
       case 'date-time':
         return moment(value.toDate()).format('MMM Do YYYY');
+      case 'rich':
+        const span = document.createElement('span');
+        span.innerHTML = value;
+        return span.textContent || span.innerText;
+      case 'multi-line-preserve-lines':
+        return value.replace(/\n\r?/g, '<br />');
       default:
         return value;
     }
