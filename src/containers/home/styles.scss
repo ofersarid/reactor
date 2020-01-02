@@ -10,6 +10,8 @@
   opacity: 0;
   transition: 1.5s $ease;
   transform: translateX(calc(-100% - 20px));
+  border-radius: 0;
+  border: none;
 
   &.overflow {
     //width: calc(100% + 11px);
@@ -17,6 +19,14 @@
 
   &:last-of-type {
     margin-bottom: 0;
+  }
+
+  & > div {
+    background: $white;
+    color: $black;
+    border-radius: 0;
+    padding: 24px 33px;
+    border: none;
   }
 }
 
@@ -30,13 +40,14 @@
 
 .listContainer {
   width: 100%;
-  padding: 180px 20px 110px;
+  padding: 170px 0 0;
   box-sizing: border-box;
   position: absolute;
   left: 0;
   top: 0;
   height: 100%;
   overflow-y: auto;
+  background: $lightGray;
 
   @for $i from 1 through 1000 {
     & > div:nth-of-type(#{$i}) {

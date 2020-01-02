@@ -16,8 +16,7 @@ class SecondaryNav extends PureComponent {
   }
 
   render() {
-    const { listName, selectList, pathname } = this.props;
-    const show = Boolean(pathname.match('/cms/home'));
+    const { listName, selectList, show } = this.props;
     return (
       <div className={cx(styles.secondaryNav, { [styles.show]: show })} >
         <UserInput
@@ -35,12 +34,11 @@ class SecondaryNav extends PureComponent {
 SecondaryNav.propTypes = {
   listName: PropTypes.string.isRequired,
   selectList: PropTypes.func.isRequired,
-  pathname: PropTypes.string.isRequired,
+  show: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   listName: services.home.selectors.listName(state),
-  pathname: services.router.selectors.pathname(state),
 });
 
 const mapDispatchToProps = dispatch => ({

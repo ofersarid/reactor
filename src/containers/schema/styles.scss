@@ -1,9 +1,11 @@
 @import '/src/shared/styles';
 
 .schemaPage {
-  padding: 20px;
   width: 100%;
+  min-height: 100%;
+  padding: calc(#{$nav-bar-height + 7px}) 0px 0;
   box-sizing: border-box;
+  background: $lightGray;
 
   .addBtn {
     bottom: 20px;
@@ -26,12 +28,13 @@
 }
 
 .itemWrapper {
-  height: auto !important;
-  text-align: left !important;
-  border-radius: 15px !important;
-  padding: 15px !important;
-  border-color: $lightGray !important;
-  margin-bottom: 18px;
+  height: auto;
+  text-align: left;
+  border-radius: 0;
+  padding: 24px 33px;
+  background: $white;
+  margin-bottom: 7px;
+  border: none;
 }
 
 .label {

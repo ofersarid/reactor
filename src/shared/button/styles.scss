@@ -17,7 +17,6 @@
   box-sizing: border-box;
   padding: 0 28px;
   flex-shrink: 0;
-  font-weight: 100;
 
   svg {
     height: 100%;
@@ -33,11 +32,12 @@
 .circle {
   background: $black;
   color: $white;
-  width: 65px;
-  height: 65px;
+  width: 64px;
+  height: 64px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.4);
 
   svg {
-    height: 42px;
+    height: 33px;
   }
 }
 

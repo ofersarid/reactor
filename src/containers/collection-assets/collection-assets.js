@@ -17,7 +17,7 @@ import styles from './styles.scss';
 const SortableItem = SortableElement(({ children }) => <li >{children}</li >);
 
 const SortableList = SortableContainer((
-  { items, collectionId, collectionMeta, schema, interpolateValue }) => {
+  { items, collectionId, schema, interpolateValue }) => {
   return (
     <ul >
       {items.map((itm, i) => (
@@ -29,10 +29,10 @@ const SortableList = SortableContainer((
             justifyContent="start"
           >
             <div className={styles.itemTitle} >
-              {interpolateValue(itm, collectionMeta.layout.title || schema[0].key)}
+              {interpolateValue(itm, schema[0])}
             </div >
             <LinesEllipsisLoose
-              text={interpolateValue(itm, collectionMeta.layout.body || (schema[1] ? schema[1].key : ''))}
+              text={interpolateValue(itm, schema[1] ? schema[1] : '')}
               maxLine='4'
               lineHeight='24'
               className={styles.itemBody}
@@ -64,15 +64,18 @@ class Collection extends PureComponent {
     }
   }
 
-  interpolateValue(item, property) {
-    const value = item[property];
+  interpolateValue(item, schema) {
+    const value = item[schema.key];
     if (!value) return '';
-    if (typeof value === 'string') {
-      return value;
-    } else if (value.toDate) {
-      return moment(value.toDate()).format('MMM Do YYYY');
+    switch (schema.type) {
+      case 'image':
+        return <img className={styles.img} src={value} />;
+      case 'date':
+      case 'date-time':
+        return moment(value.toDate()).format('MMM Do YYYY');
+      default:
+        return value;
     }
-    return 'error: could not interpolate value';
   }
 
   async onSortEnd(sorted) {

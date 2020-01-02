@@ -38,11 +38,11 @@
 
 .label {
   margin-bottom: 21px;
+  font-weight: 400;
   height: 23px;
-  border-bottom: 1px solid $black;
+  border-bottom: 2px solid $black;
   color: $black;
-  font-weight: normal;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 18px;
   text-transform: capitalize;
   display: inline-block;
@@ -71,15 +71,15 @@
 
 input,
 textarea {
-  font-weight: 100;
+  font-weight: 300;
 }
 
 .asterisk {
-  height: 7px;
+  height: 9px;
   position: absolute;
-  top: 0;
-  right: -3px;
-  color: $red;
+  top: -2px;
+  right: 2px;
+  //color: $red;
   transform: translate(100%, 0);
 }
 

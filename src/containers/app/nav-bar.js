@@ -6,12 +6,13 @@ import { actionTypes } from 'redux-firestore';
 import { Transition, animated } from 'react-spring/renderprops';
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
-import { LogOutCircle } from 'styled-icons/boxicons-regular/LogOutCircle/LogOutCircle';
-import { ChevronLeft } from 'styled-icons/fa-solid/ChevronLeft/ChevronLeft';
+import { PowerOff } from 'styled-icons/boxicons-regular/PowerOff';
+import { KeyboardArrowLeft } from 'styled-icons/material/KeyboardArrowLeft';
 import { Button } from '/src/shared';
 import services from '/src/services';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
+import SecondaryNav from './secondary-nav';
 
 class NavBar extends React.PureComponent {
   constructor(props) {
@@ -32,49 +33,52 @@ class NavBar extends React.PureComponent {
 
   render() {
     const { uid, pathname, appTitle, show } = this.props;
-
+    const showSecondary = Boolean(pathname.match('/cms/home'));
     return (
-      <div className={cx(styles.navBar, { [styles.show]: show })} >
-        <Transition
-          unique
-          items={0}
-          from={{ opacity: 0 }}
-          enter={{ opacity: 1 }}
-          leave={{ opacity: 0 }} >
-          {() => springs => <animated.div
-            className={cx(styles.navBarTitle)}
-            style={springs} >
-            {appTitle || '...'}
-          </animated.div >}
-        </Transition >
-        {(uid && pathname === '/cms/home') && (
+      <div className={cx(styles.navBar, { [styles.show]: show, [styles.hideShadow]: showSecondary })} >
+        <SecondaryNav show={showSecondary} />
+        <div className={styles.navBarInner}>
           <Transition
             unique
             items={0}
-            from={{ opacity: 0, transform: 'scale(0)' }}
-            enter={{ opacity: 1, transform: 'scale(1)' }}
-            leave={{ opacity: 0, transform: 'scale(0)' }} >
-            {() => springs => <animated.div className={cx(styles.toTheLeft, styles.btnWrap)} style={springs} >
-              <Button type="icon" className={cx(styles.btn)} onClick={this.logOut} >
-                <LogOutCircle />
-              </Button >
+            from={{ opacity: 0 }}
+            enter={{ opacity: 1 }}
+            leave={{ opacity: 0 }} >
+            {() => springs => <animated.div
+              className={cx(styles.navBarTitle)}
+              style={springs} >
+              {appTitle || '...'}
             </animated.div >}
           </Transition >
-        )}
-        {(uid && pathname !== '/cms/home' && pathname !== '/cms/login') && (
-          <Transition
-            unique
-            items={0}
-            from={{ opacity: 0, transform: 'scale(0)' }}
-            enter={{ opacity: 1, transform: 'scale(1)' }}
-            leave={{ opacity: 0, transform: 'scale(0)' }} >
-            {() => springs => <animated.div className={cx(styles.toTheLeft, styles.btnWrap)} style={springs} >
-              <Button type="icon" className={cx(styles.btn)} onClick={this.goBack} >
-                <ChevronLeft />
-              </Button >
-            </animated.div >}
-          </Transition >
-        )}
+          {(uid && pathname === '/cms/home') && (
+            <Transition
+              unique
+              items={0}
+              from={{ opacity: 0, transform: 'scale(0)' }}
+              enter={{ opacity: 1, transform: 'scale(1)' }}
+              leave={{ opacity: 0, transform: 'scale(0)' }} >
+              {() => springs => <animated.div className={cx(styles.toTheLeft, styles.btnWrap)} style={springs} >
+                <Button type="icon" className={cx(styles.btn)} onClick={this.logOut} >
+                  <PowerOff />
+                </Button >
+              </animated.div >}
+            </Transition >
+          )}
+          {(uid && pathname !== '/cms/home' && pathname !== '/cms/login') && (
+            <Transition
+              unique
+              items={0}
+              from={{ opacity: 0, transform: 'scale(0)' }}
+              enter={{ opacity: 1, transform: 'scale(1)' }}
+              leave={{ opacity: 0, transform: 'scale(0)' }} >
+              {() => springs => <animated.div className={cx(styles.toTheLeft, styles.btnWrap)} style={springs} >
+                <Button type="icon" className={cx(styles.btn)} onClick={this.goBack} >
+                  <KeyboardArrowLeft className={styles.arrowLeft} />
+                </Button >
+              </animated.div >}
+            </Transition >
+          )}
+        </div >
       </div >
     );
   }

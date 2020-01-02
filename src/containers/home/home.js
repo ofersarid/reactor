@@ -90,7 +90,6 @@ class Home extends React.PureComponent {
             <div key={item.id} className={cx(styles.listItemWrap)} >
               <Button
                 linkTo={`cms/collection/${item.id}${devMode ? '/schema' : ''}`}
-                type="white"
                 justifyContent="start"
               >
                 {item.name}

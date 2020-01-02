@@ -12,7 +12,6 @@ import { Home, Editor, CollectionAssets, Schema, Login, SchemaEditor } from '/sr
 import cx from 'classnames';
 import styles from './styles.scss';
 import NavBar from './nav-bar';
-import SecondaryNav from './secondary-nav';
 
 const pages = [
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Login /></animated.div>,
@@ -49,7 +48,6 @@ const APP = ({ pathname, isLoaded, prevPath }) => {
   return isLoaded ? (
     <div className={styles.main} >
       <NavBar show={Boolean(pageIndex)} />
-      <SecondaryNav />
       <Transition
         native
         reset

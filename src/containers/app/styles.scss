@@ -15,7 +15,6 @@
   width: 100%;
   top: 0;
   left: 0;
-  padding: calc(#{$nav-bar-height}) 0px 0;
   box-sizing: border-box;
   flex-shrink: 1;
   position: absolute;
@@ -27,30 +26,43 @@
 }
 
 .navBar {
-  background: rgba($green, 0.9);
-  backdrop-filter: blur(2px);
   height: $nav-bar-height;
   flex-shrink: 0;
   width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  box-sizing: border-box;
-  color: white;
+  //color: white;
   position: fixed;
-  backdrop-filter: blur(2px);
   z-index: 3;
   transform: translateX(100%);
   opacity: 0;
   transition: 1s $ease;
+  @extend %boxShadow;
 
   &.show {
     transform: translateX(0);
     opacity: 1;
   }
 
+  &.hideShadow {
+    box-shadow: none;
+  }
+
+  .navBarInner {
+    background: rgba($lightGray, 0.9);
+    backdrop-filter: blur(2px);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+
   .navBarTitle {
-    font-size: 31px;
+    font-size: 24px;
+    line-height: 21px;
+    height: 21px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -64,12 +76,21 @@
   .toTheLeft {
     position: absolute !important;
     left: 0;
+
+    svg {
+      color: $black;
+      height: 32px;
+
+      &.arrowLeft {
+        height: 42px;
+      }
+    }
   }
 
   .btn {
     border-radius: 0 !important;
     height: 100% !important;
-    width: 60px !important;
+    width: 70px !important;
     padding: 0 20px !important;
   }
 
@@ -81,18 +102,20 @@
 .secondaryNav {
   position: fixed;
   left: 0;
-  z-index: 2;
-  background: rgba($white, 0.5);
+  background: rgba($lightGray, 0.9);
   backdrop-filter: blur(2px);
   transform: translateY(-100%);
   top: $nav-bar-height;
   width: 100vw;
+  @extend %boxShadow;
   transition: 1s $ease;
   opacity: 0;
+  pointer-events: none;
 
   &.show {
     transform: translateY(0);
     opacity: 1;
+    pointer-events: all;
   }
 }
 
@@ -101,5 +124,5 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 20px 20px;
+  padding: 0 20px 20px;
 }
