@@ -63,11 +63,9 @@ class Login extends PureComponent {
     // const { logIn, authError, uid, deviceType } = this.props;
     return (
       <div className={styles.pageWrap} >
-        <div className={styles.header} >
-          <img src={logo} />
-        </div >
+        <img src={logo} />
         <div className={styles.logInForm} >
-          <h1 >Sign in</h1 >
+          <h1 >SIGN IN</h1 >
           <UserInput
             placeholder="Email"
             onChange={val => this.updateState({ email: val })}

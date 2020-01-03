@@ -74,15 +74,14 @@ ul {
 }
 
 h1 {
-  font-size: 36px;
+  font-size: 33px;
   line-height: 1.3em;
-  font-weight: 300;
+  font-weight: 700;
   margin: 0;
-  font-style: italic;
 }
 
 input {
-  font-family: 'calibre', sans-serif;
+  font-family: 'sofia-pro', sans-serif;
 }
 
 .root {
@@ -104,22 +103,26 @@ input {
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: $blue;
+  color: $black;
+  opacity: 0.5;
   text-transform: lowercase;
   font-size: 20px;
 }
 ::-moz-placeholder { /* Firefox 19+ */
-  color: $blue;
+  color: $black;
+  opacity: 0.5;
   text-transform: lowercase;
   font-size: 20px;
 }
 :-ms-input-placeholder { /* IE 10+ */
-  color: $blue;
+  color: $black;
+  opacity: 0.5;
   text-transform: lowercase;
   font-size: 20px;
 }
 :-moz-placeholder { /* Firefox 18- */
-  color: $blue;
+  color: $black;
+  opacity: 0.5;
   text-transform: lowercase;
   font-size: 20px;
 }

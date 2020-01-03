@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import JSON5 from 'json5';
 import services from '/src/services';
 import { Button } from '/src/shared';
-import { Check } from 'styled-icons/octicons/Check';
 import {
   inputTypesWithValidationFunction,
   inputTypesWithOptions,
@@ -21,7 +20,6 @@ class SchemaEditorFooter extends PureComponent {
     super(props);
     autoBind(this);
     this.state = {
-      show: false,
       isWorking: false,
       deleting: false,
     };
@@ -30,27 +28,11 @@ class SchemaEditorFooter extends PureComponent {
   componentDidMount() {
     this.$pageContainer = document.getElementsByClassName('pageContainer');
     this.$pageContainer = this.$pageContainer[this.$pageContainer.length - 1];
-    this.$pageContainer.addEventListener('scroll', this.close);
-  }
-
-  componentWillUnmount() {
-    this.$pageContainer.removeEventListener('scroll', this.close);
-  }
-
-  close() {
-    this.setState({ show: false });
-  }
-
-  toggleFooter() {
-    const { show } = this.state;
-    clearTimeout(this.to);
-    this.setState({ show: !show });
   }
 
   handleClickOnDone() {
     const { addField, field, collectionId, pageId, fieldIndex } = this.props;
     this.setState({ isWorking: true });
-    this.setState({ show: false });
     addField(collectionId || pageId, field, fieldIndex, collectionId ? 'collections' : 'pages').then(this.goBack);
   }
 
@@ -66,22 +48,13 @@ class SchemaEditorFooter extends PureComponent {
   handleClickOnDelete() {
     const { deleteField, fieldIndex, collectionId, pageId } = this.props;
     this.setState({ deleting: true });
-    this.setState({ show: false });
     deleteField(collectionId || pageId, fieldIndex, collectionId ? 'collections' : 'pages').then(this.goBack);
   }
 
   render() {
-    const { show } = this.state;
     const { isValid, origin } = this.props;
     return (
-      <div className={cx(styles.editorFooter, { [styles.show]: show })} >
-        <Button
-          className={cx(styles.footerToggleBtn)}
-          onClick={this.toggleFooter}
-          type="white"
-        >
-          <Check className={cx({ [styles.flip]: show })} />
-        </Button >
+      <div className={cx(styles.editorFooter)} >
         <Button
           className={styles.footerBtn}
           disable={!isValid}

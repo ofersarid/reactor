@@ -6,7 +6,6 @@ import autoBind from 'auto-bind';
 import PropTypes from 'prop-types';
 import services from '/src/services';
 import { Button, UserInput } from '/src/shared';
-import { DotsHorizontalRounded } from 'styled-icons/boxicons-regular/DotsHorizontalRounded';
 import styles from './styles.scss';
 import { hashHistory } from 'react-router';
 
@@ -15,7 +14,6 @@ class EditorFooter extends PureComponent {
     super(props);
     autoBind(this);
     this.state = {
-      show: false,
       isWorking: false,
       deleting: false,
     };
@@ -24,27 +22,11 @@ class EditorFooter extends PureComponent {
   componentDidMount() {
     this.$pageContainer = document.getElementsByClassName('pageContainer');
     this.$pageContainer = this.$pageContainer[this.$pageContainer.length - 1];
-    this.$pageContainer.addEventListener('scroll', this.close);
-  }
-
-  componentWillUnmount() {
-    this.$pageContainer.removeEventListener('scroll', this.close);
-  }
-
-  close() {
-    this.setState({ show: false });
-  }
-
-  toggleFooter() {
-    const { show } = this.state;
-    clearTimeout(this.to);
-    this.setState({ show: !show });
   }
 
   handleClickOnDone() {
     const { save, asset, assetId } = this.props;
     this.setState({ isWorking: true });
-    this.setState({ show: false });
     save(asset, assetId);
     this.goBack();
   }
@@ -61,23 +43,14 @@ class EditorFooter extends PureComponent {
   handleClickOnDelete() {
     const { deleteAsset, asset, assetId } = this.props;
     this.setState({ deleting: true });
-    this.setState({ show: false });
     deleteAsset(asset, assetId);
     this.goBack();
   }
 
   render() {
-    const { show } = this.state;
     const { asset, isValid, collectionId, onShowHideChange, assetId } = this.props;
     return (
-      <div className={cx(styles.editorFooter, { [styles.show]: show })} >
-        <Button
-          className={cx(styles.footerToggleBtn)}
-          onClick={this.toggleFooter}
-          type="white"
-        >
-          <DotsHorizontalRounded className={cx({ [styles.flip]: show })} />
-        </Button >
+      <div className={cx(styles.editorFooter)} >
         <UserInput
           type="switch"
           options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}

@@ -6,7 +6,7 @@
   width: 100%;
   flex-direction: column;
   position: relative;
-  background: white;
+  background: $lightGray;
   overflow: hidden;
 
   @include media('>tablet') {
