@@ -75,8 +75,6 @@ class Collection extends PureComponent {
         const span = document.createElement('span');
         span.innerHTML = value;
         return span.textContent || span.innerText;
-      case 'multi-line-preserve-lines':
-        return value.replace(/\n\r?/g, '<br />');
       default:
         return value;
     }
