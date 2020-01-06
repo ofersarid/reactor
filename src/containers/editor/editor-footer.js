@@ -25,9 +25,9 @@ class EditorFooter extends PureComponent {
   }
 
   handleClickOnDone() {
-    const { save, asset, assetId } = this.props;
+    const { save, asset, assetId, pageId } = this.props;
     this.setState({ isWorking: true });
-    save(asset, assetId);
+    save(asset, assetId || pageId);
     this.goBack();
   }
 
@@ -88,12 +88,14 @@ EditorFooter.propTypes = {
   onShowHideChange: PropTypes.func.isRequired,
   goBackPath: PropTypes.string.isRequired,
   assetId: PropTypes.string,
+  pageId: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
   collectionId: services.router.selectors.collectionId(state),
   goBackPath: services.router.selectors.goBackPath(state),
   assetId: services.router.selectors.assetId(state),
+  pageId: services.router.selectors.pageId(state),
 });
 
 const mapDispatchToProps = dispatch => ({

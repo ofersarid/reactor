@@ -79,7 +79,7 @@ class Home extends React.PureComponent {
     const { showInputField, inputValue, isValid, working, addNow } = this.state;
     // const tabs = [{ view: 'Collections', value: 'collections' }, { view: 'Pages', value: 'pages' }];
     const relevantCollections = sotrBy(collections, item => JSON5.parse(item.schema).length || devMode);
-    const relevantPages = sotrBy(pages, item => JSON5.parse(item.schema).length || devMode);
+    const relevantPages = sotrBy(pages, item => (item.schema && JSON5.parse(item.schema).length) || devMode);
     return (
       <Fragment >
         <div ref={this.ref.collectionList} className={cx(styles.listContainer, {
@@ -155,10 +155,7 @@ Home.propTypes = {
     name: PropTypes.string,
     id: PropTypes.string.required,
   })),
-  pages: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-  })),
+  pages: PropTypes.array,
   updateAppTitle: PropTypes.func.isRequired,
   createCollection: PropTypes.func.isRequired,
   createPage: PropTypes.func.isRequired,
