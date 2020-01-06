@@ -29,7 +29,7 @@ const SortableList = SortableContainer(({ items, collectionId, pageId }) => {
           >
             <div className={styles.label} >{itm.label}</div >
             {Object.keys(itm).map((key, i) => key === 'label' ? null : (
-              <div key={`${key}-${i}`} className={styles[key]} >{key}: {itm[key].toString()}</div >
+              <div key={`${key}-${i}`} className={`schema-item-${key}`} >{key}: {itm[key].toString()}</div >
             ))}
           </Button >
         </SortableItem >

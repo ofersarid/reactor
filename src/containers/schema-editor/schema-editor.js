@@ -27,6 +27,7 @@ class SchemaEditor extends PureComponent {
       validateWith: 'min-max',
       options: fromJS([]),
       maxChars: undefined,
+      group: undefined,
       minChars: 1,
       isValid: false,
     };
@@ -84,7 +85,7 @@ class SchemaEditor extends PureComponent {
   render() {
     const {
       key, label, type, required, validateWith,
-      options, minChars, maxChars, isValid,
+      options, minChars, maxChars, isValid, group,
     } = this.state;
     const { origin } = this.props;
     return (
@@ -114,6 +115,19 @@ class SchemaEditor extends PureComponent {
             label="Label"
             max={40}
             required
+            type="multi-line"
+            validateWith={val => (val.length > 0 && val.length <= 40)}
+          />
+        </div >
+        <div className={cx(styles.inputWrapper)} >
+          <UserInput
+            placeholder="Group"
+            onChange={value => this.onChange({
+              group: value.replace(/\s+/g, ' '),
+            })}
+            value={group}
+            label="Group"
+            max={40}
             type="multi-line"
             validateWith={val => (val.length > 0 && val.length <= 40)}
           />
@@ -232,6 +246,7 @@ class SchemaEditor extends PureComponent {
           options,
           minChars: minChars,
           maxChars: maxChars,
+          group,
         }} origin={origin} />
       </div >
     );
