@@ -15,6 +15,7 @@
     border: none;
     border-bottom: 1px solid #ABABAB;
     overflow: hidden;
+    background: transparent;
 
     &::placeholder {
       color: $gray;
