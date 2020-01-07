@@ -90,7 +90,7 @@ class Editor extends PureComponent {
   }
 
   resolveValidationFunction(field) {
-    if (!field) return () => true;
+    if (!field || !field.required) return () => true;
     switch (true) {
       case field.validateWith === 'min-max' && Boolean(field.maxChars && field.minChars):
         return value => Boolean(value && (value.length <= field.maxChars && value.length >= field.minChars));

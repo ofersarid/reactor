@@ -64,7 +64,7 @@ class SchemaEditorFooter extends PureComponent {
         </Button >
         {origin && (
           <Button
-            className={styles.footerBtn}
+            className={cx(styles.footerBtn, styles.delete)}
             type="red"
             onClick={this.handleClickOnDelete}
           >
@@ -108,6 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
       options: inputTypesWithOptions.includes(field.type) ? JSON5.stringify(field.options) : undefined,
       minChars: inputTypesWithMinMaxChars.includes(field.type) ? field.minChars : undefined,
       maxChars: inputTypesWithMinMaxChars.includes(field.type) ? field.maxChars : undefined,
+      group: field.group,
     })),
   deleteField: (id, index, serviceType) => dispatch(services[serviceType].actions.deleteField(id, index))
 });
