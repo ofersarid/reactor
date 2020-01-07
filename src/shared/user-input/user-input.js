@@ -138,7 +138,7 @@ const resolveComponentByType = (props) => {
         props.onChange(firstOption.value || firstOption);
         break;
       } else {
-        const index = props.options.findIndex(item => (item.value || item) === props.value);
+        const index = props.options.findIndex(item => (item.value ? item.value.toString() : item) === props.value.toString());
         return (
           <Switch indicateIndex={index} className={styles.switch} >
             {props.options.map(item => (
