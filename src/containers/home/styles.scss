@@ -48,7 +48,6 @@
   top: 0;
   height: 100%;
   overflow-y: auto;
-  background: $lightGray;
 
   @for $i from 1 through 1000 {
     & > div:nth-of-type(#{$i}) {
