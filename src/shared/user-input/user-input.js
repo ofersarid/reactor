@@ -134,14 +134,15 @@ const resolveComponentByType = (props) => {
         />);
     case 'switch':
       if (props.value === '') {
-        props.onChange(props.options[0].value);
+        const firstOption = props.options[0];
+        props.onChange(firstOption.value || firstOption);
         break;
       } else {
-        const index = props.options.findIndex(item => item.value === props.value);
+        const index = props.options.findIndex(item => (item.value || item) === props.value);
         return (
           <Switch indicateIndex={index} className={styles.switch} >
             {props.options.map(item => (
-              <SwitchItem key={item.view} onClick={() => props.onChange(item.value)} >{item.view}</SwitchItem >
+              <SwitchItem key={item.view || item} onClick={() => props.onChange(item.value || item)} >{item.view || item}</SwitchItem >
             ))}
           </Switch >
         );

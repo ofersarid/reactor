@@ -40,11 +40,15 @@
 }
 
 .label {
-  margin-bottom: 0.5em;
+  padding-bottom: 0.5em;
   display: inline-block;
   font-size: 18px;
   font-weight: 700;
   line-height: 1.4em;
+
+  & > * {
+    text-decoration: underline;
+  }
 }
 
 .dragging {

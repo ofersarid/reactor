@@ -37,17 +37,18 @@
 //}
 
 .label {
-  margin-bottom: 21px;
+  padding-bottom: 21px;
   font-weight: 400;
-  height: 23px;
-  border-bottom: 2px solid $black;
+  height: 21px;
+  //border-bottom: 2px solid $black;
   color: $black;
   font-size: 20px;
   line-height: 18px;
   text-transform: capitalize;
   display: inline-block;
-  box-sizing: border-box;
   position: relative;
+
+  text-decoration: underline;
 }
 
 .field {
