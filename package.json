@@ -26,7 +26,7 @@
     "rc-switch": "^1.8.0",
     "react": "*",
     "react-click-outside": "^3.0.1",
-    "react-collapse": "^4.0.3",
+    "react-collapse": "^5.0.1",
     "react-dom": "*",
     "react-image-async": "^1.0.9",
     "react-image-crop": "^6.0.9",
@@ -107,7 +107,7 @@
     "build": "rimraf ./build && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir build",
     "build-old": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/production/CNAME ./docs/",
     "publish-old": "yarn build-for-production && git remote set-url origin https://github.com/ofersarid/reactor.git && git add . && git commit -am \"publish\"",
-    "backup-now": "firestore-backup -a ./google-cloud-accout-credentials.json -B ./backups/29-12-19 -P",
+    "backup-now": "firestore-backup -a ./google-cloud-accout-credentials.json -B ./backups/07-01-20 -P",
     "backup-now-test": "firestore-backup -a ./g-cloud-test.json -B ./backups/uppercase -P"
   },
   "pre-commit": [

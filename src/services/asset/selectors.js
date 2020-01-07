@@ -21,7 +21,7 @@ const fields = createSelector(
 
       // can't get fields
       default:
-        return undefined;
+        return [];
     }
   });
 

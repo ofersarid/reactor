@@ -1,10 +1,12 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import JSON5 from 'json5';
+import { UnmountClosed } from 'react-collapse';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
 import _isEqual from 'lodash/isEqual';
+import uniq from 'lodash/uniq';
 import PropTypes from 'prop-types';
 import { firestoreConnect } from 'react-redux-firebase';
 import utils from '/src/utils';
@@ -18,11 +20,13 @@ class Editor extends PureComponent {
   constructor(props) {
     super(props);
     autoBind(this);
+    this.grouping();
     this.state = {
       asset: props.asset,
       isValid: false,
       deleting: false,
       isWorking: false,
+      openGroup: this.groups[1],
     };
     if (props.pageMeta) {
       props.updateAppTitle(props.pageMeta.name);
@@ -58,11 +62,21 @@ class Editor extends PureComponent {
     if (this.props.pageId) {
       this.props.setGoBackPath(`/cms/home`);
     }
+
+    if (this.props.fields.length > 0 && prevProps.fields.length === 0) {
+      this.grouping();
+    }
   }
 
-  getField(key) {
+  grouping() {
     const { fields } = this.props;
-    return fields.find(field => field.key === key);
+    this.groups = uniq(fields.reduce((res, fld) => {
+      res.push(fld.group);
+      if (res.length === 2) {
+        this.setState({ openGroup: fld.group });
+      }
+      return res;
+    }, [undefined]));
   }
 
   resolveValue(value, field) {
@@ -119,46 +133,56 @@ class Editor extends PureComponent {
     this.setState({ asset: Object.assign({}, this.state.asset, change) });
   }
 
+  toggleGroup(e) {
+    const { openGroup } = this.state;
+    const group = e.target.textContent;
+    this.setState({ openGroup: openGroup === group ? null : group });
+  }
+
   render() {
     const { fields } = this.props;
-    const { isValid, asset } = this.state;
-    const groups = [];
-    return fields ? (
+    const { isValid, asset, openGroup } = this.state;
+    return (
       <div className={styles.editor} >
-        {fields.map(field => {
-          const value = asset ? asset[field.key] : undefined;
-          const dom = <Fragment key={field.key} >
-            {groups.slice(-1)[0] !== field.group ? <div className={styles.divider} >{field.group}</div > : null}
-            <div className={cx(styles.inputWrapper)} >
-              <UserInput
-                key={field.key}
-                _key={field.key}
-                placeholder="Type here"
-                onChange={value => this.onChange({
-                  [field.key]: field.type === 'multi-select' ? JSON5.stringify(value) : value,
+        {this.groups.map(groupName => {
+          const groupFields = fields.filter(fld => fld.group === groupName);
+          return groupFields ? (
+            <div key={groupName || 'No Group'} className={styles.groupContainer} >
+              {groupName && <div className={styles.divider} onClick={this.toggleGroup} >{groupName}</div >}
+              <UnmountClosed isOpened={openGroup === groupName || groupName === 'No Group'} >
+                {groupFields.map(field => {
+                  const value = asset ? asset[field.key] : undefined;
+                  return (
+                    <div key={field.key} className={cx(styles.inputWrapper)} >
+                      <UserInput
+                        key={field.key}
+                        _key={field.key}
+                        placeholder="Type here"
+                        onChange={value => this.onChange({
+                          [field.key]: field.type === 'multi-select' ? JSON5.stringify(value) : value,
+                        })}
+                        value={this.resolveValue(value, field)}
+                        label={field.label}
+                        max={field.maxChars}
+                        // onValidation={isValid => this.onValidation(field.required ? isValid : true, field.key)}
+                        disabled={field.disabled}
+                        required={field.required}
+                        options={typeof field.options === 'string' ? JSON5.parse(field.options) : field.options}
+                        type={field.type}
+                        transformer={field.transformer}
+                        validateWith={this.resolveValidationFunction(field)}
+                        preserveLineBreaks={field.preserveLineBreaks}
+                      />
+                    </div >
+                  );
                 })}
-                value={this.resolveValue(value, field)}
-                label={field.label}
-                max={field.maxChars}
-                // onValidation={isValid => this.onValidation(field.required ? isValid : true, field.key)}
-                disabled={field.disabled}
-                required={field.required}
-                options={typeof field.options === 'string' ? JSON5.parse(field.options) : field.options}
-                type={field.type}
-                transformer={field.transformer}
-                validateWith={this.resolveValidationFunction(field)}
-                preserveLineBreaks={field.preserveLineBreaks}
-              />
+              </UnmountClosed >
             </div >
-          </Fragment >;
-          if (!groups.includes(field.group)) {
-            groups.push(field.group);
-          }
-          return dom;
+          ) : null;
         })}
-        <EditorFooter isValid={isValid} asset={asset} onShowHideChange={this.onChange}/>
+        <EditorFooter isValid={isValid} asset={asset} onShowHideChange={this.onChange} />
       </div >
-    ) : null;
+    );
   }
 }
 
