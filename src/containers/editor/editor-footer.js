@@ -51,13 +51,15 @@ class EditorFooter extends PureComponent {
     const { asset, isValid, collectionId, onShowHideChange, assetId } = this.props;
     return (
       <div className={cx(styles.editorFooter)} >
-        <UserInput
-          type="switch"
-          options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
-          value={asset ? Boolean(asset.published) : false}
-          onChange={val => onShowHideChange({ published: val })}
-          className={styles.switch}
-        />
+        {asset && asset.published !== undefined && (
+          <UserInput
+            type="switch"
+            options={[{ view: 'Show', value: true }, { view: 'Hide', value: false }]}
+            value={asset ? Boolean(asset.published) : false}
+            onChange={val => onShowHideChange({ published: val })}
+            className={styles.switch}
+          />
+        )}
         <Button
           className={styles.footerBtn}
           disable={!isValid}

@@ -65,6 +65,9 @@ class Editor extends PureComponent {
 
     if (this.props.fields.length > 0 && prevProps.fields.length === 0) {
       this.grouping();
+      if (this.groups.length > 1 && this.state.openGroup !== this.groups[1]) {
+        this.setState({ openGroup: this.groups[1] });
+      }
     }
   }
 
@@ -73,7 +76,6 @@ class Editor extends PureComponent {
     this.groups = uniq(fields.reduce((res, fld) => {
       res.push(fld.group);
       if (res.length === 2) {
-        this.setState({ openGroup: fld.group });
       }
       return res;
     }, [undefined]));
