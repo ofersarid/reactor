@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { firestoreConnect } from 'react-redux-firebase';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { compose } from 'redux';
 import autoBind from 'auto-bind';
 import { connect } from 'react-redux';
@@ -13,6 +14,37 @@ import sotrBy from 'lodash/sortBy';
 import services from '/src/services';
 import styles from './styles.scss';
 
+const resolveLinkTo = (listType, itmId, devMode) => {
+  switch (listType) {
+    case 'collections':
+      return `cms/collection/${itmId}${devMode ? '/schema' : ''}`;
+    case 'pages':
+      return `/cms/page/${itmId}/${devMode ? 'schema' : 'editor'}`;
+    default:
+      return '';
+  }
+};
+
+const SortableItem = SortableElement(({ children, className }) => <li className={cx(styles.listItemWrap, className)} >{children}</li >);
+
+const SortableList = SortableContainer((
+  { items, _ref, name, devMode, className, itemClassName }) => {
+  return (
+    <ul ref={_ref} className={cx(styles.listContainer, className)} >
+      {items.map((itm, i) => (
+        <SortableItem key={`item-${itm.id}`} index={i} className={itemClassName} >
+          <Button
+            linkTo={resolveLinkTo(name, itm.id, devMode)}
+            justifyContent="start"
+          >
+            {itm.name}
+          </Button >
+        </SortableItem >
+      ))}
+    </ul >
+  );
+});
+
 class Home extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -23,6 +55,7 @@ class Home extends React.PureComponent {
       isValid: false,
       working: false,
       addNow: false,
+      sorting: false,
     };
     props.updateAppTitle('REACTOR');
     this.ref = {
@@ -74,45 +107,55 @@ class Home extends React.PureComponent {
     this.setState({ addNow: !addNow });
   }
 
+  onSortStart() {
+    this.setState({ sorting: true });
+  }
+
+  onSortEnd() {
+    this.setState({ sorting: false });
+  }
+
   render() {
     const { listName, collections, pages, devMode } = this.props;
     const { showInputField, inputValue, isValid, working, addNow } = this.state;
-    // const tabs = [{ view: 'Collections', value: 'collections' }, { view: 'Pages', value: 'pages' }];
     const relevantCollections = sotrBy(collections, item => JSON5.parse(item.schema).length || devMode);
     const relevantPages = sotrBy(pages, item => (item.schema && JSON5.parse(item.schema).length) || devMode);
     return (
       <Fragment >
-        <div ref={this.ref.collectionList} className={cx(styles.listContainer, {
-          [styles.focus]: listName === 'collections' && !addNow,
-        })}
-        >
-          {relevantCollections.map(item => (
-            <div key={item.id} className={cx(styles.listItemWrap)} >
-              <Button
-                linkTo={`cms/collection/${item.id}${devMode ? '/schema' : ''}`}
-                justifyContent="start"
-              >
-                {item.name}
-              </Button >
-            </div >
-          ))}
-        </div >
-        <div ref={this.ref.pageList} className={cx(styles.listContainer, {
-          [styles.focus]: listName === 'pages' && !addNow,
-          [styles.hideLeft]: addNow,
-        })} >
-          {relevantPages.map(item => (
-            <div key={item.id} className={cx(styles.listItemWrap, styles.pageListItemWrap)} >
-              <Button
-                linkTo={`/cms/page/${item.id}/${devMode ? 'schema' : 'editor'}`}
-                type="white"
-                justifyContent="start"
-              >
-                {item.name}
-              </Button >
-            </div >
-          ))}
-        </div >
+        <SortableList
+          items={relevantCollections || []}
+          onSortEnd={this.onSortEnd}
+          pressDelay={300}
+          transitionDuration={500}
+          lockToContainerEdges
+          helperClass={styles.dragging}
+          onSortStart={this.onSortStart}
+          lockAxis="y"
+          name="collections"
+          devMode={devMode}
+          _ref={this.ref.collectionList}
+          className={cx(styles.listContainer, {
+            [styles.focus]: listName === 'collections' && !addNow,
+          })}
+        />
+        <SortableList
+          items={relevantPages || []}
+          onSortEnd={this.onSortEnd}
+          pressDelay={300}
+          transitionDuration={500}
+          lockToContainerEdges
+          helperClass={styles.dragging}
+          onSortStart={this.onSortStart}
+          lockAxis="y"
+          name="pages"
+          devMode={devMode}
+          _ref={this.ref.pageList}
+          className={cx(styles.listContainer, {
+            [styles.focus]: listName === 'pages' && !addNow,
+            [styles.hideLeft]: addNow,
+          })}
+          itemClassName={cx(styles.pageListItemWrap)}
+        />
         {devMode && (
           <Fragment >
             <div className={cx(styles.listContainer, styles.addNowList, { [styles.focus]: addNow })} >
