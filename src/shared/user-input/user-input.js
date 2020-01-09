@@ -138,11 +138,16 @@ const resolveComponentByType = (props) => {
         props.onChange(firstOption.value || firstOption);
         break;
       } else {
-        const index = props.options.findIndex(item => (item.value ? item.value.toString() : item) === props.value.toString());
+        const index = props.options.findIndex(item => (
+          (typeof item.value === 'undefined' ? item : item.value).toString() ===
+          (typeof props.value.value === 'undefined' ? props.value : props.value.value).toString()
+        ));
         return (
           <Switch indicateIndex={index} className={styles.switch} >
             {props.options.map(item => (
-              <SwitchItem key={item.view || item} onClick={() => props.onChange(item.value || item)} >{item.view || item}</SwitchItem >
+              <SwitchItem
+                key={item.view || item}
+                onClick={() => props.onChange(item.value || item)} >{item.view || item}</SwitchItem >
             ))}
           </Switch >
         );
