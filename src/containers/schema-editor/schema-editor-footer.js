@@ -4,7 +4,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import autoBind from 'auto-bind';
 import PropTypes from 'prop-types';
-import JSON5 from 'json5';
 import services from '/src/services';
 import { Button } from '/src/shared';
 import {
@@ -105,7 +104,7 @@ const mapDispatchToProps = (dispatch) => ({
       type: field.type,
       required: field.required,
       validateWith: inputTypesWithValidationFunction.includes(field.type) ? field.validateWith : undefined,
-      options: inputTypesWithOptions.includes(field.type) ? JSON5.stringify(field.options) : undefined,
+      options: inputTypesWithOptions.includes(field.type) ? field.options : undefined,
       minChars: inputTypesWithMinMaxChars.includes(field.type) ? field.minChars : undefined,
       maxChars: inputTypesWithMinMaxChars.includes(field.type) ? field.maxChars : undefined,
       group: field.group,
