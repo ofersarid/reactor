@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import JSON5 from 'json5';
 import autoBind from 'auto-bind';
+import animateScrollTo from 'animated-scroll-to';
 import cx from 'classnames';
 import _isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
@@ -51,6 +52,7 @@ class Schema extends PureComponent {
     };
     props.setGoBackPath(`/cms/home`);
     props.updateAppTitle(props.name);
+    this.$list = React.createRef();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -63,10 +65,21 @@ class Schema extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { updateAppTitle, name } = this.props;
+    const { updateAppTitle, name, schema } = this.props;
     if (name !== prevProps.name) {
       updateAppTitle(name);
     }
+
+    if (schema.length > prevProps.schema.length) {
+      this.scrollToBottom();
+    }
+  }
+
+  scrollToBottom() {
+    animateScrollTo(this.$list.current.scrollHeight, {
+      elementToScroll: this.$list.current,
+      minDuration: 1000,
+    });
   }
 
   onSortEnd(sorted) {
@@ -86,7 +99,7 @@ class Schema extends PureComponent {
     const { collectionId, pageId, schema } = this.props;
     const { sorting } = this.state;
     return (
-      <div className={cx(styles.schemaPage, { [styles.sorting]: sorting })} >
+      <div ref={this.$list} className={cx(styles.schemaPage, { [styles.sorting]: sorting })} >
         <SortableList
           items={schema} onSortEnd={this.onSortEnd} pressDelay={300} collectionId={collectionId} lockAxis="y"
           transitionDuration={500} lockToContainerEdges helperClass={styles.dragging} onSortStart={this.onSortStart}

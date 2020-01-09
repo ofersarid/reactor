@@ -29,6 +29,10 @@
     border: none;
     height: auto;
   }
+
+  &.dragging {
+    @extend %dragging-helper;
+  }
 }
 
 .pageListItemWrap {
@@ -50,8 +54,15 @@
   overflow-y: auto;
   overflow-x: hidden;
 
+  &.sorting {
+    li {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+
   @for $i from 1 through 1000 {
-    & > div:nth-of-type(#{$i}) {
+    & > li:nth-of-type(#{$i}) {
       transition-delay: #{$i * 0.05}s;
     }
   }

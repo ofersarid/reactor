@@ -46,3 +46,21 @@
     margin-bottom: 20px;
   }
 }
+
+%dragging-helper {
+  cursor: grab !important;
+  list-style: none;
+  transform: translate(0, 0);
+  opacity: 1 !important;
+  transition: none !important;
+  z-index: 1;
+
+  & > div {
+    box-shadow: 0 5px 10px rgba(black, 0.1);
+    cursor: row-resize !important;
+    pointer-events: all;
+  }
+
+  * {
+  }
+}

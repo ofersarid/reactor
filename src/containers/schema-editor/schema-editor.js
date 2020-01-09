@@ -1,20 +1,20 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import JSON5 from 'json5';
 import autoBind from 'auto-bind';
+import isEqual from 'lodash/isEqual';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { firestoreConnect } from 'react-redux-firebase';
 import services from '/src/services';
 import { UserInput, Button } from '/src/shared';
-import { fromJS } from 'immutable';
 import { withRouter } from 'react-router';
 import { inputTypes, validationFunctionTypes, inputTypesWithValidationFunction } from '/src/shared/user-input/types';
 import SchemaEditorFooter from './schema-editor-footer';
 import styles from './styles.scss';
 
-class SchemaEditor extends PureComponent {
+class SchemaEditor extends React.Component {
   constructor(props) {
     super(props);
     autoBind(this);
@@ -25,7 +25,7 @@ class SchemaEditor extends PureComponent {
       type: 'multi-line',
       required: true,
       validateWith: 'min-max',
-      options: fromJS([]),
+      options: [],
       maxChars: undefined,
       group: undefined,
       minChars: 1,
@@ -34,6 +34,10 @@ class SchemaEditor extends PureComponent {
     this.state = (metaData && fieldIndex >= 0) ? this.parseSchema(metaData.schema, fieldIndex) : this.initialState;
     props.setGoBackPath(`cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}/schema`);
     props.updateAppTitle(metaData ? metaData.name : null);
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return !isEqual(nextState, this.state);
   }
 
   componentDidMount() {
@@ -54,7 +58,7 @@ class SchemaEditor extends PureComponent {
       this.setState(this.parseSchema(metaData.schema, fieldIndex));
     }
     if (type !== prevState.type) {
-      this.setState({ options: fromJS([]) });
+      this.setState({ options: [] });
     }
     this.validate();
   }
@@ -71,8 +75,8 @@ class SchemaEditor extends PureComponent {
         label.length > 0 &&
         inputTypes.includes(type) &&
         (required && ['single-line', 'multi-line', 'multi-line-preserve-lines', 'rich'].includes(type) ? minChars > 0 : true) &&
-        (type === 'multi-select' ? options.size > 0 : true) &&
-        (type === 'switch' ? options.size > 1 : true) &&
+        (type === 'multi-select' ? options.length > 0 : true) &&
+        (type === 'switch' ? options.length > 1 : true) &&
         (validateWith ? validationFunctionTypes.includes(validateWith) : true) &&
         (maxChars ? maxChars > minChars : true)
     });
@@ -149,7 +153,11 @@ class SchemaEditor extends PureComponent {
           <div key={`option-${i}`} className={cx(styles.inputWrapper)} >
             <UserInput
               placeholder="Option View"
-              onChange={value => this.onChange({ options: options.set(i, value) })}
+              onChange={value => {
+                const optionsCopy = options.slice();
+                optionsCopy[i] = value;
+                this.onChange({ options: optionsCopy });
+              }}
               value={opt}
               label={`Option #${i}`}
               max={40}
@@ -163,8 +171,10 @@ class SchemaEditor extends PureComponent {
           <div className={cx(styles.inputWrapper)} >
             <Button
               onClick={() => {
+                const optionsCopy = options.slice();
+                optionsCopy.push('');
                 this.setState({
-                  options: options.push('')
+                  options: optionsCopy,
                 });
               }}
             >
