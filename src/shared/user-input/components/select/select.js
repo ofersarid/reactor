@@ -21,7 +21,7 @@ class Select extends PureComponent {
     this.setState({ isValid: validateWith(value) });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { validateWith, value } = this.props;
     this.setState({ isValid: validateWith(value) });
   }
