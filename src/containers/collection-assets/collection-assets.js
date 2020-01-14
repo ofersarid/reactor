@@ -23,7 +23,7 @@ const SortableList = SortableContainer((
       {items.map((itm, i) => (
         <SortableItem key={`item-${itm.id}`} index={i} >
           <Button
-            className={cx(styles.itemWrapper, { [styles.published]: itm.published || itm.published === undefined })}
+            className={cx(styles.itemWrapper, { [styles.published]: itm.published === 'Publish' || itm.published === undefined })}
             type="white"
             linkTo={`/cms/collection/${collectionId}/editor/${itm.id}`}
             justifyContent="start"
