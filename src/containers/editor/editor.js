@@ -114,7 +114,7 @@ class Editor extends PureComponent {
         return value => Boolean(value && ((value.length <= field.maxChars && (field.required ? value.length > 0 : true)) || (!field.required && value.length === 0)));
       case field.validateWith === 'min-max' && Boolean(field.minChars):
         return value => Boolean(value && (value.length >= field.minChars));
-      case ['image', 'pdf'].includes(field.type) && field.required:
+      case inputTypes.includes(field.type) && field.required:
         return file => Boolean(file && (((typeof file === 'string') && file.length > 0) || (typeof file.name === 'string')));
       case field.validateWith === 'date-time':
         return value => (typeof value === 'object' || (!field.required && value && value.length === 0));

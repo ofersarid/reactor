@@ -55,7 +55,7 @@ class EditorFooter extends PureComponent {
           <UserInput
             type="switch"
             options={['Publish', 'Hide']}
-            value={asset ? asset.published : false}
+            value={(asset && asset.published) ? asset.published : 'Hide'}
             onChange={val => onShowHideChange({ published: val })}
             className={styles.switch}
           />

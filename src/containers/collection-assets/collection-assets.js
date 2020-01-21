@@ -13,6 +13,7 @@ import services from '/src/services';
 import { Button } from '/src/shared';
 import { Add } from 'styled-icons/material/Add/Add';
 import styles from './styles.scss';
+import mp3Icon from './mp3-icon.svg';
 
 const SortableItem = SortableElement(({ children }) => <li >{children}</li >);
 
@@ -29,14 +30,9 @@ const SortableList = SortableContainer((
             justifyContent="start"
           >
             <div className={styles.itemTitle} >
-              {schema[0].type === 'image' ? <img className={styles.img} src={itm[schema[0].key]} /> : interpolateValue(itm, schema[0])}
+              {interpolateValue(itm, schema[0])}
             </div >
-            {schema[1].type === 'image' ? <img className={styles.img} src={itm[schema[1].key]} /> : <LinesEllipsisLoose
-              text={interpolateValue(itm, schema[1] ? schema[1] : '')}
-              maxLine='4'
-              lineHeight='24'
-              className={styles.itemBody}
-            />}
+            {interpolateValue(itm, schema[1])}
           </Button >
         </SortableItem >
       ))}
@@ -74,9 +70,23 @@ class Collection extends PureComponent {
       case 'rich':
         const span = document.createElement('span');
         span.innerHTML = value;
-        return span.textContent || span.innerText;
+        return <LinesEllipsisLoose
+          text={span.textContent || span.innerText}
+          maxLine='4'
+          lineHeight='24'
+          className={styles.itemBody}
+        />;
+      case 'image':
+        return <img className={styles.img} src={value} />;
+      case 'audio':
+        return <img src={mp3Icon} className={styles.mp3Icon} />;
       default:
-        return value;
+        return <LinesEllipsisLoose
+          text={value}
+          maxLine='4'
+          lineHeight='24'
+          className={styles.itemBody}
+        />;
     }
   }
 

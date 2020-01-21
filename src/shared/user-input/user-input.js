@@ -9,6 +9,7 @@ import { userInput } from './types';
 import DateTime from './components/date-time/date-time';
 import Post from './components/post/post';
 import UploadPdf from './components/upload-pdf/upload-pdf';
+import UploadAudio from './components/upload-audio/upload-audio';
 import UploadImage from './components/upload-image/upload-image';
 import SingleLine from './components/single-line/single-line';
 import MultiLine from './components/multi-line/multi-line';
@@ -120,6 +121,9 @@ const resolveComponentByType = (props) => {
           validateWith={props.validateWith}
           required={props.required}
         />);
+    case 'audio':
+      return (
+        <UploadAudio {...props} />);
     case 'youtube':
       return (
         <Link

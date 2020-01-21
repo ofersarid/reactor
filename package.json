@@ -28,6 +28,7 @@
     "react-click-outside": "^3.0.1",
     "react-collapse": "^5.0.1",
     "react-dom": "*",
+    "react-dropzone": "^10.2.1",
     "react-image-async": "^1.0.9",
     "react-image-crop": "^6.0.9",
     "react-image-file-resizer": "^0.1.5",
