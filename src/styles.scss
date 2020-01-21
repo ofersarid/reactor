@@ -107,6 +107,8 @@ input {
   opacity: 0.5;
   text-transform: lowercase;
   font-size: 20px;
+  position: relative;
+  transform: translateY(-2px);
 }
 ::-moz-placeholder { /* Firefox 19+ */
   color: $black;

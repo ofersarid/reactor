@@ -72,6 +72,7 @@
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    padding: 160px 10% 0;
   }
 }
 
@@ -122,9 +123,19 @@
 
 .btn {
   margin: 20px 0;
-  flex-shrink: 0;
+  border-radius: 30px;
+  height: 60px;
+  //flex-shrink: 0;
 
   &:last-of-type {
     margin-bottom: 0;
+  }
+
+  :global {
+    .inner {
+      background: transparent;
+      padding: 0;
+      color: $white;
+    }
   }
 }

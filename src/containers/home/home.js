@@ -126,7 +126,7 @@ class Home extends React.PureComponent {
               />
               <Button
                 className={cx(styles.listItemWrap, styles.newListItemWrap, styles.btn)}
-                disable={!isValid || working}
+                disable={addNow && (!isValid || working)}
                 onClick={this.create}
               >
                 CREATE
