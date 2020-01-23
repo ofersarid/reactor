@@ -28,7 +28,6 @@
     "react-click-outside": "^3.0.1",
     "react-collapse": "^5.0.1",
     "react-dom": "*",
-    "react-dropzone": "^10.2.1",
     "react-image-async": "^1.0.9",
     "react-image-crop": "^6.0.9",
     "react-image-file-resizer": "^0.1.5",
@@ -110,7 +109,7 @@
     "lint-watch": "esw src/ -w",
     "lint": "esw src/",
     "build": "rimraf ./build && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir build",
-    "build-for-production": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/production/CNAME ./docs/",
+    "build-for-production": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs",
     "publish": "yarn build-for-production && git add . && git commit -am \"publish\"  && git push",
     "backup-now": "firestore-backup -a ./google-cloud-accout-credentials.json -B ./backups/09-01-20 -P",
     "backup-now-test": "firestore-backup -a ./g-cloud-test.json -B ./backups/uppercase -P"
