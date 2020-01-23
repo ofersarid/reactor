@@ -10,7 +10,7 @@ export const inputTypesWithOptions = ['select', 'multi-select', 'switch'];
 
 export const inputTypesWithMinMaxChars = ['single-line', 'multi-line', 'multi-line-preserve-lines', 'rich'];
 
-export const inputTypesWithArtPreview = ['image', 'pdf'];
+export const fileInputTypes = ['image', 'pdf', 'audio'];
 
 export const validationFunctionTypes = ['min-max', 'date-time', 'link', 'email'];
 

@@ -12,7 +12,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 import utils from '/src/utils';
 import services from '/src/services';
 import { UserInput } from '/src/shared';
-import { inputTypes } from '/src/shared/user-input/types';
+import { inputTypes, fileInputTypes } from '/src/shared/user-input/types';
 import EditorFooter from './editor-footer';
 import styles from './styles.scss';
 
@@ -114,9 +114,9 @@ class Editor extends PureComponent {
         return value => Boolean(value && ((value.length <= field.maxChars && (field.required ? value.length > 0 : true)) || (!field.required && value.length === 0)));
       case field.validateWith === 'min-max' && Boolean(field.minChars):
         return value => Boolean(value && (value.length >= field.minChars));
-      case inputTypes.includes(field.type) && field.required:
+      case fileInputTypes.includes(field.type) && field.required:
         return file => Boolean(file && (((typeof file === 'string') && file.length > 0) || (typeof file.name === 'string')));
-      case field.validateWith === 'date-time':
+      case ['date-time', 'date'].includes(field.type):
         return value => (typeof value === 'object' || (!field.required && value && value.length === 0));
       case field.validateWith === 'link' && field.required:
         return value => (utils.validateLink(value)) || (!field.required && value && value.length === 0);

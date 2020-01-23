@@ -21,12 +21,13 @@ import 'react-tippy/dist/tippy.css';
 import styles from './styles.scss';
 
 firebase.initializeApp({
-  apiKey: process.env.FB_API_KEY,
-  authDomain: process.env.FB_AUTH_DOMAIN,
-  databaseURL: process.env.FB_DB_URL,
-  projectId: process.env.FB_PROJECT_URL,
-  storageBucket: process.env.FB_STORAGE_BUCKET,
-  messagingSenderId: process.env.FB_MSG_SENDER_ID,
+  apiKey: 'AIzaSyCVoJ1fNik-brXSirPwXfzEzpK4HDJyIdE',
+  authDomain: 'reactor-dam.firebaseapp.com',
+  databaseURL: 'https://reactor-dam.firebaseio.com',
+  projectId: 'reactor-dam',
+  storageBucket: 'reactor-dam.appspot.com',
+  messagingSenderId: '198256799515',
+  appId: '1:198256799515:web:3cf8edc02e02434b466dbe'
 });
 firebase.firestore();
 
