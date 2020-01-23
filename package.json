@@ -89,6 +89,7 @@
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-watch": "^4.0.2",
+    "node-pre-gyp": "^0.14.0",
     "node-sass": "^4.11.0",
     "now-parcel": "^1.0.0",
     "parcel-bundler": "^1.11.0",
