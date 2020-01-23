@@ -67,6 +67,9 @@
   },
   "name": "reactor",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.x"
+  },
   "main": "src/index.js",
   "license": "MIT",
   "devDependencies": {
