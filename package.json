@@ -112,7 +112,7 @@
     "build": "rimraf ./build && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir build",
     "build-for-production": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs",
     "publish": "yarn build-for-production && git add . && git commit -am \"publish\"  && git push",
-    "backup-now": "firestore-backup -a ./google-cloud-accout-credentials.json -B ./backups/09-01-20 -P",
+    "backup-now": "firestore-backup -a ./google-cloud-accout-credentials.json -B ./backups/02-02-20 -P",
     "backup-now-test": "firestore-backup -a ./g-cloud-test.json -B ./backups/uppercase -P"
   },
   "pre-commit": [
