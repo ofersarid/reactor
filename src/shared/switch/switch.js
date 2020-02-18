@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
+import SwitchItem from './switch-item';
 
 class Switch extends PureComponent {
   constructor(props) {
@@ -13,8 +14,9 @@ class Switch extends PureComponent {
   }
 
   componentDidMount() {
-    const { indicateIndex } = this.props;
+    const { indicateIndex, options } = this.props;
     this.prevIndex = indicateIndex;
+    this.onChange(options[indicateIndex]);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -22,10 +24,15 @@ class Switch extends PureComponent {
     this.prevIndex = indicateIndex;
   }
 
-  render() {
-    const { children, indicateIndex, className } = this.props;
+  onChange(item) {
+    const { onChange } = this.props;
+    onChange(typeof item === 'string' ? item : item.value);
+  }
 
-    const childWidth = 100 / children.length;
+  render() {
+    const { indicateIndex, className, options } = this.props;
+
+    const childWidth = 100 / options.length;
     const from = {
       left: this.prevIndex * childWidth,
       right: (this.prevIndex + 1) * childWidth,
@@ -42,8 +49,14 @@ class Switch extends PureComponent {
     const Springs = Keyframes.Spring({
       indicate: async (next) => {
         await next({
-          from: direction === 'right' ? { right: `${100 - from.right}%`, left: `${from.left}%` } : { left: `${from.left}%`, right: `${100 - from.right}%` },
-          to: direction === 'right' ? { right: `${100 - to.right}%`, left: `${from.left}%` } : { left: `${to.left}%`, right: `${100 - from.right}%` },
+          from: direction === 'right' ? {
+            right: `${100 - from.right}%`,
+            left: `${from.left}%`
+          } : { left: `${from.left}%`, right: `${100 - from.right}%` },
+          to: direction === 'right' ? { right: `${100 - to.right}%`, left: `${from.left}%` } : {
+            left: `${to.left}%`,
+            right: `${100 - from.right}%`
+          },
           config: configFrom,
         });
         await next({
@@ -58,7 +71,11 @@ class Switch extends PureComponent {
       <Springs state="indicate" >
         {springs => <div className={cx('switch', styles.switch, className)} >
           <div className={cx('indicator', styles.indicator)} style={springs} />
-          {children}
+          {options.map(item => (
+            <SwitchItem
+              key={item.view || item}
+              onClick={() => this.onChange(item)} >{item.view || item}</SwitchItem >
+          ))}
         </div >}
       </Springs >
     );
@@ -66,9 +83,13 @@ class Switch extends PureComponent {
 }
 
 Switch.propTypes = {
-  children: PropTypes.any,
   indicateIndex: PropTypes.number.isRequired,
   className: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.shape({
+    value: PropTypes.any,
+    view: PropTypes.any,
+  })])),
 };
 
 Switch.defaultProps = {

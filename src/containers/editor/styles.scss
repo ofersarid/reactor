@@ -22,6 +22,12 @@
   margin-bottom: 7px;
   text-transform: capitalize;
   font-size: 19px;
+  cursor: default;
+  transition: .25s $ease;
+
+  &:hover {
+    background: darken($lightGray, 2.5%);
+  }
 }
 
 .inputWrapper {

@@ -9,11 +9,11 @@ import { userInput } from './types';
 import DateTime from './components/date-time/date-time';
 import Post from './components/post/post';
 import UploadPdf from './components/upload-pdf/upload-pdf';
+import UploadAudio from './components/upload-audio/upload-audio';
 import UploadImage from './components/upload-image/upload-image';
 import SingleLine from './components/single-line/single-line';
 import MultiLine from './components/multi-line/multi-line';
-import Link from './components/link/link';
-import { Switch, SwitchItem } from '../switch';
+import { Switch } from '../switch';
 import MultiSelect from './components/multi-select/multi-select';
 import Select from './components/select/select';
 import Tooltip from '../tooltip/tooltip';
@@ -39,20 +39,13 @@ const resolveComponentByType = (props) => {
     case 'multi-line':
     case 'multi-line-preserve-lines':
     case 'link':
+    case 'youtube':
     case 'email':
       return (
         <MultiLine
-          placeholder={props.placeholder}
-          value={props.value}
-          onChange={props.onChange}
-          min={props.min}
-          max={props.max}
-          onValidation={props.onValidation}
+          {...props}
+          onChange={value => props.onChange(transformValue(props.type, value))}
           ref={props.getRef}
-          validateWith={props.validateWith}
-          required={props.required}
-          rtl={props.rtl}
-          type={props.type}
         />
       );
     case 'date-time':
@@ -120,18 +113,9 @@ const resolveComponentByType = (props) => {
           validateWith={props.validateWith}
           required={props.required}
         />);
-    case 'youtube':
+    case 'audio':
       return (
-        <Link
-          placeholder={props.placeholder}
-          value={props.value}
-          onChange={value => props.onChange(transformValue(props.type, value))}
-          onValidation={props.onValidation}
-          validateWith={props.validateWith}
-          min={props.min}
-          ref={props.getRef}
-          required={props.required}
-        />);
+        <UploadAudio {...props} />);
     case 'switch':
       if (props.value === '') {
         const firstOption = props.options[0];
@@ -143,13 +127,12 @@ const resolveComponentByType = (props) => {
           (typeof props.value === 'string' ? props.value : (props.value.value === undefined ? props.value.toString() : props.value.value.toString()))
         ));
         return (
-          <Switch indicateIndex={index} className={styles.switch} >
-            {props.options.map(item => (
-              <SwitchItem
-                key={item.view || item}
-                onClick={() => props.onChange(typeof item === 'string' ? item : item.value)} >{item.view || item}</SwitchItem >
-            ))}
-          </Switch >
+          <Switch
+            indicateIndex={index}
+            className={styles.switch}
+            onChange={props.onChange}
+            options={props.options}
+          />
         );
       }
     case 'multi-select':

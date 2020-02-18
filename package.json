@@ -10,7 +10,7 @@
     "delay": "^4.3.0",
     "emailjs-com": "^2.3.2",
     "env": "^0.0.2",
-    "firebase": "^5.7.0",
+    "firebase": "^7.7.0",
     "grunt": "~0.4.0",
     "highlight": "^0.2.4",
     "history": "^4.7.2",
@@ -28,6 +28,7 @@
     "react-click-outside": "^3.0.1",
     "react-collapse": "^5.0.1",
     "react-dom": "*",
+    "react-dropzone": "^10.2.1",
     "react-image-async": "^1.0.9",
     "react-image-crop": "^6.0.9",
     "react-image-file-resizer": "^0.1.5",
@@ -66,6 +67,9 @@
   },
   "name": "reactor",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.x"
+  },
   "main": "src/index.js",
   "license": "MIT",
   "devDependencies": {
@@ -88,6 +92,7 @@
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-watch": "^4.0.2",
+    "node-pre-gyp": "^0.14.0",
     "node-sass": "^4.11.0",
     "now-parcel": "^1.0.0",
     "parcel-bundler": "^1.11.0",
@@ -105,10 +110,11 @@
     "lint-watch": "esw src/ -w",
     "lint": "esw src/",
     "build": "rimraf ./build && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir build",
-    "build-old": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs && copyfiles -f env/production/CNAME ./docs/",
-    "publish-old": "yarn build-for-production && git remote set-url origin https://github.com/ofersarid/reactor.git && git add . && git commit -am \"publish\"",
-    "backup-now": "firestore-backup -a ./google-cloud-accout-credentials.json -B ./backups/07-01-20 -P",
-    "backup-now-test": "firestore-backup -a ./g-cloud-test.json -B ./backups/uppercase -P"
+    "build-for-production": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs",
+    "publish": "yarn build-for-production && git add . && git commit -am \"publish\"  && git push",
+    "backup-now": "firestore-backup -a ./google-cloud-accout-credentials.json -B ./backups/02-02-20 -P",
+    "backup-now-test": "firestore-backup -a ./g-cloud-test.json -B ./backups/uppercase -P",
+    "clean-branches": "git branch --merged | egrep -v \"(^\\*|master|dev)\" | xargs git branch -d\n"
   },
   "pre-commit": [
     "lint"

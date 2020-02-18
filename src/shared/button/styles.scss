@@ -53,6 +53,11 @@
   color: $red;
   border: 1px solid $red;
 }
+.red-bold {
+  background: $red;
+  color: $white;
+  border: 1px solid darken($red, 30%);
+}
 
 .icon {
   width: 65px;

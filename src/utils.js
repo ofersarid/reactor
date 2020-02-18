@@ -48,7 +48,7 @@ export const resolveSocialIconByURL = (url, className) => {
 };
 
 export const youtubeEmbedTransformer = urlStr => {
-  return urlStr ? `https://www.youtube-nocookie.com/embed/${urlStr.split('/').pop().split('v=').pop()}` : '';
+  return urlStr ? `https://www.youtube-nocookie.com/embed/${urlStr.replace(/\s/g, '').split('/').pop().split('v=').pop()}` : '';
 };
 
 export const exportToCsv = (filename, rows) => {
