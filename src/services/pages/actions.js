@@ -124,6 +124,15 @@ export const deleteField = (id, index) => async (dispatch, getState, { getFireba
   }
 };
 
+export const sort = order => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const state = getState();
+  const uid = auth.selectors.uid(state);
+  await firestore.collection('users').doc(uid).set({
+    'pages': order,
+  }, { merge: true });
+};
+
 export default {
   create,
   duplicate,
@@ -132,4 +141,5 @@ export default {
   addField,
   deleteField,
   sortSchema,
+  sort,
 };

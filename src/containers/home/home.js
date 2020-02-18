@@ -111,15 +111,15 @@ class Home extends React.PureComponent {
     this.setState({ sorting: true });
   }
 
-  onSortEnd(sorted) {
-    const { collections } = this.props;
-    const order = collections;
+  async onSortEnd(sorted) {
+    const { listName, collectionsOrder, sortCollections, pagesOrder, sortPages } = this.props;
+    const order = listName === 'collections' ? collectionsOrder : pagesOrder;
     console.log(order);
     const moveMe = order[sorted.oldIndex];
     order.splice(sorted.oldIndex, 1);
     order.splice(sorted.newIndex, 0, moveMe);
     console.log(order);
-    // await sortAssets(collectionId, order.join(' | '));
+    await listName === 'collections' ? sortCollections(order) : sortPages(order);
     this.setState({ sorting: false });
   }
 
@@ -206,10 +206,14 @@ Home.propTypes = {
     name: PropTypes.string,
     id: PropTypes.string.required,
   })),
+  collectionsOrder: PropTypes.arrayOf(PropTypes.string),
+  pagesOrder: PropTypes.arrayOf(PropTypes.string),
   pages: PropTypes.array,
   updateAppTitle: PropTypes.func.isRequired,
   createCollection: PropTypes.func.isRequired,
   createPage: PropTypes.func.isRequired,
+  sortCollections: PropTypes.func.isRequired,
+  sortPages: PropTypes.func.isRequired,
   devMode: PropTypes.bool.isRequired,
 };
 
@@ -221,12 +225,16 @@ const mapStateToProps = state => ({
   collections: services.collections.selectors.list(state),
   pages: services.pages.selectors.list(state),
   devMode: services.app.selectors.devMode(state),
+  collectionsOrder: services.collections.selectors.order(state),
+  pagesOrder: services.pages.selectors.order(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   updateAppTitle: newTitle => dispatch(services.app.actions.updateAppTitle(newTitle)),
   createCollection: title => dispatch(services.collections.actions.create(title, [], '', '')),
   createPage: title => dispatch(services.pages.actions.create(title, [])),
+  sortCollections: (order) => dispatch(services.collections.actions.sort(order)),
+  sortPages: (order) => dispatch(services.pages.actions.sort(order)),
 });
 
 export default compose(

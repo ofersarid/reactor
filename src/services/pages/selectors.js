@@ -4,10 +4,13 @@ import router from '../redux-router';
 // export const map = (state, collection) => state.get('fireStore').data[collection] || {};
 
 const userPagesMap = state => state.get('fireStore').data.pages || {};
+const order = state => state.get('firebase').profile.pages || [];
 
-const list = createSelector(userPagesMap, (pages) => {
-  return Object.keys(pages).reduce((accumulator, pageId) => {
-    accumulator.push(Object.assign({}, pages[pageId], { id: pageId }));
+const list = createSelector(userPagesMap, order, (pages, _order) => {
+  return _order.reduce((accumulator, pageId) => {
+    if (pages[pageId]) {
+      accumulator.push(Object.assign({}, pages[pageId], { id: pageId }));
+    }
     return accumulator;
   }, []);
 });
@@ -18,5 +21,6 @@ const item = createSelector(userPagesMap, router.selectors.pageId, (_userCollect
 
 export default {
   list,
+  order,
   item,
 };

@@ -78,7 +78,7 @@ const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatc
     } else {
       getCollectionById(collectionId, firestore).add(entityWithoutFiles).then(resp => {
         uploadFiles(`${uid}/${resp.id}`, entity, firebase, dispatch).then(update => {
-          const orderedList = collectionsService.selectors.item(state).order;
+          const orderedList = collectionsService.selectors.item(state).assetsOrder;
           firestore.collection('collections').doc(collectionId).set({
             'order': orderedList ? `${orderedList} | ${resp.id}` : resp.id,
           }, { merge: true }).then(resolve);
@@ -119,7 +119,7 @@ const _delete = (asset, assetId) => {
         filePaths.forEach(path => {
           return deleteFile(path, firebase);
         });
-        const orderedList = collectionsService.selectors.item(state).order.split(' | ');
+        const orderedList = collectionsService.selectors.item(state).assetsOrder.split(' | ');
         firestore.collection('collections').doc(collectionId).set({
           'order': orderedList.filter(id => id !== assetId).join(' | '),
         }, { merge: true }).then(() => {

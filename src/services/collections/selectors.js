@@ -1,15 +1,17 @@
 import { createSelector } from 'reselect/lib/index';
 import router from '../redux-router';
 import blackList from '../blacklist';
-import _sortBy from 'lodash/sortBy';
 
 export const userCollectionsMap = state => state.get('fireStore').data.collections || {};
+const order = state => state.get('firebase').profile.collections || [];
 
-const list = createSelector(userCollectionsMap, (list) => {
-  return _sortBy(Object.keys(list).reduce((accumulator, collectionId) => {
-    accumulator.push(Object.assign({}, list[collectionId], { id: collectionId }));
+const list = createSelector(userCollectionsMap, order, (list, _order) => {
+  return _order.reduce((accumulator, collectionId) => {
+    if (list[collectionId]) {
+      accumulator.push(Object.assign({}, list[collectionId], { id: collectionId }));
+    }
     return accumulator;
-  }, []), item => item.name ? item.name.toLowerCase() : null, ['asc']);
+  }, []);
 });
 
 const item = createSelector(router.selectors.collectionId, userCollectionsMap, (_collectionId, _userCollectionsMap) => {
@@ -24,7 +26,7 @@ const collection = state => {
   }
 };
 
-const order = state => {
+const assetsOrder = state => {
   const _collection = collection(state);
   if (_collection) {
     return _collection.order;
@@ -35,7 +37,7 @@ const data = state => state.get('fireStore').data.assets || {};
 
 const assets = createSelector(
   data,
-  order,
+  assetsOrder,
   blackList.selectors.deletedAssets,
   (_data, _order, _blackList) => {
     if (_data && _order) {
@@ -52,4 +54,5 @@ export default {
   list,
   item,
   assets,
+  order,
 };
