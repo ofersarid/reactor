@@ -11,10 +11,11 @@ const Menu = (
   {
     toggleDevMode,
     devMode,
+    toggleMenu,
   }) => (
   <div className={cx(styles.menu)} >
     <section className={styles.menuTopSection} >
-      <Button type="white" className={cx(styles.menuItem, styles.btn)} linkTo="/cms/home" >
+      <Button type="white" className={cx(styles.menuItem, styles.btn)} linkTo="/cms/home" onClick={toggleMenu}>
         Go Home
       </Button >
     </section >
@@ -35,6 +36,7 @@ Menu.propTypes = {
   menuIsOpen: PropTypes.bool.isRequired,
   toggleDevMode: PropTypes.func.isRequired,
   devMode: PropTypes.bool.isRequired,
+  toggleMenu: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -44,6 +46,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   toggleDevMode: () => dispatch(services.app.actions.toggleDevMode()),
+  toggleMenu: () => dispatch(services.app.actions.toggleMenu()),
 });
 
 export default compose(
