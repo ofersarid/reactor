@@ -113,7 +113,8 @@
     "build-for-production": "rimraf ./docs && NODE_ENV=prod parcel build index.html --public-url '.' --out-dir docs",
     "publish": "yarn build-for-production && git add . && git commit -am \"publish\"  && git push",
     "backup-now": "firestore-backup -a ./google-cloud-accout-credentials.json -B ./backups/02-02-20 -P",
-    "backup-now-test": "firestore-backup -a ./g-cloud-test.json -B ./backups/uppercase -P"
+    "backup-now-test": "firestore-backup -a ./g-cloud-test.json -B ./backups/uppercase -P",
+    "clean-branches": "git branch --merged | egrep -v \"(^\\*|master|dev)\" | xargs git branch -d\n"
   },
   "pre-commit": [
     "lint"
