@@ -111,7 +111,15 @@ class Home extends React.PureComponent {
     this.setState({ sorting: true });
   }
 
-  onSortEnd() {
+  onSortEnd(sorted) {
+    const { collections } = this.props;
+    const order = collections;
+    console.log(order);
+    const moveMe = order[sorted.oldIndex];
+    order.splice(sorted.oldIndex, 1);
+    order.splice(sorted.newIndex, 0, moveMe);
+    console.log(order);
+    // await sortAssets(collectionId, order.join(' | '));
     this.setState({ sorting: false });
   }
 
