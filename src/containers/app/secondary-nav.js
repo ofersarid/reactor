@@ -4,45 +4,34 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import autoBind from 'auto-bind';
 import PropTypes from 'prop-types';
-import services from '/src/services';
 import styles from './styles.scss';
-import { UserInput } from '../../shared';
 
 class SecondaryNav extends PureComponent {
   constructor(props) {
     super(props);
     autoBind(this);
-    this.tabs = [{ view: 'Collections', value: 'collections' }, { view: 'Pages', value: 'pages' }];
+    this.tabs = ['collections', 'pages'];
   }
 
   render() {
-    const { listName, selectList, show } = this.props;
+    const { show, children } = this.props;
     return (
       <div className={cx(styles.secondaryNav, { [styles.show]: show })} >
-        <UserInput
-          type="switch"
-          options={this.tabs}
-          value={listName}
-          onChange={selectList}
-          className={styles.tabSection}
-        />
+        {children}
       </div >
     );
   }
 }
 
 SecondaryNav.propTypes = {
-  listName: PropTypes.string.isRequired,
-  selectList: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
+  children: PropTypes.any,
 };
 
-const mapStateToProps = state => ({
-  listName: services.home.selectors.listName(state),
+const mapStateToProps = state => ({ // eslint-disable-line
 });
 
-const mapDispatchToProps = dispatch => ({
-  selectList: (...props) => dispatch(services.home.actions.selectList(...props)),
+const mapDispatchToProps = dispatch => ({ // eslint-disable-line
 });
 
 export default compose(

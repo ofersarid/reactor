@@ -121,7 +121,7 @@ Button.propTypes = {
   getRef: PropTypes.object,
   style: PropTypes.object,
   domProps: PropTypes.object,
-  type: PropTypes.oneOf(['icon', 'black', 'white', 'red', 'circle', 'transparent']),
+  type: PropTypes.oneOf(['icon', 'black', 'white', 'red', 'red-bold', 'circle', 'transparent']),
   justifyContent: PropTypes.oneOf(['start', 'center']),
   tag: PropTypes.string.isRequired,
 };
