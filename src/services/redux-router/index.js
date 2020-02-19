@@ -17,6 +17,8 @@ const reducer = (state = fromJS({
       return state.merge(fromJS(action.route));
     case 'ROUTER:SET_GO_BACK_PATH':
       return state.set('goBackPath', action.path);
+    case 'ROUTER:CLEAR_STATE':
+      return state.set('params', {});
     default:
       return state;
   }
@@ -31,10 +33,14 @@ const actions = {
     type: 'ROUTER:SET_GO_BACK_PATH',
     path,
   }),
+  clearState: () => ({
+    type: 'ROUTER:CLEAR_STATE',
+  }),
 };
 
 const selectors = {
   pathname: state => state.getIn(['router', 'pathname']),
+  state: state => state.getIn(['router', 'params', 'state']),
   collectionId: state => state.getIn(['router', 'params', 'collectionId']),
   pageId: state => state.getIn(['router', 'params', 'pageId']),
   fieldIndex: state => parseInt(state.getIn(['router', 'params', 'fieldIndex'])),

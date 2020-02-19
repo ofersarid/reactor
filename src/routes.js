@@ -7,7 +7,7 @@ export default (
     <IndexRedirect to="login" />
     <Route path="cms" >
       <IndexRedirect to="home" />
-      <Route path="home" />
+      <Route path="home(/:state)" />
       <Route path="collection/:collectionId" />
       <Route path="collection/:collectionId/schema" />
       <Route path="collection/:collectionId/schema(/:fieldIndex)/editor" />

@@ -43,7 +43,7 @@ class NavBar extends React.PureComponent {
     const isHomePage = Boolean(pathname.match('/cms/home'));
     return (
       <div className={cx(styles.navBar, { [styles.show]: show, [styles.hideShadow]: isHomePage })} >
-        <SecondaryNav show={isHomePage && !menuIsOpen} >
+        <SecondaryNav show={isHomePage} >
           <UserInput
             type="switch"
             options={['collections', 'pages']}

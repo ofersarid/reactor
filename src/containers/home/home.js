@@ -8,18 +8,17 @@ import { connect } from 'react-redux';
 import JSON5 from 'json5';
 import animateScrollTo from 'animated-scroll-to';
 import { Button, UserInput } from '/src/shared';
-import { Add } from 'styled-icons/material';
 import PropTypes from 'prop-types';
-import sotrBy from 'lodash/sortBy';
+import sortBy from 'lodash/sortBy';
 import services from '/src/services';
 import styles from './styles.scss';
 
-const resolveLinkTo = (listType, itmId, devMode) => {
+const resolveLinkTo = (listType, itmId,) => {
   switch (listType) {
     case 'collections':
-      return `cms/collection/${itmId}${devMode ? '/schema' : ''}`;
+      return `cms/collection/${itmId}`;
     case 'pages':
-      return `/cms/page/${itmId}/${devMode ? 'schema' : 'editor'}`;
+      return `/cms/page/${itmId}/editor`;
     default:
       return '';
   }
@@ -34,7 +33,7 @@ const SortableList = SortableContainer((
       {items.map((itm, i) => (
         <SortableItem key={`item-${itm.id}`} index={i} className={itemClassName} >
           <Button
-            linkTo={resolveLinkTo(name, itm.id, devMode)}
+            linkTo={resolveLinkTo(name, itm.id)}
             justifyContent="start"
           >
             {itm.name}
@@ -54,7 +53,6 @@ class Home extends React.PureComponent {
       inputValue: '',
       isValid: false,
       working: false,
-      addNow: false,
       sorting: false,
     };
     props.updateAppTitle('REACTOR');
@@ -65,9 +63,8 @@ class Home extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { listName } = this.props;
-    const { addNow } = this.state;
-    if (prevProps.listName !== listName || prevState.addNow !== addNow) {
+    const { listName, state } = this.props;
+    if (prevProps.listName !== listName || prevProps.state !== state) {
       this.resetListScrollPosition(listName);
     }
   }
@@ -87,12 +84,12 @@ class Home extends React.PureComponent {
   }
 
   async create() {
-    const { createCollection, createPage, listName } = this.props;
+    const { createCollection, createPage, listName, clearState } = this.props;
     const { inputValue } = this.state;
     this.setState({
       working: true,
-      addNow: false,
     });
+    clearState();
     await listName === 'collections' ? createCollection(inputValue) : createPage(inputValue);
     setTimeout(() => {
       this.setState({
@@ -100,11 +97,6 @@ class Home extends React.PureComponent {
         working: false,
       });
     });
-  }
-
-  toggleAddNow() {
-    const { addNow } = this.state;
-    this.setState({ addNow: !addNow });
   }
 
   onSortStart() {
@@ -124,10 +116,10 @@ class Home extends React.PureComponent {
   }
 
   render() {
-    const { listName, collections, pages, devMode } = this.props;
-    const { showInputField, inputValue, isValid, working, addNow } = this.state;
-    const relevantCollections = sotrBy(collections, item => JSON5.parse(item.schema).length || devMode);
-    const relevantPages = sotrBy(pages, item => (item.schema && JSON5.parse(item.schema).length) || devMode);
+    const { listName, collections, pages, devMode, state } = this.props;
+    const { showInputField, inputValue, isValid, working } = this.state;
+    const relevantCollections = sortBy(collections, item => JSON5.parse(item.schema).length || devMode);
+    const relevantPages = sortBy(pages, item => (item.schema && JSON5.parse(item.schema).length) || devMode);
     return (
       <Fragment >
         <SortableList
@@ -143,7 +135,7 @@ class Home extends React.PureComponent {
           devMode={devMode}
           _ref={this.ref.collectionList}
           className={cx(styles.listContainer, {
-            [styles.focus]: listName === 'collections' && !addNow,
+            [styles.focus]: listName === 'collections' && state !== 'add',
           })}
         />
         <SortableList
@@ -159,14 +151,14 @@ class Home extends React.PureComponent {
           devMode={devMode}
           _ref={this.ref.pageList}
           className={cx(styles.listContainer, {
-            [styles.focus]: listName === 'pages' && !addNow,
-            [styles.hideLeft]: addNow,
+            [styles.focus]: listName === 'pages' && state !== 'add',
+            [styles.hideLeft]: state === 'add',
           })}
           itemClassName={cx(styles.pageListItemWrap)}
         />
         {devMode && (
           <Fragment >
-            <div className={cx(styles.listContainer, styles.addNowList, { [styles.focus]: addNow })} >
+            <div className={cx(styles.listContainer, styles.addNowList, { [styles.focus]: state === 'add' })} >
               <UserInput
                 placeholder={listName === 'collections' ? 'Collection Name' : 'Page Name'}
                 onChange={this.handleInputChange}
@@ -177,19 +169,12 @@ class Home extends React.PureComponent {
               />
               <Button
                 className={cx(styles.listItemWrap, styles.newListItemWrap, styles.btn)}
-                disable={addNow && (!isValid || working)}
+                disable={state === 'add' && (!isValid || working)}
                 onClick={this.create}
               >
                 CREATE
               </Button >
             </div >
-            <Button
-              type="circle"
-              className={cx(styles.addBtn, { [styles.rotate]: addNow })}
-              onClick={this.toggleAddNow}
-            >
-              <Add />
-            </Button >
           </Fragment >
         )}
       </Fragment >
@@ -215,6 +200,8 @@ Home.propTypes = {
   sortCollections: PropTypes.func.isRequired,
   sortPages: PropTypes.func.isRequired,
   devMode: PropTypes.bool.isRequired,
+  clearState: PropTypes.bool.isRequired,
+  state: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
@@ -227,6 +214,7 @@ const mapStateToProps = state => ({
   devMode: services.app.selectors.devMode(state),
   collectionsOrder: services.collections.selectors.order(state),
   pagesOrder: services.pages.selectors.order(state),
+  state: services.router.selectors.state(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -235,6 +223,7 @@ const mapDispatchToProps = dispatch => ({
   createPage: title => dispatch(services.pages.actions.create(title, [])),
   sortCollections: (order) => dispatch(services.collections.actions.sort(order)),
   sortPages: (order) => dispatch(services.pages.actions.sort(order)),
+  clearState: () => dispatch(services.router.actions.clearState()),
 });
 
 export default compose(

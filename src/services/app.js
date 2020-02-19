@@ -13,7 +13,7 @@ const reducer = (state = fromJS({
     case HEADER_TITLE:
       return state.set('headerTitle', action.newTitle);
     case TOGGLE_DEV_MODE:
-      return state.set('devMode', !state.get('devMode')).set('menuIsOpen', false);
+      return state.set('devMode', !state.get('devMode'));
     case TOGGLE_MENU:
       return state.set('menuIsOpen', !state.get('menuIsOpen'));
     case 'ROUTER:LOCATION_CHANGE':

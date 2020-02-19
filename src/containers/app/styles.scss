@@ -167,4 +167,46 @@
   .menuTopSection {
 
   }
+
+  .header {
+    height: 42px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+      font-weight: 400;
+      font-size: 22px;
+      margin: 0;
+    }
+
+    svg {
+      margin-bottom: 0;
+      height: 100%;
+      box-sizing: border-box;
+      margin-left: 10px;
+      width: 25px;
+      transform: translateY(-2px);
+    }
+
+    .lock {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      position: relative;
+      height: 22px;
+      color: $green;
+
+      &.unlocked {
+        color: red;
+
+        svg {
+          margin-right: -3px;
+          margin-left: 13px;
+        }
+      }
+    }
+  }
+
 }
