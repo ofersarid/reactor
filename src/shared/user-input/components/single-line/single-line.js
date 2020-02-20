@@ -28,7 +28,9 @@ class SingleLine extends PureComponent {
   componentDidMount() {
     const { focus, value } = this.props;
     if (focus) {
-      this.$input.current.focus();
+      setTimeout(() => {
+        this.$input.current.focus();
+      }, 1000);
     }
 
     this.validate(value);

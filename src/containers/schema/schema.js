@@ -50,7 +50,8 @@ class Schema extends PureComponent {
       isWorking: false,
       sorting: false,
     };
-    props.setGoBackPath(`/cms/home`);
+    const { collectionId, pageId } = props;
+    props.setGoBackPath(`/cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}`);
     props.updateAppTitle(props.name);
     this.$list = React.createRef();
   }

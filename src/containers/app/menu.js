@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import cx from 'classnames';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import { LockOpen as Unlocked } from 'styled-icons/fa-solid/LockOpen';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
 
-const resolveLinkTo = (listType, collectionId, pageId) => {
+const resolveLinkToSchema = (listType, collectionId, pageId) => {
   switch (listType) {
     case 'collections':
       return `/cms/collection/${collectionId}/schema`;
@@ -17,6 +17,14 @@ const resolveLinkTo = (listType, collectionId, pageId) => {
       return `/cms/page/${pageId}/schema`;
     default:
       return '';
+  }
+};
+
+const resolveLinkToRename = (collectionId, pageId) => {
+  if (collectionId) {
+    return `/cms/collection/${collectionId}/rename`;
+  } else if (pageId) {
+    return `/cms/pages/${pageId}/rename`;
   }
 };
 
@@ -32,7 +40,13 @@ const Menu = (
   }) => (
   <div className={cx(styles.menu)} >
     <section className={styles.menuTopSection} >
-      <Button type="white" className={cx(styles.menuItem, styles.btn)} linkTo="/cms/home" onClick={toggleMenu} >
+      <Button
+        type="white"
+        className={cx(styles.menuItem, styles.btn)}
+        linkTo="/cms/home"
+        disable={Boolean(pathname.match(/cms\/home/))}
+        onClick={toggleMenu}
+      >
         Go Home
       </Button >
     </section >
@@ -45,27 +59,45 @@ const Menu = (
         </div >
       </div >
       {Boolean(pathname.match('/cms/home')) && (
-        <Button
-          type="white"
-          className={cx(styles.menuItem, styles.btn)}
-          linkTo="/cms/home/add"
-          onClick={toggleMenu}
-          disable={!devMode}
-        >
-          {listName === 'collections' ? 'Create a New Collection' : 'Create a New Page'}
-        </Button >
+        <Fragment >
+          <Button
+            type="white"
+            className={cx(styles.menuItem, styles.btn)}
+            linkTo="/cms/home/add"
+            onClick={toggleMenu}
+            disable={!devMode || listName !== 'pages'}
+          >
+            Create a New Page
+          </Button >
+          <Button
+            type="white"
+            className={cx(styles.menuItem, styles.btn)}
+            linkTo="/cms/home/add"
+            onClick={toggleMenu}
+            disable={!devMode || listName !== 'collections'}
+          >
+            Create a New Collection
+          </Button >
+        </Fragment >
       )}
-      {(collectionId || pageId) && (
-        <Button
-          type="white"
-          className={cx(styles.menuItem, styles.btn)}
-          linkTo={resolveLinkTo(listName, collectionId, pageId)}
-          onClick={toggleMenu}
-          disable={!devMode}
-        >
-          Edit Schema
-        </Button >
-      )}
+      <Button
+        type="white"
+        className={cx(styles.menuItem, styles.btn)}
+        linkTo={resolveLinkToSchema(listName, collectionId, pageId)}
+        onClick={toggleMenu}
+        disable={!devMode || (!collectionId && !pageId)}
+      >
+        Edit Schema
+      </Button >
+      <Button
+        type="white"
+        className={cx(styles.menuItem, styles.btn)}
+        linkTo={resolveLinkToRename(collectionId, pageId)}
+        onClick={toggleMenu}
+        disable={!devMode || (!collectionId && !pageId)}
+      >
+        Rename this {collectionId ? 'collection' : 'page'}
+      </Button >
     </section >
   </div >
 );

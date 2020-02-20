@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Transition, animated } from 'react-spring/renderprops';
 import { withRouter } from 'react-router';
 import services from '/src/services';
-import { Home, Editor, CollectionAssets, Schema, Login, SchemaEditor } from '/src/containers';
+import { Home, Editor, CollectionAssets, Schema, Login, SchemaEditor, CollectionMeta } from '/src/containers';
 import cx from 'classnames';
 import styles from './styles.scss';
 import NavBar from './nav-bar';
@@ -22,6 +22,8 @@ const pages = [
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Home />
   </animated.div >,
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><CollectionAssets />
+  </animated.div >,
+  springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><CollectionMeta />
   </animated.div >,
   springs => <animated.div className={cx('pageContainer', styles.pageContainer)} style={springs} ><Editor />
   </animated.div >,
@@ -37,14 +39,16 @@ const resolvePageIndex = (pathname, menuIsOpen) => {
       return 1;
     case Boolean(pathname.match('/cms/home')):
       return 2;
-    case Boolean(pathname.match('/cms/collection')) && !pathname.match('editor') && !pathname.match('schema'):
+    case Boolean(pathname.match(/^\/cms\/collection/) && !pathname.match(/schema|editor|rename/)):
       return 3;
-    case Boolean(pathname.match(/schema\/.*editor/)):
-      return 6;
-    case Boolean(pathname.match('editor')):
+    case Boolean(pathname.match('rename')):
       return 4;
-    case Boolean(pathname.match('schema')):
+    case Boolean(pathname.match('editor')):
       return 5;
+    case Boolean(pathname.match('schema')):
+      return 6;
+    case Boolean(pathname.match(/schema\/.*editor/)):
+      return 7;
     case Boolean(pathname.match('/login')):
     default:
       return 0;
@@ -67,9 +71,9 @@ const APP = ({ pathname, isLoaded, prevPath, menuIsOpen }) => {
         reset
         unique
         items={pageIndex}
-        from={{ marginLeft: `${direction === 'right' ? '100%' : '-100%'}`, opacity: 0 }}
-        enter={{ marginLeft: '0', opacity: 1 }}
-        leave={{ marginLeft: `${direction === 'right' ? '-50%' : '50%'}`, opacity: 0 }} >
+        from={{ transform: `translateX(${direction === 'right' ? '100%' : '-100%'})`, opacity: 0 }}
+        enter={{ transform: 'translateX(0)', opacity: 1 }}
+        leave={{ transform: `translateX(${direction === 'right' ? '-50%' : '50%'})`, opacity: 0 }} >
         {index => pages[index]}
       </Transition >
     </div >

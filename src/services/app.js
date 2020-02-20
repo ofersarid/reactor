@@ -7,7 +7,7 @@ const TOGGLE_MENU = 'APP/TOGGLE_MENU';
 const reducer = (state = fromJS({
   headerTitle: 'Reactor',
   devMode: false,
-  menuIsOpen: true,
+  menuIsOpen: false,
 }), action) => {
   switch (action.type) {
     case HEADER_TITLE:

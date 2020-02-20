@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 import router from '../redux-router';
+import app from '../app';
 
 export const CONST = {
   LOG_IN_ERROR: 'AUTH/LOG_IN_ERROR',
@@ -105,13 +106,13 @@ const HOC = (WrappedComponent) => {
     }
 
     redirect() {
-      const { uid, isLoaded, isLoginPage } = this.props;
+      const { uid, isLoaded, isLoginPage, devMode, pathname } = this.props;
       if (!uid && !isLoaded) return;
       if (!uid) {
         if (!isLoginPage) {
           hashHistory.push('login');
         }
-      } else if (isLoginPage) {
+      } else if (isLoginPage || (!devMode && Boolean(pathname.match(/\/cms\/home\/add/)))) {
         hashHistory.push('cms/home');
       }
     }
@@ -129,6 +130,7 @@ const HOC = (WrappedComponent) => {
     prevPath: PropTypes.string.isRequired,
     isLoaded: PropTypes.bool.isRequired,
     isLoginPage: PropTypes.bool.isRequired,
+    devMode: PropTypes.bool.isRequired,
   };
 
   const mapStateToProps = state => ({
@@ -137,6 +139,7 @@ const HOC = (WrappedComponent) => {
     pathname: router.selectors.pathname(state),
     prevPath: router.selectors.prevPath(state),
     isLoginPage: Boolean(router.selectors.pathname(state).match(/^\/login/)),
+    devMode: app.selectors.devMode(state),
   });
 
   const mapDispatchToProps = dispatch => ({}); // eslint-disable-line

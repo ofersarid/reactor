@@ -49,7 +49,6 @@ class Home extends React.PureComponent {
     super(props);
     autoBind(this);
     this.state = {
-      showInputField: false,
       inputValue: '',
       isValid: false,
       working: false,
@@ -117,7 +116,7 @@ class Home extends React.PureComponent {
 
   render() {
     const { listName, collections, pages, devMode, state } = this.props;
-    const { showInputField, inputValue, isValid, working } = this.state;
+    const { inputValue, isValid, working } = this.state;
     const relevantCollections = sortBy(collections, item => JSON5.parse(item.schema).length || devMode);
     const relevantPages = sortBy(pages, item => (item.schema && JSON5.parse(item.schema).length) || devMode);
     return (
@@ -157,25 +156,25 @@ class Home extends React.PureComponent {
           itemClassName={cx(styles.pageListItemWrap)}
         />
         {devMode && (
-          <Fragment >
-            <div className={cx(styles.listContainer, styles.addNowList, { [styles.focus]: state === 'add' })} >
+          <div className={cx(styles.listContainer, styles.addNowList, { [styles.focus]: state === 'add' })} >
+            <div className={cx(styles.listItemWrap, styles.newListItemWrap)} >
+              <h2 >Name your new {listName === 'pages' ? 'Page' : 'Collection'}</h2 >
               <UserInput
                 placeholder={listName === 'collections' ? 'Collection Name' : 'Page Name'}
                 onChange={this.handleInputChange}
                 value={inputValue}
-                focus={showInputField}
-                className={cx(styles.listItemWrap, styles.newListItemWrap)}
                 validateWith={val => val.length > 0}
               />
               <Button
-                className={cx(styles.listItemWrap, styles.newListItemWrap, styles.btn)}
+                className={cx(styles.btn)}
                 disable={state === 'add' && (!isValid || working)}
                 onClick={this.create}
+                tag="button"
               >
                 CREATE
               </Button >
             </div >
-          </Fragment >
+          </div >
         )}
       </Fragment >
     );
@@ -200,7 +199,7 @@ Home.propTypes = {
   sortCollections: PropTypes.func.isRequired,
   sortPages: PropTypes.func.isRequired,
   devMode: PropTypes.bool.isRequired,
-  clearState: PropTypes.bool.isRequired,
+  clearState: PropTypes.func.isRequired,
   state: PropTypes.string,
 };
 

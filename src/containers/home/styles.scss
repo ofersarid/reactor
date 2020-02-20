@@ -41,6 +41,14 @@
 
 .newListItemWrap {
   transform: translateX(calc(100% + 20px));
+
+  & h2 {
+    margin-bottom: 20px;
+  }
+
+  & > div {
+    padding: 0;
+  }
 }
 
 .listContainer {
@@ -77,8 +85,7 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
-    align-items: center;
-    padding: 160px 10% 0;
+    padding: 180px 10% 0;
   }
 }
 

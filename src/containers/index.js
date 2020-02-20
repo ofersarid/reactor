@@ -5,3 +5,4 @@ export { default as CollectionAssets } from './collection-assets/collection-asse
 export { default as App } from './app/app';
 export { default as Schema } from './schema/schema';
 export { default as SchemaEditor } from './schema-editor/schema-editor';
+export { default as CollectionMeta } from './collection-meta-editor/collection-meta-editor';

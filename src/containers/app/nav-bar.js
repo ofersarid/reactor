@@ -9,6 +9,7 @@ import { PowerOff } from 'styled-icons/boxicons-regular/PowerOff';
 import { KeyboardArrowLeft } from 'styled-icons/material/KeyboardArrowLeft';
 import { Menu } from 'styled-icons/material/Menu';
 import { Close } from 'styled-icons/material/Close';
+import { LockOpen as Unlocked } from 'styled-icons/fa-solid/LockOpen';
 import { Button, UserInput } from '/src/shared';
 import services from '/src/services';
 import PropTypes from 'prop-types';
@@ -38,12 +39,12 @@ class NavBar extends React.PureComponent {
   render() {
     const {
       uid, pathname, appTitle, show, listName, selectList,
-      menuIsOpen, toggleMenu
+      menuIsOpen, toggleMenu, devMode, toggleDevMode,
     } = this.props;
     const isHomePage = Boolean(pathname.match('/cms/home'));
     return (
       <div className={cx(styles.navBar, { [styles.show]: show, [styles.hideShadow]: isHomePage })} >
-        <SecondaryNav show={isHomePage} >
+        <SecondaryNav show={isHomePage && !menuIsOpen} >
           <UserInput
             type="switch"
             options={['collections', 'pages']}
@@ -53,26 +54,39 @@ class NavBar extends React.PureComponent {
           />
         </SecondaryNav >
         <div className={styles.navBarInner} >
-          <div
+          <section >
+            {devMode && (
+              <Button
+                type="icon" className={cx(styles.btn, styles.unlocked)}
+                onClick={toggleDevMode} >
+                <Unlocked />
+              </Button >
+            )}
+            {uid && (
+              <Button
+                type="icon" className={cx(styles.btn, styles.menuToggle)}
+                onClick={toggleMenu} >
+                {menuIsOpen ? <Close /> : <Menu />}
+              </Button >
+            )}
+          </section >
+          <section
             className={cx(styles.navBarTitle, { [styles.isReactorLogo]: isHomePage })}
           >
             <span >{appTitle || '...'}</span >
-          </div >
-          {(uid && pathname === '/cms/home') && !menuIsOpen && (
-            <Button type="icon" className={cx(styles.toTheLeft, styles.btn)} onClick={this.logOut} >
-              <PowerOff />
-            </Button >
-          )}
-          {(uid && pathname !== '/cms/home' && pathname !== '/cms/login') && !menuIsOpen && (
-            <Button type="icon" className={cx(styles.toTheLeft, styles.btn)} onClick={this.goBack} >
-              <KeyboardArrowLeft className={styles.arrowLeft} />
-            </Button >
-          )}
-          {uid && (
-            <Button type="icon" className={cx(styles.btn, styles.menuToggle, styles.toTheRight)} onClick={toggleMenu} >
-              {menuIsOpen ? <Close /> : <Menu />}
-            </Button >
-          )}
+          </section >
+          <section >
+            {(uid && pathname === '/cms/home') && !menuIsOpen && (
+              <Button type="icon" className={cx(styles.toTheLeft, styles.btn)} onClick={this.logOut} >
+                <PowerOff />
+              </Button >
+            )}
+            {(uid && pathname !== '/cms/home' && pathname !== '/cms/login') && !menuIsOpen && (
+              <Button type="icon" className={cx(styles.toTheLeft, styles.btn)} onClick={this.goBack} >
+                <KeyboardArrowLeft className={styles.arrowLeft} />
+              </Button >
+            )}
+          </section >
         </div >
       </div >
     );
