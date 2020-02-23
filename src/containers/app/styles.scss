@@ -67,6 +67,7 @@
       color: $black;
       height: 32px;
       animation: $popIn;
+      top: 2px;
 
       &.arrowLeft {
         height: 42px;
@@ -76,6 +77,7 @@
     section {
       display: flex;
       align-items: center;
+      height: 100%;
     }
 
     .unlocked {
@@ -103,10 +105,18 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
+    display: flex;
 
     &.isReactorLogo {
       font-weight: 700;
       letter-spacing: 0.3em;
+    }
+
+    .pageType {
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-left: 10px;
+      color: $red
     }
   }
 

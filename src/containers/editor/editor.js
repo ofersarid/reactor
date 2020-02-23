@@ -22,7 +22,7 @@ class Editor extends PureComponent {
     autoBind(this);
     this.grouping();
     this.state = {
-      asset: props.asset,
+      asset: props.assetId ? props.asset : {},
       isValid: false,
       deleting: false,
       isWorking: false,
@@ -240,20 +240,31 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
-    return props.collectionId ? [{
-      collection: 'collections',
-      doc: props.collectionId,
-    }, {
-      collection: 'collections',
-      doc: props.collectionId,
-      subcollections: [{
-        collection: 'data',
-        doc: props.assetId,
-      }],
-      storeAs: 'editor',
-    }] : props.pageId ? [{
-      collection: 'pages',
-      doc: props.pageId,
-    }] : [];
+    const connectTo = [];
+    if (props.pageId) {
+      connectTo.push({
+        collection: 'pages',
+        doc: props.pageId,
+      });
+    }
+    if (props.collectionId) {
+      connectTo.push({
+        collection: 'collections',
+        doc: props.collectionId,
+      });
+    }
+    if (props.assetId) {
+      connectTo.push({
+        collection: 'collections',
+        doc: props.collectionId,
+        subcollections: [{
+          collection: 'data',
+          doc: props.assetId,
+        }],
+        storeAs: 'assetEditor',
+      });
+    }
+
+    return connectTo;
   }),
 )(Editor);

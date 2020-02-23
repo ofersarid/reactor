@@ -36,6 +36,18 @@ class NavBar extends React.PureComponent {
     clearData();
   }
 
+  resolvePageType() {
+    const { pathname } = this.props;
+    switch (true) {
+      case Boolean(pathname.match('schema')):
+        return 'schema';
+      case Boolean(pathname.match('settings')):
+        return 'settings';
+      default:
+        return '';
+    }
+  }
+
   render() {
     const {
       uid, pathname, appTitle, show, listName, selectList,
@@ -73,7 +85,8 @@ class NavBar extends React.PureComponent {
           <section
             className={cx(styles.navBarTitle, { [styles.isReactorLogo]: isHomePage })}
           >
-            <span >{appTitle || '...'}</span >
+            <span className={styles.txt} >{appTitle || '...'}</span >
+            <span className={styles.pageType} >{this.resolvePageType()}</span >
           </section >
           <section >
             {(uid && pathname === '/cms/home') && !menuIsOpen && (

@@ -4,7 +4,7 @@ import collectionsSelectors from '../collections/selectors';
 import router from '../redux-router';
 import pages from '../pages';
 
-const item = state => router.selectors.collectionId(state) ? state.get('fireStore').data.editor : pages.selectors.item(state) ? pages.selectors.item(state).data : undefined;
+const item = state => router.selectors.collectionId(state) ? state.get('fireStore').data.assetEditor : pages.selectors.item(state) ? pages.selectors.item(state).data : undefined;
 
 const fields = createSelector(
   collectionsSelectors.item,

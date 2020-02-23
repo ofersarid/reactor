@@ -31,7 +31,7 @@ const SortableList = SortableContainer((
   return (
     <ul ref={_ref} className={cx(styles.listContainer, className)} >
       {items.map((itm, i) => (
-        <SortableItem key={`item-${itm.id}`} index={i} className={itemClassName} >
+        <SortableItem key={`item-${itm.id}`} index={i} className={itemClassName} disabled={!devMode} >
           <Button
             linkTo={resolveLinkTo(name, itm.id)}
             justifyContent="start"
