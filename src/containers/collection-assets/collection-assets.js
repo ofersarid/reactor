@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import services from '/src/services';
 import { Button } from '/src/shared';
 import { Add } from 'styled-icons/material/Add/Add';
+import isEqual from 'lodash/isEqual';
 import styles from './styles.scss';
 import mp3Icon from './mp3-icon.svg';
 
@@ -32,7 +33,7 @@ const SortableList = SortableContainer((
             <div className={styles.itemTitle} >
               {interpolateValue(itm, schema[0])}
             </div >
-            {interpolateValue(itm, schema[1])}
+            {schema[1] ? interpolateValue(itm, schema[1]) : null}
           </Button >
         </SortableItem >
       ))}
@@ -55,8 +56,10 @@ class Collection extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { collectionMeta, updateAppTitle } = this.props;
-    if (!prevProps.collectionMeta && collectionMeta) {
-      updateAppTitle(collectionMeta.name);
+    if (!isEqual(prevProps.collectionMeta, collectionMeta)) {
+      if (collectionMeta && collectionMeta.name) {
+        updateAppTitle(collectionMeta.name);
+      }
     }
   }
 

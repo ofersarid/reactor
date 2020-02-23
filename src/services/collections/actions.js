@@ -1,49 +1,43 @@
 import auth from '../auth';
+import router from '../redux-router';
 import assetService from '../asset';
 import JSON5 from 'json5';
+
+export const clearAllAssets = id => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  // const state = getState();
+  const querySnapshot = await firestore.collection(`collections/${id}/data`).get();
+  querySnapshot.forEach(async doc => {
+    await dispatch(assetService.actions.delete(Object.assign({ id: doc.id }, doc.data()), doc.id));
+  });
+};
 
 export const remove = id => async (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
-  const docRef = firestore.collection('collections').doc(id);
-  cleanStorage(id);
-  docRef.delete().then(() => {
-    firestore.collection('users').doc(uid).set({
-      'collections': auth.selectors.userCollectionIds(state).filter(_id => _id !== id),
-    }, { merge: true });
-  });
+  const docRef = await firestore.collection('collections').doc(id);
+  const user = await firestore.collection('users').doc(uid).get();
+  const collectionList = user.data().collections;
+  await dispatch(clearAllAssets(id));
+  await docRef.delete();
+  await user.ref.set({
+    'collections': collectionList.filter(_id => _id !== id),
+  }, { merge: true });
 };
 
-export const clearAllAssets = id => (dispatch, getState, { getFirebase, getFirestore }) => {
-  const promise = new Promise(resolve => {
-    const firestore = getFirestore();
-    // const state = getState();
-    firestore.collection(`collections/${id}/data`).get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        dispatch(assetService.actions.delete(Object.assign({ id: doc.id }, doc.data())).then());
-      });
-    });
-  });
-  return promise;
-};
-
-export const cleanStorage = id => (dispatch, getState, { getFirebase, getFirestore }) => {
-  const promise = new Promise(resolve => {
-    const firestore = getFirestore();
-    // const state = getState();
-    firestore.collection(`collections/${id}/data`).get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        Object.keys(doc).forEach(key => {
-          if (key.match(/^ref--/)) {
-            dispatch(assetService.actions.deleteFile(doc[key]));
-          }
-        });
-      });
-    });
-  });
-  return promise;
-};
+// export const cleanStorage = id => async (dispatch, getState, { getFirebase, getFirestore }) => {
+//   const firestore = getFirestore();
+//   // const state = getState();
+//   const querySnapshot = await firestore.collection(`collections/${id}/data`).get();
+//   querySnapshot.forEach(doc => {
+//     Object.keys(doc).forEach(key => {
+//       if (key.match(/^ref--/)) {
+//         dispatch(assetService.actions.deleteFile(doc[key]));
+//       }
+//     });
+//   });
+// };
 
 export const create = (name, schema, itemTitle, itemBody) => (dispatch, getState, { getFirebase, getFirestore }) => {
   const firestore = getFirestore();
@@ -181,6 +175,16 @@ export const sort = order => async (dispatch, getState, { getFirebase, getFirest
   }, { merge: true });
 };
 
+export const rename = newName => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firestore = getFirestore();
+  const state = getState();
+  const collectionId = router.selectors.collectionId(state);
+  const doc = firestore.collection('collections').doc(collectionId);
+  await doc.set({
+    'name': newName,
+  }, { merge: true });
+};
+
 export default {
   create,
   duplicate,
@@ -192,4 +196,5 @@ export default {
   sortSchema,
   sortAssets,
   sort,
+  rename,
 };

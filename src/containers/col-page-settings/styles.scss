@@ -8,8 +8,11 @@
   overflow-x: hidden;
   box-sizing: border-box;
   background: $lightGray;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.field {
-  margin-bottom: 20px;
+.btn {
+  margin-top: 20px;
 }

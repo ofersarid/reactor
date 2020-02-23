@@ -78,7 +78,7 @@ const update = (uid, entity, assetId, collectionId, firestore, firebase, dispatc
     } else {
       getCollectionById(collectionId, firestore).add(entityWithoutFiles).then(resp => {
         uploadFiles(`${uid}/${resp.id}`, entity, firebase, dispatch).then(update => {
-          const orderedList = collectionsService.selectors.item(state).assetsOrder;
+          const orderedList = collectionsService.selectors.item(state).order;
           firestore.collection('collections').doc(collectionId).set({
             'order': orderedList ? `${orderedList} | ${resp.id}` : resp.id,
           }, { merge: true }).then(resolve);
@@ -101,34 +101,29 @@ const save = (asset, assetId) => {
   };
 };
 
-const _delete = (asset, assetId) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const state = getState();
-    const collectionId = router.selectors.collectionId(state);
-    const firestore = getFirestore();
-    const firebase = getFirebase();
-    const filePaths = [];
-    const entityRef = getCollectionAssetRef(collectionId, assetId, firestore);
-    Object.keys(asset).forEach(key => {
-      if (key.match(/^ref--/)) {
-        filePaths.push(asset[key]);
-      }
-    });
-    const promise = new Promise((resolve) => {
-      entityRef.delete().then(() => {
-        filePaths.forEach(path => {
-          return deleteFile(path, firebase);
-        });
-        const orderedList = collectionsService.selectors.item(state).assetsOrder.split(' | ');
-        firestore.collection('collections').doc(collectionId).set({
-          'order': orderedList.filter(id => id !== assetId).join(' | '),
-        }, { merge: true }).then(() => {
-          resolve();
-        });
-      });
-    });
-    return promise;
-  };
+const _delete = (asset, id) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const state = getState();
+  const collectionId = router.selectors.collectionId(state);
+  const firestore = getFirestore();
+  const firebase = getFirebase();
+  const filePaths = [];
+  const entityRef = getCollectionAssetRef(collectionId, id, firestore);
+  Object.keys(asset).forEach(key => {
+    if (key.match(/^ref--/)) {
+      filePaths.push(asset[key]);
+    }
+  });
+  await entityRef.delete();
+  filePaths.forEach(async path => {
+    await deleteFile(path, firebase);
+  });
+  let orderedList = collectionsService.selectors.item(state).order;
+  if (orderedList) {
+    orderedList = orderedList.split(' | ');
+    await firestore.collection('collections').doc(collectionId).set({
+      'order': orderedList.filter(_id => _id !== id).join(' | '),
+    }, { merge: true });
+  }
 };
 
 export default {

@@ -11,12 +11,12 @@ export default (
       <Route path="collection/:collectionId" />
       <Route path="collection/:collectionId/schema" />
       <Route path="collection/:collectionId/schema(/:fieldIndex)/editor" />
-      <Route path="collection/:collectionId/rename" />
+      <Route path="collection/:collectionId/settings" />
       <Route path="collection/:collectionId/editor(/:assetId)" />
       <Route path="page/:pageId/editor" />
       <Route path="page/:pageId/schema" />
       <Route path="page/:pageId/schema(/:fieldIndex)/editor" />
-      <Route path="page/:pageId/rename" />
+      <Route path="page/:pageId/settings" />
     </Route >
     <Route path="login" />
     <Redirect from="*" to="cms/home" />

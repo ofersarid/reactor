@@ -15,12 +15,17 @@ const list = createSelector(userPagesMap, order, (pages, _order) => {
   }, []);
 });
 
-const item = createSelector(userPagesMap, router.selectors.pageId, (_userCollectionsMap, pageId) => {
-  return _userCollectionsMap[pageId];
+const item = createSelector(userPagesMap, router.selectors.pageId, (_userPagesMap, pageId) => {
+  return _userPagesMap[pageId];
+});
+
+const name = createSelector(item, (_item) => {
+  return _item ? _item.name : null;
 });
 
 export default {
   list,
   order,
   item,
+  name,
 };

@@ -5,7 +5,7 @@ import JSON5 from 'json5';
 import { UnmountClosed } from 'react-collapse';
 import autoBind from 'auto-bind';
 import cx from 'classnames';
-import _isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual';
 import uniq from 'lodash/uniq';
 import PropTypes from 'prop-types';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -41,26 +41,31 @@ class Editor extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    const { pageMeta, updateAppTitle, collectionMeta } = this.props;
     if (!this.props.pathname.includes('editor')) {
       return;
     }
-    if (!_isEqual(this.props.asset, prevProps.asset) && !this.state.deleting) {
+    if (!isEqual(this.props.asset, prevProps.asset) && !this.state.deleting) {
       this.setState({ asset: this.props.asset });
     }
-    if (!_isEqual(this.state.asset, prevState.asset)) {
+    if (!isEqual(this.state.asset, prevState.asset)) {
       this.validate();
-    }
-    if (!prevProps.pageMeta && this.props.pageMeta) {
-      this.props.updateAppTitle(this.props.pageMeta.name);
-    }
-    if (!prevProps.collectionMeta && this.props.collectionMeta) {
-      this.props.updateAppTitle(this.props.collectionMeta.name);
     }
     if (this.props.collectionId) {
       this.props.setGoBackPath(`/cms/collection/${this.props.collectionId}`);
+      if (!isEqual(prevProps.collectionMeta, collectionMeta)) {
+        if (collectionMeta.name) {
+          updateAppTitle(collectionMeta.name);
+        }
+      }
     }
     if (this.props.pageId) {
       this.props.setGoBackPath(`/cms/home`);
+      if (!isEqual(prevProps.pageMeta, pageMeta)) {
+        if (pageMeta.name) {
+          updateAppTitle(pageMeta.name);
+        }
+      }
     }
 
     if (this.props.fields.length > 0 && prevProps.fields.length === 0) {

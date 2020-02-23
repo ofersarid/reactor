@@ -50,9 +50,14 @@ const assets = createSelector(
     }
   });
 
+const name = createSelector(item, (_item) => {
+  return _item ? _item.name : null;
+});
+
 export default {
   list,
   item,
   assets,
   order,
+  name,
 };

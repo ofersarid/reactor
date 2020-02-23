@@ -22,9 +22,9 @@ const resolveLinkToSchema = (listType, collectionId, pageId) => {
 
 const resolveLinkToRename = (collectionId, pageId) => {
   if (collectionId) {
-    return `/cms/collection/${collectionId}/rename`;
+    return `/cms/collection/${collectionId}/settings`;
   } else if (pageId) {
-    return `/cms/pages/${pageId}/rename`;
+    return `/cms/page/${pageId}/settings`;
   }
 };
 
@@ -65,39 +65,34 @@ const Menu = (
             className={cx(styles.menuItem, styles.btn)}
             linkTo="/cms/home/add"
             onClick={toggleMenu}
-            disable={!devMode || listName !== 'pages'}
+            disable={!devMode}
           >
-            Create a New Page
+            Create a New {listName === 'collections' ? 'Collection' : 'Page'}
+          </Button >
+        </Fragment >
+      )}
+      {(collectionId || pageId) && (
+        <Fragment>
+          <Button
+            type="white"
+            className={cx(styles.menuItem, styles.btn)}
+            linkTo={resolveLinkToSchema(listName, collectionId, pageId)}
+            onClick={toggleMenu}
+            disable={!devMode || (!collectionId && !pageId)}
+          >
+            Edit Schema
           </Button >
           <Button
             type="white"
             className={cx(styles.menuItem, styles.btn)}
-            linkTo="/cms/home/add"
+            linkTo={resolveLinkToRename(collectionId, pageId)}
             onClick={toggleMenu}
-            disable={!devMode || listName !== 'collections'}
+            disable={!devMode || (!collectionId && !pageId)}
           >
-            Create a New Collection
+            {collectionId ? 'Collection' : 'Page'} Settings
           </Button >
-        </Fragment >
+        </Fragment>
       )}
-      <Button
-        type="white"
-        className={cx(styles.menuItem, styles.btn)}
-        linkTo={resolveLinkToSchema(listName, collectionId, pageId)}
-        onClick={toggleMenu}
-        disable={!devMode || (!collectionId && !pageId)}
-      >
-        Edit Schema
-      </Button >
-      <Button
-        type="white"
-        className={cx(styles.menuItem, styles.btn)}
-        linkTo={resolveLinkToRename(collectionId, pageId)}
-        onClick={toggleMenu}
-        disable={!devMode || (!collectionId && !pageId)}
-      >
-        Rename this {collectionId ? 'collection' : 'page'}
-      </Button >
     </section >
   </div >
 );

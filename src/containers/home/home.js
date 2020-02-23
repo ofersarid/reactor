@@ -163,6 +163,7 @@ class Home extends React.PureComponent {
                 placeholder={listName === 'collections' ? 'Collection Name' : 'Page Name'}
                 onChange={this.handleInputChange}
                 value={inputValue}
+                focus
                 validateWith={val => val.length > 0}
               />
               <Button
