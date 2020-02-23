@@ -9,7 +9,6 @@ import JSON5 from 'json5';
 import animateScrollTo from 'animated-scroll-to';
 import { Button, UserInput } from '/src/shared';
 import PropTypes from 'prop-types';
-import sortBy from 'lodash/sortBy';
 import services from '/src/services';
 import styles from './styles.scss';
 
@@ -24,7 +23,8 @@ const resolveLinkTo = (listType, itmId,) => {
   }
 };
 
-const SortableItem = SortableElement(({ children, className }) => <li className={cx(styles.listItemWrap, className)} >{children}</li >);
+const SortableItem = SortableElement(({ children, className }) => <li
+  className={cx(styles.listItemWrap, className)} >{children}</li >);
 
 const SortableList = SortableContainer((
   { items, _ref, name, devMode, className, itemClassName }) => {
@@ -117,8 +117,8 @@ class Home extends React.PureComponent {
   render() {
     const { listName, collections, pages, devMode, state } = this.props;
     const { inputValue, isValid, working } = this.state;
-    const relevantCollections = sortBy(collections, item => JSON5.parse(item.schema).length || devMode);
-    const relevantPages = sortBy(pages, item => (item.schema && JSON5.parse(item.schema).length) || devMode);
+    const relevantCollections = collections.filter(item => Boolean((item.schema && JSON5.parse(item.schema).length > 0) || devMode));
+    const relevantPages = pages.filter(item => Boolean((item.schema && JSON5.parse(item.schema).length > 0) || devMode));
     return (
       <Fragment >
         <SortableList
