@@ -13,8 +13,7 @@ class ColPageSettings extends PureComponent {
   constructor(props) {
     super(props);
     autoBind(this);
-    const { setGoBackPath, collectionName, pageName, pathname } = props;
-    setGoBackPath(`/cms/collection/${props.collectionId}`);
+    const { collectionName, pageName, pathname } = props;
     this.state = {
       newName: collectionName || pageName || '',
       isValid: false,
@@ -22,6 +21,7 @@ class ColPageSettings extends PureComponent {
       done: false,
       pathname: pathname,
     };
+    this.setGoBackPath(props);
     this.redirect(props);
   }
 
@@ -32,6 +32,17 @@ class ColPageSettings extends PureComponent {
       };
     }
     return {};
+  }
+
+  setGoBackPath(props) {
+    const { setGoBackPath, collectionId, pageId } = props;
+    if (collectionId) {
+      setGoBackPath(`cms/collection/${collectionId}`);
+    } else if (pageId) {
+      setGoBackPath(`cms/page/${pageId}/editor`);
+    } else {
+      setGoBackPath('cms/home');
+    }
   }
 
   redirect(props) {
