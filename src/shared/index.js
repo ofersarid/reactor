@@ -5,3 +5,4 @@ export { default as UserInput } from './user-input/user-input';
 export { default as Tooltip } from './tooltip/tooltip';
 export { default as Switch } from './switch/switch';
 export { default as SwitchItem } from './switch/switch-item';
+export { default as Modal } from './modal/modal';

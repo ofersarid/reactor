@@ -64,7 +64,7 @@ const APP = ({ pathname, isLoaded, prevPath, menuIsOpen }) => {
   MENU_WAS_OPEN = menuIsOpen;
 
   return isLoaded ? (
-    <div className={styles.main} >
+    <div className={styles.main} id="main" >
       <NavBar show={Boolean(pageIndex)} />
       <Transition
         native

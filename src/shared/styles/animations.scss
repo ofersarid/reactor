@@ -69,7 +69,7 @@
 
 $ease: cubic-bezier(0.23, 1, 0.32, 1);
 
-$popIn: popIn .4s forwards $ease;
+$popIn: popIn .75s forwards $ease;
 $dimm: dimm .2s forwards $ease;
 $undimm: undimm .2s forwards $ease;
 $fadeIn: fadeIn .2s forwards $ease;

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 import autoBind from 'auto-bind';
 import PropTypes from 'prop-types';
-import { Button, UserInput } from '/src/shared';
+import { Button, UserInput, Modal } from '/src/shared';
 import services from '/src/services';
 import styles from './styles.scss';
 
@@ -13,16 +13,20 @@ class ColPageSettings extends PureComponent {
   constructor(props) {
     super(props);
     autoBind(this);
-    const { collectionName, pageName, pathname } = props;
+    const { collectionName, pageName, pathname, devMode } = props;
     this.state = {
       newName: collectionName || pageName || '',
       isValid: false,
       working: false,
       done: false,
       pathname: pathname,
+      confirmDelete: false,
     };
-    this.setGoBackPath(props);
-    this.redirect(props);
+    const goBackPath = this.getGoBackPath(props);
+    props.setGoBackPath(goBackPath);
+    if (!devMode) {
+      hashHistory.push(goBackPath);
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -34,29 +38,14 @@ class ColPageSettings extends PureComponent {
     return {};
   }
 
-  setGoBackPath(props) {
-    const { setGoBackPath, collectionId, pageId } = props;
+  getGoBackPath(props) {
+    const { collectionId, pageId } = props;
     if (collectionId) {
-      setGoBackPath(`cms/collection/${collectionId}`);
+      return `cms/collection/${collectionId}`;
     } else if (pageId) {
-      setGoBackPath(`cms/page/${pageId}/editor`);
-    } else {
-      setGoBackPath('cms/home');
+      return `cms/page/${pageId}/editor`;
     }
-  }
-
-  redirect(props) {
-    const { devMode, collectionId, pageId } = props || this.props;
-    const { done } = props || this.state;
-    if (!devMode || done) { // !working is for when async action is completed
-      if (collectionId) {
-        hashHistory.push(`cms/collection/${collectionId}`);
-      } else if (pageId) {
-        hashHistory.push(`cms/page/${pageId}/editor`);
-      } else {
-        hashHistory.push('cms/home');
-      }
-    }
+    return 'cms/home';
   }
 
   handleInputChange(value) {
@@ -67,28 +56,33 @@ class ColPageSettings extends PureComponent {
   }
 
   async rename() {
-    const { rename } = this.props;
+    const { rename, goBackPath } = this.props;
     const { newName } = this.state;
     this.setState({ working: true });
     await rename(newName);
     this.setState({ working: false, done: true });
-    // updateAppTitle(newName);
-    this.redirect();
+    hashHistory.push(goBackPath);
   }
 
   async handleClickOnDelete() {
     const { deleteMe } = this.props;
-    await deleteMe();
-    hashHistory.push('cms/home');
+    const { confirmDelete } = this.state;
+    if (confirmDelete) {
+      this.setState({ working: true });
+      await deleteMe();
+      hashHistory.push('cms/home');
+    } else {
+      this.setState({ confirmDelete: true });
+    }
   }
 
   render() {
-    const { collectionMeta, collectionId } = this.props;
-    const { newName, isValid, working } = this.state;
+    const { collectionId, pageName, collectionName } = this.props;
+    const { newName, isValid, working, confirmDelete } = this.state;
     return (
       <div className={cx(styles.collectionMetaEditor)} >
         <section >
-          <h2 >Rename {collectionMeta ? collectionMeta.name : ''} to:</h2 >
+          <h2 >Rename {collectionName} to:</h2 >
           <UserInput
             placeholder="New Name"
             onChange={this.handleInputChange}
@@ -112,6 +106,21 @@ class ColPageSettings extends PureComponent {
           >
             Delete this {collectionId ? 'Collection' : 'Page'}
           </Button >
+          {(collectionName || pageName) && (
+            <Modal
+              options={['yes', 'no']}
+              show={confirmDelete}
+              onClick={option => {
+                if (option === 'yes') {
+                  this.handleClickOnDelete();
+                } else {
+                  this.setState({ confirmDelete: false });
+                }
+              }}
+            >
+              {working ? 'working...' : `Are you sure you want to delete ${collectionName || pageName} ?`}
+            </Modal >
+          )}
         </section >
       </div >
     );
@@ -119,7 +128,6 @@ class ColPageSettings extends PureComponent {
 }
 
 ColPageSettings.propTypes = {
-  collectionMeta: PropTypes.object,
   setGoBackPath: PropTypes.func.isRequired,
   collectionId: PropTypes.string,
   pageId: PropTypes.string,
@@ -133,16 +141,17 @@ ColPageSettings.propTypes = {
   pageName: PropTypes.string,
   devMode: PropTypes.bool.isRequired,
   pathname: PropTypes.string.isRequired,
+  goBackPath: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  collectionMeta: services.collections.selectors.item(state),
   collectionId: services.router.selectors.collectionId(state),
   pageId: services.router.selectors.pageId(state),
   collectionName: services.collections.selectors.name(state),
   pageName: services.pages.selectors.name(state),
   devMode: services.app.selectors.devMode(state),
   pathname: services.router.selectors.pathname(state),
+  goBackPath: services.router.selectors.goBackPath(state),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -12,7 +12,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 import services from '/src/services';
 import { Button } from '/src/shared';
 import { Add } from 'styled-icons/material';
-import { withRouter } from 'react-router';
+import { hashHistory, withRouter } from 'react-router';
 import styles from './styles.scss';
 
 const SortableItem = SortableElement(({ children }) => <li >{children}</li >);
@@ -50,8 +50,12 @@ class Schema extends PureComponent {
       isWorking: false,
       sorting: false,
     };
-    const { collectionId, pageId } = props;
-    props.setGoBackPath(`/cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}`);
+    const { collectionId, pageId, devMode } = props;
+    const goBackPath = `/cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}`;
+    props.setGoBackPath(goBackPath);
+    if (!devMode) {
+      hashHistory.push(goBackPath);
+    }
     props.updateAppTitle(props.name);
     this.$list = React.createRef();
   }
@@ -125,6 +129,7 @@ Schema.propTypes = {
   name: PropTypes.string,
   updateAppTitle: PropTypes.func.isRequired,
   sortSchema: PropTypes.func.isRequired,
+  devMode: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
@@ -138,6 +143,7 @@ const mapStateToProps = (state, ownProps) => ({ // eslint-disable-line
     const metaData = services[ownProps.params.collectionId ? 'collections' : 'pages'].selectors.item(state);
     return metaData ? metaData.name : null;
   })(),
+  devMode: services.app.selectors.devMode(state),
 });
 
 const mapDispatchToProps = dispatch => ({

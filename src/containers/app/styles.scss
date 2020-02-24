@@ -79,17 +79,6 @@
       align-items: center;
       height: 100%;
     }
-
-    .unlocked {
-      padding: 0 !important;
-      width: auto !important;
-      transform: translateY(-1px);
-
-      svg {
-        height: 20px;
-        color: $red;
-      }
-    }
   }
 
   .navBarTitle {
@@ -112,11 +101,18 @@
       letter-spacing: 0.3em;
     }
 
+    .txt {
+      position: relative;
+    }
+
     .pageType {
       font-size: 12px;
       text-transform: uppercase;
-      margin-left: 10px;
-      color: $red
+      color: $red;
+      position: absolute;
+      left: calc(100% + 10px);
+      opacity: 0;
+      animation: $popIn;
     }
   }
 
@@ -210,7 +206,6 @@
       box-sizing: border-box;
       margin-left: 10px;
       width: 25px;
-      transform: translateY(-2px);
     }
 
     .lock {
@@ -223,11 +218,6 @@
 
       &.unlocked {
         color: red;
-
-        svg {
-          margin-right: -3px;
-          margin-left: 13px;
-        }
       }
     }
   }

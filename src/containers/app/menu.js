@@ -4,8 +4,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import services from '/src/services';
 import { Button } from '/src/shared';
-import { Lock as Locked } from 'styled-icons/fa-solid/Lock';
-import { LockOpen as Unlocked } from 'styled-icons/fa-solid/LockOpen';
+import { Lock as Locked } from 'styled-icons/boxicons-regular/Lock';
+import { LockOpen as Unlocked } from 'styled-icons/boxicons-regular/LockOpen';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
 

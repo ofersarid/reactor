@@ -9,7 +9,7 @@ import { PowerOff } from 'styled-icons/boxicons-regular/PowerOff';
 import { KeyboardArrowLeft } from 'styled-icons/material/KeyboardArrowLeft';
 import { Menu } from 'styled-icons/material/Menu';
 import { Close } from 'styled-icons/material/Close';
-import { LockOpen as Unlocked } from 'styled-icons/fa-solid/LockOpen';
+// import { LockUnlock as Unlocked } from 'styled-icons/remix-line/LockUnlock';
 import { Button, UserInput } from '/src/shared';
 import services from '/src/services';
 import PropTypes from 'prop-types';
@@ -51,7 +51,7 @@ class NavBar extends React.PureComponent {
   render() {
     const {
       uid, pathname, appTitle, show, listName, selectList,
-      menuIsOpen, toggleMenu, devMode, toggleDevMode,
+      menuIsOpen, toggleMenu,
     } = this.props;
     const isHomePage = Boolean(pathname.match('/cms/home'));
     return (
@@ -67,13 +67,6 @@ class NavBar extends React.PureComponent {
         </SecondaryNav >
         <div className={styles.navBarInner} >
           <section >
-            {devMode && (
-              <Button
-                type="icon" className={cx(styles.btn, styles.unlocked)}
-                onClick={toggleDevMode} >
-                <Unlocked />
-              </Button >
-            )}
             {uid && (
               <Button
                 type="icon" className={cx(styles.btn, styles.menuToggle)}
@@ -85,8 +78,9 @@ class NavBar extends React.PureComponent {
           <section
             className={cx(styles.navBarTitle, { [styles.isReactorLogo]: isHomePage })}
           >
-            <span className={styles.txt} >{appTitle || '...'}</span >
-            <span className={styles.pageType} >{this.resolvePageType()}</span >
+            <div className={styles.txt} >{appTitle || '...'}
+              <span className={styles.pageType} >{this.resolvePageType()}</span >
+            </div >
           </section >
           <section >
             {(uid && pathname === '/cms/home') && !menuIsOpen && (
@@ -117,8 +111,6 @@ NavBar.propTypes = {
   listName: PropTypes.string.isRequired,
   selectList: PropTypes.func.isRequired,
   menuIsOpen: PropTypes.bool.isRequired,
-  devMode: PropTypes.bool.isRequired,
-  toggleDevMode: PropTypes.func.isRequired,
   toggleMenu: PropTypes.func.isRequired,
 };
 
@@ -128,7 +120,6 @@ const mapStateToProps = state => ({
   goBackPath: services.router.selectors.goBackPath(state),
   appTitle: services.app.selectors.headerTitle(state),
   listName: services.home.selectors.listName(state),
-  devMode: services.app.selectors.devMode(state),
   menuIsOpen: services.app.selectors.menuIsOpen(state),
 });
 
@@ -138,7 +129,6 @@ const mapDispatchToProps = dispatch => ({
     type: actionTypes.CLEAR_DATA,
   }),
   selectList: (...props) => dispatch(services.home.actions.selectList(...props)),
-  toggleDevMode: () => dispatch(services.app.actions.toggleDevMode()),
   toggleMenu: () => dispatch(services.app.actions.toggleMenu()),
 });
 

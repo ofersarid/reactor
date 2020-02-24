@@ -98,6 +98,7 @@ class Button extends PureComponent {
             className={cx(
               'inner',
               styles.inner,
+              type === 'icon' && styles.jusIcon,
             )}
           >
             <Fragment >

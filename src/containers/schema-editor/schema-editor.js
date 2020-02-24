@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { firestoreConnect } from 'react-redux-firebase';
 import services from '/src/services';
 import { UserInput, Button } from '/src/shared';
-import { withRouter } from 'react-router';
+import { hashHistory, withRouter } from 'react-router';
 import { inputTypes, validationFunctionTypes, inputTypesWithValidationFunction } from '/src/shared/user-input/types';
 import SchemaEditorFooter from './schema-editor-footer';
 import styles from './styles.scss';
@@ -18,7 +18,7 @@ class SchemaEditor extends React.Component {
   constructor(props) {
     super(props);
     autoBind(this);
-    const { collectionId, pageId, metaData, fieldIndex } = this.props;
+    const { collectionId, pageId, metaData, fieldIndex, devMode } = this.props;
     this.initialState = {
       key: '',
       label: '',
@@ -32,7 +32,11 @@ class SchemaEditor extends React.Component {
       isValid: false,
     };
     this.state = (metaData && fieldIndex >= 0) ? this.parseSchema(metaData.schema, fieldIndex) : this.initialState;
-    props.setGoBackPath(`cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}/schema`);
+    const goBackPath = `/cms/${collectionId ? 'collection' : 'page'}/${collectionId || pageId}/schema`;
+    props.setGoBackPath(goBackPath);
+    if (!devMode) {
+      hashHistory.push(goBackPath);
+    }
     props.updateAppTitle(metaData ? metaData.name : null);
   }
 
@@ -272,6 +276,7 @@ SchemaEditor.propTypes = {
   metaData: PropTypes.object,
   origin: PropTypes.object,
   fieldIndex: PropTypes.number,
+  devMode: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({ // eslint-disable-line
@@ -287,6 +292,7 @@ const mapStateToProps = state => ({ // eslint-disable-line
     const metaData = services[services.router.selectors.collectionId(state) ? 'collections' : 'pages'].selectors.item(state);
     return metaData ? JSON5.parse(metaData.schema)[services.router.selectors.fieldIndex(state)] : undefined;
   })(),
+  devMode: services.app.selectors.devMode(state),
 });
 
 const mapDispatchToProps = dispatch => ({
