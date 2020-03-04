@@ -167,6 +167,12 @@ class UploadImage extends PureComponent {
     this.fileInput.current.click();
   }
 
+  handleClickOnDelete() {
+    const { remove, onChange } = this.props;
+    remove();
+    onChange('');
+  }
+
   render() {
     const { preview, isValid } = this.state;
     const hasImage = preview.length && typeof preview === 'string';
@@ -211,6 +217,15 @@ class UploadImage extends PureComponent {
             className={styles.fileInput}
           />
         </Button >
+        {hasImage ? (
+          <Button
+            onClick={this.handleClickOnDelete}
+            className={styles.button}
+            type="red"
+          >
+            Delete File
+          </Button >
+        ) : null}
       </div >
     );
   }
@@ -220,6 +235,7 @@ UploadImage.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   validateWith: PropTypes.func,
+  remove: PropTypes.func,
 };
 
 UploadImage.defaultProps = {

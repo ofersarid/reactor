@@ -93,25 +93,14 @@ const resolveComponentByType = (props) => {
     case 'image':
       return (
         <UploadImage
-          value={props.value}
-          onChange={props.onChange}
-          onValidation={props.onValidation}
-          placeholder={props.placeholder}
+          {...props}
           ref={props.getRef}
-          validateWith={props.validateWith}
-          required={props.required}
-          transformer={props.transformer}
         />);
     case 'pdf':
       return (
         <UploadPdf
-          value={props.value}
-          onChange={props.onChange}
-          onValidation={props.onValidation}
-          placeholder={props.placeholder}
+          {...props}
           ref={props.getRef}
-          validateWith={props.validateWith}
-          required={props.required}
         />);
     case 'audio':
       return (

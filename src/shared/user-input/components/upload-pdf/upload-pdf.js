@@ -65,6 +65,12 @@ class UploadPdf extends PureComponent {
     this.fileInput.current.click();
   }
 
+  handleClickOnDelete() {
+    const { remove, onChange } = this.props;
+    remove();
+    onChange('');
+  }
+
   render() {
     const { preview, isValid } = this.state;
     const hasPDF = preview.length && typeof preview === 'string';
@@ -96,6 +102,15 @@ class UploadPdf extends PureComponent {
             className={styles.fileInput}
           />
         </Button >
+        {hasPDF ? (
+          <Button
+            onClick={this.handleClickOnDelete}
+            className={styles.button}
+            type="red"
+          >
+            Delete File
+          </Button >
+        ) : null}
       </div >
     );
   }
@@ -105,6 +120,7 @@ UploadPdf.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   validateWith: PropTypes.func,
+  remove: PropTypes.func,
 };
 
 UploadPdf.defaultProps = {

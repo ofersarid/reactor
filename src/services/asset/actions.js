@@ -9,10 +9,11 @@ const getCollectionAssetRef = (collectionId, entityId, firestore) =>
 const getCollectionById = (collectionId, firestore) =>
   firestore.collection('collections').doc(collectionId).collection('data');
 
-const deleteFile = (path, firebase) => {
+const deleteFile = (path, alsoDeleteLink) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+  const firebase = getFirebase();
   const storageRef = firebase.storage().ref();
   const ref = storageRef.child(path);
-  return ref.delete();
+  await ref.delete();
 };
 
 const uploadFile = (path, file, key, firebase, dispatch) => {
@@ -105,7 +106,6 @@ const _delete = (asset, id) => async (dispatch, getState, { getFirebase, getFire
   const state = getState();
   const collectionId = router.selectors.collectionId(state);
   const firestore = getFirestore();
-  const firebase = getFirebase();
   const filePaths = [];
   const entityRef = getCollectionAssetRef(collectionId, id, firestore);
   Object.keys(asset).forEach(key => {
@@ -115,7 +115,7 @@ const _delete = (asset, id) => async (dispatch, getState, { getFirebase, getFire
   });
   await entityRef.delete();
   filePaths.forEach(async path => {
-    await deleteFile(path, firebase);
+    await dispatch(deleteFile(path));
   });
   let orderedList = collectionsService.selectors.item(state).order;
   if (orderedList) {

@@ -22,7 +22,7 @@ class Editor extends PureComponent {
     autoBind(this);
     this.grouping();
     this.state = {
-      asset: props.assetId ? props.asset : {},
+      asset: props.asset || {},
       isValid: false,
       deleting: false,
       isWorking: false,
@@ -146,6 +146,20 @@ class Editor extends PureComponent {
     this.setState({ openGroup: openGroup === group ? null : group });
   }
 
+  getReadyForDelete(key) {
+    const { deleteFile, asset, save, assetId, pageId } = this.props;
+    const doIt = async () => {
+      if (asset[`ref--${key}`]) {
+        await deleteFile(asset[`ref--${key}`], true);
+        const assetCopy = Object.assign({}, asset);
+        assetCopy[key] = '';
+        assetCopy[`ref--${key}`] = '';
+        await save(assetCopy, assetId || pageId);
+      }
+    };
+    doIt();
+  }
+
   render() {
     const { fields } = this.props;
     const { isValid, asset, openGroup } = this.state;
@@ -179,6 +193,7 @@ class Editor extends PureComponent {
                         transformer={field.transformer}
                         validateWith={this.resolveValidationFunction(field)}
                         preserveLineBreaks={field.preserveLineBreaks}
+                        remove={fileInputTypes ? () => this.getReadyForDelete(field.key) : undefined}
                       />
                     </div >
                   );
@@ -211,6 +226,7 @@ Editor.propTypes = {
   pathname: PropTypes.string.isRequired,
   setGoBackPath: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
+  deleteFile: PropTypes.func.isRequired,
   assetId: PropTypes.string,
   pageMeta: PropTypes.shape({
     name: PropTypes.string.isRequired,
@@ -218,6 +234,7 @@ Editor.propTypes = {
   collectionMeta: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }),
+  save: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({ // eslint-disable-line
@@ -235,6 +252,8 @@ const mapStateToProps = state => ({ // eslint-disable-line
 const mapDispatchToProps = dispatch => ({
   setGoBackPath: path => dispatch(services.router.actions.setGoBackPath(path)),
   updateAppTitle: newTitle => dispatch(services.app.actions.updateAppTitle(newTitle)),
+  deleteFile: path => dispatch(services.asset.actions.deleteFile(path)),
+  save: (asset, assetId) => dispatch(services.asset.actions.save(asset, assetId)),
 });
 
 export default compose(
