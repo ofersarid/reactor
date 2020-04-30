@@ -22,7 +22,7 @@ class Editor extends PureComponent {
     autoBind(this);
     this.grouping();
     this.state = {
-      asset: props.asset || {},
+      asset: props.assetId ? props.asset : {},
       isValid: false,
       deleting: false,
       isWorking: false,
