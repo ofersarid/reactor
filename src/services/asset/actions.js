@@ -18,9 +18,16 @@ const deleteFile = (path, alsoDeleteLink) => async (dispatch, getState, { getFir
 
 const uploadFile = (path, file, key, firebase, dispatch) => {
   const storageRef = firebase.storage().ref();
+  const metaData = {
+    contentType: file.type
+  };
+
+  if (metaData.contentType.match(/^image/)) {
+    metaData.cacheControl = 'public,max-age=2592000';
+  }
   const imageRef = storageRef.child(path);
   // upload new image
-  const task = imageRef.put(file);
+  const task = imageRef.put(file, metaData);
   // dispatch(Activity.actions.uploadingFiles());
   task.on('state_changed', snapshot => {
     // dispatch(Activity.actions.uploadStatus(snapshot, key));
