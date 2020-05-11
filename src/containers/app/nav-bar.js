@@ -25,12 +25,12 @@ class NavBar extends React.PureComponent {
     };
   }
 
-  componentDidUpdate() {
-    const { prevPath, listName, selectList } = this.props;
-    if (prevPath.match(/page/) && listName === 'collections') {
-      selectList('pages');
-    }
-  }
+  // componentDidUpdate() {
+  //   const { prevPath, listName, selectList } = this.props;
+  //   if (prevPath.match(/page/) && listName === 'collections') {
+  //     selectList('pages');
+  //   }
+  // }
 
   goBack() {
     const { goBackPath } = this.props;
