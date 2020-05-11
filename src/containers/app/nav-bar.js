@@ -25,6 +25,13 @@ class NavBar extends React.PureComponent {
     };
   }
 
+  componentDidUpdate() {
+    const { prevPath, listName, selectList } = this.props;
+    if (prevPath.match(/page/) && listName === 'collections') {
+      selectList('pages');
+    }
+  }
+
   goBack() {
     const { goBackPath } = this.props;
     hashHistory.push(goBackPath);
@@ -104,6 +111,7 @@ NavBar.propTypes = {
   logOut: PropTypes.func.isRequired,
   uid: PropTypes.string,
   pathname: PropTypes.string.isRequired,
+  prevPath: PropTypes.string.isRequired,
   appTitle: PropTypes.string,
   goBackPath: PropTypes.string.isRequired,
   show: PropTypes.bool,
@@ -117,6 +125,7 @@ NavBar.propTypes = {
 const mapStateToProps = state => ({
   uid: services.auth.selectors.uid(state),
   pathname: services.router.selectors.pathname(state),
+  prevPath: services.router.selectors.prevPath(state),
   goBackPath: services.router.selectors.goBackPath(state),
   appTitle: services.app.selectors.headerTitle(state),
   listName: services.home.selectors.listName(state),

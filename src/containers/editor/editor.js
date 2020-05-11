@@ -26,7 +26,7 @@ class Editor extends PureComponent {
       isValid: false,
       deleting: false,
       isWorking: false,
-      openGroup: this.groups[1],
+      openGroup: this.groups[0],
     };
     if (props.pageMeta) {
       props.updateAppTitle(props.pageMeta.name);
@@ -71,7 +71,7 @@ class Editor extends PureComponent {
     if (this.props.fields.length > 0 && prevProps.fields.length === 0) {
       this.grouping();
       if (this.groups.length > 1 && this.state.openGroup !== this.groups[1]) {
-        this.setState({ openGroup: this.groups[1] });
+        this.setState({ openGroup: this.groups[0] });
       }
     }
   }
@@ -80,8 +80,6 @@ class Editor extends PureComponent {
     const { fields } = this.props;
     this.groups = uniq(fields.reduce((res, fld) => {
       res.push(fld.group);
-      if (res.length === 2) {
-      }
       return res;
     }, [undefined]));
   }
@@ -170,7 +168,7 @@ class Editor extends PureComponent {
           return groupFields ? (
             <div key={groupName || 'No Group'} className={styles.groupContainer} >
               {groupName && <div className={styles.divider} onClick={this.toggleGroup} >{groupName}</div >}
-              <UnmountClosed isOpened={openGroup === groupName || groupName === 'No Group'} >
+              <UnmountClosed isOpened={openGroup === groupName || !groupName} >
                 {groupFields.map(field => {
                   const value = asset ? asset[field.key] : undefined;
                   return (
