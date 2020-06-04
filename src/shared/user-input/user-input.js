@@ -4,7 +4,7 @@ import cx from 'classnames';
 import noop from 'lodash/noop';
 import { youtubeEmbedTransformer } from '/src/utils';
 import { Asterisk } from 'styled-icons/fa-solid/Asterisk/Asterisk';
-import NumericInput from 'react-numeric-input';
+// import NumericInput from 'react-numeric-input';
 import styles from './styles.scss';
 import { userInput } from './types';
 import DateTime from './components/date-time/date-time';
