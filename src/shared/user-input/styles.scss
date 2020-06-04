@@ -48,8 +48,10 @@
   display: inline-block;
   position: relative;
 
-  & > * {
+  &>* {
     text-decoration: underline;
+    position: relative;
+    display: inline-block !important;
   }
 }
 
@@ -57,6 +59,8 @@
   flex-shrink: 0;
   width: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .areaField {
@@ -88,4 +92,31 @@ textarea {
 
 .tip {
   transform: translateX(20px);
+}
+
+.numericInput {
+  outline: none;
+  padding: 0 80px 5px 5px !important;
+  width: 100%;
+  border: none !important;
+  border-bottom: 1px solid #ABABAB !important;
+  background: transparent;
+  text-align: left !important;
+
+  &::placeholder {
+    color: $gray;
+  }
+
+  &:focus {
+    border-bottom: 1px solid $black;
+  }
+}
+
+:global {
+  .react-numeric-input {
+    b:last-of-type {
+      right: 35px !important;
+      left: unset !important;
+    }
+  }
 }

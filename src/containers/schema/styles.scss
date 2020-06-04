@@ -46,8 +46,10 @@
   font-weight: 700;
   line-height: 1.4em;
 
-  & > * {
+  &>* {
     text-decoration: underline;
+    position: relative;
+    display: inline-block !important;
   }
 }
 

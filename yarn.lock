@@ -11109,6 +11109,10 @@ react-motion@^0.5.2:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
+react-numeric-input@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/react-numeric-input/-/react-numeric-input-2.2.3.tgz#4bf5918c3eafed851a80df1eb992d941002bb552"
+
 react-password-mask@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/react-password-mask/-/react-password-mask-3.3.1.tgz#c92ce71f30de2157de32da4d88616a6ace00ec40"
