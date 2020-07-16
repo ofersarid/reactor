@@ -178,7 +178,7 @@ class Editor extends PureComponent {
                         _key={field.key}
                         placeholder="Type here"
                         onChange={value => this.onChange({
-                          [field.key]: field.type === 'multi-select' ? JSON5.stringify(value) : value,
+                          [field.key]: field.type === 'multi-select' ? JSON.stringify(value) : value,
                         })}
                         value={this.resolveValue(value, field)}
                         label={field.label}

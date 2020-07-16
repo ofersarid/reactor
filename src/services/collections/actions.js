@@ -57,7 +57,7 @@ export const create = (name, schema, itemTitle, itemBody) => (dispatch, getState
       read: 'all',
       write: uid,
     },
-    schema: JSON5.stringify(schema),
+    schema: JSON.stringify(schema),
     order: '',
     layout: {
       title: itemTitle,
@@ -122,7 +122,7 @@ export const sortSchema = (id, schema) => async (dispatch, getState, { getFireba
   const doc = await firestore.collection('collections').doc(id).get();
   if (doc.exists) {
     doc.ref.set({
-      'schema': JSON5.stringify(schema),
+      'schema': JSON.stringify(schema),
     }, { merge: true });
   }
 };
@@ -138,7 +138,7 @@ export const addField = (id, index, field) => async (dispatch, getState, { getFi
       schema = schema.concat([field]);
     }
     doc.ref.set({
-      'schema': JSON5.stringify(schema),
+      'schema': JSON.stringify(schema),
     }, { merge: true });
   }
 };
@@ -154,7 +154,7 @@ export const deleteField = (id, index) => async (dispatch, getState, { getFireba
     const schema = JSON5.parse(data.schema);
     schema.splice(index, 1);
     doc.ref.set({
-      'schema': JSON5.stringify(schema),
+      'schema': JSON.stringify(schema),
     }, { merge: true });
     const snapshot = await doc.collection('data').get();
     snapshot.docs.forEach(doc => {
