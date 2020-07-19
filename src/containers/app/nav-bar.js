@@ -9,7 +9,6 @@ import { PowerOff } from 'styled-icons/boxicons-regular/PowerOff';
 import { KeyboardArrowLeft } from 'styled-icons/material/KeyboardArrowLeft';
 import { Menu } from 'styled-icons/material/Menu';
 import { Close } from 'styled-icons/material/Close';
-// import { LockUnlock as Unlocked } from 'styled-icons/remix-line/LockUnlock';
 import { Button, UserInput } from '/src/shared';
 import services from '/src/services';
 import PropTypes from 'prop-types';
@@ -21,16 +20,9 @@ class NavBar extends React.PureComponent {
     super(props);
     autoBind(this);
     this.state = {
-      openMenu: false,
+      openMenu: false
     };
   }
-
-  // componentDidUpdate() {
-  //   const { prevPath, listName, selectList } = this.props;
-  //   if (prevPath.match(/page/) && listName === 'collections') {
-  //     selectList('pages');
-  //   }
-  // }
 
   goBack() {
     const { goBackPath } = this.props;
@@ -57,52 +49,82 @@ class NavBar extends React.PureComponent {
 
   render() {
     const {
-      uid, pathname, appTitle, show, listName, selectList,
-      menuIsOpen, toggleMenu,
+      uid,
+      pathname,
+      appTitle,
+      show,
+      listName,
+      selectList,
+      menuIsOpen,
+      toggleMenu
     } = this.props;
     const isHomePage = Boolean(pathname.match('/cms/home'));
     return (
-      <div className={cx(styles.navBar, { [styles.show]: show, [styles.hideShadow]: isHomePage })} >
-        <SecondaryNav show={isHomePage && !menuIsOpen} >
+      <div
+        className={cx(styles.navBar, {
+          [styles.show]: show,
+          [styles.hideShadow]: isHomePage
+        })}
+      >
+        <SecondaryNav show={isHomePage && !menuIsOpen}>
           <UserInput
-            type="switch"
-            options={['collections', 'pages']}
+            type='switch'
+            options={[
+              { value: 'collections', view: 'collections' },
+              { value: 'pages', view: 'Documents' }
+            ]}
             value={listName}
             onChange={selectList}
             className={styles.tabSection}
           />
-        </SecondaryNav >
-        <div className={styles.navBarInner} >
-          <section >
+        </SecondaryNav>
+        <div className={styles.navBarInner}>
+          <section>
             {uid && (
               <Button
-                type="icon" className={cx(styles.btn, styles.menuToggle)}
-                onClick={toggleMenu} >
+                type='icon'
+                className={cx(styles.btn, styles.menuToggle)}
+                onClick={toggleMenu}
+              >
                 {menuIsOpen ? <Close /> : <Menu />}
-              </Button >
+              </Button>
             )}
-          </section >
+          </section>
           <section
-            className={cx(styles.navBarTitle, { [styles.isReactorLogo]: isHomePage })}
+            className={cx(styles.navBarTitle, {
+              [styles.isReactorLogo]: isHomePage
+            })}
           >
-            <div className={styles.txt} >{appTitle || '...'}
-              <span className={styles.pageType} >{this.resolvePageType()}</span >
-            </div >
-          </section >
-          <section >
-            {(uid && pathname === '/cms/home') && !menuIsOpen && (
-              <Button type="icon" className={cx(styles.toTheLeft, styles.btn)} onClick={this.logOut} >
+            <div className={styles.txt}>
+              {appTitle || '...'}
+              <span className={styles.pageType}>{this.resolvePageType()}</span>
+            </div>
+          </section>
+          <section>
+            {uid && pathname === '/cms/home' && !menuIsOpen && (
+              <Button
+                type='icon'
+                className={cx(styles.toTheLeft, styles.btn)}
+                onClick={this.logOut}
+              >
                 <PowerOff />
-              </Button >
+              </Button>
             )}
-            {(uid && pathname !== '/cms/home' && pathname !== '/cms/login') && !menuIsOpen && (
-              <Button type="icon" className={cx(styles.toTheLeft, styles.btn)} onClick={this.goBack} >
+            {uid &&
+              pathname !== '/cms/home' &&
+              pathname !== '/cms/login' &&
+              !menuIsOpen && (
+              <Button
+                type='icon'
+                className={cx(styles.toTheLeft, styles.btn)}
+                onClick={this.goBack}
+              >
                 <KeyboardArrowLeft className={styles.arrowLeft} />
-              </Button >
+              </Button>
             )}
-          </section >
-        </div >
-      </div >
+          </section>
+        </div>
+      </div>
     );
   }
 }
@@ -119,28 +141,28 @@ NavBar.propTypes = {
   listName: PropTypes.string.isRequired,
   selectList: PropTypes.func.isRequired,
   menuIsOpen: PropTypes.bool.isRequired,
-  toggleMenu: PropTypes.func.isRequired,
+  toggleMenu: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   uid: services.auth.selectors.uid(state),
   pathname: services.router.selectors.pathname(state),
   prevPath: services.router.selectors.prevPath(state),
   goBackPath: services.router.selectors.goBackPath(state),
   appTitle: services.app.selectors.headerTitle(state),
   listName: services.home.selectors.listName(state),
-  menuIsOpen: services.app.selectors.menuIsOpen(state),
+  menuIsOpen: services.app.selectors.menuIsOpen(state)
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   logOut: () => dispatch(services.auth.actions.logOut()),
-  clearData: () => dispatch({
-    type: actionTypes.CLEAR_DATA,
-  }),
-  selectList: (...props) => dispatch(services.home.actions.selectList(...props)),
-  toggleMenu: () => dispatch(services.app.actions.toggleMenu()),
+  clearData: () =>
+    dispatch({
+      type: actionTypes.CLEAR_DATA
+    }),
+  selectList: (...props) =>
+    dispatch(services.home.actions.selectList(...props)),
+  toggleMenu: () => dispatch(services.app.actions.toggleMenu())
 });
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-)(NavBar);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(NavBar);
