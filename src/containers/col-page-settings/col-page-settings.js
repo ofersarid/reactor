@@ -104,7 +104,7 @@ class ColPageSettings extends PureComponent {
             type="red"
             onClick={this.handleClickOnDelete}
           >
-            Delete this {collectionId ? 'Collection' : 'Page'}
+            Delete this {collectionId ? 'Collection' : 'Document'}
           </Button >
           {(collectionName || pageName) && (
             <Modal

@@ -67,7 +67,7 @@ const Menu = (
             onClick={toggleMenu}
             disable={!devMode}
           >
-            Create a New {listName === 'collections' ? 'Collection' : 'Page'}
+            Create a New {listName === 'collections' ? 'Collection' : 'Document'}
           </Button >
         </Fragment >
       )}
@@ -89,7 +89,7 @@ const Menu = (
             onClick={toggleMenu}
             disable={!devMode || (!collectionId && !pageId)}
           >
-            {collectionId ? 'Collection' : 'Page'} Settings
+            {collectionId ? 'Collection' : 'Document'} Settings
           </Button >
         </Fragment>
       )}
