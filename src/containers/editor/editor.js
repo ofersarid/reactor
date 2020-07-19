@@ -79,9 +79,9 @@ class Editor extends PureComponent {
   grouping() {
     const { fields } = this.props;
     this.groups = uniq(fields.reduce((res, fld) => {
-      res.push(fld.group);
+      res.push(fld.group || '');
       return res;
-    }, [undefined]));
+    }, []));
   }
 
   resolveValue(value, field) {
@@ -164,7 +164,7 @@ class Editor extends PureComponent {
     return (
       <div className={styles.editor} >
         {this.groups.map(groupName => {
-          const groupFields = fields.filter(fld => fld.group === groupName);
+          const groupFields = fields.filter(fld => fld.group === groupName || (!fld.group && groupName === ''));
           return groupFields ? (
             <div key={groupName || 'No Group'} className={styles.groupContainer} >
               {groupName && <div className={styles.divider} onClick={this.toggleGroup} >{groupName}</div >}
