@@ -20,7 +20,7 @@ class ColPageSettings extends PureComponent {
       working: false,
       done: false,
       pathname: pathname,
-      confirmDelete: false,
+      confirmDelete: false
     };
     const goBackPath = this.getGoBackPath(props);
     props.setGoBackPath(goBackPath);
@@ -32,7 +32,7 @@ class ColPageSettings extends PureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.pathname !== prevState.pathname) {
       return {
-        pathname: prevState.pathname,
+        pathname: prevState.pathname
       };
     }
     return {};
@@ -51,7 +51,7 @@ class ColPageSettings extends PureComponent {
   handleInputChange(value) {
     this.setState({
       newName: value,
-      isValid: value.length > 0,
+      isValid: value.length > 0
     });
   }
 
@@ -76,41 +76,73 @@ class ColPageSettings extends PureComponent {
     }
   }
 
+  async duplicate() {
+    const {
+      collectionId,
+      collectionName,
+      pageId,
+      pageName,
+      duplicateCollection,
+      duplicatePage
+    } = this.props;
+    let newId;
+    newId = collectionId
+      ? await duplicateCollection(collectionId, `${collectionName} (duplicate)`)
+      : await duplicatePage(pageId, `${pageName} (duplicate)`);
+    hashHistory.push(`/cms/${collectionId ? 'collection' : 'page'}/${newId}`);
+  }
+
+  getModalText() {
+    const { collectionName, pageName } = this.props;
+    const { working } = this.state;
+
+    return working
+      ? 'working...'
+      : `Are you sure you want to delete ${collectionName || pageName} ?`;
+  }
+
   render() {
     const { collectionId, pageName, collectionName } = this.props;
     const { newName, isValid, working, confirmDelete } = this.state;
     return (
-      <div className={cx(styles.collectionMetaEditor)} >
-        <section >
-          <h2 >Rename {collectionName} to:</h2 >
+      <div className={cx(styles.collectionMetaEditor)}>
+        <section>
+          <h2>Rename {collectionName} to:</h2>
           <UserInput
-            placeholder="New Name"
+            placeholder='New Name'
             onChange={this.handleInputChange}
             value={newName}
             focus
-            validateWith={val => val.length > 0}
+            validateWith={(val) => val.length > 0}
           />
-        </section >
-        <section >
+        </section>
+        <section>
           <Button
             className={styles.btn}
             disable={!isValid || working}
             onClick={this.rename}
           >
             SAVE
-          </Button >
+          </Button>
+          <Button
+            type='white'
+            className={cx(styles.menuItem, styles.btn)}
+            onClick={this.duplicate}
+          >
+            Duplicate {collectionId ? 'Collection' : 'Document'}
+          </Button>
           <Button
             className={styles.btn}
-            type="red"
+            type='red'
             onClick={this.handleClickOnDelete}
           >
             Delete this {collectionId ? 'Collection' : 'Document'}
-          </Button >
+          </Button>
           {(collectionName || pageName) && (
             <Modal
               options={['yes', 'no']}
               show={confirmDelete}
-              onClick={option => {
+              onClick={(option) => {
                 if (option === 'yes') {
                   this.handleClickOnDelete();
                 } else {
@@ -118,11 +150,11 @@ class ColPageSettings extends PureComponent {
                 }
               }}
             >
-              {working ? 'working...' : `Are you sure you want to delete ${collectionName || pageName} ?`}
-            </Modal >
+              {this.getModalText()}
+            </Modal>
           )}
-        </section >
-      </div >
+        </section>
+      </div>
     );
   }
 }
@@ -142,31 +174,39 @@ ColPageSettings.propTypes = {
   devMode: PropTypes.bool.isRequired,
   pathname: PropTypes.string.isRequired,
   goBackPath: PropTypes.string.isRequired,
+  duplicateCollection: PropTypes.func.isRequired,
+  duplicatePage: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   collectionId: services.router.selectors.collectionId(state),
   pageId: services.router.selectors.pageId(state),
   collectionName: services.collections.selectors.name(state),
   pageName: services.pages.selectors.name(state),
   devMode: services.app.selectors.devMode(state),
   pathname: services.router.selectors.pathname(state),
-  goBackPath: services.router.selectors.goBackPath(state),
+  goBackPath: services.router.selectors.goBackPath(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-  setGoBackPath: path => dispatch(services.router.actions.setGoBackPath(path)),
-  renameCollection: newName => dispatch(services.collections.actions.rename(newName)),
-  renamePage: newName => dispatch(services.pages.actions.rename(newName)),
-  deleteCollection: id => dispatch(services.collections.actions.remove(id)),
-  deletePage: id => dispatch(services.pages.actions.remove(id)),
+const mapDispatchToProps = (dispatch) => ({
+  setGoBackPath: (path) =>
+    dispatch(services.router.actions.setGoBackPath(path)),
+  renameCollection: (newName) =>
+    dispatch(services.collections.actions.rename(newName)),
+  renamePage: (newName) => dispatch(services.pages.actions.rename(newName)),
+  deleteCollection: (id) => dispatch(services.collections.actions.remove(id)),
+  deletePage: (id) => dispatch(services.pages.actions.remove(id)),
+  duplicateCollection: (collectionId, newName) =>
+    dispatch(services.collections.actions.duplicate(collectionId, newName)),
+  duplicatePage: (pageId, newName) =>
+    dispatch(services.pages.actions.duplicate(pageId, newName))
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
   ...stateProps,
   ...dispatchProps,
-  rename: newName => {
+  rename: (newName) => {
     if (stateProps.collectionId) {
       return dispatchProps.renameCollection(newName);
     } else if (stateProps.pageId) {
@@ -185,5 +225,5 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 });
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+  connect(mapStateToProps, mapDispatchToProps, mergeProps)
 )(ColPageSettings);

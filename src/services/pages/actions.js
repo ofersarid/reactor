@@ -2,27 +2,44 @@ import auth from '../auth';
 import JSON5 from 'json5';
 import router from '../redux-router';
 
-export const create = (name, schema) => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const create = (name, schema) => (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
-  firestore.collection('pages').add({
-    name,
-    permissions: {
-      read: 'all',
-      write: uid,
-    },
-    schema: JSON.stringify(schema),
-    data: {},
-  }).then(resp => {
-    const newId = resp.id;
-    firestore.collection('users').doc(uid).set({
-      'pages': auth.selectors.userPageIds(state).concat([newId]),
-    }, { merge: true });
-  });
+  firestore
+    .collection('pages')
+    .add({
+      name,
+      permissions: {
+        read: 'all',
+        write: uid
+      },
+      schema: JSON.stringify(schema),
+      data: {}
+    })
+    .then((resp) => {
+      const newId = resp.id;
+      firestore
+        .collection('users')
+        .doc(uid)
+        .set(
+          {
+            pages: auth.selectors.userPageIds(state).concat([newId])
+          },
+          { merge: true }
+        );
+    });
 };
 
-export const duplicate = (pageId, name) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const duplicate = (pageId, name) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
@@ -30,30 +47,54 @@ export const duplicate = (pageId, name) => async (dispatch, getState, { getFireb
   const user = userRef.data();
   const docRef = await firestore.collection('pages').doc(pageId).get();
   if (docRef.exists) {
-    const resp = await firestore.collection('pages').add(Object.assign({}, {
-      ...docRef.data(),
-      data: {},
-      name,
-    }));
+    const resp = await firestore.collection('pages').add(
+      Object.assign(
+        {},
+        {
+          ...docRef.data(),
+          data: {},
+          name
+        }
+      )
+    );
     const newId = resp.id;
-    firestore.collection('users').doc(uid).set({
-      'pages': user.pages.concat([newId]),
-    }, { merge: true });
+    console.log(`Created new Page: ${newId}`);
+    await firestore
+      .collection('users')
+      .doc(uid)
+      .set(
+        {
+          pages: user.pages.concat([newId])
+        },
+        { merge: true }
+      );
+    return newId;
   } else {
     console.warn('No such document!');
   }
 };
 
-export const register = idList => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const register = (idList) => (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
-  firestore.collection('users').doc(uid).set({
-    'pages': idList,
-  }, { merge: true });
+  firestore.collection('users').doc(uid).set(
+    {
+      pages: idList
+    },
+    { merge: true }
+  );
 };
 
-export const remove = id => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const remove = (id) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
@@ -61,22 +102,36 @@ export const remove = id => async (dispatch, getState, { getFirebase, getFiresto
   const user = await firestore.collection('users').doc(uid).get();
   const pageList = user.data().pages;
   await docRef.delete();
-  user.ref.set({
-    'pages': pageList.filter(_id => _id !== id),
-  }, { merge: true });
+  user.ref.set(
+    {
+      pages: pageList.filter((_id) => _id !== id)
+    },
+    { merge: true }
+  );
 };
 
-export const sortSchema = (id, schema) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const sortSchema = (id, schema) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const doc = await firestore.collection('pages').doc(id).get();
   if (doc.exists) {
-    doc.ref.set({
-      'schema': JSON.stringify(schema),
-    }, { merge: true });
+    doc.ref.set(
+      {
+        schema: JSON.stringify(schema)
+      },
+      { merge: true }
+    );
   }
 };
 
-export const addField = (id, index, field) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const addField = (id, index, field) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const doc = await firestore.collection('pages').doc(id).get();
   if (doc.exists) {
@@ -86,13 +141,20 @@ export const addField = (id, index, field) => async (dispatch, getState, { getFi
     } else {
       schema = schema.concat([field]);
     }
-    doc.ref.set({
-      'schema': JSON.stringify(schema),
-    }, { merge: true });
+    doc.ref.set(
+      {
+        schema: JSON.stringify(schema)
+      },
+      { merge: true }
+    );
   }
 };
 
-export const deleteField = (id, index) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const deleteField = (id, index) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const firebase = getFirebase();
   const doc = await firestore.collection('pages').doc(id).get();
@@ -115,7 +177,7 @@ export const deleteField = (id, index) => async (dispatch, getState, { getFireba
     }
     schema.splice(index, 1);
     const payload = {
-      'schema': JSON.stringify(schema),
+      schema: JSON.stringify(schema)
     };
     if (key) {
       delete data.data[key];
@@ -126,23 +188,37 @@ export const deleteField = (id, index) => async (dispatch, getState, { getFireba
   }
 };
 
-export const sort = order => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const sort = (order) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
-  await firestore.collection('users').doc(uid).set({
-    'pages': order,
-  }, { merge: true });
+  await firestore.collection('users').doc(uid).set(
+    {
+      pages: order
+    },
+    { merge: true }
+  );
 };
 
-export const rename = newName => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const rename = (newName) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const pageId = router.selectors.pageId(state);
   const doc = firestore.collection('pages').doc(pageId);
-  await doc.set({
-    'name': newName,
-  }, { merge: true });
+  await doc.set(
+    {
+      name: newName
+    },
+    { merge: true }
+  );
 };
 
 export default {
@@ -154,5 +230,5 @@ export default {
   deleteField,
   sortSchema,
   sort,
-  rename,
+  rename
 };

@@ -3,16 +3,31 @@ import router from '../redux-router';
 import assetService from '../asset';
 import JSON5 from 'json5';
 
-export const clearAllAssets = id => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const clearAllAssets = (id) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   // const state = getState();
-  const querySnapshot = await firestore.collection(`collections/${id}/data`).get();
-  querySnapshot.forEach(async doc => {
-    await dispatch(assetService.actions.delete(Object.assign({ id: doc.id }, doc.data()), doc.id));
+  const querySnapshot = await firestore
+    .collection(`collections/${id}/data`)
+    .get();
+  querySnapshot.forEach(async (doc) => {
+    await dispatch(
+      assetService.actions.delete(
+        Object.assign({ id: doc.id }, doc.data()),
+        doc.id
+      )
+    );
   });
 };
 
-export const remove = id => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const remove = (id) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
@@ -21,9 +36,12 @@ export const remove = id => async (dispatch, getState, { getFirebase, getFiresto
   const collectionList = user.data().collections;
   await dispatch(clearAllAssets(id));
   await docRef.delete();
-  await user.ref.set({
-    'collections': collectionList.filter(_id => _id !== id),
-  }, { merge: true });
+  await user.ref.set(
+    {
+      collections: collectionList.filter((_id) => _id !== id)
+    },
+    { merge: true }
+  );
 };
 
 // export const cleanStorage = id => async (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -39,7 +57,11 @@ export const remove = id => async (dispatch, getState, { getFirebase, getFiresto
 //   });
 // };
 
-export const create = (name, schema, itemTitle, itemBody) => (dispatch, getState, { getFirebase, getFirestore }) => {
+export const create = (name, schema, itemTitle, itemBody) => (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
@@ -51,83 +73,121 @@ export const create = (name, schema, itemTitle, itemBody) => (dispatch, getState
     console.error('Missing "schema" in prop 2');
     return;
   }
-  firestore.collection('collections').add({
-    name,
-    permissions: {
-      read: 'all',
-      write: uid,
-    },
-    schema: JSON.stringify(schema),
-    order: '',
-    layout: {
-      title: itemTitle,
-      body: itemBody,
-    }
-  }).then(resp => {
+  firestore
+    .collection('collections')
+    .add({
+      name,
+      permissions: {
+        read: 'all',
+        write: uid
+      },
+      schema: JSON.stringify(schema),
+      order: '',
+      layout: {
+        title: itemTitle,
+        body: itemBody
+      }
+    })
+    .then((resp) => {
+      const newId = resp.id;
+      firestore
+        .collection('users')
+        .doc(uid)
+        .set(
+          {
+            collections: auth.selectors.userCollectionIds(state).concat([newId])
+          },
+          { merge: true }
+        );
+    });
+};
+
+export const duplicate = (collectionId, name) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  const firestore = getFirestore();
+  const state = getState();
+  const uid = auth.selectors.uid(state);
+  const doc = await firestore.collection('collections').doc(collectionId).get();
+  if (doc.exists) {
+    const data = doc.data();
+    const resp = await firestore
+      .collection('collections')
+      .add(Object.assign({}, data, { name, order: '' }));
     const newId = resp.id;
-    firestore.collection('users').doc(uid).set({
-      'collections': auth.selectors.userCollectionIds(state).concat([newId]),
-    }, { merge: true });
-  });
-};
-
-export const duplicate = (collectionId, name) => (dispatch, getState, { getFirebase, getFirestore }) => {
-  const firestore = getFirestore();
-  const state = getState();
-  const uid = auth.selectors.uid(state);
-  const collectionRef = firestore.collection('collections').doc(collectionId);
-  collectionRef.get().then(doc => {
-    if (doc.exists) {
-      const data = doc.data();
-      firestore.collection('collections').add(Object.assign({}, data, { name, order: '' })).then(resp => {
-        const newId = resp.id;
-        firestore.collection('users').doc(uid).set({
-          'collections': auth.selectors.userCollectionIds(state).concat([newId]),
-        }, { merge: true }).then(() => {
-          // const dataCollectionRef = firestore.collection('collections').doc(collectionId).collection('data');
-          // dataCollectionRef.get().then(snapshot => {
-          //   snapshot.docs.forEach(doc => {
-          //     firestore.collection('collections').doc(newId).collection('data').add(doc.data());
-          //   });
-          // });
-        });
-      });
-    } else {
-      console.warn('No such document!');
-    }
-  });
-};
-
-export const register = idList => (dispatch, getState, { getFirebase, getFirestore }) => {
-  const firestore = getFirestore();
-  const state = getState();
-  const uid = auth.selectors.uid(state);
-  firestore.collection('users').doc(uid).set({
-    'collections': idList,
-  }, { merge: true });
-};
-
-export const sortAssets = (id, order) => async (dispatch, getState, { getFirebase, getFirestore }) => {
-  const firestore = getFirestore();
-  const doc = await firestore.collection('collections').doc(id).get();
-  if (doc.exists) {
-    await doc.ref.set({
-      'order': order,
-    }, { merge: true });
+    console.log(`Created new Collection: ${newId}`);
+    await firestore
+      .collection('users')
+      .doc(uid)
+      .set(
+        {
+          collections: auth.selectors.userCollectionIds(state).concat([newId])
+        },
+        { merge: true }
+      );
+    return newId;
+  } else {
+    console.warn('No such document!');
   }
 };
 
-export const sortSchema = (id, schema) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const register = (idList) => (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  const firestore = getFirestore();
+  const state = getState();
+  const uid = auth.selectors.uid(state);
+  firestore.collection('users').doc(uid).set(
+    {
+      collections: idList
+    },
+    { merge: true }
+  );
+};
+
+export const sortAssets = (id, order) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const doc = await firestore.collection('collections').doc(id).get();
   if (doc.exists) {
-    doc.ref.set({
-      'schema': JSON.stringify(schema),
-    }, { merge: true });
+    await doc.ref.set(
+      {
+        order: order
+      },
+      { merge: true }
+    );
   }
 };
 
-export const addField = (id, index, field) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const sortSchema = (id, schema) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  const firestore = getFirestore();
+  const doc = await firestore.collection('collections').doc(id).get();
+  if (doc.exists) {
+    doc.ref.set(
+      {
+        schema: JSON.stringify(schema)
+      },
+      { merge: true }
+    );
+  }
+};
+
+export const addField = (id, index, field) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const doc = await firestore.collection('collections').doc(id).get();
   if (doc.exists) {
@@ -137,13 +197,20 @@ export const addField = (id, index, field) => async (dispatch, getState, { getFi
     } else {
       schema = schema.concat([field]);
     }
-    doc.ref.set({
-      'schema': JSON.stringify(schema),
-    }, { merge: true });
+    doc.ref.set(
+      {
+        schema: JSON.stringify(schema)
+      },
+      { merge: true }
+    );
   }
 };
 
-export const deleteField = (id, index) => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const deleteField = (id, index) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   console.error('not supported yet');
   return;
   /* eslint-disable */
@@ -153,11 +220,14 @@ export const deleteField = (id, index) => async (dispatch, getState, { getFireba
     const data = doc.data();
     const schema = JSON5.parse(data.schema);
     schema.splice(index, 1);
-    doc.ref.set({
-      'schema': JSON.stringify(schema),
-    }, { merge: true });
+    doc.ref.set(
+      {
+        schema: JSON.stringify(schema)
+      },
+      { merge: true }
+    );
     const snapshot = await doc.collection('data').get();
-    snapshot.docs.forEach(doc => {
+    snapshot.docs.forEach((doc) => {
       const assetData = doc.data();
       // TBD
     });
@@ -165,24 +235,38 @@ export const deleteField = (id, index) => async (dispatch, getState, { getFireba
   }
 };
 
-export const sort = order => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const sort = (order) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const uid = auth.selectors.uid(state);
   const doc = firestore.collection('users').doc(uid);
-  await doc.set({
-    'collections': order,
-  }, { merge: true });
+  await doc.set(
+    {
+      collections: order
+    },
+    { merge: true }
+  );
 };
 
-export const rename = newName => async (dispatch, getState, { getFirebase, getFirestore }) => {
+export const rename = (newName) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
   const firestore = getFirestore();
   const state = getState();
   const collectionId = router.selectors.collectionId(state);
   const doc = firestore.collection('collections').doc(collectionId);
-  await doc.set({
-    'name': newName,
-  }, { merge: true });
+  await doc.set(
+    {
+      name: newName
+    },
+    { merge: true }
+  );
 };
 
 export default {
@@ -196,5 +280,5 @@ export default {
   sortSchema,
   sortAssets,
   sort,
-  rename,
+  rename
 };
