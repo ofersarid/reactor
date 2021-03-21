@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import cx from 'classnames';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -13,14 +13,15 @@ class ColPageSettings extends PureComponent {
   constructor(props) {
     super(props);
     autoBind(this);
-    const { collectionName, pageName, pathname, devMode } = props;
+    const { collectionName, pageName, pathname, devMode, maxItems } = props;
     this.state = {
       newName: collectionName || pageName || '',
       isValid: false,
       working: false,
       done: false,
       pathname: pathname,
-      confirmDelete: false
+      confirmDelete: false,
+      maxItems: maxItems
     };
     const goBackPath = this.getGoBackPath(props);
     props.setGoBackPath(goBackPath);
@@ -49,17 +50,27 @@ class ColPageSettings extends PureComponent {
   }
 
   handleInputChange(value) {
+    const { maxItems } = this.state;
     this.setState({
       newName: value,
-      isValid: value.length > 0
+      isValid: value.length > 0 && (maxItems === '' || maxItems > 0)
     });
   }
 
-  async rename() {
-    const { rename, goBackPath } = this.props;
+  handleMaxItemsInputChange(value) {
     const { newName } = this.state;
+    this.setState({
+      maxItems: value,
+      isValid: newName.length > 0 && (value === '' || value > 0)
+    });
+  }
+
+  async submitChanges() {
+    const { rename, goBackPath, limitItems } = this.props;
+    const { newName, maxItems } = this.state;
     this.setState({ working: true });
     await rename(newName);
+    await limitItems(maxItems);
     this.setState({ working: false, done: true });
     hashHistory.push(goBackPath);
   }
@@ -103,7 +114,7 @@ class ColPageSettings extends PureComponent {
 
   render() {
     const { collectionId, pageName, collectionName } = this.props;
-    const { newName, isValid, working, confirmDelete } = this.state;
+    const { newName, isValid, working, confirmDelete, maxItems } = this.state;
     return (
       <div className={cx(styles.collectionMetaEditor)}>
         <section>
@@ -115,12 +126,24 @@ class ColPageSettings extends PureComponent {
             focus
             validateWith={(val) => val.length > 0}
           />
+          {collectionId && (
+            <Fragment>
+              <h2 style={{ marginTop: '20px' }}>Max Items</h2>
+              <UserInput
+                placeholder='&#8734;'
+                type='number'
+                onChange={this.handleMaxItemsInputChange}
+                value={maxItems}
+                validateWith={(val) => val > 0}
+              />
+            </Fragment>
+          )}
         </section>
         <section>
           <Button
             className={styles.btn}
             disable={!isValid || working}
-            onClick={this.rename}
+            onClick={this.submitChanges}
           >
             SAVE
           </Button>
@@ -166,10 +189,12 @@ ColPageSettings.propTypes = {
   renameCollection: PropTypes.func.isRequired,
   renamePage: PropTypes.func.isRequired,
   rename: PropTypes.func.isRequired,
+  limitItems: PropTypes.func.isRequired,
   deleteCollection: PropTypes.func.isRequired,
   deletePage: PropTypes.func.isRequired,
   deleteMe: PropTypes.func.isRequired,
   collectionName: PropTypes.string,
+  maxItems: PropTypes.oneOfType([PropTypes.number || PropTypes.string]),
   pageName: PropTypes.string,
   devMode: PropTypes.bool.isRequired,
   pathname: PropTypes.string.isRequired,
@@ -182,6 +207,7 @@ const mapStateToProps = (state) => ({
   collectionId: services.router.selectors.collectionId(state),
   pageId: services.router.selectors.pageId(state),
   collectionName: services.collections.selectors.name(state),
+  maxItems: services.collections.selectors.maxItems(state),
   pageName: services.pages.selectors.name(state),
   devMode: services.app.selectors.devMode(state),
   pathname: services.router.selectors.pathname(state),
@@ -193,6 +219,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(services.router.actions.setGoBackPath(path)),
   renameCollection: (newName) =>
     dispatch(services.collections.actions.rename(newName)),
+  limitItems: (maxItems) =>
+    dispatch(services.collections.actions.limitItems(maxItems)),
   renamePage: (newName) => dispatch(services.pages.actions.rename(newName)),
   deleteCollection: (id) => dispatch(services.collections.actions.remove(id)),
   deletePage: (id) => dispatch(services.pages.actions.remove(id)),

@@ -4,11 +4,14 @@ const HEADER_TITLE = 'APP/HEADER_TITLE';
 const TOGGLE_DEV_MODE = 'APP/TOGGLE_DEV_MODE';
 const TOGGLE_MENU = 'APP/TOGGLE_MENU';
 
-const reducer = (state = fromJS({
-  headerTitle: 'Reactor',
-  devMode: false,
-  menuIsOpen: false,
-}), action) => {
+const reducer = (
+  state = fromJS({
+    headerTitle: 'Reactor',
+    devMode: false,
+    menuIsOpen: false
+  }),
+  action
+) => {
   switch (action.type) {
     case HEADER_TITLE:
       return state.set('headerTitle', action.newTitle);
@@ -24,26 +27,26 @@ const reducer = (state = fromJS({
 };
 
 const selectors = {
-  headerTitle: state => state.getIn(['app', 'headerTitle']),
-  devMode: state => state.getIn(['app', 'devMode']),
-  menuIsOpen: state => state.getIn(['app', 'menuIsOpen']),
+  headerTitle: (state) => state.getIn(['app', 'headerTitle']),
+  devMode: (state) => state.getIn(['app', 'devMode']),
+  menuIsOpen: (state) => state.getIn(['app', 'menuIsOpen'])
 };
 
 const actions = {
-  updateAppTitle: newTitle => ({
+  updateAppTitle: (newTitle) => ({
     type: HEADER_TITLE,
-    newTitle,
+    newTitle
   }),
   toggleDevMode: () => ({
-    type: TOGGLE_DEV_MODE,
+    type: TOGGLE_DEV_MODE
   }),
   toggleMenu: () => ({
-    type: TOGGLE_MENU,
-  }),
+    type: TOGGLE_MENU
+  })
 };
 
 export default {
   reducer,
   actions,
-  selectors,
+  selectors
 };

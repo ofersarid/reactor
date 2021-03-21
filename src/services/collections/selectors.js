@@ -2,23 +2,30 @@ import { createSelector } from 'reselect/lib/index';
 import router from '../redux-router';
 import blackList from '../blacklist';
 
-export const userCollectionsMap = state => state.get('fireStore').data.collections || {};
-const order = state => state.get('firebase').profile.collections || [];
+export const userCollectionsMap = (state) =>
+  state.get('fireStore').data.collections || {};
+const order = (state) => state.get('firebase').profile.collections || [];
 
 const list = createSelector(userCollectionsMap, order, (list, _order) => {
   return _order.reduce((accumulator, collectionId) => {
     if (list[collectionId]) {
-      accumulator.push(Object.assign({}, list[collectionId], { id: collectionId }));
+      accumulator.push(
+        Object.assign({}, list[collectionId], { id: collectionId })
+      );
     }
     return accumulator;
   }, []);
 });
 
-const item = createSelector(router.selectors.collectionId, userCollectionsMap, (_collectionId, _userCollectionsMap) => {
-  return _userCollectionsMap[_collectionId];
-});
+const item = createSelector(
+  router.selectors.collectionId,
+  userCollectionsMap,
+  (_collectionId, _userCollectionsMap) => {
+    return _userCollectionsMap[_collectionId];
+  }
+);
 
-const collection = state => {
+const collection = (state) => {
   const collections = state.get('fireStore').data.collections;
   const id = router.selectors.collectionId(state);
   if (collections && id) {
@@ -26,14 +33,14 @@ const collection = state => {
   }
 };
 
-const assetsOrder = state => {
+const assetsOrder = (state) => {
   const _collection = collection(state);
   if (_collection) {
     return _collection.order;
   }
 };
 
-const data = state => state.get('fireStore').data.assets || {};
+const data = (state) => state.get('fireStore').data.assets || {};
 
 const assets = createSelector(
   data,
@@ -48,10 +55,15 @@ const assets = createSelector(
         return accumulator;
       }, []);
     }
-  });
+  }
+);
 
 const name = createSelector(item, (_item) => {
   return _item ? _item.name : null;
+});
+
+const maxItems = createSelector(item, (_item) => {
+  return _item ? _item.maxItems : '';
 });
 
 export default {
@@ -60,4 +72,5 @@ export default {
   assets,
   order,
   name,
+  maxItems
 };

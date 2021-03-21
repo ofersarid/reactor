@@ -269,6 +269,25 @@ export const rename = (newName) => async (
   );
 };
 
+export const limitItems = (maxItems) => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  if (maxItems !== 0) {
+    const firestore = getFirestore();
+    const state = getState();
+    const collectionId = router.selectors.collectionId(state);
+    const doc = firestore.collection('collections').doc(collectionId);
+    await doc.set(
+      {
+        maxItems
+      },
+      { merge: true }
+    );
+  }
+};
+
 export default {
   create,
   duplicate,
@@ -280,5 +299,6 @@ export default {
   sortSchema,
   sortAssets,
   sort,
-  rename
+  rename,
+  limitItems
 };

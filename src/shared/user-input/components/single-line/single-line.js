@@ -20,7 +20,7 @@ class SingleLine extends PureComponent {
       showValidation: false,
       wasBlured: false,
       isFocused: false,
-      isValid: false,
+      isValid: false
     };
     this.$input = React.createRef();
   }
@@ -57,7 +57,7 @@ class SingleLine extends PureComponent {
     }
 
     return normalized;
-  };
+  }
 
   handleOnChange(e) {
     const { onChange } = this.props;
@@ -104,15 +104,13 @@ class SingleLine extends PureComponent {
     const { placeholder, onEnterKeyPress, value, mask } = this.props;
     const { isValid } = this.state;
     return (
-      <form className={cx('single-line', styles.singleLine)} >
+      <form className={cx('single-line', styles.singleLine)}>
         <input
           type={mask ? 'password' : 'text'}
-          className={cx(
-            styles.textInput,
-          )}
+          className={cx(styles.textInput)}
           placeholder={placeholder}
           onChange={this.handleOnChange}
-          onKeyPress={e => {
+          onKeyPress={(e) => {
             this.showValidation();
             onKeyPress(e, onEnterKeyPress);
           }}
@@ -121,8 +119,10 @@ class SingleLine extends PureComponent {
           onFocus={this.onFocus}
           ref={this.$input}
         />
-        <ValidationIndicator status={value.length === 0 ? 'standBy' : isValid ? 'valid' : 'error'}/>
-      </form >
+        <ValidationIndicator
+          status={value.length === 0 ? 'standBy' : isValid ? 'valid' : 'error'}
+        />
+      </form>
     );
   }
 }
@@ -133,7 +133,7 @@ SingleLine.defaultProps = {
   onValidation: noop,
   onEnterKeyPress: noop,
   mask: false,
-  onBlur: noop,
+  onBlur: noop
 };
 
 export default SingleLine;

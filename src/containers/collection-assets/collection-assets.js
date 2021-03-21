@@ -16,30 +16,33 @@ import isEqual from 'lodash/isEqual';
 import styles from './styles.scss';
 import mp3Icon from './mp3-icon.svg';
 
-const SortableItem = SortableElement(({ children }) => <li >{children}</li >);
+const SortableItem = SortableElement(({ children }) => <li>{children}</li>);
 
-const SortableList = SortableContainer((
-  { items, collectionId, schema, interpolateValue }) => {
-  return (
-    <ul >
-      {items.map((itm, i) => (
-        <SortableItem key={`item-${itm.id}`} index={i} >
-          <Button
-            className={cx(styles.itemWrapper, { [styles.published]: itm.published === 'Publish' })}
-            type="white"
-            linkTo={`/cms/collection/${collectionId}/editor/${itm.id}`}
-            justifyContent="start"
-          >
-            <div className={styles.itemTitle} >
-              {interpolateValue(itm, schema[0])}
-            </div >
-            {schema[1] ? interpolateValue(itm, schema[1]) : null}
-          </Button >
-        </SortableItem >
-      ))}
-    </ul >
-  );
-});
+const SortableList = SortableContainer(
+  ({ items, collectionId, schema, interpolateValue }) => {
+    return (
+      <ul>
+        {items.map((itm, i) => (
+          <SortableItem key={`item-${itm.id}`} index={i}>
+            <Button
+              className={cx(styles.itemWrapper, {
+                [styles.published]: itm.published === 'Publish'
+              })}
+              type='white'
+              linkTo={`/cms/collection/${collectionId}/editor/${itm.id}`}
+              justifyContent='start'
+            >
+              <div className={styles.itemTitle}>
+                {interpolateValue(itm, schema[0])}
+              </div>
+              {schema[1] ? interpolateValue(itm, schema[1]) : null}
+            </Button>
+          </SortableItem>
+        ))}
+      </ul>
+    );
+  }
+);
 
 class Collection extends PureComponent {
   constructor(props) {
@@ -50,7 +53,7 @@ class Collection extends PureComponent {
       props.updateAppTitle(props.collectionMeta.name);
     }
     this.state = {
-      sorting: false,
+      sorting: false
     };
   }
 
@@ -73,23 +76,27 @@ class Collection extends PureComponent {
       case 'rich':
         const span = document.createElement('span');
         span.innerHTML = value;
-        return <LinesEllipsisLoose
-          text={span.textContent || span.innerText}
-          maxLine='4'
-          lineHeight='24'
-          className={styles.itemBody}
-        />;
+        return (
+          <LinesEllipsisLoose
+            text={span.textContent || span.innerText}
+            maxLine='4'
+            lineHeight='24'
+            className={styles.itemBody}
+          />
+        );
       case 'image':
         return <img className={styles.img} src={value} />;
       case 'audio':
         return <img src={mp3Icon} className={styles.mp3Icon} />;
       default:
-        return <LinesEllipsisLoose
-          text={value}
-          maxLine='4'
-          lineHeight='24'
-          className={styles.itemBody}
-        />;
+        return (
+          <LinesEllipsisLoose
+            text={value}
+            maxLine='4'
+            lineHeight='24'
+            className={styles.itemBody}
+          />
+        );
     }
   }
 
@@ -109,10 +116,16 @@ class Collection extends PureComponent {
   }
 
   render() {
-    const { collectionAssets, collectionMeta, collectionId, schema } = this.props;
+    const {
+      collectionAssets,
+      collectionMeta,
+      collectionId,
+      schema,
+      maxItems
+    } = this.props;
     const { sorting } = this.state;
     return (
-      <div className={cx(styles.container, { [styles.sorting]: sorting })} >
+      <div className={cx(styles.container, { [styles.sorting]: sorting })}>
         <SortableList
           items={collectionAssets || []}
           onSortEnd={this.onSortEnd}
@@ -124,17 +137,18 @@ class Collection extends PureComponent {
           collectionId={collectionId}
           collectionMeta={collectionMeta}
           schema={schema}
-          lockAxis="y"
+          lockAxis='y'
           interpolateValue={this.interpolateValue}
         />
         <Button
-          type="circle"
+          disable={collectionAssets && collectionAssets.length >= maxItems}
+          type='circle'
           className={styles.addBtn}
           linkTo={`/cms/collection/${collectionId}/editor`}
         >
           <Add />
-        </Button >
-      </div >
+        </Button>
+      </div>
     );
   }
 }
@@ -145,44 +159,54 @@ Collection.propTypes = {
   collectionMeta: PropTypes.shape({
     layout: PropTypes.shape({
       title: PropTypes.string,
-      body: PropTypes.string,
+      body: PropTypes.string
     }), // layout is deprecated
     name: PropTypes.string.isRequired,
-    order: PropTypes.string.isRequired,
+    order: PropTypes.string.isRequired
   }),
   setGoBackPath: PropTypes.func.isRequired,
   updateAppTitle: PropTypes.func.isRequired,
   sortAssets: PropTypes.func.isRequired,
   schema: PropTypes.array.isRequired,
+  maxItems: PropTypes.oneOfType([PropTypes.number || PropTypes.string])
 };
 
 const mapStateToProps = (state) => ({
   collectionId: services.router.selectors.collectionId(state),
+  maxItems: services.collections.selectors.maxItems(state),
   collectionAssets: services.collections.selectors.assets(state),
   collectionMeta: services.collections.selectors.item(state),
   schema: (() => {
     const item = services.collections.selectors.item(state);
     return item ? JSON5.parse(item.schema) : [];
-  })(),
+  })()
 });
 
-const mapDispatchToProps = dispatch => ({
-  setGoBackPath: path => dispatch(services.router.actions.setGoBackPath(path)),
-  updateAppTitle: newTitle => dispatch(services.app.actions.updateAppTitle(newTitle)),
-  sortAssets: (order, id) => dispatch(services.collections.actions.sortAssets(order, id))
+const mapDispatchToProps = (dispatch) => ({
+  setGoBackPath: (path) =>
+    dispatch(services.router.actions.setGoBackPath(path)),
+  updateAppTitle: (newTitle) =>
+    dispatch(services.app.actions.updateAppTitle(newTitle)),
+  sortAssets: (order, id) =>
+    dispatch(services.collections.actions.sortAssets(order, id))
 });
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect(props => {
-    return props.collectionId ? [{
-      collection: 'collections',
-      doc: props.collectionId,
-    }, {
-      collection: 'collections',
-      doc: props.collectionId,
-      subcollections: [{ collection: 'data' }],
-      storeAs: 'assets',
-    }] : [];
-  }),
+  firestoreConnect((props) => {
+    return props.collectionId
+      ? [
+          {
+            collection: 'collections',
+            doc: props.collectionId
+          },
+          {
+            collection: 'collections',
+            doc: props.collectionId,
+            subcollections: [{ collection: 'data' }],
+            storeAs: 'assets'
+          }
+        ]
+      : [];
+  })
 )(Collection);
