@@ -22,7 +22,7 @@ class Login extends PureComponent {
       password: '',
       valid: false,
       emailIsValid: false,
-      passwordIsValid: false,
+      passwordIsValid: false
     };
   }
 
@@ -53,48 +53,50 @@ class Login extends PureComponent {
     this.setState({
       emailIsValid: validateEmail(email),
       passwordIsValid: password.length >= 4,
-      valid: (validateEmail(email) && password.length >= 4),
+      valid: validateEmail(email) && password.length >= 4
     });
   }
 
   render() {
     const { email, password, valid } = this.state;
-    const { deviceType } = this.props;
+    const { deviceType, authError } = this.props;
     // const { logIn, authError, uid, deviceType } = this.props;
     return (
-      <div className={styles.pageWrap} >
+      <div className={styles.pageWrap}>
         <img src={logo} />
-        <div className={styles.logInForm} >
-          <h1 >SIGN IN</h1 >
+        <div className={styles.logInForm}>
+          <h1>SIGN IN</h1>
           <UserInput
-            placeholder="Email"
-            onChange={val => this.updateState({ email: val })}
+            placeholder='Email'
+            onChange={(val) => this.updateState({ email: val })}
             value={email}
             validateWith={validateEmail}
             className={cx(styles.input, styles[`input-${deviceType}`])}
             onEnterKeyPress={this.logIn}
-            status="standBy"
+            status='standBy'
           />
           <UserInput
-            placeholder="Password"
-            onChange={val => this.updateState({ password: val })}
+            placeholder='Password'
+            onChange={(val) => this.updateState({ password: val })}
             value={password}
-            validateWith={val => val.length >= 4}
-            type="password"
+            validateWith={(val) => val.length >= 4}
+            type='password'
             min={4}
             max={12}
             className={cx(styles.input, styles[`input-${deviceType}`])}
             onEnterKeyPress={this.logIn}
           />
-          <div className={styles.iForgot} >I Forgot My Password</div >
-          <Button
-            onClick={this.logIn}
-            className={styles.submit}
-          >
-            {valid ? <LoginCircle className={styles.loginCircle} /> : <Lock className={styles.lock} />}
-          </Button >
-        </div >
-      </div >
+          <div className={styles.iForgot}>I Forgot My Password</div>
+          <Button onClick={this.logIn} className={styles.submit}>
+            {valid ? (
+              <LoginCircle className={styles.loginCircle} />
+            ) : (
+              <Lock className={styles.lock} />
+            )}
+          </Button>
+          {authError && <div>{authError.message}</div>}
+        </div>
+      </div>
     );
   }
 }
@@ -106,26 +108,27 @@ Login.propTypes = {
   pathname: PropTypes.string.isRequired,
   logOut: PropTypes.func.isRequired,
   authError: PropTypes.shape({
-    message: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired
   }),
   working: PropTypes.bool.isRequired,
-  uid: PropTypes.string,
+  uid: PropTypes.string
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   deviceType: services.device.selectors.type(state),
   authError: services.auth.selectors.authError(state),
   working: services.auth.selectors.working(state),
   pathname: services.router.selectors.pathname(state),
-  uid: services.auth.selectors.uid(state),
+  uid: services.auth.selectors.uid(state)
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   logIn: (...props) => dispatch(services.auth.actions.logIn(...props)),
   logOut: (...props) => dispatch(services.auth.actions.logOut(...props)),
-  clearData: () => dispatch({
-    type: actionTypes.CLEAR_DATA,
-  }),
+  clearData: () =>
+    dispatch({
+      type: actionTypes.CLEAR_DATA
+    })
 });
 
 export default compose(
