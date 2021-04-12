@@ -141,7 +141,11 @@ class Collection extends PureComponent {
           interpolateValue={this.interpolateValue}
         />
         <Button
-          disable={collectionAssets && collectionAssets.length >= maxItems}
+          disable={
+            Boolean(maxItems) &&
+            collectionAssets &&
+            collectionAssets.length >= maxItems
+          }
           type='circle'
           className={styles.addBtn}
           linkTo={`/cms/collection/${collectionId}/editor`}
