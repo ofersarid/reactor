@@ -40,15 +40,26 @@ const Menu = ({
   return (
     <div className={cx(styles.menu)}>
       <section className={styles.menuTopSection}>
-        <Button
-          type='white'
-          className={cx(styles.menuItem, styles.btn)}
-          linkTo='/cms/home'
-          disable={Boolean(pathname.match(/cms\/home/))}
-          onClick={toggleMenu}
-        >
-          Go Home
-        </Button>
+        {!pathname.match(/cms\/home/) && (
+          <Button
+            type='white'
+            className={cx(styles.menuItem, styles.btn)}
+            linkTo='/cms/home'
+            onClick={toggleMenu}
+          >
+            Go Home
+          </Button>
+        )}
+        {!pathname.match(/cms\/settings/) && (
+          <Button
+            type='white'
+            className={cx(styles.menuItem, styles.btn)}
+            linkTo='/cms/settings'
+            onClick={toggleMenu}
+          >
+            Settings
+          </Button>
+        )}
       </section>
       <section className={styles.menuBottomSection}>
         <div className={styles.header}>
